@@ -5,7 +5,7 @@ RoomsEngine *RoomsEngine::_engine = 0;
 RoomsEngine::RoomsEngine()
 {
     //ctor
-    _draw_mgr = new DrawManager();
+    _draw_mgr = new DrawManager(this);
 }
 
 RoomsEngine::~RoomsEngine()
@@ -21,4 +21,10 @@ RoomsEngine *RoomsEngine::CreateEngine()
         _engine = new RoomsEngine();
     }
     return _engine;
+}
+
+int RoomsEngine::initialize()
+{
+    _draw_mgr->initApplication();
+    return _draw_mgr->startApplication();
 }

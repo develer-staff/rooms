@@ -8,6 +8,7 @@ class RoomsEngine
     public:
         static RoomsEngine *CreateEngine();
         virtual ~RoomsEngine();
+        int initialize();
     protected:
     private:
         RoomsEngine();
