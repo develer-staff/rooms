@@ -2,6 +2,7 @@
 #define DRAWMANAGER_H
 
 #include <QtGui>
+#include "DrawDevice.h"
 
 class RoomsEngine;
 
@@ -16,9 +17,9 @@ class DrawManager
     protected:
     private:
         RoomsEngine *_engine;
-        //QT INTERFACE
         QApplication *_app;
         QMainWindow *_wnd;
+        DrawDevice *_device;
 };
 
 #endif // DRAWMANAGER_H

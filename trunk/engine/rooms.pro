@@ -8,5 +8,5 @@ DEPENDPATH += . src
 INCLUDEPATH += . src
 
 # Input
-HEADERS += src/DrawManager.h src/RoomsEngine.h
-SOURCES += src/DrawManager.cpp src/main.cpp src/RoomsEngine.cpp
+HEADERS += src/DrawManager.h src/RoomsEngine.h src/DrawDevice.h
+SOURCES += src/DrawManager.cpp src/main.cpp src/RoomsEngine.cpp src/DrawDevice.cpp
