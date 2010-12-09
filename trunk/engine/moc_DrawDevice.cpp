@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'DrawDevice.h'
 **
-** Created: Thu Dec 9 16:13:09 2010
+** Created: Thu Dec 9 16:36:49 2010
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!

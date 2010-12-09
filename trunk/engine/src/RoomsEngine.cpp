@@ -1,5 +1,6 @@
 #include "RoomsEngine.h"
 #include "DrawManager.h"
+#include "RoomsManager.h"
 
 RoomsEngine *RoomsEngine::_engine = 0;
 
@@ -7,6 +8,7 @@ RoomsEngine::RoomsEngine(int argc, char *argv[])
 {
     //ctor
     _draw_mgr = new DrawManager(this);
+    _rooms_mgr = new RoomsManager(this);
     _argc = argc;
     _argv = argv;
 }
@@ -15,6 +17,7 @@ RoomsEngine::~RoomsEngine()
 {
     //dtor
     delete _draw_mgr;
+    delete _rooms_mgr;
 }
 
 RoomsEngine *RoomsEngine::CreateEngine(int argc, char * argv[])

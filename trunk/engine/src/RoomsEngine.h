@@ -1,5 +1,5 @@
-#   ifndef ROOMSENGINE_H
-#   define ROOMSENGINE_H
+#ifndef ROOMSENGINE_H
+#define ROOMSENGINE_H
 
 #include <QtGui>
 #include <string> //std::string
@@ -7,6 +7,7 @@
 #include "tinyxml/tinyxml.h"
 
 class DrawManager;
+class RoomsManager;
 
 class RoomsEngine
 {
@@ -26,6 +27,7 @@ class RoomsEngine
         char **_argv;
 
         DrawManager *_draw_mgr;
+        RoomsManager *_rooms_mgr;
 };
 
 #endif // ROOMSENGINE_H
