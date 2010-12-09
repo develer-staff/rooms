@@ -13,6 +13,7 @@ class RoomsManager
         RoomsManager(RoomsEngine *engine);
         virtual ~RoomsManager();
         Room *addRoom(std::string name);
+        Room *room(std::string name);
     protected:
     private:
         RoomsEngine *_engine;

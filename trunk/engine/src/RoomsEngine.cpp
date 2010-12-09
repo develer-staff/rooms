@@ -50,4 +50,8 @@ void RoomsEngine::loadWorld(std::string filename)
 {
     TiXmlDocument document(filename.c_str());
     document.LoadFile();
+
+    //STUB
+
+    Room *r = _rooms_mgr->addRoom("prova1");
 }
