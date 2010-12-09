@@ -36,7 +36,7 @@ DrawManager *RoomsEngine::getDrawManager()
 int RoomsEngine::initialize()
 {
     if (!loadWorld("test_world.rooms"))
-        throw;  //TODO: handle*/
+        throw;  //TODO: handle exception
 }
 
 void RoomsEngine::click (int x, int y)
@@ -57,6 +57,7 @@ bool RoomsEngine::loadWorld(std::string filename)
     if (ok)
     {
         TiXmlElement *root = document.RootElement();
+        //TODO: read world file and build model
         return true;
     } else {
         return false;
