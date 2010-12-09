@@ -1,4 +1,8 @@
+#include "RoomsEngine.h"
+
 int main()
 {
-	return 0;
+    RoomsEngine *eng = RoomsEngine::CreateEngine();
+    delete eng;
+    return 0;
 }

@@ -5,7 +5,7 @@ SOURCES=main.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=rooms.exe
 
-all: compile install
+all: compile install test
 
 compile:
 	$(CC) $(CFLAGS) -c src/*.cpp
@@ -17,3 +17,6 @@ install:
 clean:
 	rm -f -R dist/*
 	rm -f -R build/*
+
+test:
+	./dist/rooms.exe
