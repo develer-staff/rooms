@@ -35,5 +35,16 @@ int RoomsEngine::initialize()
 void RoomsEngine::click (int x, int y)
 {
 
+}
 
+
+void RoomsEngine::loadGame(std::string filename)
+{
+
+}
+
+void RoomsEngine::loadWorld(std::string filename)
+{
+    TiXmlDocument document(filename.c_str());
+    document.LoadFile();
 }
