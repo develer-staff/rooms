@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'DrawDevice.h'
 **
-** Created: Thu Dec 9 13:04:43 2010
+** Created: Thu Dec 9 15:26:31 2010
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_DrawDevice[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       1,   14, // methods
+       2,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -31,13 +31,15 @@ static const uint qt_meta_data_DrawDevice[] = {
        0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
-      18,   12,   11,   11, 0x08,
+      18,   12,   11,   11, 0x0a,
+      43,   12,   11,   11, 0x0a,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_DrawDevice[] = {
     "DrawDevice\0\0event\0paintEvent(QPaintEvent*)\0"
+    "mousePressEvent(QMouseEvent*)\0"
 };
 
 const QMetaObject DrawDevice::staticMetaObject = {
@@ -70,9 +72,10 @@ int DrawDevice::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: paintEvent((*reinterpret_cast< QPaintEvent*(*)>(_a[1]))); break;
+        case 1: mousePressEvent((*reinterpret_cast< QMouseEvent*(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 1;
+        _id -= 2;
     }
     return _id;
 }

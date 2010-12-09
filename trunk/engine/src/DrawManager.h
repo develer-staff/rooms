@@ -12,7 +12,7 @@ class DrawManager
         DrawManager(RoomsEngine *engine);
         virtual ~DrawManager();
 
-        void initApplication();
+        void initApplication(int argc, char *argv[]);
         int startApplication();
     protected:
     private:

@@ -14,17 +14,14 @@ DrawManager::~DrawManager()
     delete _app;
 }
 
-void DrawManager::initApplication()
+void DrawManager::initApplication(int argc, char *argv[])
 {
-    char *argv[1] = {"rooms"};
-    int argc = 1;
     _app = new QApplication(argc, argv);
     _wnd = new QMainWindow;
-    _device = new DrawDevice();
+    _device = new DrawDevice(_wnd);
     _wnd->setCentralWidget(_device);
-    _wnd->setWindowTitle("Rooms Engine");
-    _wnd->resize(800, 600);
     _wnd->show();
+    //_device->resize(800,600);
 }
 
 

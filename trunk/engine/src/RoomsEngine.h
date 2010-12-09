@@ -6,16 +6,18 @@
 class RoomsEngine
 {
     public:
-        static RoomsEngine *CreateEngine();
+        static RoomsEngine *CreateEngine(int argc, char *argv[]);
         virtual ~RoomsEngine();
         int initialize();
     protected:
     private:
-        RoomsEngine();
+        RoomsEngine(int argc, char *argv[]);
         static RoomsEngine *_engine;
 
-        DrawManager *_draw_mgr;
+        int _argc;
+        char **_argv;
 
+        DrawManager *_draw_mgr;
 };
 
 #endif // ROOMSENGINE_H

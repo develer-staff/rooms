@@ -8,10 +8,10 @@ class DrawDevice: public QWidget
     Q_OBJECT
     public:
         DrawDevice(QWidget *parent=0);
-        //virtual ~DrawDevice();
-    private slots:
+    public slots:
         //QT EVENTS
         void paintEvent(QPaintEvent *event);
+        void mousePressEvent(QMouseEvent * event);
 };
 
 #endif // DRAWDEVICE_H
