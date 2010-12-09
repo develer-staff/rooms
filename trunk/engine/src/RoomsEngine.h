@@ -12,19 +12,18 @@ class RoomsManager;
 class RoomsEngine
 {
     public:
-        static RoomsEngine *CreateEngine(int argc, char *argv[]);
+        static RoomsEngine *CreateEngine();
         virtual ~RoomsEngine();
         int initialize();
         void click (int x, int y);
-        void loadWorld(std::string filename);
+        bool loadWorld(std::string filename);
         void loadGame(std::string filename);
+
+        DrawManager *getDrawManager();
     protected:
     private:
-        RoomsEngine(int argc, char *argv[]);
+        RoomsEngine();
         static RoomsEngine *_engine;
-
-        int _argc;
-        char **_argv;
 
         DrawManager *_draw_mgr;
         RoomsManager *_rooms_mgr;

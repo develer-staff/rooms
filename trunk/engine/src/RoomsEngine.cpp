@@ -1,16 +1,15 @@
 #include "RoomsEngine.h"
 #include "DrawManager.h"
 #include "RoomsManager.h"
+#include <iostream>
 
 RoomsEngine *RoomsEngine::_engine = 0;
 
-RoomsEngine::RoomsEngine(int argc, char *argv[])
+RoomsEngine::RoomsEngine()
 {
     //ctor
     _draw_mgr = new DrawManager(this);
     _rooms_mgr = new RoomsManager(this);
-    _argc = argc;
-    _argv = argv;
 }
 
 RoomsEngine::~RoomsEngine()
@@ -20,19 +19,24 @@ RoomsEngine::~RoomsEngine()
     delete _rooms_mgr;
 }
 
-RoomsEngine *RoomsEngine::CreateEngine(int argc, char * argv[])
+RoomsEngine *RoomsEngine::CreateEngine()
 {
     if (_engine == 0)
     {
-        _engine = new RoomsEngine(argc, argv);
+        _engine = new RoomsEngine();
     }
     return _engine;
 }
 
+DrawManager *RoomsEngine::getDrawManager()
+{
+    return _draw_mgr;
+}
+
 int RoomsEngine::initialize()
 {
-    _draw_mgr->initApplication(_argc, _argv);
-    return _draw_mgr->startApplication();
+    if (!loadWorld("test_world.rooms"))
+        throw;  //TODO: handle*/
 }
 
 void RoomsEngine::click (int x, int y)
@@ -46,12 +50,15 @@ void RoomsEngine::loadGame(std::string filename)
 
 }
 
-void RoomsEngine::loadWorld(std::string filename)
+bool RoomsEngine::loadWorld(std::string filename)
 {
     TiXmlDocument document(filename.c_str());
-    document.LoadFile();
-
-    //STUB
-
-    Room *r = _rooms_mgr->addRoom("prova1");
+    bool ok = document.LoadFile();
+    if (ok)
+    {
+        TiXmlElement *root = document.RootElement();
+        return true;
+    } else {
+        return false;
+    }
 }

@@ -3,19 +3,19 @@
 
 #include <QtGui>
 
-class DrawManager;
+class RoomsEngine;
 
 class DrawDevice: public QWidget
 {
     Q_OBJECT
     public:
-        DrawDevice(DrawManager *manager, QWidget *parent=0);
+        DrawDevice(DrawManager *engine, QWidget *parent=0);
     public slots:
         //QT EVENTS
         void paintEvent(QPaintEvent *event);
         void mousePressEvent(QMouseEvent * event);
     private:
-        DrawManager *_manager;
+        RoomsEngine *_engine;
 };
 
 #endif // DRAWDEVICE_H
