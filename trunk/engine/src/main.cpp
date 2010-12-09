@@ -1,7 +1,5 @@
 #include "RoomsEngine.h"
 
-#include <QtGui>
-
 int main(int argc, char *argv[])
 {
     RoomsEngine *eng = RoomsEngine::CreateEngine(argc, argv);

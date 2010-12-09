@@ -2,8 +2,8 @@
 #define DRAWMANAGER_H
 
 #include <QtGui>
-#include "DrawDevice.h"
 
+class DrawDevice;
 class RoomsEngine;
 
 class DrawManager
@@ -14,6 +14,8 @@ class DrawManager
 
         void initApplication(int argc, char *argv[]);
         int startApplication();
+
+        void click(int x, int y);
     protected:
     private:
         RoomsEngine *_engine;

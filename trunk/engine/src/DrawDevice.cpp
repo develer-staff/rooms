@@ -1,10 +1,10 @@
 #include "DrawDevice.h"
+#include "DrawManager.h"
 
-#include <iostream>
-
-DrawDevice::DrawDevice(QWidget *parent): QWidget(parent)
+DrawDevice::DrawDevice(DrawManager *manager, QWidget *parent): QWidget(parent)
 {
     //ctor
+    _manager = manager;
     parentWidget()->resize(800, 600);
     parentWidget()->setWindowTitle("Rooms Engine");
 }
@@ -17,5 +17,5 @@ void DrawDevice::paintEvent(QPaintEvent *event)
 
 void DrawDevice::mousePressEvent(QMouseEvent * event)
 {
-
+    _manager->click(event->x(), event->y());
 }

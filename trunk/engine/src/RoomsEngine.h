@@ -1,7 +1,9 @@
 #   ifndef ROOMSENGINE_H
 #   define ROOMSENGINE_H
 
-#include "DrawManager.h"
+#include <QtGui>
+
+class DrawManager;
 
 class RoomsEngine
 {
@@ -9,6 +11,7 @@ class RoomsEngine
         static RoomsEngine *CreateEngine(int argc, char *argv[]);
         virtual ~RoomsEngine();
         int initialize();
+        void click (int x, int y);
     protected:
     private:
         RoomsEngine(int argc, char *argv[]);

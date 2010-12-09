@@ -1,4 +1,5 @@
 #include "RoomsEngine.h"
+#include "DrawManager.h"
 
 RoomsEngine *RoomsEngine::_engine = 0;
 
@@ -29,4 +30,10 @@ int RoomsEngine::initialize()
 {
     _draw_mgr->initApplication(_argc, _argv);
     return _draw_mgr->startApplication();
+}
+
+void RoomsEngine::click (int x, int y)
+{
+
+
 }
