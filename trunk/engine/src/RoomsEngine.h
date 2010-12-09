@@ -10,10 +10,11 @@ class RoomsEngine
         virtual ~RoomsEngine();
     protected:
     private:
+        RoomsEngine();
         static RoomsEngine *_engine;
+
         DrawManager *_draw_mgr;
 
-        RoomsEngine();
 };
 
 #endif // ROOMSENGINE_H

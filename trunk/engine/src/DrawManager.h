@@ -1,6 +1,7 @@
 #ifndef DRAWMANAGER_H
 #define DRAWMANAGER_H
 
+#include <qt4/Qt/QtGui>
 
 class DrawManager
 {
