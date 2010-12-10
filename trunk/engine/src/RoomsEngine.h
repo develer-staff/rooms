@@ -4,7 +4,7 @@
 #include <QtGui>
 #include <string> //std::string
 
-#include "tinyxml/tinyxml.h"
+#include "../lib/tinyxml/tinyxml.h"
 
 class DrawManager;
 class RoomsManager;
