@@ -42,7 +42,10 @@
        <property name="handleWidth">
         <number>3</number>
        </property>
-       <widget class="QTableView" name="tableView">
+       <property name="childrenCollapsible">
+        <bool>false</bool>
+       </property>
+       <widget class="QTableView" name="resourcesList">
         <property name="maximumSize">
          <size>
           <width>200</width>
@@ -52,6 +55,9 @@
         <property name="showGrid">
          <bool>false</bool>
         </property>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
         <attribute name="verticalHeaderCascadingSectionResizes">
          <bool>true</bool>
         </attribute>
@@ -59,7 +65,7 @@
          <number>0</number>
         </attribute>
        </widget>
-       <widget class="QTableView" name="tableView_2">
+       <widget class="QTableView" name="roomsList">
         <property name="minimumSize">
          <size>
           <width>80</width>
@@ -72,6 +78,9 @@
           <height>16777215</height>
          </size>
         </property>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
         <attribute name="verticalHeaderCascadingSectionResizes">
          <bool>true</bool>
         </attribute>
@@ -80,7 +89,7 @@
         </attribute>
        </widget>
       </widget>
-      <widget class="RoomView" name="graphicsView">
+      <widget class="RoomView" name="roomView">
        <property name="contextMenuPolicy">
         <enum>Qt::CustomContextMenu</enum>
        </property>
