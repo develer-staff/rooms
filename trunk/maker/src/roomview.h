@@ -4,6 +4,7 @@
 #include <QGraphicsView>
 #include <QMenu>
 #include <QFileDialog>
+#include <QVector>
 
 class RoomView : public QGraphicsView
 {
@@ -18,6 +19,11 @@ signals:
 public slots:
     void setBackground();
     void showContextMenu(const QPoint &point);
+
+private:
+    QGraphicsScene *scene;
+    QVector<Room*> rooms;
+    int activeRoom;
 };
 
 #endif // ROOMVIEW_H
