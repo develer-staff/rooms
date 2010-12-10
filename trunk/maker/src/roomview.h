@@ -22,7 +22,7 @@ public slots:
 
 private:
     QGraphicsScene *scene;
-    QVector<Room*> rooms;
+    World world;
     int activeRoom;
 };
 
