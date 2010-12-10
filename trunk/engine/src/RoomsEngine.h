@@ -6,7 +6,6 @@
 
 #include "../lib/tinyxml/tinyxml.h"
 
-class DrawManager;
 class RoomsManager;
 
 class RoomsEngine
@@ -19,13 +18,11 @@ class RoomsEngine
         bool loadWorld(std::string filename);
         void loadGame(std::string filename);
 
-        DrawManager *getDrawManager();
     protected:
     private:
         RoomsEngine();
         static RoomsEngine *_engine;
 
-        DrawManager *_draw_mgr;
         RoomsManager *_rooms_mgr;
 };
 
