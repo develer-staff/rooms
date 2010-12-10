@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>975</width>
-    <height>503</height>
+    <width>1109</width>
+    <height>660</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,71 +17,67 @@
    <bool>true</bool>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout_3">
+   <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <widget class="QSplitter" name="splitter">
+     <widget class="QSplitter" name="splitter_2">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QToolBox" name="toolBox">
+      <widget class="QSplitter" name="splitter">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="maximumSize">
         <size>
          <width>200</width>
          <height>16777215</height>
         </size>
        </property>
-       <property name="acceptDrops">
-        <bool>true</bool>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
        </property>
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
+       <property name="handleWidth">
+        <number>3</number>
        </property>
-       <property name="lineWidth">
-        <number>0</number>
-       </property>
-       <property name="currentIndex">
-        <number>1</number>
-       </property>
-       <property name="tabSpacing">
-        <number>0</number>
-       </property>
-       <widget class="QWidget" name="resourcesPage">
-        <attribute name="label">
-         <string>Resources</string>
-        </attribute>
-        <layout class="QGridLayout" name="gridLayout_2">
-         <property name="margin">
-          <number>0</number>
-         </property>
-         <item row="0" column="0">
-          <widget class="QListView" name="listView">
-           <property name="lineWidth">
-            <number>0</number>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="roomsPage">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
+       <widget class="QTableView" name="tableView">
+        <property name="maximumSize">
+         <size>
           <width>200</width>
-          <height>400</height>
-         </rect>
+          <height>16777215</height>
+         </size>
         </property>
-        <attribute name="label">
-         <string>Rooms</string>
+        <property name="showGrid">
+         <bool>false</bool>
+        </property>
+        <attribute name="verticalHeaderCascadingSectionResizes">
+         <bool>true</bool>
         </attribute>
-        <layout class="QGridLayout" name="gridLayout">
-         <property name="margin">
-          <number>0</number>
-         </property>
-         <item row="0" column="0">
-          <widget class="QListView" name="listView_2"/>
-         </item>
-        </layout>
+        <attribute name="verticalHeaderDefaultSectionSize">
+         <number>0</number>
+        </attribute>
+       </widget>
+       <widget class="QTableView" name="tableView_2">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>200</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <attribute name="verticalHeaderCascadingSectionResizes">
+         <bool>true</bool>
+        </attribute>
+        <attribute name="verticalHeaderDefaultSectionSize">
+         <number>0</number>
+        </attribute>
        </widget>
       </widget>
       <widget class="RoomView" name="graphicsView">
@@ -96,10 +92,16 @@
        </property>
       </widget>
       <widget class="QWidget" name="settingsWidget" native="true">
-       <property name="minimumSize">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
         <size>
          <width>180</width>
-         <height>0</height>
+         <height>16777215</height>
         </size>
        </property>
       </widget>
@@ -112,7 +114,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>975</width>
+     <width>1109</width>
      <height>21</height>
     </rect>
    </property>

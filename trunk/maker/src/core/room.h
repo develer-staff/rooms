@@ -1,10 +1,18 @@
 #ifndef ROOM_H
 #define ROOM_H
 
-class Room
+#include <QObject>
+
+class Room : public QObject
 {
+    Q_OBJECT
+
 public:
-    Room();
+    Room(QString const& name, QObject *parent = 0);
+    ~Room();
+
+private:
+    QString name;
 };
 
 #endif // ROOM_H
