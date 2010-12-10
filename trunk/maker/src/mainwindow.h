@@ -4,7 +4,8 @@
 #include <QMainWindow>
 #include "wizard.h"
 
-namespace Ui {
+namespace Ui
+{
     class MainWindow;
 }
 
@@ -18,7 +19,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    Wizard wizard;
+    Wizard *wizard;
 };
 
 #endif // MAINWINDOW_H

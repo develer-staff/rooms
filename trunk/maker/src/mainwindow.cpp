@@ -6,9 +6,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    wizard = new Wizard;
+    wizard->show();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete wizard;
 }
