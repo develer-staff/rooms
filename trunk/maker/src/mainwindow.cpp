@@ -6,8 +6,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setDisabled(true);
     wizard = new Wizard(this);
-    wizard->show();
+    wizard->exec();
+    this->setEnabled(true);
 }
 
 MainWindow::~MainWindow()
