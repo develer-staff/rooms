@@ -1,4 +1,5 @@
 #include "Room.h"
+#include "Area.h"
 
 Room::Room(std::string name): id(name)
 {
@@ -8,6 +9,12 @@ Room::Room(std::string name): id(name)
 Room::~Room()
 {
     //dtor
+    std::map<std::string, Area *>::iterator i;
+    for (i = _areas.begin(); i != _areas.end(); i++)
+    {
+        delete i->second;
+    }
+    _areas.clear();
 }
 
 std::string Room::bg()
@@ -17,4 +24,25 @@ std::string Room::bg()
 void Room::bg(std::string id)
 {
     _bg = id;
+}
+
+Area *Room::addArea(std::string id, Area *area_ptr)
+{
+    //TODO: a better return check
+    if (area(id) == 0)
+    {
+        _areas[id] = area_ptr;
+        return area_ptr;
+    } else {
+        return 0;
+    }
+}
+
+Area *Room::area(std::string id)
+{
+    std::map<std::string, Area *>::iterator i = _areas.find(id);
+    if (i ==  _areas.end())
+        return 0;
+    else
+        return i->second;
 }

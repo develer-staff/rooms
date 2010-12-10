@@ -30,7 +30,7 @@ int RoomsEngine::initialize()
 {
     /*if (!loadWorld("test_world.rooms"))
         throw;  //TODO: handle exception*/
-    loadWorld("test_world.rooms");
+    loadWorld("world.rooms");
     _state = GAME;
 }
 
@@ -90,7 +90,22 @@ bool RoomsEngine::loadWorld(std::string filename)
             id = node->Attribute("id");
             bg = node->Attribute("bg");
             if (ok)
+            {
                 _rooms_mgr->addRoom(id, bg) ? ok &=true : ok = false;
+                //Load
+                TiXmlElement *area = node->FirstChildElement("areas");
+                if (area)
+                    for (area = area->FirstChildElement("area"); area != 0; area = area->NextSiblingElement("area"))
+                    {
+                        std::string id_area = node->Attribute("id");
+                        int area_x, area_y, area_w, area_h;
+                        root->QueryIntAttribute("x", &area_x) == TIXML_SUCCESS ? ok &= true : ok = false;
+                        root->QueryIntAttribute("y", &area_y) == TIXML_SUCCESS ? ok &= true : ok = false;
+                        root->QueryIntAttribute("width", &area_w) == TIXML_SUCCESS ? ok &= true : ok = false;
+                        root->QueryIntAttribute("height", &area_h) == TIXML_SUCCESS ? ok &= true : ok = false;
+                        _rooms_mgr->addArea(id_area, id, area_x, area_y, area_w, area_h);
+                    }
+            }
         }
         //Goto start room
         ROOM_GOTO(root->Attribute("start") ? root->Attribute("start") : "");
