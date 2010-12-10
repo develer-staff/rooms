@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
     RoomsEngine *eng = RoomsEngine::CreateEngine();
     eng->initialize();
     DrawDevice qt_draw_device(eng, &qt_wnd);
+    eng->setDevice(&qt_draw_device);
     qt_wnd.setCentralWidget(&qt_draw_device);
     qt_wnd.show();
     return qt_app.exec();

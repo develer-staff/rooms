@@ -19,11 +19,38 @@ RoomsManager::~RoomsManager()
     _rooms.clear();
 }
 
-Room * RoomsManager::addRoom(std::string id)
+void RoomsManager::name(std::string name)
+{
+    _name = name;
+}
+
+std::string RoomsManager::name()
+{
+    return _name;
+}
+
+void RoomsManager::size(int width, int height)
+{
+    height > 10 ? _height = height : _height = 10;
+    width > 10 ? _width = width : _width = 10;
+}
+
+int RoomsManager::width()
+{
+    return _width;
+}
+
+int RoomsManager::height()
+{
+    return _height;
+}
+
+Room * RoomsManager::addRoom(std::string id, std::string bg)
 {
     if (!isUnique(id))
         return 0;
     Room *r = new Room(id);
+    r->bg(bg);
     _rooms[id] = r;
     return r;
 }
