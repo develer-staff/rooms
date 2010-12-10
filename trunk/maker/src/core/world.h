@@ -10,6 +10,7 @@ class World
 public:
     World();
 
+    void addRoom(QString const& name);
     int countRooms() const;
     Room *getRoom(int index) const;
     QVector<Room*> *getRooms() const;

@@ -5,6 +5,11 @@ World::World()
     rooms = new QVector<Room*>;
 }
 
+void World::addRoom(QString const& name)
+{
+    rooms->append(new Room(name));
+}
+
 int World::countRooms() const
 {
     return rooms->count();
