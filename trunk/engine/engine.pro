@@ -3,9 +3,10 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET = 
+TARGET = engine
 DEPENDPATH += . src lib/tinyxml
 INCLUDEPATH += . src lib/tinyxml
+QT += core gui
 
 # Input
 HEADERS += src/DrawDevice.h \

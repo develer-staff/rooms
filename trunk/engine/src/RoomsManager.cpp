@@ -6,6 +6,7 @@ RoomsManager::RoomsManager(RoomsEngine *engine)
 {
     //ctor
     _engine = engine;
+    _current_room = 0;
 }
 
 RoomsManager::~RoomsManager()
@@ -70,4 +71,20 @@ bool RoomsManager::isUnique(std::string name)
         return true;
     else
         return false;
+}
+
+Room *RoomsManager::currentRoom(std::string name)
+{
+    if (!isUnique(name))
+    {
+        _current_room = _rooms[name];
+        return _current_room;
+    } else {
+        return 0;
+    }
+}
+
+Room *RoomsManager::currentRoom()
+{
+    return _current_room;
 }

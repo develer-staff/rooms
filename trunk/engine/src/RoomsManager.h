@@ -19,6 +19,8 @@ class RoomsManager
         void size(int width, int height);
         int height();
         int width();
+        Room *currentRoom(std::string id);
+        Room *currentRoom();
     protected:
     private:
         RoomsEngine *_engine;
@@ -27,6 +29,7 @@ class RoomsManager
         std::string _name;
         int _height;
         int _width;
+        Room *_current_room;
 
         bool isUnique(std::string name);
 
