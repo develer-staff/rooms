@@ -60,7 +60,8 @@ Room * RoomsManager::addRoom(std::string id, std::string bg)
     }
 }
 
-Area * RoomsManager::addArea(std::string id, std::string room, int x, int y, int w, int h)
+Area * RoomsManager::addArea(std::string id, std::string room, int x, int y,
+                             int w, int h, std::string event)
 {
     if (area(id) != 0)
         return 0;
@@ -69,6 +70,7 @@ Area * RoomsManager::addArea(std::string id, std::string room, int x, int y, int
         Area *a = new Area(id);
         _areas[id] = a;
         a->size(x, y, w, h);
+        a->event(event);
         _rooms[room]->addArea(id, a);
         return a;
     }
@@ -106,4 +108,9 @@ Room *RoomsManager::currentRoom(std::string name)
 Room *RoomsManager::currentRoom()
 {
     return _current_room;
+}
+
+std::string RoomsManager::eventAt(int x, int y)
+{
+    return _current_room->eventAt(x, y);
 }

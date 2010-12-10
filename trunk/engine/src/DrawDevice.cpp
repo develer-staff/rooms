@@ -48,10 +48,12 @@ void DrawDevice::paintEvent(QPaintEvent *event)
     {
         case RoomsEngine::GAME:
         {
+            //Draw room
             Room *room = _engine->getRoomsManager()->currentRoom();
             QImage *bg = _images[room->bg()];
             QRectF rect(0.0, 0.0, width(), height());
             _painter.drawImage(rect, *bg);
+            //TODO: draw items in the room
             break;
         }
     }
@@ -61,6 +63,7 @@ void DrawDevice::mousePressEvent(QMouseEvent * event)
 {
     _engine->click(event->x(), event->y());
     //TODO: test if room is changed and draw it again
+    repaint(QRect(0, 0, width(), height()));
 }
 
 bool DrawDevice::fileExists(std::string filename)

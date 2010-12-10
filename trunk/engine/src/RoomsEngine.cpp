@@ -39,9 +39,21 @@ void RoomsEngine::setDevice(DrawDevice *device)
     device != 0 ? _device = device : throw; //TODO: handle error!
 }
 
+#include <iostream>
+
 void RoomsEngine::click (int x, int y)
 {
-
+    switch (_state)
+    {
+        case GAME:
+        {
+            std::string event = _rooms_mgr->eventAt(x, y);
+            std::cout << event << '\n';
+            if (event == "evento_lol")
+                ROOM_GOTO("Cucina");
+            break;
+        }
+    }
 }
 
 RoomsEngine::State RoomsEngine::state()
@@ -99,11 +111,11 @@ bool RoomsEngine::loadWorld(std::string filename)
                     {
                         std::string id_area = node->Attribute("id");
                         int area_x, area_y, area_w, area_h;
-                        root->QueryIntAttribute("x", &area_x) == TIXML_SUCCESS ? ok &= true : ok = false;
-                        root->QueryIntAttribute("y", &area_y) == TIXML_SUCCESS ? ok &= true : ok = false;
-                        root->QueryIntAttribute("width", &area_w) == TIXML_SUCCESS ? ok &= true : ok = false;
-                        root->QueryIntAttribute("height", &area_h) == TIXML_SUCCESS ? ok &= true : ok = false;
-                        _rooms_mgr->addArea(id_area, id, area_x, area_y, area_w, area_h);
+                        area->QueryIntAttribute("x", &area_x) == TIXML_SUCCESS ? ok &= true : ok = false;
+                        area->QueryIntAttribute("y", &area_y) == TIXML_SUCCESS ? ok &= true : ok = false;
+                        area->QueryIntAttribute("width", &area_w) == TIXML_SUCCESS ? ok &= true : ok = false;
+                        area->QueryIntAttribute("height", &area_h) == TIXML_SUCCESS ? ok &= true : ok = false;
+                        _rooms_mgr->addArea(id_area, id, area_x, area_y, area_w, area_h, "evento_lol");
                     }
             }
         }

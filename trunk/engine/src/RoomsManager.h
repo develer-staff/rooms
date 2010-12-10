@@ -14,7 +14,8 @@ class RoomsManager
         RoomsManager(RoomsEngine *engine);
         virtual ~RoomsManager();
         Room *addRoom(std::string name, std::string bg);
-        Area *addArea(std::string id, std::string room, int x, int y, int w, int h);
+        Area *addArea(std::string id, std::string room, int x, int y,
+                      int w, int h, std::string event);
         Room *room(std::string name);
         Area *area(std::string name);
         void name(std::string name);
@@ -24,6 +25,7 @@ class RoomsManager
         int width();
         Room *currentRoom(std::string id);
         Room *currentRoom();
+        std::string eventAt(int x, int y);
     protected:
     private:
         RoomsEngine *_engine;
