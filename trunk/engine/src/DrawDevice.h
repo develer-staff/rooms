@@ -9,7 +9,7 @@ class DrawDevice: public QWidget
 {
     Q_OBJECT
     public:
-        DrawDevice(DrawManager *engine, QWidget *parent=0);
+        DrawDevice(RoomsEngine *engine, QWidget *parent=0);
     public slots:
         //QT EVENTS
         void paintEvent(QPaintEvent *event);
