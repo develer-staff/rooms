@@ -5,16 +5,14 @@
 #include <QMenu>
 #include <QFileDialog>
 #include <QVector>
+#include "core/world.h"
 
 class RoomView : public QGraphicsView
 {
     Q_OBJECT
 
 public:
-    explicit RoomView(QWidget *parent = 0);
-
-signals:
-    void backgroundChanged();
+    explicit RoomView(QWidget *parent = 0, World *world = 0);
 
 public slots:
     void setBackground();
@@ -22,7 +20,7 @@ public slots:
 
 private:
     QGraphicsScene *scene;
-    World world;
+    World *world;
     int activeRoom;
 };
 

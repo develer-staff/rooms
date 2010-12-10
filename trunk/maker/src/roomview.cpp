@@ -2,13 +2,15 @@
 
 #include <QDebug>
 
-RoomView::RoomView(QWidget *parent) :
+RoomView::RoomView(QWidget *parent, World *world) :
     QGraphicsView(parent)
 {
+    this->world = world;
     scene = new QGraphicsScene;
+    setScene(scene);
+
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
             this, SLOT(showContextMenu(const QPoint &)));
-    setScene(scene);
 }
 
 void RoomView::showContextMenu(const QPoint &point)
@@ -23,9 +25,7 @@ void RoomView::showContextMenu(const QPoint &point)
 
 void RoomView::setBackground()
 {
-    QString bgFile;
-
-    bgFile = QFileDialog::getOpenFileName();
+    QString bgFile = QFileDialog::getOpenFileName();
 
     scene->clear();
     scene->addPixmap(QPixmap(bgFile));
