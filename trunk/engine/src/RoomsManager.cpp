@@ -1,11 +1,13 @@
 #include "RoomsManager.h"
 #include "RoomsEngine.h"
 #include "Room.h"
+#include "Area.h"
 
 RoomsManager::RoomsManager(RoomsEngine *engine)
 {
     //ctor
     _engine = engine;
+    _current_room = 0;
 }
 
 RoomsManager::~RoomsManager()
@@ -47,12 +49,29 @@ int RoomsManager::height()
 
 Room * RoomsManager::addRoom(std::string id, std::string bg)
 {
-    if (!isUnique(id))
+    if (room(id) != 0)
         return 0;
-    Room *r = new Room(id);
-    r->bg(bg);
-    _rooms[id] = r;
-    return r;
+    else
+    {
+        Room *r = new Room(id);
+        r->bg(bg);
+        _rooms[id] = r;
+        return r;
+    }
+}
+
+Area * RoomsManager::addArea(std::string id, std::string room, int x, int y, int w, int h)
+{
+    if (area(id) != 0)
+        return 0;
+    else
+    {
+        Area *a = new Area(id);
+        _areas[id] = a;
+        a->size(x, y, w, h);
+        _rooms[room]->addArea(id, a);
+        return a;
+    }
 }
 
 Room * RoomsManager::room(std::string name)
@@ -64,10 +83,27 @@ Room * RoomsManager::room(std::string name)
         return i->second;
 }
 
-bool RoomsManager::isUnique(std::string name)
+Area * RoomsManager::area(std::string name)
 {
-    if (room(name) == 0)
-        return true;
+    std::map<std::string, Area *>::iterator i = _areas.find(name);
+    if (i == _areas.end())
+        return 0;
     else
-        return false;
+        return i->second;
+}
+
+Room *RoomsManager::currentRoom(std::string name)
+{
+    if (room(name) != 0)
+    {
+        _current_room = _rooms[name];
+        return _current_room;
+    } else {
+        return 0;
+    }
+}
+
+Room *RoomsManager::currentRoom()
+{
+    return _current_room;
 }

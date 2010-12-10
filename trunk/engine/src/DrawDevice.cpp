@@ -1,14 +1,12 @@
 #include "DrawDevice.h"
 #include "RoomsEngine.h"
 #include "RoomsManager.h"
+#include "Room.h"
 
 DrawDevice::DrawDevice(RoomsEngine *engine, QWidget *parent): QWidget(parent)
 {
     //ctor
     _engine = engine;
-    RoomsManager *man = _engine->getRoomsManager();
-    parentWidget()->resize(man->width(), man->height());
-    parentWidget()->setWindowTitle(man->name().c_str());
     //TODO: get from engine world size and world's name
 }
 
@@ -23,7 +21,12 @@ DrawDevice::~DrawDevice()
     _images.clear();
 }
 
-#include <iostream>
+void DrawDevice::initialize()
+{
+    RoomsManager *man = _engine->getRoomsManager();
+    parentWidget()->resize(man->width(), man->height());
+    parentWidget()->setWindowTitle(man->name().c_str());
+}
 
 bool DrawDevice::loadImage(std::string id, std::string filename)
 {
@@ -40,8 +43,18 @@ bool DrawDevice::loadImage(std::string id, std::string filename)
 void DrawDevice::paintEvent(QPaintEvent *event)
 {
     QPainter _painter(this);
-    _painter.drawLine(0, 0, 800, 600);
     //TODO: get room attributes from engine and draw all
+    switch (_engine->state())
+    {
+        case RoomsEngine::GAME:
+        {
+            Room *room = _engine->getRoomsManager()->currentRoom();
+            QImage *bg = _images[room->bg()];
+            QRectF rect(0.0, 0.0, width(), height());
+            _painter.drawImage(rect, *bg);
+            break;
+        }
+    }
 }
 
 void DrawDevice::mousePressEvent(QMouseEvent * event)

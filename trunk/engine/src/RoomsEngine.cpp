@@ -8,6 +8,7 @@ RoomsEngine::RoomsEngine()
 {
     //ctor
     _rooms_mgr = new RoomsManager(this);
+    _state = INITIALIZING;
 }
 
 RoomsEngine::~RoomsEngine()
@@ -29,7 +30,8 @@ int RoomsEngine::initialize()
 {
     /*if (!loadWorld("test_world.rooms"))
         throw;  //TODO: handle exception*/
-    loadWorld("test_world.rooms");
+    loadWorld("world.rooms");
+    _state = GAME;
 }
 
 void RoomsEngine::setDevice(DrawDevice *device)
@@ -42,6 +44,10 @@ void RoomsEngine::click (int x, int y)
 
 }
 
+RoomsEngine::State RoomsEngine::state()
+{
+    return _state;
+}
 
 void RoomsEngine::loadGame(std::string filename)
 {
@@ -57,7 +63,7 @@ bool RoomsEngine::loadWorld(std::string filename)
     if (ok)
     {
         TiXmlElement *root = document.RootElement();
-        TiXmlNode *node = 0;
+        TiXmlElement *node = 0;
         //Load World attributes
         _rooms_mgr->name(root->Attribute("name") ? root->Attribute("name") : "");
         root->QueryIntAttribute("width", &width) == TIXML_SUCCESS ? ok &= true : ok = false;
@@ -65,28 +71,45 @@ bool RoomsEngine::loadWorld(std::string filename)
         _rooms_mgr->size(width, height);
         //TODO: manage different screen resolutions
         //Load images
-        (node = root->FirstChild("images")) != 0 ? ok &= true : ok = false;
-        for (node = node->FirstChild("img"); node != 0; node = node->NextSibling("img"))
+        (node = root->FirstChildElement("images")) != 0 ? ok &= true : ok = false;
+        for (node = node->FirstChildElement("img"); node != 0; node = node->NextSiblingElement("img"))
         {
             std::string id = "";
             std::string name = "";
-            TiXmlElement *el = node->ToElement();
-            id = el->Attribute("id") ? ok &= true : ok = false;
-            name = el->Attribute("file") ? ok &= true : ok = false;
+            id = node->Attribute("id");
+            name = node->Attribute("file");
             if (ok)
-                ok &= (_device->loadImage(id, name));
+                ok = (_device->loadImage(id, name));
         }
-        (node = root->FirstChild("rooms")) != 0 ? ok &= true : ok = false;
-        for (node = node->FirstChild("room"); node != 0; node = node->NextSibling("room"))
+        //Load rooms
+        (node = root->FirstChildElement("rooms")) != 0 ? ok &= true : ok = false;
+        for (node = node->FirstChildElement("room"); node != 0; node = node->NextSiblingElement("room"))
         {
             std::string id = "";
             std::string bg = "";
-            TiXmlElement *el = node->ToElement();
-            id = el->Attribute("id") ? ok &= true : ok = false;
-            bg = el->Attribute("bg") ? ok &= true : ok = false;
+            id = node->Attribute("id");
+            bg = node->Attribute("bg");
             if (ok)
+            {
                 _rooms_mgr->addRoom(id, bg) ? ok &=true : ok = false;
+                //Load
+                TiXmlElement *area = node->FirstChildElement("areas");
+                if (area)
+                    for (area = area->FirstChildElement("area"); area != 0; area = area->NextSiblingElement("area"))
+                    {
+                        std::string id_area = node->Attribute("id");
+                        int area_x, area_y, area_w, area_h;
+                        root->QueryIntAttribute("x", &area_x) == TIXML_SUCCESS ? ok &= true : ok = false;
+                        root->QueryIntAttribute("y", &area_y) == TIXML_SUCCESS ? ok &= true : ok = false;
+                        root->QueryIntAttribute("width", &area_w) == TIXML_SUCCESS ? ok &= true : ok = false;
+                        root->QueryIntAttribute("height", &area_h) == TIXML_SUCCESS ? ok &= true : ok = false;
+                        _rooms_mgr->addArea(id_area, id, area_x, area_y, area_w, area_h);
+                    }
+            }
         }
+        //Goto start room
+        ROOM_GOTO(root->Attribute("start") ? root->Attribute("start") : "");
+        //TODO: load rest of world file
         return ok;
     } else {
         return ok;
@@ -96,4 +119,10 @@ bool RoomsEngine::loadWorld(std::string filename)
 RoomsManager *RoomsEngine::getRoomsManager()
 {
     return _rooms_mgr;
+}
+
+void RoomsEngine::ROOM_GOTO(std::string id)
+{
+    //TODO: think about how to handle api errors
+    _rooms_mgr->currentRoom(id);
 }

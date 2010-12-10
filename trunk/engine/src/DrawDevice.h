@@ -15,6 +15,7 @@ class DrawDevice: public QWidget
         DrawDevice(RoomsEngine *engine, QWidget *parent=0);
         virtual ~DrawDevice();
     public:
+        void initialize();
         bool loadImage(std::string id, std::string filename);
     public slots:
         //QT EVENTS
