@@ -12,9 +12,17 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    roomview.cpp
+    roomview.cpp \
+    core/world.cpp \
+    core/room.cpp \
+    core/area.cpp \
+    core/item.cpp
 
 HEADERS  += mainwindow.h \
-    roomview.h
+    roomview.h \
+    core/world.h \
+    core/room.h \
+    core/area.h \
+    core/item.h
 
 FORMS    += mainwindow.ui
