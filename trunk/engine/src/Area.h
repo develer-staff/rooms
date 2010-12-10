@@ -10,6 +10,12 @@ class Area
         virtual ~Area();
         const std::string id;
         void size(int x, int y, int width, int height);
+        int x();
+        int y();
+        int w();
+        int h();
+        std::string event();
+        void event(std::string event);
     protected:
     private:
         bool _enabled;
@@ -17,6 +23,7 @@ class Area
         int _y;
         int _width;
         int _height;
+        std::string _event;
 
 };
 

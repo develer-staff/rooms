@@ -43,7 +43,6 @@ class RoomsEngine
         //RISC API
         void ROOM_GOTO(std::string id);
 
-
 };
 
 #endif // ROOMSENGINE_H
