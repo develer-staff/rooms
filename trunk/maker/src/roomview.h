@@ -14,7 +14,6 @@ public:
 
 signals:
     void backgroundChanged();
-    void cmReq();
 
 public slots:
     void setBackground();

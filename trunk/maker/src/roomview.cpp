@@ -1,10 +1,10 @@
 #include "roomview.h"
 
+#include <QDebug>
+
 RoomView::RoomView(QWidget *parent) :
     QGraphicsView(parent)
 {
-    emit cmReq();
-    this->setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));");
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
             this, SLOT(showContextMenu(const QPoint &)));
 }
