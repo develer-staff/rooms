@@ -1,1 +1,4 @@
 *.o
+moc_*
+example
+*.rooms
