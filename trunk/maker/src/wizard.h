@@ -16,7 +16,7 @@ public:
     explicit Wizard(QWidget *parent = 0);
     ~Wizard();
     QString getName() const;
-    QRect getDimension() const;
+    QSize getSize() const;
 
 private slots:
     void setInfo();

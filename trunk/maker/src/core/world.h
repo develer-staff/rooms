@@ -6,22 +6,26 @@
 #include "room.h"
 #include "item.h"
 
+class QAbstractItemModel;
+class RoomsModel;
+
 class World : public QObject
 {
     Q_OBJECT
 
 public:
-    World(const QString &name, const QRect &rect, QObject *parent = 0);
+    World(const QString &name, const QSize &size, QObject *parent = 0);
 
     void addRoom(QString const& name);
     int countRooms() const;
     Room *getRoom(int index) const;
-    QVector<Room*> *getRooms() const;
+    QSize getSize() const;
+    QAbstractItemModel *roomsModel() const;
 
 private:
-    QVector<Room*> *rooms;
     QString name;
-    QRect dimension;
+    QSize size;
+    RoomsModel *rooms;
 };
 
 #endif // WORLD_H

@@ -27,7 +27,7 @@ QString Wizard::getName() const
     return name;
 }
 
-QRect Wizard::getDimension() const
+QSize Wizard::getSize() const
 {
-    return QRect(0, 0, width, height);
+    return QSize(width, height);
 }

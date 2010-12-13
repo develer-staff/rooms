@@ -6,11 +6,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     this->setDisabled(true);
     wizard = new Wizard(this);
     wizard->exec();
     this->setEnabled(true);
-    world = new World(wizard->getName(), wizard->getDimension());
+
+    world = new World(wizard->getName(), wizard->getSize());
+    world->addRoom("Example Room");
+
+    ui->roomView->setWorld(world);
+    ui->roomsList->setModel(world->roomsModel());
 }
 
 MainWindow::~MainWindow()

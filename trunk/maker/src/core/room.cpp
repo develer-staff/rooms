@@ -3,7 +3,7 @@
 Room::Room(QString const& name, QObject *parent) :
     QObject(parent)
 {
-    this->name = name;
+    this->_name = name;
     areas = new QVector<Area*>;
 }
 
@@ -15,7 +15,7 @@ bool Room::addArea(const QRect &rect)
 {
     bool ok;
     Area *area;
-    ok = (this->background.rect().contains(rect));
+    ok = (this->_background.rect().contains(rect));
 
     if (ok)
     {
@@ -28,5 +28,15 @@ bool Room::addArea(const QRect &rect)
 
 void Room::setBackground(const QPixmap &background)
 {
-    this->background = background;
+    this->_background = background;
+}
+
+QPixmap Room::background() const
+{
+    return _background;
+}
+
+QString Room::name() const
+{
+    return _name;
 }
