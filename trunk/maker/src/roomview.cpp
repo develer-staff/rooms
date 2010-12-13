@@ -29,4 +29,5 @@ void RoomView::setBackground()
 
     scene->clear();
     scene->addPixmap(QPixmap(bgFile));
+    world->getRoom(activeRoom)->setBackgroundFile(bgFile);
 }

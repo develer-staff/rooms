@@ -9,3 +9,8 @@ Room::Room(QString const& name, QObject *parent) :
 Room::~Room()
 {
 }
+
+void Room::setBackgroundFile(const QString &backgroundFile)
+{
+    this->backgroundFile = backgroundFile;
+}
