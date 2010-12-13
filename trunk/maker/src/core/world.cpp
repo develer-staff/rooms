@@ -25,11 +25,6 @@ Room *World::getRoom(int index) const
     return rooms->at(index);
 }
 
-QVector<Room*> *World::getRooms() const
-{
-    return rooms;
-}
-
 QSize World::getSize() const
 {
     return size;
