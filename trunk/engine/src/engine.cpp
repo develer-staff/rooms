@@ -193,7 +193,7 @@ void Engine::execActions(std::vector <Action *> actions)
         log("Exec action: " + act->id, 3);
         if (act->id == "ROOM_GOTO")
         {
-            room_goto(act->popStrParam());
+            apiRoomGoto(act->popStrParam());
         } else if (act->id == "VAR_SET")
         {
             int var_value = act->popIntParam();
@@ -214,13 +214,13 @@ void Engine::log(std::string text, int level)
     }
 }
 
-void Engine::room_goto(std::string id)
+void Engine::apiRoomGoto(std::string id)
 {
     log("ROOM_GOTO: " + id, 2);
     _rooms_mgr->currentRoom(id);
 }
 
-void Engine::var_set(std::string id, int value)
+void Engine::apiVarSet()(std::string id, int value)
 {
     log("VAR_SET: " + id, 2);
     _events_mgr->var(id, value);
