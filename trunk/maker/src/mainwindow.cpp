@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setEnabled(true);
 
     world = new World(wizard->getName(), wizard->getSize());
+    world->addRoom("Example Room");
 }
 
 MainWindow::~MainWindow()
