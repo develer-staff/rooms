@@ -43,7 +43,7 @@ Event *EventsManager::event(std::string id)
 
 int EventsManager::var(std::string id)
 {
-    std::map<std::string, int *>::iterator i = _vars.find(id);
+    std::map<std::string, int>::iterator i = _vars.find(id);
     if (i == _vars.end())
         return 0;
     else
