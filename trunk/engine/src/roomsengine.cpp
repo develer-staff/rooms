@@ -44,8 +44,6 @@ void RoomsEngine::setDevice(DrawDevice *device)
     device != 0 ? _device = device : throw; //TODO: handle error!
 }
 
-#include <iostream> //DEBUG
-
 void RoomsEngine::click (int x, int y)
 {
     switch (_state)
@@ -57,7 +55,6 @@ void RoomsEngine::click (int x, int y)
             event = _rooms_mgr->eventAt(x, y);
             if (event == "")
                 break;
-            std::cout << event << '\n';
             execActions(_events_mgr->actionsForEvent(event));
             break;
         }
@@ -178,7 +175,6 @@ EventsManager *RoomsEngine::getEventsManager()
 
 void RoomsEngine::execActions(std::vector <Action *> actions)
 {
-    std::cout << actions[0]->id << '\n';
     std::vector <Action *>::iterator i;
     for (i = actions.begin(); i != actions.end(); i++)
     {
@@ -194,6 +190,14 @@ void RoomsEngine::execActions(std::vector <Action *> actions)
             VAR_SET(var_name, var_value);
         }
     }
+}
+
+void RoomsEngine::log(std::string text)
+{
+    std::ofstream log_file;
+    log_file.open("rooms.log", std::ios::out | std::ios::app);
+    log_file << time(0) << ": " << text << '\n';
+    log_file.close();
 }
 
 void RoomsEngine::ROOM_GOTO(std::string id)

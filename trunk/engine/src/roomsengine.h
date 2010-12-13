@@ -2,7 +2,9 @@
 #define ROOMSENGINE_H
 
 #include <QtGui>
-#include <string> //std::string
+#include <string>
+#include <fstream> //ofstream
+#include <time.h> //time()
 
 #include "../lib/tinyxml/tinyxml.h"
 
@@ -35,6 +37,7 @@ class RoomsEngine
         EventsManager *getEventsManager();
         void setDevice(DrawDevice *device);
         RoomsEngine::State state();
+        void log(std::string text);
     protected:
     private:
         RoomsEngine();
