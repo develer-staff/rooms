@@ -1,17 +1,23 @@
 #include <QtGui>
-#include "DrawDevice.h"
-#include "RoomsEngine.h"
+#include "drawdevice.h"
+#include "engine.h"
 
 int main(int argc, char *argv[])
 {
     QApplication qt_app(argc, argv);
     QMainWindow qt_wnd;
-    RoomsEngine *eng = RoomsEngine::createEngine();
+    Engine *eng = Engine::createEngine();
     DrawDevice qt_draw_device(eng, &qt_wnd);
     eng->setDevice(&qt_draw_device);
-    eng->initialize();
+    if (!eng->initialize())
+    {
+        delete eng;
+        return 1;
+    }
     qt_draw_device.initialize();
     qt_wnd.setCentralWidget(&qt_draw_device);
     qt_wnd.show();
-    return qt_app.exec();
+    int r = qt_app.exec();
+    delete eng;
+    return r;
 }

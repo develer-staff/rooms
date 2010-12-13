@@ -1,15 +1,22 @@
 #ifndef ROOMSENGINE_H
 #define ROOMSENGINE_H
 
+#define DEBUG_LEVEL 3
+
 #include <QtGui>
-#include <string> //std::string
+#include <string>
+#include <fstream> //ofstream
+#include <time.h> //time()
 
 #include "../lib/tinyxml/tinyxml.h"
 
 class RoomsManager;
+class EventsManager;
+class Event;
+class Action;
 class DrawDevice;
 
-class RoomsEngine
+class Engine
 {
     public:
         enum State
@@ -22,26 +29,32 @@ class RoomsEngine
             ENDING
         };
     public:
-        static RoomsEngine *createEngine();
-        virtual ~RoomsEngine();
-        int initialize();
+        static Engine *createEngine();
+        virtual ~Engine();
+        bool initialize();
         void click (int x, int y);
         bool loadWorld(std::string filename);
         void loadGame(std::string filename);
         RoomsManager *getRoomsManager();
+        EventsManager *getEventsManager();
         void setDevice(DrawDevice *device);
-        RoomsEngine::State state();
+        Engine::State state();
+        void log(std::string text, int level);
+        void exit(int status);
     protected:
     private:
-        RoomsEngine();
-        static RoomsEngine *_engine;
-        RoomsEngine::State _state;
+        Engine();
+        static Engine *_engine;
+        Engine::State _state;
 
         RoomsManager *_rooms_mgr;
+        EventsManager *_events_mgr;
         DrawDevice *_device;
 
+        void execActions(std::vector <Action *> actions);
         //RISC API
-        void ROOM_GOTO(std::string id);
+        void room_goto(std::string id);
+        void var_set(std::string id, int value);
 
 };
 

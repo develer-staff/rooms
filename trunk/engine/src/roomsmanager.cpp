@@ -1,20 +1,18 @@
-#include "RoomsManager.h"
-#include "RoomsEngine.h"
-#include "Room.h"
-#include "Area.h"
+#include "roomsmanager.h"
+#include "engine.h"
+#include "room.h"
+#include "area.h"
 
-RoomsManager::RoomsManager(RoomsEngine *engine)
+RoomsManager::RoomsManager(Engine *engine)
 {
-    //ctor
     _engine = engine;
     _current_room = 0;
 }
 
 RoomsManager::~RoomsManager()
 {
-    //dtor
-    std::map<std::string, Room *>::iterator i;
-    for (i = _rooms.begin(); i != _rooms.end(); i++)
+    for (std::map<std::string, Room *>::iterator i = _rooms.begin();
+         i != _rooms.end(); i++)
     {
         delete i->second;
     }

@@ -1,18 +1,16 @@
-#include "DrawDevice.h"
-#include "RoomsEngine.h"
-#include "RoomsManager.h"
-#include "Room.h"
+#include "drawdevice.h"
+#include "engine.h"
+#include "roomsmanager.h"
+#include "room.h"
 
-DrawDevice::DrawDevice(RoomsEngine *engine, QWidget *parent): QWidget(parent)
+DrawDevice::DrawDevice(Engine *engine, QWidget *parent): QWidget(parent)
 {
-    //ctor
     _engine = engine;
     //TODO: get from engine world size and world's name
 }
 
 DrawDevice::~DrawDevice()
 {
-    //dtor
     std::map<std::string, QImage *>::iterator i;
     for (i = _images.begin(); i != _images.end(); i++)
     {
@@ -40,13 +38,24 @@ bool DrawDevice::loadImage(std::string id, std::string filename)
     //TODO: handle errors and unique name check
 }
 
+bool DrawDevice::fileExists(std::string filename)
+{
+    std::ifstream ifile(filename.c_str());
+    return ifile;
+}
+
+void DrawDevice::quit(int status)
+{
+    qApp->exit(status);
+}
+
 void DrawDevice::paintEvent(QPaintEvent *event)
 {
     QPainter _painter(this);
     //TODO: get room attributes from engine and draw all
     switch (_engine->state())
     {
-        case RoomsEngine::GAME:
+        case Engine::GAME:
         {
             //Draw room
             Room *room = _engine->getRoomsManager()->currentRoom();
@@ -66,9 +75,4 @@ void DrawDevice::mousePressEvent(QMouseEvent * event)
     repaint(QRect(0, 0, width(), height()));
 }
 
-bool DrawDevice::fileExists(std::string filename)
-{
-    std::ifstream ifile(filename.c_str());
-    return ifile;
-}
 

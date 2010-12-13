@@ -1,13 +1,13 @@
-#include "Area.h"
+#include "area.h"
 
 Area::Area(std::string name): id(name)
 {
-    //ctor
+
 }
 
 Area::~Area()
 {
-    //dtor
+
 }
 
 void Area::size(int x, int y, int width, int height)
