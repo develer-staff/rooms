@@ -3,7 +3,8 @@
 
 #include <QObject>
 #include <QVector>
-#include <QPoint>
+#include <QRect>
+#include <QPixmap>
 #include "area.h"
 
 class Room : public QObject
@@ -13,13 +14,13 @@ class Room : public QObject
 public:
     Room(const QString &name, QObject *parent = 0);
     ~Room();
-    bool addArea(const QPoint &p1, const QPoint &p2);
-    void setBackgroundFile(const QString &backgroundFile);
+    bool addArea(const QRect &rect);
+    void setBackground(const QPixmap &rect);
 
 private:
     QVector<Area*> *areas;
     QString name;
-    QString backgroundFile;
+    QPixmap background;
 };
 
 #endif // ROOM_H

@@ -11,18 +11,22 @@ Room::~Room()
 {
 }
 
-bool Room::addArea(const QPoint &p1, const QPoint &p2)
+bool Room::addArea(const QRect &rect)
 {
     bool ok;
     Area *area;
-    ok = (area = new Area(this, p1, p2));
+    ok = (this->background.rect().contains(rect));
 
-    if (ok) areas->append(area);
+    if (ok)
+    {
+        area = new Area(rect);
+        areas->append(area);
+    }
 
     return ok;
 }
 
-void Room::setBackgroundFile(const QString &backgroundFile)
+void Room::setBackground(const QPixmap &background)
 {
-    this->backgroundFile = backgroundFile;
+    this->background = background;
 }
