@@ -45,26 +45,6 @@
        <property name="childrenCollapsible">
         <bool>false</bool>
        </property>
-       <widget class="QTableView" name="resourcesList">
-        <property name="maximumSize">
-         <size>
-          <width>200</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="showGrid">
-         <bool>false</bool>
-        </property>
-        <attribute name="verticalHeaderVisible">
-         <bool>false</bool>
-        </attribute>
-        <attribute name="verticalHeaderCascadingSectionResizes">
-         <bool>true</bool>
-        </attribute>
-        <attribute name="verticalHeaderDefaultSectionSize">
-         <number>0</number>
-        </attribute>
-       </widget>
        <widget class="QListView" name="roomsList">
         <property name="minimumSize">
          <size>
