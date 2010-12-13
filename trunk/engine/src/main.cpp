@@ -1,6 +1,6 @@
 #include <QtGui>
-#include "DrawDevice.h"
-#include "RoomsEngine.h"
+#include "drawdevice.h"
+#include "roomsengine.h"
 
 int main(int argc, char *argv[])
 {

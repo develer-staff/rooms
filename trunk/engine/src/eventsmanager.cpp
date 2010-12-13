@@ -1,7 +1,7 @@
-#include "EventsManager.h"
-#include "Event.h"
-#include "Action.h"
-#include "RoomsEngine.h"
+#include "eventsmanager.h"
+#include "event.h"
+#include "action.h"
+#include "roomsengine.h"
 
 EventsManager::EventsManager(RoomsEngine *engine)
 {

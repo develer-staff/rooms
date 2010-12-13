@@ -1,5 +1,5 @@
-#include "Event.h"
-#include "Action.h"
+#include "event.h"
+#include "action.h"
 
 Event::Event(std::string name): id(name)
 {

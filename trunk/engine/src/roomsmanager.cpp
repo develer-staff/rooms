@@ -1,7 +1,7 @@
-#include "RoomsManager.h"
-#include "RoomsEngine.h"
-#include "Room.h"
-#include "Area.h"
+#include "roomsmanager.h"
+#include "roomsengine.h"
+#include "room.h"
+#include "area.h"
 
 RoomsManager::RoomsManager(RoomsEngine *engine)
 {

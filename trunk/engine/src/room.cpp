@@ -1,5 +1,5 @@
-#include "Room.h"
-#include "Area.h"
+#include "room.h"
+#include "area.h"
 
 Room::Room(std::string name): id(name)
 {

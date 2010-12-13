@@ -1,9 +1,9 @@
-#include "RoomsEngine.h"
-#include "RoomsManager.h"
-#include "EventsManager.h"
-#include "Event.h"
-#include "Action.h"
-#include "DrawDevice.h"
+#include "roomsengine.h"
+#include "roomsmanager.h"
+#include "eventsmanager.h"
+#include "event.h"
+#include "action.h"
+#include "drawdevice.h"
 
 RoomsEngine *RoomsEngine::_engine = 0;
 

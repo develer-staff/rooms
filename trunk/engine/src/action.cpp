@@ -1,4 +1,4 @@
-#include "Action.h"
+#include "action.h"
 
 Action::Action(std::string name): id(name)
 {

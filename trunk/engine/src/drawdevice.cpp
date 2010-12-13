@@ -1,7 +1,7 @@
-#include "DrawDevice.h"
-#include "RoomsEngine.h"
-#include "RoomsManager.h"
-#include "Room.h"
+#include "drawdevice.h"
+#include "roomsengine.h"
+#include "roomsmanager.h"
+#include "room.h"
 
 DrawDevice::DrawDevice(RoomsEngine *engine, QWidget *parent): QWidget(parent)
 {
