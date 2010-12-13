@@ -2,10 +2,9 @@
 
 #include <QDebug>
 
-RoomView::RoomView(QWidget *parent, World *world) :
+RoomView::RoomView(QWidget *parent) :
     QGraphicsView(parent)
 {
-    this->world = world;
     scene = new QGraphicsScene;
     setScene(scene);
 
@@ -30,4 +29,9 @@ void RoomView::setBackground()
     scene->clear();
     scene->addPixmap(bg);
     world->getRoom(activeRoom)->setBackground(bg);
+}
+
+void RoomView::setWorld(World *world)
+{
+    this->world = world;
 }
