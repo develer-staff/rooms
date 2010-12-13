@@ -8,6 +8,7 @@
 #include <fstream> //ofstream
 #include <time.h> //time()
 
+#include "xmlutils.h"
 #include "../lib/tinyxml/tinyxml.h"
 
 class RoomsManager;
