@@ -26,8 +26,8 @@ void RoomView::showContextMenu(const QPoint &point)
 void RoomView::setBackground()
 {
     QString bgFile = QFileDialog::getOpenFileName();
-
+    QPixmap bg(bgFile);
     scene->clear();
-    scene->addPixmap(QPixmap(bgFile));
-    world->getRoom(activeRoom)->setBackgroundFile(bgFile);
+    scene->addPixmap(bg);
+    world->getRoom(activeRoom)->setBackground(bg);
 }
