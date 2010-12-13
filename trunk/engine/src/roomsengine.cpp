@@ -12,6 +12,11 @@ RoomsEngine::RoomsEngine()
     //ctor
     _rooms_mgr = new RoomsManager(this);
     _events_mgr = new EventsManager(this);
+    if (_rooms_mgr == 0 || _events_mgr == 0)
+    {
+        log("ERROR: cannot create engine objects!", 1);
+        exit(1);
+    }
     _state = INITIALIZING;
 }
 
@@ -27,21 +32,40 @@ RoomsEngine *RoomsEngine::createEngine()
     if (_engine == 0)
     {
         _engine = new RoomsEngine();
+        if (_engine == 0)
+        {
+            exit(1);
+        }
     }
     return _engine;
 }
 
 int RoomsEngine::initialize()
 {
-    /*if (!loadWorld("test_world.rooms"))
-        throw;  //TODO: handle exception*/
-    loadWorld("world.rooms");
+    if (DEBUG_LEVEL)
+    {
+        std::ofstream log_file;
+        log_file.open("rooms.log", std::ios::out);
+        log_file.close();
+    }
+
+    if (!loadWorld("world.rooms"))
+    {
+        log("ERROR: cannot load world.rooms!", 1);
+        exit(1);
+    }
     _state = GAME;
 }
 
 void RoomsEngine::setDevice(DrawDevice *device)
 {
-    device != 0 ? _device = device : throw; //TODO: handle error!
+    if (device != 0)
+        _device = device;
+    else
+    {
+        log("ERROR: cannot use a null graphic device!", 1);
+        exit(1);
+    }
 }
 
 void RoomsEngine::click (int x, int y)
@@ -75,94 +99,129 @@ void RoomsEngine::loadGame(std::string filename)
 
 bool RoomsEngine::loadWorld(std::string filename)
 {
-    //TODO: realize a better error management than ok &= true
-    //TODO: handle every exception
     //TODO: simplify this method
-    log("Loading world from " + filename, 1);
-    TiXmlDocument document(filename.c_str());
-    bool ok = document.LoadFile();
-    int width = 0, height = 0;
-    if (ok)
+    try
     {
+        log("Loading world from " + filename, 2);
+        TiXmlDocument document(filename.c_str());
+        bool ok = document.LoadFile();
+        int width = 0, height = 0;
+        if (!ok) throw "ERROR: cannot load xml document!";
         TiXmlElement *root = document.RootElement();
         TiXmlElement *node = 0;
         //Load World attributes
         _rooms_mgr->name(root->Attribute("name") ? root->Attribute("name") : "");
-        root->QueryIntAttribute("width", &width) == TIXML_SUCCESS ? ok &= true : ok = false;
-        root->QueryIntAttribute("height", &height) == TIXML_SUCCESS ? ok &= true : ok = false;
+        root->QueryIntAttribute("width", &width) == TIXML_SUCCESS ? ok = true :
+            throw "ERROR: missing world width attribute!";
+        root->QueryIntAttribute("height", &height) == TIXML_SUCCESS ? ok = true :
+            throw "ERROR: missing world height attribute!";
         _rooms_mgr->size(width, height);
         //TODO: manage different screen resolutions
         //Load images
-        (node = root->FirstChildElement("images")) != 0 ? ok &= true : ok = false;
-        for (node = node->FirstChildElement("img"); node != 0; node = node->NextSiblingElement("img"))
-        {
-            std::string id = "";
-            std::string name = "";
-            id = node->Attribute("id");
-            name = node->Attribute("file");
-            if (ok)
-                ok = (_device->loadImage(id, name));
-        }
-        //Load events
-        (node = root->FirstChildElement("events")) != 0 ? ok &= true : ok = false;
-        for (node = node->FirstChildElement("event"); node != 0; node = node->NextSiblingElement("event"))
-        {
-            std::string id = "";
-            std::string name = "";
-            id = node->Attribute("id");
-            if (ok)
+        node = root->FirstChildElement("images");
+        if (node)
+            for (node = node->FirstChildElement("img"); node != 0;
+                 node = node->NextSiblingElement("img"))
             {
-                Event *event = _events_mgr->addEvent(id);
-                TiXmlElement *action_el = node->FirstChildElement("actions_if");
-                for (action_el = action_el->FirstChildElement("action"); action_el != 0; action_el = action_el->NextSiblingElement("action"))
+                std::string id = "";
+                std::string name = "";
+                node->Attribute("id") ? id = node->Attribute("id") :
+                    throw "ERROR: image has no id attribute!";
+                node->Attribute("file") ? name = node->Attribute("file") :
+                    throw "ERROR: image has no file attribute!";
+                if (!_device->loadImage(id, name))
                 {
-                    Action *act = event->addAction(action_el->Attribute("id"));
-                    TiXmlElement *param_el;
-                    for (param_el = action_el->FirstChildElement("param"); param_el != 0; param_el = param_el->NextSiblingElement("param"))
+                    throw std::string("ERROR: cannot load image " + name).c_str();
+                }
+            }
+        //Load events
+        node = root->FirstChildElement("events");
+        if (node)
+            for (node = node->FirstChildElement("event"); node != 0;
+                 node = node->NextSiblingElement("event"))
+            {
+                std::string id = "";
+                std::string name = "";
+                node->Attribute("id") ? id = node->Attribute("id") :
+                    throw "ERROR: event has no id attribute!";
+                if (ok)
+                {
+                    Event *event = _events_mgr->addEvent(id);
+                    TiXmlElement *action_el = node->FirstChildElement("actions_if");
+                    for (action_el = action_el->FirstChildElement("action");
+                         action_el != 0;
+                         action_el = action_el->NextSiblingElement("action"))
                     {
-                        act->pushParam(param_el->Attribute("value"));
+                        Action *act = event->addAction(action_el->Attribute("id"));
+                        TiXmlElement *param_el;
+                        for (param_el = action_el->FirstChildElement("param");
+                             param_el != 0;
+                             param_el = param_el->NextSiblingElement("param"))
+                                act->pushParam(param_el->Attribute("value"));
                     }
                 }
             }
-        }
         //Load rooms
-        (node = root->FirstChildElement("rooms")) != 0 ? ok &= true : ok = false;
-        for (node = node->FirstChildElement("room"); node != 0; node = node->NextSiblingElement("room"))
-        {
-            std::string id = "";
-            std::string bg = "";
-            id = node->Attribute("id");
-            bg = node->Attribute("bg");
-            if (ok)
+        node = root->FirstChildElement("rooms");
+        if (node)
+            for (node = node->FirstChildElement("room"); node != 0;
+                 node = node->NextSiblingElement("room"))
             {
-                _rooms_mgr->addRoom(id, bg) ? ok &=true : ok = false;
+                std::string id = "";
+                std::string bg = "";
+                node->Attribute("id") ? id = node->Attribute("id") :
+                    throw "ERROR: room has no id attribute!";
+                node->Attribute("bg") ? bg = node->Attribute("bg") :
+                    throw "ERROR: room has no bg attribute!";
+                _rooms_mgr->addRoom(id, bg) ? ok =true :
+                    throw "ERROR: cannot create room!";
                 //Load
                 TiXmlElement *area = node->FirstChildElement("areas");
                 if (area)
-                    for (area = area->FirstChildElement("area"); area != 0; area = area->NextSiblingElement("area"))
+                    for (area = area->FirstChildElement("area"); area != 0;
+                         area = area->NextSiblingElement("area"))
                     {
-                        std::string id_area = node->Attribute("id");
+                        std::string id_area;
+                        if (node->Attribute("id") != 0)
+                            id_area = node->Attribute("id");
+                        else
+                            throw "ERROR: area has no id attribute!";
                         int area_x, area_y, area_w, area_h;
                         TiXmlElement *doevent_el;
-                        area->QueryIntAttribute("x", &area_x) == TIXML_SUCCESS ? ok &= true : ok = false;
-                        area->QueryIntAttribute("y", &area_y) == TIXML_SUCCESS ? ok &= true : ok = false;
-                        area->QueryIntAttribute("width", &area_w) == TIXML_SUCCESS ? ok &= true : ok = false;
-                        area->QueryIntAttribute("height", &area_h) == TIXML_SUCCESS ? ok &= true : ok = false;
-                        for (doevent_el = area->FirstChildElement("do_event"); doevent_el != 0; doevent_el = doevent_el->NextSiblingElement("do_event"))
+                        area->QueryIntAttribute("x", &area_x) == TIXML_SUCCESS ? ok = true :
+                            throw "ERROR: area has no x attribute!";
+                        area->QueryIntAttribute("y", &area_y) == TIXML_SUCCESS ? ok = true :
+                            throw "ERROR: area has no y attribute!";
+                        area->QueryIntAttribute("width", &area_w) == TIXML_SUCCESS ? ok = true :
+                            throw "ERROR: area has no width attribute!";
+                        area->QueryIntAttribute("height", &area_h) == TIXML_SUCCESS ? ok = true :
+                            throw "ERROR: area has no height attribute!";
+                        for (doevent_el = area->FirstChildElement("do_event");
+                             doevent_el != 0;
+                             doevent_el = doevent_el->NextSiblingElement("do_event"))
                         {
+                            std::string id_event;
                             //TODO OPTIONAL: manage multi-events areas
-                            std::string id_event = doevent_el->Attribute("value");
+                            if (doevent_el->Attribute("value") != 0)
+                                id_event = doevent_el->Attribute("value");
+                            else
+                                throw "ERROR: do_event has no attribute value!";
                             _rooms_mgr->addArea(id_area, id, area_x, area_y, area_w, area_h, id_event);
                         }
                     }
             }
-        }
         //Goto start room
-        ROOM_GOTO(root->Attribute("start") ? root->Attribute("start") : "");
+        std::string start_room = root->Attribute("start") ? root->Attribute("start") : "";
+        if (start_room == "")
+            throw "ERROR: there's no start room!";
+        ROOM_GOTO(start_room);
         //TODO: load rest of world file
-        return ok;
-    } else {
-        return ok;
+        return true;
+    }
+    catch (const char *msg)
+    {
+        log(msg, 1);
+        return false;
     }
 }
 
@@ -210,7 +269,6 @@ void RoomsEngine::log(std::string text, int level)
 void RoomsEngine::ROOM_GOTO(std::string id)
 {
     log("ROOM_GOTO: " + id, 2);
-    //TODO: think about how to handle api errors
     _rooms_mgr->currentRoom(id);
 }
 

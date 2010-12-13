@@ -7,6 +7,7 @@
 #include <string>
 #include <fstream> //ofstream
 #include <time.h> //time()
+#include <cstdlib> //exit()
 
 #include "../lib/tinyxml/tinyxml.h"
 

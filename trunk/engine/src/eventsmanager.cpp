@@ -57,6 +57,5 @@ void EventsManager::var(std::string id, int value)
 
 std::vector <Action *> EventsManager::actionsForEvent(std::string id)
 {
-    //TODO: handle error here
     return _events[id]->actions();
 }
