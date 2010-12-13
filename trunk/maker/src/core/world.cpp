@@ -27,3 +27,8 @@ QVector<Room*> *World::getRooms() const
 {
     return rooms;
 }
+
+QSize World::getSize() const
+{
+    return size;
+}
