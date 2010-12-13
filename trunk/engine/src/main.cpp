@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
 {
     QApplication qt_app(argc, argv);
     QMainWindow qt_wnd;
-    RoomsEngine *eng = RoomsEngine::CreateEngine();
+    RoomsEngine *eng = RoomsEngine::createEngine();
     DrawDevice qt_draw_device(eng, &qt_wnd);
     eng->setDevice(&qt_draw_device);
     eng->initialize();
