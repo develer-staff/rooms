@@ -1,6 +1,8 @@
 #ifndef ROOMSENGINE_H
 #define ROOMSENGINE_H
 
+#define DEBUG_LEVEL 3
+
 #include <QtGui>
 #include <string>
 #include <fstream> //ofstream
@@ -37,7 +39,7 @@ class RoomsEngine
         EventsManager *getEventsManager();
         void setDevice(DrawDevice *device);
         RoomsEngine::State state();
-        void log(std::string text);
+        void log(std::string text, int level);
     protected:
     private:
         RoomsEngine();

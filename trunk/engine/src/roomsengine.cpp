@@ -192,12 +192,15 @@ void RoomsEngine::execActions(std::vector <Action *> actions)
     }
 }
 
-void RoomsEngine::log(std::string text)
+void RoomsEngine::log(std::string text, int level)
 {
-    std::ofstream log_file;
-    log_file.open("rooms.log", std::ios::out | std::ios::app);
-    log_file << time(0) << ": " << text << '\n';
-    log_file.close();
+    if (level <= DEBUG_LEVEL)
+    {
+        std::ofstream log_file;
+        log_file.open("rooms.log", std::ios::out | std::ios::app);
+        log_file << time(0) << ": " << text << '\n';
+        log_file.close();
+    }
 }
 
 void RoomsEngine::ROOM_GOTO(std::string id)
