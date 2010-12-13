@@ -1,6 +1,7 @@
 #include "Event.h"
+#include "Action.h"
 
-Event::Event()
+Event::Event(std::string name): id(name)
 {
     //ctor
 }
@@ -8,4 +9,21 @@ Event::Event()
 Event::~Event()
 {
     //dtor
+    std::vector <Action *>::iterator i;
+    for (i = _actions.begin(); i != _actions.end(); i++)
+    {
+        delete (*i);
+    }
+    _actions.clear();
+}
+
+Action *Event::addAction(std::string id)
+{
+    _actions.push_back(new Action(id));
+    return _actions.back();
+}
+
+std::vector <Action *> Event::actions()
+{
+    return _actions;
 }

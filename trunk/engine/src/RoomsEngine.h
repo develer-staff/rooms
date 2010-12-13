@@ -7,6 +7,9 @@
 #include "../lib/tinyxml/tinyxml.h"
 
 class RoomsManager;
+class EventsManager;
+class Event;
+class Action;
 class DrawDevice;
 
 class RoomsEngine
@@ -29,6 +32,7 @@ class RoomsEngine
         bool loadWorld(std::string filename);
         void loadGame(std::string filename);
         RoomsManager *getRoomsManager();
+        EventsManager *getEventsManager();
         void setDevice(DrawDevice *device);
         RoomsEngine::State state();
     protected:
@@ -38,8 +42,10 @@ class RoomsEngine
         RoomsEngine::State _state;
 
         RoomsManager *_rooms_mgr;
+        EventsManager *_events_mgr;
         DrawDevice *_device;
 
+        void execActions(std::vector <Action *> actions);
         //RISC API
         void ROOM_GOTO(std::string id);
 
