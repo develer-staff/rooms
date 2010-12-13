@@ -210,7 +210,7 @@ bool RoomsEngine::loadWorld(std::string filename)
         std::string start_room = root->Attribute("start") ? root->Attribute("start") : "";
         if (start_room == "")
             throw "ERROR: there's no start room!";
-        ROOM_GOTO(start_room);
+        room_goto(start_room);
         //TODO: load rest of world file
         return true;
     }
@@ -241,12 +241,12 @@ void RoomsEngine::execActions(std::vector <Action *> actions)
         log("Exec action: " + act->id, 3);
         if (act->id == "ROOM_GOTO")
         {
-            ROOM_GOTO(act->popStrParam());
+            room_goto(act->popStrParam());
         } else if (act->id == "VAR_SET")
         {
             int var_value = act->popIntParam();
             std::string var_name = act->popStrParam();
-            VAR_SET(var_name, var_value);
+            var_set(var_name, var_value);
         }
     }
 }
@@ -262,13 +262,13 @@ void RoomsEngine::log(std::string text, int level)
     }
 }
 
-void RoomsEngine::ROOM_GOTO(std::string id)
+void RoomsEngine::room_goto(std::string id)
 {
     log("ROOM_GOTO: " + id, 2);
     _rooms_mgr->currentRoom(id);
 }
 
-void RoomsEngine::VAR_SET(std::string id, int value)
+void RoomsEngine::var_set(std::string id, int value)
 {
     log("VAR_SET: " + id, 2);
     _events_mgr->var(id, value);
