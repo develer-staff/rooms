@@ -1,6 +1,7 @@
 #ifndef AREA_H
 #define AREA_H
 
+#include <QObject>
 #include <QRect>
 
 class Area : public QObject
