@@ -8,8 +8,8 @@ Event::Event(std::string name): id(name)
 
 Event::~Event()
 {
-    std::vector <Action *>::iterator i;
-    for (i = _actions.begin(); i != _actions.end(); i++)
+    for (std::vector <Action *>::iterator i = _actions.begin(); i != _actions.end();
+         i++)
     {
         delete (*i);
     }

@@ -10,8 +10,8 @@ EventsManager::EventsManager(Engine *engine)
 
 EventsManager::~EventsManager()
 {
-    std::map<std::string, Event *>::iterator i;
-    for (i = _events.begin(); i != _events.end(); i++)
+    for (std::map<std::string, Event *>::iterator i = _events.begin();
+         i != _events.end(); i++)
     {
         delete i->second;
     }

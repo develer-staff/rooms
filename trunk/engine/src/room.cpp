@@ -3,14 +3,13 @@
 
 Room::Room(std::string name): id(name)
 {
-    //ctor
+
 }
 
 Room::~Room()
 {
-    //dtor
-    std::map<std::string, Area *>::iterator i;
-    for (i = _areas.begin(); i != _areas.end(); i++)
+    for (std::map<std::string, Area *>::iterator i = _areas.begin();
+         i != _areas.end(); i++)
     {
         delete i->second;
     }
