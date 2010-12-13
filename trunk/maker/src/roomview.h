@@ -16,7 +16,6 @@ public:
     void setWorld(World *world);
 
 private slots:
-    void addArea();
     void setBackground();
     void showContextMenu(const QPoint &point);
 
