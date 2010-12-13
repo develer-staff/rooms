@@ -12,6 +12,11 @@ RoomView::RoomView(QWidget *parent) :
             this, SLOT(showContextMenu(const QPoint &)));
 }
 
+void RoomView::addArea()
+{
+
+}
+
 void RoomView::showContextMenu(const QPoint &point)
 {
     QMenu *menu = new QMenu;
