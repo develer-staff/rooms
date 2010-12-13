@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     world = new World(wizard->getName(), wizard->getSize());
     world->addRoom("Example Room");
+    ui->roomView->setWorld(world);
 }
 
 MainWindow::~MainWindow()
