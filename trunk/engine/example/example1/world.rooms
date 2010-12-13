@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<world version="ID_VERSIONE_ENGINE" name="Mirabolanti Avventure!" width="1024" height="768" start="Locanda">
+
+  <images>
+    <img id="locanda_luce_spenta" file="./data/locanda.png" />
+    <img id="cucina" file="./data/cucina.png" />
+  </images>
+
+  <rooms>
+    <room id="0" bg="" />
+    <room id="Locanda" bg="locanda_luce_spenta">
+      <areas>
+        <area id="area_porta_locanda" enabled="1" x="250" y="480" width="150" height="150">
+          <do_event value="apri_porta_locanda" />
+        </area>
+      </areas>
+    </room>
+    <room id="Cucina" bg="cucina">
+      <areas />
+    </room>
+  </rooms>
+
+  <events>
+    <event id="apri_porta_locanda">
+        <requirements>
+        </requirements>
+        <actions_if>
+            <action id="ROOM_GOTO">
+                <param value="Cucina" />
+            </action>
+        </actions_if>
+        <actions_else>
+        </actions_else>
+    </event>
+  </events>
+
+</world>
