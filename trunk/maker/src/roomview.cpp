@@ -18,7 +18,6 @@ void RoomView::showContextMenu(const QPoint &point)
     menu->addAction(tr("Set background"), this, SLOT(setBackground()));
     menu->addSeparator();
     menu->addAction(tr("Add an area"), this, SLOT(addArea()));
-    menu->addAction(tr("Add an item"), this, SLOT(setItem()));
     menu->exec(this->mapToGlobal(point));
 }
 
