@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     wizard = new Wizard(this);
     wizard->exec();
     this->setEnabled(true);
+    world = new World(wizard->getName(), wizard->getDimension());
 }
 
 MainWindow::~MainWindow()

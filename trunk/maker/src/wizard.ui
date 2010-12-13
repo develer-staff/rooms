@@ -24,7 +24,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="worldName"/>
      </item>
     </layout>
    </item>
@@ -38,7 +38,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="spinBox">
+      <widget class="QSpinBox" name="width">
        <property name="suffix">
         <string>px</string>
        </property>
@@ -57,7 +57,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="spinBox_2">
+      <widget class="QSpinBox" name="height">
        <property name="suffix">
         <string>px</string>
        </property>

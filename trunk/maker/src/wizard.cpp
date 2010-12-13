@@ -6,9 +6,28 @@ Wizard::Wizard(QWidget *parent) :
     ui(new Ui::Wizard)
 {
     ui->setupUi(this);
+    connect(ui->createButton, SIGNAL(clicked()), this, SLOT(setInfo()));
 }
 
 Wizard::~Wizard()
 {
     delete ui;
+}
+
+void Wizard::setInfo()
+{
+    name = ui->worldName->text();
+    width = ui->width->value();
+    height = ui->height->value();
+    close();
+}
+
+QString Wizard::getName() const
+{
+    return name;
+}
+
+QRect Wizard::getDimension() const
+{
+    return QRect(0, 0, width, height);
 }

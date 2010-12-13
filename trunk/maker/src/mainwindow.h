@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "wizard.h"
+#include "core/world.h"
 
 namespace Ui
 {
@@ -20,6 +21,7 @@ public:
 private:
     Ui::MainWindow *ui;
     Wizard *wizard;
+    World *world;
 };
 
 #endif // MAINWINDOW_H

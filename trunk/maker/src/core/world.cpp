@@ -1,7 +1,10 @@
 #include "world.h"
 
-World::World()
+World::World(const QString &name, const QRect &rect, QObject *parent) :
+    QObject(parent)
 {
+    this->name = name;
+    this->dimension = rect;
     rooms = new QVector<Room*>;
 }
 
