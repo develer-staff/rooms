@@ -1,8 +1,10 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-class Item
+class Item : public QObject
 {
+    Q_OBJECT
+
 public:
     Item();
 };

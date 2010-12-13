@@ -3,10 +3,12 @@
 
 #include <QRect>
 
-class Area
+class Area : public QObject
 {
+    Q_OBJECT
+
 public:
-    Area(const QRect &rect);
+    Area(const QRect &rect, QObject *parent = 0);
 };
 
 #endif // AREA_H

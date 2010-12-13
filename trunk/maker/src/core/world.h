@@ -5,10 +5,12 @@
 #include "room.h"
 #include "item.h"
 
-class World
+class World : public QObject
 {
+    Q_OBJECT
+
 public:
-    World();
+    World(const QString &name, const QRect &rect, QObject *parent = 0);
 
     void addRoom(QString const& name);
     int countRooms() const;
