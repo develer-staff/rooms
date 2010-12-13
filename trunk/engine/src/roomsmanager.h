@@ -4,14 +4,14 @@
 #include <string> //std::string
 #include <map> //std::map
 
-class RoomsEngine;
+class Engine;
 class Room;
 class Area;
 
 class RoomsManager
 {
     public:
-        RoomsManager(RoomsEngine *engine);
+        RoomsManager(Engine *engine);
         virtual ~RoomsManager();
         Room *addRoom(std::string name, std::string bg);
         Area *addArea(std::string id, std::string room, int x, int y,
@@ -28,7 +28,7 @@ class RoomsManager
         std::string eventAt(int x, int y);
     protected:
     private:
-        RoomsEngine *_engine;
+        Engine *_engine;
         std::map <std::string, Room *> _rooms;
         std::map <std::string, Area *> _areas;
 

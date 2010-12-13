@@ -16,7 +16,7 @@ class Event;
 class Action;
 class DrawDevice;
 
-class RoomsEngine
+class Engine
 {
     public:
         enum State
@@ -29,8 +29,8 @@ class RoomsEngine
             ENDING
         };
     public:
-        static RoomsEngine *createEngine();
-        virtual ~RoomsEngine();
+        static Engine *createEngine();
+        virtual ~Engine();
         bool initialize();
         void click (int x, int y);
         bool loadWorld(std::string filename);
@@ -38,14 +38,14 @@ class RoomsEngine
         RoomsManager *getRoomsManager();
         EventsManager *getEventsManager();
         void setDevice(DrawDevice *device);
-        RoomsEngine::State state();
+        Engine::State state();
         void log(std::string text, int level);
         void exit(int status);
     protected:
     private:
-        RoomsEngine();
-        static RoomsEngine *_engine;
-        RoomsEngine::State _state;
+        Engine();
+        static Engine *_engine;
+        Engine::State _state;
 
         RoomsManager *_rooms_mgr;
         EventsManager *_events_mgr;

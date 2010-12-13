@@ -5,14 +5,14 @@
 #include <map>
 #include <vector>
 
-class RoomsEngine;
+class Engine;
 class Event;
 class Action;
 
 class EventsManager
 {
     public:
-        EventsManager(RoomsEngine *engine);
+        EventsManager(Engine *engine);
         virtual ~EventsManager();
         Event *addEvent(std::string id);
         Event *event(std::string id);
@@ -21,7 +21,7 @@ class EventsManager
         void var(std::string id, int value);
     protected:
     private:
-        RoomsEngine *_engine;
+        Engine *_engine;
 
         std::map <std::string, Event *> _events;
         //ATTENTION: var names that begin with '!' identify internal vars.

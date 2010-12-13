@@ -1,9 +1,9 @@
 #include "eventsmanager.h"
 #include "event.h"
 #include "action.h"
-#include "roomsengine.h"
+#include "engine.h"
 
-EventsManager::EventsManager(RoomsEngine *engine)
+EventsManager::EventsManager(Engine *engine)
 {
     _engine = engine;
 }

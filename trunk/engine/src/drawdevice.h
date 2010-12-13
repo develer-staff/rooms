@@ -6,13 +6,13 @@
 #include <string>
 #include <fstream> //ifstream in fileExists()
 
-class RoomsEngine;
+class Engine;
 
 class DrawDevice: public QWidget
 {
     Q_OBJECT
     public:
-        DrawDevice(RoomsEngine *engine, QWidget *parent=0);
+        DrawDevice(Engine *engine, QWidget *parent=0);
         virtual ~DrawDevice();
     public:
         void initialize();
@@ -23,7 +23,7 @@ class DrawDevice: public QWidget
         void paintEvent(QPaintEvent *event);
         void mousePressEvent(QMouseEvent * event);
     private:
-        RoomsEngine *_engine;
+        Engine *_engine;
         std::map <std::string, QImage *> _images;
         bool fileExists(std::string filename);
 };

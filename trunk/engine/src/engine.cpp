@@ -1,13 +1,13 @@
-#include "roomsengine.h"
+#include "engine.h"
 #include "roomsmanager.h"
 #include "eventsmanager.h"
 #include "event.h"
 #include "action.h"
 #include "drawdevice.h"
 
-RoomsEngine *RoomsEngine::_engine = 0;
+Engine *Engine::_engine = 0;
 
-RoomsEngine::RoomsEngine()
+Engine::Engine()
 {
     _rooms_mgr = new RoomsManager(this);
     _events_mgr = new EventsManager(this);
@@ -19,22 +19,22 @@ RoomsEngine::RoomsEngine()
     _state = INITIALIZING;
 }
 
-RoomsEngine::~RoomsEngine()
+Engine::~Engine()
 {
     log("QUITTING ENGINE", 1);
     delete _rooms_mgr;
     delete _events_mgr;
 }
 
-RoomsEngine *RoomsEngine::createEngine()
+Engine *Engine::createEngine()
 {
     if (_engine == 0)
-        _engine = new RoomsEngine();
+        _engine = new Engine();
 
     return _engine;
 }
 
-bool RoomsEngine::initialize()
+bool Engine::initialize()
 {
     if (DEBUG_LEVEL)
     {
@@ -53,7 +53,7 @@ bool RoomsEngine::initialize()
     return true;
 }
 
-void RoomsEngine::setDevice(DrawDevice *device)
+void Engine::setDevice(DrawDevice *device)
 {
     if (device != 0)
         _device = device;
@@ -64,7 +64,7 @@ void RoomsEngine::setDevice(DrawDevice *device)
     }
 }
 
-void RoomsEngine::click (int x, int y)
+void Engine::click (int x, int y)
 {
     log("Mouse click received", 3);
     switch (_state)
@@ -83,17 +83,17 @@ void RoomsEngine::click (int x, int y)
     }
 }
 
-RoomsEngine::State RoomsEngine::state()
+Engine::State Engine::state()
 {
     return _state;
 }
 
-void RoomsEngine::loadGame(std::string filename)
+void Engine::loadGame(std::string filename)
 {
 
 }
 
-bool RoomsEngine::loadWorld(std::string filename)
+bool Engine::loadWorld(std::string filename)
 {
     //TODO: simplify this method
     try
@@ -221,17 +221,17 @@ bool RoomsEngine::loadWorld(std::string filename)
     }
 }
 
-RoomsManager *RoomsEngine::getRoomsManager()
+RoomsManager *Engine::getRoomsManager()
 {
     return _rooms_mgr;
 }
 
-EventsManager *RoomsEngine::getEventsManager()
+EventsManager *Engine::getEventsManager()
 {
     return _events_mgr;
 }
 
-void RoomsEngine::execActions(std::vector <Action *> actions)
+void Engine::execActions(std::vector <Action *> actions)
 {
     std::vector <Action *>::iterator i;
     for (i = actions.begin(); i != actions.end(); i++)
@@ -251,7 +251,7 @@ void RoomsEngine::execActions(std::vector <Action *> actions)
     }
 }
 
-void RoomsEngine::log(std::string text, int level)
+void Engine::log(std::string text, int level)
 {
     if (level <= DEBUG_LEVEL)
     {
@@ -262,19 +262,19 @@ void RoomsEngine::log(std::string text, int level)
     }
 }
 
-void RoomsEngine::room_goto(std::string id)
+void Engine::room_goto(std::string id)
 {
     log("ROOM_GOTO: " + id, 2);
     _rooms_mgr->currentRoom(id);
 }
 
-void RoomsEngine::var_set(std::string id, int value)
+void Engine::var_set(std::string id, int value)
 {
     log("VAR_SET: " + id, 2);
     _events_mgr->var(id, value);
 }
 
-void RoomsEngine::exit(int status)
+void Engine::exit(int status)
 {
     if (_device)
         _device->quit(status);

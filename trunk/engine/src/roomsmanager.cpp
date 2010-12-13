@@ -1,9 +1,9 @@
 #include "roomsmanager.h"
-#include "roomsengine.h"
+#include "engine.h"
 #include "room.h"
 #include "area.h"
 
-RoomsManager::RoomsManager(RoomsEngine *engine)
+RoomsManager::RoomsManager(Engine *engine)
 {
     //ctor
     _engine = engine;

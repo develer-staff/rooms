@@ -1,9 +1,9 @@
 #include "drawdevice.h"
-#include "roomsengine.h"
+#include "engine.h"
 #include "roomsmanager.h"
 #include "room.h"
 
-DrawDevice::DrawDevice(RoomsEngine *engine, QWidget *parent): QWidget(parent)
+DrawDevice::DrawDevice(Engine *engine, QWidget *parent): QWidget(parent)
 {
     _engine = engine;
     //TODO: get from engine world size and world's name
@@ -55,7 +55,7 @@ void DrawDevice::paintEvent(QPaintEvent *event)
     //TODO: get room attributes from engine and draw all
     switch (_engine->state())
     {
-        case RoomsEngine::GAME:
+        case Engine::GAME:
         {
             //Draw room
             Room *room = _engine->getRoomsManager()->currentRoom();
