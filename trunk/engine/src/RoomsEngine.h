@@ -22,7 +22,7 @@ class RoomsEngine
             ENDING
         };
     public:
-        static RoomsEngine *CreateEngine();
+        static RoomsEngine *createEngine();
         virtual ~RoomsEngine();
         int initialize();
         void click (int x, int y);

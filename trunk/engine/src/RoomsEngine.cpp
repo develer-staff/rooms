@@ -17,7 +17,7 @@ RoomsEngine::~RoomsEngine()
     delete _rooms_mgr;
 }
 
-RoomsEngine *RoomsEngine::CreateEngine()
+RoomsEngine *RoomsEngine::createEngine()
 {
     if (_engine == 0)
     {
