@@ -11,7 +11,7 @@ class World : public QObject
     Q_OBJECT
 
 public:
-    World(const QString &name, const QRect &rect, QObject *parent = 0);
+    World(const QString &name, const QSize &size, QObject *parent = 0);
 
     void addRoom(QString const& name);
     int countRooms() const;
@@ -21,7 +21,7 @@ public:
 private:
     QVector<Room*> *rooms;
     QString name;
-    QRect dimension;
+    QSize size;
 };
 
 #endif // WORLD_H
