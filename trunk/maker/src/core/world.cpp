@@ -1,6 +1,6 @@
 #include "world.h"
 
-World::World()
+World::World(const QString &name, const QRect &rect, QObject *parent)
 {
     rooms = new QVector<Room*>;
 }
