@@ -17,6 +17,7 @@ class DrawDevice: public QWidget
     public:
         void initialize();
         bool loadImage(std::string id, std::string filename);
+        void quit(int status);
     public slots:
         //QT EVENTS
         void paintEvent(QPaintEvent *event);

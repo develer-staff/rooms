@@ -7,7 +7,6 @@
 #include <string>
 #include <fstream> //ofstream
 #include <time.h> //time()
-#include <cstdlib> //exit()
 
 #include "../lib/tinyxml/tinyxml.h"
 
@@ -32,7 +31,7 @@ class RoomsEngine
     public:
         static RoomsEngine *createEngine();
         virtual ~RoomsEngine();
-        int initialize();
+        bool initialize();
         void click (int x, int y);
         bool loadWorld(std::string filename);
         void loadGame(std::string filename);
@@ -41,6 +40,7 @@ class RoomsEngine
         void setDevice(DrawDevice *device);
         RoomsEngine::State state();
         void log(std::string text, int level);
+        void exit(int status);
     protected:
     private:
         RoomsEngine();

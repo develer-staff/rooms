@@ -40,6 +40,17 @@ bool DrawDevice::loadImage(std::string id, std::string filename)
     //TODO: handle errors and unique name check
 }
 
+bool DrawDevice::fileExists(std::string filename)
+{
+    std::ifstream ifile(filename.c_str());
+    return ifile;
+}
+
+void DrawDevice::quit(int status)
+{
+    qApp->exit(status);
+}
+
 void DrawDevice::paintEvent(QPaintEvent *event)
 {
     QPainter _painter(this);
@@ -66,9 +77,4 @@ void DrawDevice::mousePressEvent(QMouseEvent * event)
     repaint(QRect(0, 0, width(), height()));
 }
 
-bool DrawDevice::fileExists(std::string filename)
-{
-    std::ifstream ifile(filename.c_str());
-    return ifile;
-}
 

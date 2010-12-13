@@ -23,6 +23,7 @@ RoomsEngine::RoomsEngine()
 RoomsEngine::~RoomsEngine()
 {
     //dtor
+    log("QUITTING ENGINE", 1);
     delete _rooms_mgr;
     delete _events_mgr;
 }
@@ -30,17 +31,12 @@ RoomsEngine::~RoomsEngine()
 RoomsEngine *RoomsEngine::createEngine()
 {
     if (_engine == 0)
-    {
         _engine = new RoomsEngine();
-        if (_engine == 0)
-        {
-            exit(1);
-        }
-    }
+
     return _engine;
 }
 
-int RoomsEngine::initialize()
+bool RoomsEngine::initialize()
 {
     if (DEBUG_LEVEL)
     {
@@ -53,8 +49,10 @@ int RoomsEngine::initialize()
     {
         log("ERROR: cannot load world.rooms!", 1);
         exit(1);
+        return false;
     }
     _state = GAME;
+    return true;
 }
 
 void RoomsEngine::setDevice(DrawDevice *device)
@@ -78,9 +76,9 @@ void RoomsEngine::click (int x, int y)
             //STUB
             std::string event;
             event = _rooms_mgr->eventAt(x, y);
-            log("Event: " + event, 3);
             if (event == "")
                 break;
+            log("Event: " + event, 3);
             execActions(_events_mgr->actionsForEvent(event));
             break;
         }
@@ -276,4 +274,10 @@ void RoomsEngine::VAR_SET(std::string id, int value)
 {
     log("VAR_SET: " + id, 2);
     _events_mgr->var(id, value);
+}
+
+void RoomsEngine::exit(int status)
+{
+    if (_device)
+        _device->quit(status);
 }
