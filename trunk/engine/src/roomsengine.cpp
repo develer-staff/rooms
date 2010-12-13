@@ -46,6 +46,7 @@ void RoomsEngine::setDevice(DrawDevice *device)
 
 void RoomsEngine::click (int x, int y)
 {
+    log("Mouse click received", 3);
     switch (_state)
     {
         case GAME:
@@ -53,6 +54,7 @@ void RoomsEngine::click (int x, int y)
             //STUB
             std::string event;
             event = _rooms_mgr->eventAt(x, y);
+            log("Event: " + event, 3);
             if (event == "")
                 break;
             execActions(_events_mgr->actionsForEvent(event));
@@ -76,6 +78,7 @@ bool RoomsEngine::loadWorld(std::string filename)
     //TODO: realize a better error management than ok &= true
     //TODO: handle every exception
     //TODO: simplify this method
+    log("Loading world from " + filename, 1);
     TiXmlDocument document(filename.c_str());
     bool ok = document.LoadFile();
     int width = 0, height = 0;
@@ -180,6 +183,7 @@ void RoomsEngine::execActions(std::vector <Action *> actions)
     {
         //TODO: think about improving this loop
         Action *act = *i;
+        log("Exec action: " + act->id, 3);
         if (act->id == "ROOM_GOTO")
         {
             ROOM_GOTO(act->popStrParam());
@@ -205,11 +209,13 @@ void RoomsEngine::log(std::string text, int level)
 
 void RoomsEngine::ROOM_GOTO(std::string id)
 {
+    log("ROOM_GOTO: " + id, 2);
     //TODO: think about how to handle api errors
     _rooms_mgr->currentRoom(id);
 }
 
 void RoomsEngine::VAR_SET(std::string id, int value)
 {
+    log("VAR_SET: " + id, 2);
     _events_mgr->var(id, value);
 }
