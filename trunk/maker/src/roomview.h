@@ -12,9 +12,11 @@ class RoomView : public QGraphicsView
     Q_OBJECT
 
 public:
-    explicit RoomView(QWidget *parent = 0, World *world = 0);
+    explicit RoomView(QWidget *parent = 0);
+    void setWorld(World *world);
 
-public slots:
+private slots:
+    void addArea();
     void setBackground();
     void showContextMenu(const QPoint &point);
 
