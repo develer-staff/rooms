@@ -1,6 +1,7 @@
 #ifndef WORLD_H
 #define WORLD_H
 
+#include <QObject>
 #include <QVector>
 #include "room.h"
 #include "item.h"
@@ -19,6 +20,8 @@ public:
 
 private:
     QVector<Room*> *rooms;
+    QString name;
+    QRect dimension;
 };
 
 #endif // WORLD_H
