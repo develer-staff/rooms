@@ -17,6 +17,7 @@ public:
     int countRooms() const;
     Room *getRoom(int index) const;
     QVector<Room*> *getRooms() const;
+    QSize getSize() const;
 
 private:
     QVector<Room*> *rooms;
