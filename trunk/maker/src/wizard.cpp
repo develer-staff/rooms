@@ -19,6 +19,7 @@ void Wizard::setInfo()
     name = ui->worldName->text();
     width = ui->width->value();
     height = ui->height->value();
+    close();
 }
 
 QString Wizard::getName() const
