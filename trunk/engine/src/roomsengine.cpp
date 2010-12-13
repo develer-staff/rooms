@@ -9,7 +9,6 @@ RoomsEngine *RoomsEngine::_engine = 0;
 
 RoomsEngine::RoomsEngine()
 {
-    //ctor
     _rooms_mgr = new RoomsManager(this);
     _events_mgr = new EventsManager(this);
     if (_rooms_mgr == 0 || _events_mgr == 0)
@@ -22,7 +21,6 @@ RoomsEngine::RoomsEngine()
 
 RoomsEngine::~RoomsEngine()
 {
-    //dtor
     log("QUITTING ENGINE", 1);
     delete _rooms_mgr;
     delete _events_mgr;

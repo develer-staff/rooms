@@ -2,12 +2,11 @@
 
 Action::Action(std::string name): id(name)
 {
-    //ctor
+
 }
 
 Action::~Action()
 {
-    //dtor
     _params.clear();
 }
 

@@ -5,13 +5,11 @@
 
 EventsManager::EventsManager(RoomsEngine *engine)
 {
-    //ctor
     _engine = engine;
 }
 
 EventsManager::~EventsManager()
 {
-    //dtor
     std::map<std::string, Event *>::iterator i;
     for (i = _events.begin(); i != _events.end(); i++)
     {

@@ -3,12 +3,11 @@
 
 Event::Event(std::string name): id(name)
 {
-    //ctor
+
 }
 
 Event::~Event()
 {
-    //dtor
     std::vector <Action *>::iterator i;
     for (i = _actions.begin(); i != _actions.end(); i++)
     {

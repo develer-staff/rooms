@@ -5,14 +5,12 @@
 
 DrawDevice::DrawDevice(RoomsEngine *engine, QWidget *parent): QWidget(parent)
 {
-    //ctor
     _engine = engine;
     //TODO: get from engine world size and world's name
 }
 
 DrawDevice::~DrawDevice()
 {
-    //dtor
     std::map<std::string, QImage *>::iterator i;
     for (i = _images.begin(); i != _images.end(); i++)
     {
