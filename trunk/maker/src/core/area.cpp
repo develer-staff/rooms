@@ -1,5 +1,5 @@
 #include "area.h"
 
-Area::Area()
+Area::Area(const QRect &rect)
 {
 }
