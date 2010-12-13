@@ -44,7 +44,7 @@ void RoomsEngine::setDevice(DrawDevice *device)
     device != 0 ? _device = device : throw; //TODO: handle error!
 }
 
-#include <iostream>
+#include <iostream> //DEBUG
 
 void RoomsEngine::click (int x, int y)
 {
@@ -187,6 +187,11 @@ void RoomsEngine::execActions(std::vector <Action *> actions)
         if (act->id == "ROOM_GOTO")
         {
             ROOM_GOTO(act->popStrParam());
+        } else if (act->id == "VAR_SET")
+        {
+            int var_value = act->popIntParam();
+            std::string var_name = act->popStrParam();
+            VAR_SET(var_name, var_value);
         }
     }
 }
@@ -195,4 +200,9 @@ void RoomsEngine::ROOM_GOTO(std::string id)
 {
     //TODO: think about how to handle api errors
     _rooms_mgr->currentRoom(id);
+}
+
+void RoomsEngine::VAR_SET(std::string id, int value)
+{
+    _events_mgr->var(id, value);
 }

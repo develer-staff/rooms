@@ -13,6 +13,7 @@ Action::~Action()
 
 void Action::pushParam(std::string value)
 {
+    //values will be read like a lifo stack
     _params.push_back(value);
 }
 

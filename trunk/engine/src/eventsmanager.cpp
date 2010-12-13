@@ -40,6 +40,21 @@ Event *EventsManager::event(std::string id)
     else
         return i->second;
 }
+
+int EventsManager::var(std::string id)
+{
+    std::map<std::string, int *>::iterator i = _vars.find(id);
+    if (i == _vars.end())
+        return 0;
+    else
+        return i->second;
+}
+
+void EventsManager::var(std::string id, int value)
+{
+    _vars[id] = value;
+}
+
 std::vector <Action *> EventsManager::actionsForEvent(std::string id)
 {
     //TODO: handle error here

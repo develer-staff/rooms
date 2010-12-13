@@ -48,6 +48,7 @@ class RoomsEngine
         void execActions(std::vector <Action *> actions);
         //RISC API
         void ROOM_GOTO(std::string id);
+        void VAR_SET(std::string id, int value);
 
 };
 
