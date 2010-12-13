@@ -6,6 +6,9 @@
 #include "room.h"
 #include "item.h"
 
+class QAbstractItemModel;
+class RoomsModel;
+
 class World : public QObject
 {
     Q_OBJECT
@@ -16,13 +19,13 @@ public:
     void addRoom(QString const& name);
     int countRooms() const;
     Room *getRoom(int index) const;
-    QVector<Room*> *getRooms() const;
     QSize getSize() const;
+    QAbstractItemModel *roomsModel() const;
 
 private:
-    QVector<Room*> *rooms;
     QString name;
     QSize size;
+    RoomsModel *rooms;
 };
 
 #endif // WORLD_H

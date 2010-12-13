@@ -15,12 +15,16 @@ public:
     Room(const QString &name, QObject *parent = 0);
     ~Room();
     bool addArea(const QRect &rect);
+
     void setBackground(const QPixmap &rect);
+    QPixmap background() const;
+
+    QString name() const;
 
 private:
     QVector<Area*> *areas;
-    QString name;
-    QPixmap background;
+    QString _name;
+    QPixmap _background;
 };
 
 #endif // ROOM_H
