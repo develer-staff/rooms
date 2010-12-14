@@ -32,13 +32,24 @@ void RoomView::setBackground()
                                                   "Images (*.png *.xpm *.jpg *.gif)");
     QPixmap bg(bgFile);
     bg = bg.scaled(world->getSize());
-    scene->clear();
-    scene->addPixmap(bg);
 
-    qobject_cast<RoomsModel *>(world->roomsModel())->setRoomBackground(world->rooms()->at(active_room), bg);
+    world->rooms()->setRoomBackground(world->rooms()->at(active_room), bg);
+    updateRoomView();
+}
+
+void RoomView::updateRoomView()
+{
+    scene->clear();
+    scene->addPixmap(world->rooms()->at(active_room)->background());
 }
 
 void RoomView::setWorld(World *world)
 {
     this->world = world;
+}
+
+void RoomView::changeActiveRoom(QModelIndex index)
+{
+    active_room = index.row();
+    updateRoomView();
 }

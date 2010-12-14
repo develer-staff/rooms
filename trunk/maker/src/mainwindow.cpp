@@ -7,6 +7,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    connect(ui->rooms_list, SIGNAL(clicked(QModelIndex)),
+            ui->room_view, SLOT(changeActiveRoom(QModelIndex)));
+
     wizard = new Wizard(this);
     wizard->exec();
 

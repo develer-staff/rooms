@@ -14,11 +14,13 @@ class RoomView : public QGraphicsView
 public:
     explicit RoomView(QWidget *parent = 0);
     void setWorld(World *world);
+    void updateRoomView();
 
 private slots:
     void addArea();
     void setBackground();
     void showContextMenu(const QPoint &point);
+    void changeActiveRoom(QModelIndex index);
 
 private:
     QGraphicsScene *scene;
