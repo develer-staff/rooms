@@ -8,6 +8,7 @@
 #include <fstream> //ofstream
 #include <time.h> //time()
 
+#include "xmlutils.h"
 #include "../lib/tinyxml/tinyxml.h"
 
 class RoomsManager;
@@ -53,8 +54,8 @@ class Engine
 
         void execActions(std::vector <Action *> actions);
         //RISC API
-        void room_goto(std::string id);
-        void var_set(std::string id, int value);
+        void apiRoomGoto(std::string id);
+        void apiVarSet(std::string id, int value);
 
 };
 
