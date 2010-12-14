@@ -36,7 +36,7 @@ void RoomView::setBackground()
     bg = bg.scaled(world->getSize());
     scene->clear();
     scene->addPixmap(bg);
-    world->getRoom(active_room)->setBackground(bg);
+    world->rooms()->at(active_room)->setBackground(bg);
 }
 
 void RoomView::setWorld(World *world)
