@@ -25,7 +25,12 @@ QSize World::getSize() const
     return size;
 }
 
-QAbstractItemModel *World::rooms() const
+QAbstractItemModel *World::roomsModel() const
+{
+    return _rooms;
+}
+
+RoomsModel *World::rooms() const
 {
     return _rooms;
 }

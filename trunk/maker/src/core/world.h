@@ -5,6 +5,7 @@
 #include <QVector>
 #include "room.h"
 #include "item.h"
+#include "roomsmodel.h"
 
 class QAbstractItemModel;
 class RoomsModel;
@@ -20,7 +21,8 @@ public:
     int countRooms() const;
     Room *getRoom(int index) const;
     QSize getSize() const;
-    QAbstractItemModel *rooms() const;
+    RoomsModel *rooms() const;
+    QAbstractItemModel *roomsModel() const;
 
 private:
     QString name;
