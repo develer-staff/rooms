@@ -2,7 +2,7 @@
 #include "area.h"
 #include "item.h"
 
-Room::Room(std::string name): id(name)
+Room::Room(string name): id(name)
 {
 
 }
@@ -12,28 +12,28 @@ Room::~Room()
 
 }
 
-std::string Room::bg()
+string Room::bg()
 {
     return _bg;
 }
-void Room::bg(std::string id)
+void Room::bg(string id)
 {
     _bg = id;
 }
 
-Area *Room::addArea(std::string id, Area *area_ptr)
+Area *Room::addArea(string id, Area *area_ptr)
 {
     //TODO: a better return check
     if (area(id) == 0)
     {
-        _areas[id] = area_ptr;
+        areas[id] = area_ptr;
         return area_ptr;
     } else {
         return 0;
     }
 }
 
-Item *Room::addItem(std::string id, Item *item_ptr)
+Item *Room::addItem(string id, Item *item_ptr)
 {
     //TODO: a better return check
     if (item(id) == 0)
@@ -45,23 +45,23 @@ Item *Room::addItem(std::string id, Item *item_ptr)
     }
 }
 
-void Room::remItem(std::string id)
+void Room::remItem(string id)
 {
     _items.erase(id);
 }
 
-Area *Room::area(std::string id)
+Area *Room::area(string id)
 {
-    std::map <std::string, Area *>::iterator i = _areas.find(id);
-    if (i ==  _areas.end())
+    std::map <string, Area *>::iterator i = areas.find(id);
+    if (i ==  areas.end())
         return 0;
     else
         return i->second;
 }
 
-Item *Room::item(std::string id)
+Item *Room::item(string id)
 {
-    std::map <std::string, Item *>::iterator i = _items.find(id);
+    std::map <string, Item *>::iterator i = _items.find(id);
     if (i ==  _items.end())
         return 0;
     else
@@ -71,20 +71,20 @@ Item *Room::item(std::string id)
 std::vector<Item *> Room::items()
 {
     std::vector<Item *> r;
-    for (std::map<std::string, Item *>::iterator i = _items.begin();
-         i != _items.end(); i++)
+    for (std::map<string, Item *>::iterator i = _items.begin();
+         i != _items.end(); ++i)
         r.push_back(i->second);
     return r;
 }
 
-std::string Room::eventAt(int x, int y)
+string Room::eventAt(int x, int y)
 {
-    for (std::map <std::string, Item *>::iterator i = _items.begin(); i != _items.end(); i++)
+    for (std::map <string, Item *>::iterator i = _items.begin(); i != _items.end(); ++i)
     {
         if (pointInsideArea(x, y, dynamic_cast<Area *>(i->second)))
             return i->second->event();
     }
-    for (std::map <std::string, Area *>::iterator i = _areas.begin(); i != _areas.end(); i++)
+    for (std::map <string, Area *>::iterator i = areas.begin(); i != areas.end(); ++i)
     {
         if (pointInsideArea(x, y, i->second) && i->second->enabled())
             return i->second->event();

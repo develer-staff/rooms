@@ -5,45 +5,45 @@
 #include "area.h"
 
 
-RoomsManager::RoomsManager(Engine *engine)
+RoomsManager::RoomsManager(Engine *eng)
 {
-    _engine = engine;
-    _current_room = 0;
+    engine = eng;
+    current_room = 0;
 }
 
 RoomsManager::~RoomsManager()
 {
-    for (std::map<std::string, Room *>::iterator i = _rooms.begin();
-         i != _rooms.end(); i++)
+    for (std::map<string, Room *>::iterator i = rooms.begin();
+         i != rooms.end(); ++i)
     {
-        _engine->log ("DELETING: room " + i->second->id, 3);
+        engine->log ("DELETING: room " + i->second->id, 3);
         delete i->second;
     }
-    _rooms.clear();
+    rooms.clear();
 
-    for (std::map<std::string, Item *>::iterator i = _items.begin();
-         i != _items.end(); i++)
+    for (std::map<string, Item *>::iterator i = items.begin();
+         i != items.end(); ++i)
     {
-        _engine->log ("DELETING: item " + i->second->id, 3);
+        engine->log ("DELETING: item " + i->second->id, 3);
         delete i->second;
     }
-    _items.clear();
+    items.clear();
 
-    for (std::map<std::string, Area *>::iterator i = _areas.begin();
-         i != _areas.end(); i++)
+    for (std::map<string, Area *>::iterator i = areas.begin();
+         i != areas.end(); ++i)
     {
-        _engine->log ("DELETING: area " + i->second->id, 3);
+        engine->log ("DELETING: area " + i->second->id, 3);
         delete i->second;
     }
-    _areas.clear();
+    areas.clear();
 }
 
-void RoomsManager::name(std::string name)
+void RoomsManager::name(string name)
 {
     _name = name;
 }
 
-std::string RoomsManager::name()
+string RoomsManager::name()
 {
     return _name;
 }
@@ -64,7 +64,7 @@ int RoomsManager::height()
     return _height;
 }
 
-Room * RoomsManager::addRoom(std::string id, std::string bg)
+Room * RoomsManager::addRoom(string id, string bg)
 {
     if (room(id) != 0)
         return 0;
@@ -72,56 +72,56 @@ Room * RoomsManager::addRoom(std::string id, std::string bg)
     {
         Room *r = new Room(id);
         r->bg(bg);
-        _rooms[id] = r;
+        rooms[id] = r;
         return r;
     }
 }
 
-Area * RoomsManager::addArea(std::string id, std::string room, int x, int y,
-                             int w, int h, std::string event)
+Area * RoomsManager::addArea(string id, string room, int x, int y,
+                             int w, int h, string event)
 {
     if (area(id) != 0)
         return 0;
     else
     {
         Area *a = new Area(id);
-        _areas[id] = a;
+        areas[id] = a;
         a->size(x, y, w, h);
         a->event(event);
-        _rooms[room]->addArea(id, a);
+        rooms[room]->addArea(id, a);
         return a;
     }
 }
 
-Item * RoomsManager::addItem(std::string id, std::string room, int x, int y,
-                             int w, int h, std::string event, std::string image)
+Item * RoomsManager::addItem(string id, string room, int x, int y,
+                             int w, int h, string event, string image)
 {
     if (item(id) != 0)
         return 0;
     else
     {
         Item *i = new Item(id);
-        _items[id] = i;
+        items[id] = i;
         i->size(x, y, w, h);
         i->event(event);
         i->move(room);
-        _rooms[room]->addItem(id, i);
+        rooms[room]->addItem(id, i);
         i->image(image);
         return i;
     }
 }
 
-void RoomsManager::moveItem(std::string id, std::string dest)
+void RoomsManager::moveItem(string id, string dest)
 {
     Item *mov_item = item(id);
     if (mov_item != 0)
     {
-        std::string parent = mov_item->parent();
-        Room *r_parent = _rooms[parent];
-        Room *r_dest = _rooms[dest];
+        string parent = mov_item->parent();
+        Room *r_parent = rooms[parent];
+        Room *r_dest = rooms[dest];
         if (r_parent == 0 || r_dest == 0)
         {
-            _engine->log("WARNING: invalid item movement!", 2);
+            engine->log("WARNING: invalid item movement!", 2);
             return;
         }
         r_parent->remItem(id);
@@ -130,39 +130,39 @@ void RoomsManager::moveItem(std::string id, std::string dest)
     }
 }
 
-Room * RoomsManager::room(std::string name)
+Room * RoomsManager::room(string name)
 {
-    std::map<std::string, Room *>::iterator i = _rooms.find(name);
-    if (i == _rooms.end())
+    std::map<string, Room *>::iterator i = rooms.find(name);
+    if (i == rooms.end())
         return 0;
     else
         return i->second;
 }
 
-Area * RoomsManager::area(std::string name)
+Area * RoomsManager::area(string name)
 {
-    std::map<std::string, Area *>::iterator i = _areas.find(name);
-    if (i == _areas.end())
+    std::map<string, Area *>::iterator i = areas.find(name);
+    if (i == areas.end())
         return 0;
     else
         return i->second;
 }
 
-Item * RoomsManager::item(std::string name)
+Item * RoomsManager::item(string name)
 {
-    std::map<std::string, Item *>::iterator i = _items.find(name);
-    if (i == _items.end())
+    std::map<string, Item *>::iterator i = items.find(name);
+    if (i == items.end())
         return 0;
     else
         return i->second;
 }
 
-Room *RoomsManager::currentRoom(std::string name)
+Room *RoomsManager::currentRoom(string name)
 {
     if (room(name) != 0)
     {
-        _current_room = _rooms[name];
-        return _current_room;
+        current_room = rooms[name];
+        return current_room;
     } else {
         return 0;
     }
@@ -170,10 +170,10 @@ Room *RoomsManager::currentRoom(std::string name)
 
 Room *RoomsManager::currentRoom()
 {
-    return _current_room;
+    return current_room;
 }
 
-std::string RoomsManager::eventAt(int x, int y)
+string RoomsManager::eventAt(int x, int y)
 {
-    return _current_room->eventAt(x, y);
+    return current_room->eventAt(x, y);
 }

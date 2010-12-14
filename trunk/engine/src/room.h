@@ -1,33 +1,40 @@
 #ifndef ROOM_H
 #define ROOM_H
 
-#include <map>
-#include <string>
-#include <vector>
+#include <map> //std::map
+#include <string> //string
+#include <vector> //std::vector
 
 class Area;
 class Item;
 
+using std::string;
+
+/*! \brief Room handler.
+ *         Rooms have areas and items references.
+ */
 class Room
 {
     public:
-        Room(std::string name);
-        virtual ~Room();
-        const std::string id;
-        std::string bg();
-        void bg(std::string id);
-        Area *addArea(std::string id, Area *area_ptr);
-        Item *addItem(std::string id, Item *item_ptr);
-        void remItem(std::string id);
-        Area *area(std::string id);
-        Item *item(std::string id);
-        std::vector <Item *> items();
-        std::string eventAt(int x, int y);
-    protected:
+        const string id;
     private:
-        std::string _bg;
-        std::map<std::string, Area *> _areas;
-        std::map<std::string, Item *> _items;
+        string _bg;
+        std::map<string, Area *> areas;
+        std::map<string, Item *> _items;
+    public:
+        Room(string name);
+        virtual ~Room();
+    public:
+        string bg();
+        void bg(string id);
+        Area *addArea(string id, Area *area_ptr);
+        Item *addItem(string id, Item *item_ptr);
+        void remItem(string id);
+        Area *area(string id);
+        Item *item(string id);
+        std::vector <Item *> items();
+        string eventAt(int x, int y);
+    protected:
         bool pointInsideArea(int x, int y, Area *area);
 };
 

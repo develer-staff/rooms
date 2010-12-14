@@ -1,32 +1,35 @@
 #ifndef EVENTSMANAGER_H
 #define EVENTSMANAGER_H
 
-#include <string>
-#include <map>
-#include <vector>
+#include <string> //std::string
+#include <map> //std::map
+#include <vector> //std::vector
 
 class Engine;
 class Event;
 class Action;
 
+using std::string;
+
+/*! \brief Events interface.
+ *         Creates and destroys events.
+ */
 class EventsManager
 {
-    public:
-        EventsManager(Engine *engine);
-        virtual ~EventsManager();
-        Event *addEvent(std::string id);
-        Event *event(std::string id);
-        std::vector <Action *> actionsForEvent(std::string id);
-        int var(std::string id);
-        void var(std::string id, int value);
-    protected:
     private:
-        Engine *_engine;
-
-        std::map <std::string, Event *> _events;
+        Engine *engine;
+        std::map <string, Event *> events;
         //ATTENTION: var names that begin with '!' identify internal vars.
-        std::map <std::string, int> _vars;
-
+        std::map <string, int> _vars;
+    public:
+        EventsManager(Engine *eng);
+        virtual ~EventsManager();
+    public:
+        Event *addEvent(string id);
+        Event *event(string id);
+        std::vector <Action *> actionsForEvent(string id);
+        int var(string id);
+        void var(string id, int value);
 };
 
 #endif // EVENTSMANAGER_H
