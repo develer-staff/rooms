@@ -7,12 +7,12 @@ RoomsModel::RoomsModel(QObject *parent) :
 {
 }
 
-Room *RoomsModel::at(int index)
+Room *RoomsModel::at(int index) const
 {
     return rooms.at(index);
 }
 
-int RoomsModel::count()
+int RoomsModel::count() const
 {
     return rooms.count();
 }
@@ -46,7 +46,6 @@ QVariant RoomsModel::data(const QModelIndex &index, int role) const
     default:
         return result;
     }
-
     return result;
 }
 
