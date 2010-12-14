@@ -1,43 +1,43 @@
 #include "drawdevice.h"
-#include "engine.h"
-#include "roomsmanager.h"
-#include "room.h"
-#include "item.h"
 
-DrawDevice::DrawDevice(Engine *engine, QWidget *parent): QWidget(parent)
+DrawDevice::DrawDevice(Engine *eng, QWidget *parent): QWidget(parent)
 {
-    _engine = engine;
+    engine = eng;
 }
 
 DrawDevice::~DrawDevice()
 {
-    std::map<std::string, QImage *>::iterator i;
-    for (i = _images.begin(); i != _images.end(); i++)
+    for (std::map<string, QImage *>::iterator i = images.begin();
+         i != images.end(); ++i)
     {
         delete i->second;
     }
-    _images.clear();
+    images.clear();
 }
 
 void DrawDevice::initialize()
 {
-    RoomsManager *man = _engine->getRoomsManager();
+    RoomsManager *man = engine->getRoomsManager();
     parentWidget()->resize(man->width(), man->height());
     parentWidget()->setWindowTitle(man->name().c_str());
+    std::vector<std::pair<string, string> > images = engine->getImgNames();
+    for (std::vector<std::pair<string, string> >::iterator i = images.begin();
+         i != images.end(); ++i)
+         loadImage((*i).first, (*i).second);
 }
 
-bool DrawDevice::loadImage(std::string id, std::string filename)
+bool DrawDevice::loadImage(string id, string filename)
 {
     if (fileExists(filename))
     {
-        _images[id] = new QImage(filename.c_str());
+        images[id] = new QImage(filename.c_str());
         return true;
     } else {
         return false;
     }
 }
 
-bool DrawDevice::fileExists(std::string filename)
+bool DrawDevice::fileExists(string filename)
 {
     std::ifstream ifile(filename.c_str());
     return ifile;
@@ -51,21 +51,21 @@ void DrawDevice::quit(int status)
 void DrawDevice::paintEvent(QPaintEvent *event)
 {
     QPainter _painter(this);
-    switch (_engine->state())
+    switch (engine->state())
     {
         case Engine::GAME:
         {
             //Draw room
-            Room *room = _engine->getRoomsManager()->currentRoom();
-            QImage *bg = _images[room->bg()];
+            Room *room = engine->getRoomsManager()->currentRoom();
+            QImage *bg = images[room->bg()];
             QRectF rect(0.0, 0.0, width(), height());
             std::vector <Item *> items = room->items();
             _painter.drawImage(rect, *bg);
             //Draw items
             for (std::vector<Item *>::iterator i = items.begin();
-                 i != items.end(); i++)
+                 i != items.end(); ++i)
             {
-                QImage *img = _images[(*i)->image()];
+                QImage *img = images[(*i)->image()];
                 QRectF irect((*i)->x(), (*i)->y(), (*i)->w(), (*i)->h());
                 _painter.drawImage(irect, *img);
             }
@@ -76,7 +76,7 @@ void DrawDevice::paintEvent(QPaintEvent *event)
 
 void DrawDevice::mousePressEvent(QMouseEvent * event)
 {
-    _engine->click(event->x(), event->y());
+    engine->click(event->x(), event->y());
     repaint(QRect(0, 0, width(), height()));
 }
 

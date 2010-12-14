@@ -1,10 +1,5 @@
 #include "engine.h"
-#include "roomsmanager.h"
-#include "eventsmanager.h"
-#include "event.h"
-#include "action.h"
-#include "drawdevice.h"
-#include "area.h"
+
 
 Engine *Engine::_engine = 0;
 
@@ -15,9 +10,15 @@ Engine::Engine()
     if (_rooms_mgr == 0 || _events_mgr == 0)
     {
         log("ERROR: cannot create engine objects!", 1);
-        exit(1);
+        exit();
     }
     _state = INITIALIZING;
+    if (DEBUG_LEVEL)
+    {
+        std::ofstream log_file;
+        log_file.open("rooms.log", std::ios::out);
+        log_file.close();
+    }
 }
 
 Engine::~Engine()
@@ -35,34 +36,9 @@ Engine *Engine::createEngine()
     return _engine;
 }
 
-bool Engine::initialize()
+void Engine::exit()
 {
-    if (DEBUG_LEVEL)
-    {
-        std::ofstream log_file;
-        log_file.open("rooms.log", std::ios::out);
-        log_file.close();
-    }
-
-    if (!loadWorld("world.rooms"))
-    {
-        log("ERROR: cannot load world.rooms!", 1);
-        exit(1);
-        return false;
-    }
-    _state = GAME;
-    return true;
-}
-
-void Engine::setDevice(DrawDevice *device)
-{
-    if (device != 0)
-        _device = device;
-    else
-    {
-        log("ERROR: cannot use a null graphic device!", 1);
-        exit(1);
-    }
+    delete _engine;
 }
 
 void Engine::click (int x, int y)
@@ -119,14 +95,14 @@ bool Engine::loadWorld(std::string filename)
         std::vector <TiXmlElement *> items =
             xmlGetAllChilds(root->FirstChildElement("items"), "item");
         //Populating model
-        if (!createImgsFromXml(images))
-            throw std::string("ERROR: cannot load image!").c_str();
+        createImgsFromXml(images);
         createEventsFromXml(events);
         createRoomsFromXml(rooms);
         createItemsFromXml(items);
         //TODO: load rest of world file
         std::string start_room = root->Attribute("start");
         apiRoomGoto(start_room);
+        _state = GAME;
         return true;
     }
     catch (const char *msg)
@@ -136,13 +112,17 @@ bool Engine::loadWorld(std::string filename)
     }
 }
 
-bool Engine::createImgsFromXml(std::vector <TiXmlElement *> images)
+std::vector<std::pair<std::string, std::string> > Engine::getImgNames()
+{
+    std::vector<std::pair<std::string, std::string> > v(_images.begin(), _images.end());
+    return v;
+}
+
+void Engine::createImgsFromXml(std::vector <TiXmlElement *> images)
 {
     for (std::vector<TiXmlElement *>::iterator i = images.begin();
          i != images.end(); i++)
-        if (!_device->loadImage((*i)->Attribute("id"), (*i)->Attribute("file")))
-            return false;
-    return true;
+        _images[(*i)->Attribute("id")] = (*i)->Attribute("file");
 }
 
 void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
@@ -288,8 +268,4 @@ void Engine::apiAreaSetEnable(std::string id, int value)
     _rooms_mgr->area(id)->enabled(bool_val);
 }
 
-void Engine::exit(int status)
-{
-    if (_device)
-        _device->quit(status);
-}
+
