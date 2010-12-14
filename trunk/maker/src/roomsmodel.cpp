@@ -41,7 +41,7 @@ QVariant RoomsModel::data(const QModelIndex &index, int role) const
         result = room->name();
         break;
     case Qt::DecorationRole:
-        result = room->background();
+        result = room->icon();
         break;
     default:
         return result;
