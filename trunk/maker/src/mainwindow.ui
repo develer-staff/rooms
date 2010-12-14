@@ -45,7 +45,7 @@
        <property name="childrenCollapsible">
         <bool>false</bool>
        </property>
-       <widget class="QListView" name="roomsList">
+       <widget class="QListView" name="rooms_list">
         <property name="minimumSize">
          <size>
           <width>80</width>
@@ -95,7 +95,7 @@
          </spacer>
         </item>
         <item row="1" column="1">
-         <widget class="RoomView" name="roomView">
+         <widget class="RoomView" name="room_view">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>1</horstretch>

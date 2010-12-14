@@ -10,15 +10,15 @@ MainWindow::MainWindow(QWidget *parent) :
     wizard = new Wizard(this);
     wizard->exec();
 
-    ui->roomView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    ui->roomView->setFixedSize(wizard->getSize());
+    ui->room_view->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    ui->room_view->setFixedSize(wizard->getSize());
     this->adjustSize();
 
     world = new World(wizard->getName(), wizard->getSize());
     world->addRoom("Example Room");
 
-    ui->roomView->setWorld(world);
-    ui->roomsList->setModel(world->roomsModel());
+    ui->room_view->setWorld(world);
+    ui->rooms_list->setModel(world->roomsModel());
 }
 
 MainWindow::~MainWindow()

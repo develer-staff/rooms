@@ -23,7 +23,7 @@ private slots:
 private:
     QGraphicsScene *scene;
     World *world;
-    int activeRoom;
+    int active_room;
 };
 
 #endif // ROOMVIEW_H
