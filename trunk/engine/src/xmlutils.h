@@ -1,10 +1,10 @@
 #ifndef XMLMANAGER_H
 #define XMLMANAGER_H
 
-#include <string>
-#include <vector>
-
 #include "../lib/tinyxml/tinyxml.h"
+
+#include <string> //std::string
+#include <vector> //std::vector
 
 std::vector <TiXmlElement *> xmlGetAllChilds(TiXmlElement *elem, std::string id);
 bool xmlCheckDoc(TiXmlDocument *doc);

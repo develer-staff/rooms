@@ -1,8 +1,8 @@
 #include "item.h"
 
-Item::Item(std::string name): Area(name)
+Item::Item(string name): Area(name)
 {
-    _room_parent = "";
+    room_parent = "";
 }
 
 Item::~Item()
@@ -10,23 +10,23 @@ Item::~Item()
 
 }
 
-void Item::move(std::string room)
+void Item::move(string room)
 {
-    _room_parent = room;
+    room_parent = room;
 }
 
-std::string Item::parent()
+string Item::parent()
 {
-    return _room_parent;
+    return room_parent;
 }
 
 
-void Item::image(std::string id)
+void Item::image(string id)
 {
     _image = id;
 }
 
-std::string Item::image()
+string Item::image()
 {
     return _image;
 }

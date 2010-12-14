@@ -9,7 +9,7 @@ Event::Event(std::string name): id(name)
 Event::~Event()
 {
     for (std::vector <Action *>::iterator i = _actions.begin(); i != _actions.end();
-         i++)
+         ++i)
     {
         delete (*i);
     }

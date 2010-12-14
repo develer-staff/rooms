@@ -1,14 +1,26 @@
 #ifndef AREA_H
 #define AREA_H
 
-#include <string>
+#include <string> //std::string
 
+/*! \brief Area main handler.
+ *         Rectangular interactive area inside a room.
+ */
 class Area
 {
     public:
+        const std::string id;
+    protected:
+        bool _enabled;
+        int _x;
+        int _y;
+        int _width;
+        int _height;
+        std::string _event;
+    public:
         Area(std::string name);
         virtual ~Area();
-        const std::string id;
+    public:
         void size(int x, int y, int width, int height);
         int x();
         int y();
@@ -18,15 +30,6 @@ class Area
         void event(std::string event);
         void enabled(bool value);
         bool enabled();
-    protected:
-    private:
-        bool _enabled;
-        int _x;
-        int _y;
-        int _width;
-        int _height;
-        std::string _event;
-
 };
 
 #endif // AREA_H

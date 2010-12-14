@@ -1,12 +1,6 @@
 #include "engine.h"
-#include "roomsmanager.h"
-#include "eventsmanager.h"
-#include "event.h"
-#include "action.h"
-#include "drawdevice.h"
-#include "area.h"
 
-Engine *Engine::_engine = 0;
+Engine *Engine::engine = 0;
 
 Engine::Engine()
 {
@@ -15,9 +9,15 @@ Engine::Engine()
     if (_rooms_mgr == 0 || _events_mgr == 0)
     {
         log("ERROR: cannot create engine objects!", 1);
-        exit(1);
+        exit();
     }
     _state = INITIALIZING;
+    if (DEBUG_LEVEL)
+    {
+        std::ofstream log_file;
+        log_file.open("rooms.log", std::ios::out);
+        log_file.close();
+    }
 }
 
 Engine::~Engine()
@@ -29,40 +29,15 @@ Engine::~Engine()
 
 Engine *Engine::createEngine()
 {
-    if (_engine == 0)
-        _engine = new Engine();
+    if (engine == 0)
+        engine = new Engine();
 
-    return _engine;
+    return engine;
 }
 
-bool Engine::initialize()
+void Engine::exit()
 {
-    if (DEBUG_LEVEL)
-    {
-        std::ofstream log_file;
-        log_file.open("rooms.log", std::ios::out);
-        log_file.close();
-    }
-
-    if (!loadWorld("world.rooms"))
-    {
-        log("ERROR: cannot load world.rooms!", 1);
-        exit(1);
-        return false;
-    }
-    _state = GAME;
-    return true;
-}
-
-void Engine::setDevice(DrawDevice *device)
-{
-    if (device != 0)
-        _device = device;
-    else
-    {
-        log("ERROR: cannot use a null graphic device!", 1);
-        exit(1);
-    }
+    delete engine;
 }
 
 void Engine::click (int x, int y)
@@ -72,7 +47,7 @@ void Engine::click (int x, int y)
     {
         case GAME:
         {
-            std::string event;
+            string event;
             event = _rooms_mgr->eventAt(x, y);
             if (event == "")
                 break;
@@ -88,12 +63,12 @@ Engine::State Engine::state()
     return _state;
 }
 
-void Engine::loadGame(std::string filename)
+void Engine::loadGame(string filename)
 {
 
 }
 
-bool Engine::loadWorld(std::string filename)
+bool Engine::loadWorld(string filename)
 {
     try
     {
@@ -119,14 +94,14 @@ bool Engine::loadWorld(std::string filename)
         std::vector <TiXmlElement *> items =
             xmlGetAllChilds(root->FirstChildElement("items"), "item");
         //Populating model
-        if (!createImgsFromXml(images))
-            throw std::string("ERROR: cannot load image!").c_str();
+        createImgsFromXml(images);
         createEventsFromXml(events);
         createRoomsFromXml(rooms);
         createItemsFromXml(items);
         //TODO: load rest of world file
-        std::string start_room = root->Attribute("start");
+        string start_room = root->Attribute("start");
         apiRoomGoto(start_room);
+        _state = GAME;
         return true;
     }
     catch (const char *msg)
@@ -136,31 +111,35 @@ bool Engine::loadWorld(std::string filename)
     }
 }
 
-bool Engine::createImgsFromXml(std::vector <TiXmlElement *> images)
+std::vector<std::pair<string, string> > Engine::getImgNames()
+{
+    std::vector<std::pair<string, string> > v(_images.begin(), _images.end());
+    return v;
+}
+
+void Engine::createImgsFromXml(std::vector <TiXmlElement *> images)
 {
     for (std::vector<TiXmlElement *>::iterator i = images.begin();
-         i != images.end(); i++)
-        if (!_device->loadImage((*i)->Attribute("id"), (*i)->Attribute("file")))
-            return false;
-    return true;
+         i != images.end(); ++i)
+        _images[(*i)->Attribute("id")] = (*i)->Attribute("file");
 }
 
 void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
 {
     for (std::vector<TiXmlElement *>::iterator i = events.begin();
-         i != events.end(); i++)
+         i != events.end(); ++i)
     {
         Event *event = _events_mgr->addEvent((*i)->Attribute("id"));
         std::vector <TiXmlElement *> actions =
             xmlGetAllChilds((*i)->FirstChildElement("actions_if"), "action");
         for (std::vector<TiXmlElement *>::iterator j = actions.begin();
-             j != actions.end(); j++)
+             j != actions.end(); ++j)
         {
             Action *act = event->addAction((*j)->Attribute("id"));
             std::vector <TiXmlElement *> params =
                 xmlGetAllChilds(*j, "param");
             for (std::vector<TiXmlElement *>::iterator z = params.begin();
-                 z != params.end(); z++)
+                 z != params.end(); ++z)
                 act->pushParam((*z)->Attribute("value"));
         }
     }
@@ -169,13 +148,13 @@ void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
 void Engine::createRoomsFromXml(std::vector <TiXmlElement *> rooms)
 {
     for (std::vector<TiXmlElement *>::iterator i = rooms.begin();
-         i != rooms.end(); i++)
+         i != rooms.end(); ++i)
     {
         _rooms_mgr->addRoom((*i)->Attribute("id"), (*i)->Attribute("bg"));
         std::vector <TiXmlElement *> areas =
             xmlGetAllChilds((*i)->FirstChildElement("areas"), "area");
         for (std::vector<TiXmlElement *>::iterator j = areas.begin();
-             j != areas.end(); j++)
+             j != areas.end(); ++j)
         {
             int area_x, area_y, area_w, area_h, area_enab;
             (*j)->QueryIntAttribute("x", &area_x);
@@ -195,7 +174,7 @@ void Engine::createRoomsFromXml(std::vector <TiXmlElement *> rooms)
 void Engine::createItemsFromXml(std::vector <TiXmlElement *> items)
 {
     for (std::vector<TiXmlElement *>::iterator i = items.begin();
-         i != items.end(); i++)
+         i != items.end(); ++i)
     {
         int area_x, area_y, area_w, area_h;
         (*i)->QueryIntAttribute("x", &area_x);
@@ -223,7 +202,7 @@ EventsManager *Engine::getEventsManager()
 void Engine::execActions(std::vector <Action *> actions)
 {
     std::vector <Action *>::iterator i;
-    for (i = actions.begin(); i != actions.end(); i++)
+    for (i = actions.begin(); i != actions.end(); ++i)
     {
         //TODO: think about improving this loop
         Action *act = *i;
@@ -234,23 +213,23 @@ void Engine::execActions(std::vector <Action *> actions)
         } else if (act->id == "VAR_SET")
         {
             int var_value = act->popIntParam();
-            std::string var_name = act->popStrParam();
+            string var_name = act->popStrParam();
             apiVarSet(var_name, var_value);
         } else if (act->id == "ITEM_MOVE")
         {
-            std::string item_dest = act->popStrParam();
-            std::string item_id = act->popStrParam();
+            string item_dest = act->popStrParam();
+            string item_id = act->popStrParam();
             apiItemMove(item_id, item_dest);
         } else if (act->id == "AREA_SET_ENABLE")
         {
             int area_val = act->popIntParam();
-            std::string area_id = act->popStrParam();
+            string area_id = act->popStrParam();
             apiAreaSetEnable(area_id, area_val);
         }
     }
 }
 
-void Engine::log(std::string text, int level)
+void Engine::log(string text, int level)
 {
     if (level <= DEBUG_LEVEL)
     {
@@ -261,35 +240,31 @@ void Engine::log(std::string text, int level)
     }
 }
 
-void Engine::apiRoomGoto(std::string id)
+void Engine::apiRoomGoto(string id)
 {
     log("ROOM_GOTO: " + id, 2);
     _rooms_mgr->currentRoom(id);
 }
 
-void Engine::apiVarSet(std::string id, int value)
+void Engine::apiVarSet(string id, int value)
 {
     log("VAR_SET: " + id, 2);
     _events_mgr->var(id, value);
 }
 
-void Engine::apiItemMove(std::string id, std::string dest)
+void Engine::apiItemMove(string id, string dest)
 {
     log("ITEM_MOVE: " + id + ", dest: " + dest, 2);
     _rooms_mgr->moveItem(id, dest);
 }
 
-void Engine::apiAreaSetEnable(std::string id, int value)
+void Engine::apiAreaSetEnable(string id, int value)
 {
     bool bool_val = value;
-    std::string str_val;
+    string str_val;
     bool_val ? str_val = "true" : str_val = "false";
     log("AREA_SET_ENABLE: " + id + ", enabled: " + str_val, 2);
     _rooms_mgr->area(id)->enabled(bool_val);
 }
 
-void Engine::exit(int status)
-{
-    if (_device)
-        _device->quit(status);
-}
+
