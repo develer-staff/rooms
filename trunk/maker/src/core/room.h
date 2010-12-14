@@ -19,12 +19,15 @@ public:
     void setBackground(const QPixmap &rect);
     QPixmap background() const;
 
+    QPixmap icon() const;
+
     QString name() const;
 
 private:
     QVector<Area*> *areas;
     QString _name;
     QPixmap _background;
+    QPixmap _icon;
 };
 
 #endif // ROOM_H

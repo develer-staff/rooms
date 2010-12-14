@@ -7,6 +7,7 @@ RoomView::RoomView(QWidget *parent) :
 {
     scene = new QGraphicsScene;
     setScene(scene);
+    active_room = 0;
 
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
             this, SLOT(showContextMenu(const QPoint &)));
@@ -35,7 +36,7 @@ void RoomView::setBackground()
     bg = bg.scaled(world->getSize());
     scene->clear();
     scene->addPixmap(bg);
-    world->getRoom(activeRoom)->setBackground(bg);
+    world->getRoom(active_room)->setBackground(bg);
 }
 
 void RoomView::setWorld(World *world)
