@@ -6,6 +6,9 @@ Wizard::Wizard(QWidget *parent) :
     ui(new Ui::Wizard)
 {
     ui->setupUi(this);
+    width = 600;
+    height = 500;
+    name = "Example World";
     connect(ui->createButton, SIGNAL(clicked()), this, SLOT(setInfo()));
 }
 

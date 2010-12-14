@@ -24,7 +24,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="worldName"/>
+      <widget class="QLineEdit" name="worldName">
+       <property name="text">
+        <string>Example World</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
