@@ -109,6 +109,7 @@ bool Engine::loadWorld(std::string filename)
         root->QueryIntAttribute("width", &width);
         root->QueryIntAttribute("height", &height);
         _rooms_mgr->size(width, height);
+        _rooms_mgr->name(root->Attribute("name"));
         //TODO: manage different screen resolutions
         std::vector <TiXmlElement *> images =
             xmlGetAllChilds(root->FirstChildElement("images"), "img");
@@ -162,7 +163,7 @@ bool Engine::loadWorld(std::string filename)
         }
         //Goto start room
         std::string start_room = root->Attribute("start");
-        room_goto(start_room);
+        apiRoomGoto(start_room);
         //TODO: load rest of world file
         return true;
     }
@@ -198,7 +199,7 @@ void Engine::execActions(std::vector <Action *> actions)
         {
             int var_value = act->popIntParam();
             std::string var_name = act->popStrParam();
-            var_set(var_name, var_value);
+            apiVarSet(var_name, var_value);
         }
     }
 }
@@ -220,7 +221,7 @@ void Engine::apiRoomGoto(std::string id)
     _rooms_mgr->currentRoom(id);
 }
 
-void Engine::apiVarSet()(std::string id, int value)
+void Engine::apiVarSet(std::string id, int value)
 {
     log("VAR_SET: " + id, 2);
     _events_mgr->var(id, value);
