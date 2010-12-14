@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->room_view->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     ui->room_view->setFixedSize(wizard->getSize());
-    this->adjustSize();
+    adjustSize();
 
     world = new World(wizard->getName(), wizard->getSize());
     world->rooms()->appendRoom("Room 0");
