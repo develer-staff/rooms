@@ -17,7 +17,7 @@ void World::addRoom(QString const& name)
 
 int World::countRooms() const
 {
-    return _rooms->rowCount(QModelIndex());
+    return _rooms->count();
 }
 
 QSize World::getSize() const
