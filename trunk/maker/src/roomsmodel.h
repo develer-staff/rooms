@@ -18,6 +18,8 @@ public:
     QVariant data(const QModelIndex &index, int role) const;
     void appendRoom(const QString &name);
 
+    void setRoomBackground(Room *room, const QPixmap &background);
+
 private:
     QList<Room *> rooms;
 };

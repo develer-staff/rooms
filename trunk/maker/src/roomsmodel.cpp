@@ -60,3 +60,14 @@ void RoomsModel::appendRoom(const QString &name)
         endInsertRows();
     }
 }
+
+void RoomsModel::setRoomBackground(Room *room, const QPixmap &background)
+{
+    int i = rooms.indexOf(room);
+    if (i == -1)
+        return;
+
+    room->setBackground(background);
+
+    emit dataChanged(index(i), index(i));
+}

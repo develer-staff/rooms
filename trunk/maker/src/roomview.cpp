@@ -1,5 +1,7 @@
 #include "roomview.h"
 
+#include "roomsmodel.h"
+
 #include <QDebug>
 
 RoomView::RoomView(QWidget *parent) :
@@ -36,7 +38,8 @@ void RoomView::setBackground()
     bg = bg.scaled(world->getSize());
     scene->clear();
     scene->addPixmap(bg);
-    world->rooms()->at(active_room)->setBackground(bg);
+
+    qobject_cast<RoomsModel *>(world->roomsModel())->setRoomBackground(world->rooms()->at(active_room), bg);
 }
 
 void RoomView::setWorld(World *world)
