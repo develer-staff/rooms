@@ -72,7 +72,6 @@ void Engine::click (int x, int y)
     {
         case GAME:
         {
-            //STUB
             std::string event;
             event = _rooms_mgr->eventAt(x, y);
             if (event == "")
@@ -101,7 +100,6 @@ bool Engine::loadWorld(std::string filename)
     {
         log("Loading world from " + filename, 2);
         TiXmlDocument document(filename.c_str());
-        //bool ok = document.LoadFile();
         int width = 0, height = 0;
         if (!xmlCheckDoc(&document)) throw "ERROR: wrong xml document!";
         TiXmlElement *root = document.RootElement();
@@ -181,7 +179,6 @@ bool Engine::loadWorld(std::string filename)
                                 (*i)->FirstChildElement("do_event")->Attribute("value"),
                                 (*i)->Attribute("image"));
         }
-        //Goto start room
         std::string start_room = root->Attribute("start");
         apiRoomGoto(start_room);
         //TODO: load rest of world file
