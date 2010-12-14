@@ -49,8 +49,10 @@ QVariant RoomsModel::data(const QModelIndex &index, int role) const
     return result;
 }
 
-void RoomsModel::appendRoom(Room *room)
+void RoomsModel::appendRoom(const QString &name)
 {
+    Room *room = new Room(name);
+
     if (!rooms.contains(room))
     {
         beginInsertRows(QModelIndex(), rooms.size(), rooms.size());

@@ -2,7 +2,6 @@
 #define ROOMSMODEL_H
 
 #include <QAbstractListModel>
-#include <QtContainerFwd>
 
 
 class Room;
@@ -17,7 +16,7 @@ public:
     int count() const;
     int rowCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
-    void appendRoom(Room *room);
+    void appendRoom(const QString &name);
 
 private:
     QList<Room *> rooms;
