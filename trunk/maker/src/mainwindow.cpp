@@ -9,8 +9,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     wizard = new Wizard(this);
     wizard->exec();
+
     ui->roomView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     ui->roomView->setFixedSize(wizard->getSize());
+    this->adjustSize();
 
     world = new World(wizard->getName(), wizard->getSize());
     world->addRoom("Example Room");
