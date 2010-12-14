@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     world->addRoom("Example Room");
 
     ui->room_view->setWorld(world);
-    ui->rooms_list->setModel(world->rooms());
+    ui->rooms_list->setModel(world->roomsModel());
 }
 
 MainWindow::~MainWindow()
