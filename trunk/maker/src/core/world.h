@@ -20,12 +20,12 @@ public:
     int countRooms() const;
     Room *getRoom(int index) const;
     QSize getSize() const;
-    QAbstractItemModel *roomsModel() const;
+    QAbstractItemModel *rooms() const;
 
 private:
     QString name;
     QSize size;
-    RoomsModel *rooms;
+    RoomsModel *_rooms;
 };
 
 #endif // WORLD_H
