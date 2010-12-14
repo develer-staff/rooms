@@ -20,11 +20,6 @@ int World::countRooms() const
     return _rooms->rowCount(QModelIndex());
 }
 
-Room *World::getRoom(int index) const
-{
-    return _rooms->at(index);
-}
-
 QSize World::getSize() const
 {
     return size;
