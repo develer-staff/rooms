@@ -117,6 +117,8 @@ bool Engine::loadWorld(std::string filename)
             xmlGetAllChilds(root->FirstChildElement("rooms"), "room");
         std::vector <TiXmlElement *> events =
             xmlGetAllChilds(root->FirstChildElement("events"), "event");
+        std::vector <TiXmlElement *> items =
+            xmlGetAllChilds(root->FirstChildElement("items"), "item");
         //Load Images
         for (std::vector<TiXmlElement *>::iterator i = images.begin();
              i != images.end(); i++)
@@ -161,6 +163,21 @@ bool Engine::loadWorld(std::string filename)
                                     (*j)->FirstChildElement("do_event")->Attribute("value"));
             }
         }
+        //Load Items
+        for (std::vector<TiXmlElement *>::iterator i = items.begin();
+             i != items.end(); i++)
+        {
+            int area_x, area_y, area_w, area_h;
+            (*i)->QueryIntAttribute("x", &area_x);
+            (*i)->QueryIntAttribute("y", &area_y);
+            (*i)->QueryIntAttribute("width", &area_w);
+            (*i)->QueryIntAttribute("height", &area_h);
+            _rooms_mgr->addItem((*i)->Attribute("id"),
+                                (*i)->Attribute("room"),
+                                area_x, area_y, area_w, area_h,
+                                (*i)->FirstChildElement("do_event")->Attribute("value"),
+                                (*i)->Attribute("image"));
+        }
         //Goto start room
         std::string start_room = root->Attribute("start");
         apiRoomGoto(start_room);
@@ -200,6 +217,11 @@ void Engine::execActions(std::vector <Action *> actions)
             int var_value = act->popIntParam();
             std::string var_name = act->popStrParam();
             apiVarSet(var_name, var_value);
+        } else if (act->id == "ITEM_MOVE")
+        {
+            std::string item_dest = act->popStrParam();
+            std::string item_id = act->popStrParam();
+            apiItemMove(item_id, item_dest);
         }
     }
 }
@@ -225,6 +247,12 @@ void Engine::apiVarSet(std::string id, int value)
 {
     log("VAR_SET: " + id, 2);
     _events_mgr->var(id, value);
+}
+
+void Engine::apiItemMove(std::string id, std::string dest)
+{
+    log("ITEM_MOVE: " + id + ", dest: " + dest, 2);
+    _rooms_mgr->moveItem(id, dest);
 }
 
 void Engine::exit(int status)

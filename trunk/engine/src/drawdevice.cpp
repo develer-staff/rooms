@@ -2,6 +2,7 @@
 #include "engine.h"
 #include "roomsmanager.h"
 #include "room.h"
+#include "item.h"
 
 DrawDevice::DrawDevice(Engine *engine, QWidget *parent): QWidget(parent)
 {
@@ -61,8 +62,15 @@ void DrawDevice::paintEvent(QPaintEvent *event)
             Room *room = _engine->getRoomsManager()->currentRoom();
             QImage *bg = _images[room->bg()];
             QRectF rect(0.0, 0.0, width(), height());
+            std::vector <Item *> items = room->items();
             _painter.drawImage(rect, *bg);
-            //TODO: draw items in the room
+            for (std::vector<Item *>::iterator i = items.begin();
+                 i != items.end(); i++)
+            {
+                QImage *img = _images[(*i)->image()];
+                QRectF irect((*i)->x(), (*i)->y(), (*i)->w(), (*i)->h());
+                _painter.drawImage(irect, *img);
+            }
             break;
         }
     }

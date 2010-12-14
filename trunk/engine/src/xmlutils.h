@@ -15,6 +15,7 @@ bool xmlCheckEvents(TiXmlElement *elem);
 bool xmlCheckActions(TiXmlElement *elem);
 bool xmlCheckParams(TiXmlElement *elem);
 bool xmlCheckAreas(TiXmlElement *elem);
+bool xmlCheckItems(TiXmlElement *elem);
 bool xmlCheckDoEvents(TiXmlElement *elem);
 
 #endif // XMLMANAGER_H

@@ -56,6 +56,7 @@ class Engine
         //RISC API
         void apiRoomGoto(std::string id);
         void apiVarSet(std::string id, int value);
+        void apiItemMove(std::string id, std::string dest);
 
 };
 

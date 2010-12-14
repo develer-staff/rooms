@@ -7,7 +7,8 @@ bool xmlCheckDoc(TiXmlDocument *doc)
                xmlCheckRoot(doc->RootElement()) &&
                xmlCheckImages(doc->RootElement()->FirstChildElement("images")) &&
                xmlCheckEvents(doc->RootElement()->FirstChildElement("events")) &&
-               xmlCheckRooms(doc->RootElement()->FirstChildElement("rooms"));
+               xmlCheckRooms(doc->RootElement()->FirstChildElement("rooms")) &&
+               xmlCheckRooms(doc->RootElement()->FirstChildElement("items"));
     return false;
 }
 
@@ -106,6 +107,26 @@ bool xmlCheckAreas(TiXmlElement *elem)
                 i->QueryIntAttribute("y", &tmp) != TIXML_SUCCESS ||
                 i->QueryIntAttribute("width", &tmp) != TIXML_SUCCESS ||
                 i->QueryIntAttribute("height", &tmp) != TIXML_SUCCESS ||
+                !xmlCheckDoEvents(i))
+                return false;
+        }
+    return true;
+}
+
+bool xmlCheckItems(TiXmlElement *elem)
+{
+    int tmp;
+    if (elem)
+        for (TiXmlElement *i = elem->FirstChildElement("item"); i != 0;
+             i = i->NextSiblingElement("item"))
+        {
+            if (i->Attribute("id") == 0 ||
+                i->QueryIntAttribute("x", &tmp) != TIXML_SUCCESS ||
+                i->QueryIntAttribute("y", &tmp) != TIXML_SUCCESS ||
+                i->QueryIntAttribute("width", &tmp) != TIXML_SUCCESS ||
+                i->QueryIntAttribute("height", &tmp) != TIXML_SUCCESS ||
+                i->Attribute("image") == 0 ||
+                i->Attribute("room") == 0 ||
                 !xmlCheckDoEvents(i))
                 return false;
         }

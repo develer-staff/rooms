@@ -4,6 +4,7 @@
   <images>
     <img id="locanda_luce_spenta" file="./data/locanda.png" />
     <img id="cucina" file="./data/cucina.png" />
+    <img id="chiave" file="./data/chiave.png" />
   </images>
 
   <rooms>
@@ -32,6 +33,24 @@
         <actions_else>
         </actions_else>
     </event>
+    <event id="chiave_get">
+        <requirements>
+        </requirements>
+        <actions_if>
+            <action id="ITEM_MOVE">
+                <param value="La chiave della locandiera" />
+                <param value="0" />
+            </action>
+        </actions_if>
+        <actions_else>
+        </actions_else>
+    </event>
   </events>
+
+  <items>
+    <item id="La chiave della locandiera" room="Cucina" x="400" y="350" width="50" height="50" image="chiave">
+        <do_event value="chiave_get" />
+    </item>
+  </items>
 
 </world>
