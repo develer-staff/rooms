@@ -1,9 +1,5 @@
 #include "roomview.h"
 
-#include "roomsmodel.h"
-
-#include <QDebug>
-
 RoomView::RoomView(QWidget *parent) :
     QGraphicsView(parent)
 {

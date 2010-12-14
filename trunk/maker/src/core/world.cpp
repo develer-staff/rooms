@@ -1,5 +1,4 @@
 #include "world.h"
-#include "roomsmodel.h"
 
 World::World(const QString &name, const QSize &size, QObject *parent) :
     QObject(parent)
