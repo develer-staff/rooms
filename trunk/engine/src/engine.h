@@ -16,6 +16,7 @@ class EventsManager;
 class Event;
 class Action;
 class DrawDevice;
+class Area;
 
 class Engine
 {
@@ -47,15 +48,20 @@ class Engine
         Engine();
         static Engine *_engine;
         Engine::State _state;
-
         RoomsManager *_rooms_mgr;
         EventsManager *_events_mgr;
         DrawDevice *_device;
+        bool createImgsFromXml(std::vector <TiXmlElement *> images);
+        void createEventsFromXml(std::vector <TiXmlElement *> events);
+        void createRoomsFromXml(std::vector <TiXmlElement *> rooms);
+        void createItemsFromXml(std::vector <TiXmlElement *> items);
 
         void execActions(std::vector <Action *> actions);
         //RISC API
         void apiRoomGoto(std::string id);
         void apiVarSet(std::string id, int value);
+        void apiItemMove(std::string id, std::string dest);
+        void apiAreaSetEnable(std::string id, int value);
 
 };
 

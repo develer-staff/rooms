@@ -2,11 +2,11 @@
 #include "engine.h"
 #include "roomsmanager.h"
 #include "room.h"
+#include "item.h"
 
 DrawDevice::DrawDevice(Engine *engine, QWidget *parent): QWidget(parent)
 {
     _engine = engine;
-    //TODO: get from engine world size and world's name
 }
 
 DrawDevice::~DrawDevice()
@@ -35,7 +35,6 @@ bool DrawDevice::loadImage(std::string id, std::string filename)
     } else {
         return false;
     }
-    //TODO: handle errors and unique name check
 }
 
 bool DrawDevice::fileExists(std::string filename)
@@ -52,7 +51,6 @@ void DrawDevice::quit(int status)
 void DrawDevice::paintEvent(QPaintEvent *event)
 {
     QPainter _painter(this);
-    //TODO: get room attributes from engine and draw all
     switch (_engine->state())
     {
         case Engine::GAME:
@@ -61,8 +59,16 @@ void DrawDevice::paintEvent(QPaintEvent *event)
             Room *room = _engine->getRoomsManager()->currentRoom();
             QImage *bg = _images[room->bg()];
             QRectF rect(0.0, 0.0, width(), height());
+            std::vector <Item *> items = room->items();
             _painter.drawImage(rect, *bg);
-            //TODO: draw items in the room
+            //Draw items
+            for (std::vector<Item *>::iterator i = items.begin();
+                 i != items.end(); i++)
+            {
+                QImage *img = _images[(*i)->image()];
+                QRectF irect((*i)->x(), (*i)->y(), (*i)->w(), (*i)->h());
+                _painter.drawImage(irect, *img);
+            }
             break;
         }
     }
@@ -71,7 +77,6 @@ void DrawDevice::paintEvent(QPaintEvent *event)
 void DrawDevice::mousePressEvent(QMouseEvent * event)
 {
     _engine->click(event->x(), event->y());
-    //TODO: test if room is changed and draw it again
     repaint(QRect(0, 0, width(), height()));
 }
 
