@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setDisabled(true);
     wizard = new Wizard(this);
     wizard->exec();
+    ui->roomView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    ui->roomView->setFixedSize(wizard->getSize());
     this->setEnabled(true);
 
     world = new World(wizard->getName(), wizard->getSize());
