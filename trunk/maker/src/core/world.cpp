@@ -6,23 +6,7 @@ World::World(const QString &name, const QSize &size, QObject *parent) :
 {
     this->name = name;
     this->size = size;
-    rooms = new RoomsModel(this);
-}
-
-void World::addRoom(QString const& name)
-{
-    Room *room = new Room(name);
-    rooms->appendRoom(room);
-}
-
-int World::countRooms() const
-{
-    return rooms->rowCount(QModelIndex());
-}
-
-Room *World::getRoom(int index) const
-{
-    return rooms->at(index);
+    _rooms = new RoomsModel(this);
 }
 
 QSize World::getSize() const
@@ -32,5 +16,10 @@ QSize World::getSize() const
 
 QAbstractItemModel *World::roomsModel() const
 {
-    return rooms;
+    return _rooms;
+}
+
+RoomsModel *World::rooms() const
+{
+    return _rooms;
 }

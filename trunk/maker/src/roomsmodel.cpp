@@ -7,12 +7,12 @@ RoomsModel::RoomsModel(QObject *parent) :
 {
 }
 
-Room *RoomsModel::at(int index)
+Room *RoomsModel::at(int index) const
 {
     return rooms.at(index);
 }
 
-int RoomsModel::count()
+int RoomsModel::count() const
 {
     return rooms.count();
 }
@@ -46,16 +46,28 @@ QVariant RoomsModel::data(const QModelIndex &index, int role) const
     default:
         return result;
     }
-
     return result;
 }
 
-void RoomsModel::appendRoom(Room *room)
+void RoomsModel::appendRoom(const QString &name)
 {
+    Room *room = new Room(name);
+
     if (!rooms.contains(room))
     {
         beginInsertRows(QModelIndex(), rooms.size(), rooms.size());
         rooms.append(room);
         endInsertRows();
     }
+}
+
+void RoomsModel::setRoomBackground(Room *room, const QPixmap &background)
+{
+    int i = rooms.indexOf(room);
+    if (i == -1)
+        return;
+
+    room->setBackground(background);
+
+    emit dataChanged(index(i), index(i));
 }

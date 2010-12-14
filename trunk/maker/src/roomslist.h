@@ -2,6 +2,7 @@
 #define ROOMSLIST_H
 
 #include <QListView>
+#include "core/world.h"
 
 class RoomsList : public QListView
 {
@@ -9,6 +10,14 @@ class RoomsList : public QListView
 
 public:
     explicit RoomsList(QWidget *parent = 0);
+    void setWorld(World *world);
+
+private slots:
+    void addRoom();
+    void showContextMenu(const QPoint &point);
+
+private:
+    World *world;
 
 };
 
