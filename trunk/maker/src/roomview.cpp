@@ -7,6 +7,7 @@ RoomView::RoomView(QWidget *parent) :
 {
     scene = new QGraphicsScene;
     setScene(scene);
+    activeRoom = 0;
 
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
             this, SLOT(showContextMenu(const QPoint &)));
