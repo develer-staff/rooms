@@ -41,5 +41,6 @@ void RoomsList::addRoom()
         suffix_num++;
     }
 
-    world->addRoom(name);
+    Room *room = new Room(name, world);
+    world->rooms()->appendRoom(room);
 }

@@ -17,9 +17,6 @@ class World : public QObject
 public:
     World(const QString &name, const QSize &size, QObject *parent = 0);
 
-    void addRoom(QString const& name);
-    int countRooms() const;
-    Room *getRoom(int index) const;
     QSize getSize() const;
     RoomsModel *rooms() const;
     QAbstractItemModel *roomsModel() const;

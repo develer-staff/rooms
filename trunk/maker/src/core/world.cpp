@@ -9,17 +9,6 @@ World::World(const QString &name, const QSize &size, QObject *parent) :
     _rooms = new RoomsModel(this);
 }
 
-void World::addRoom(QString const& name)
-{
-    Room *room = new Room(name);
-    _rooms->appendRoom(room);
-}
-
-int World::countRooms() const
-{
-    return _rooms->count();
-}
-
 QSize World::getSize() const
 {
     return size;
