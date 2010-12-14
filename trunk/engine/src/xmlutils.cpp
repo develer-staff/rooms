@@ -102,7 +102,7 @@ bool xmlCheckAreas(TiXmlElement *elem)
              i = i->NextSiblingElement("area"))
         {
             if (i->Attribute("id") == 0 ||
-                i->Attribute("enabled") == 0 ||
+                i->QueryIntAttribute("enabled", &tmp) != TIXML_SUCCESS ||
                 i->QueryIntAttribute("x", &tmp) != TIXML_SUCCESS ||
                 i->QueryIntAttribute("y", &tmp) != TIXML_SUCCESS ||
                 i->QueryIntAttribute("width", &tmp) != TIXML_SUCCESS ||

@@ -2,7 +2,7 @@
 
 Area::Area(std::string name): id(name)
 {
-
+    enabled(true);
 }
 
 Area::~Area()
@@ -46,4 +46,15 @@ std::string Area::event()
 void Area::event(std::string event)
 {
     _event = event;
+}
+
+void Area::enabled(bool value)
+{
+    _enabled = value;
+}
+
+
+bool Area::enabled()
+{
+    return _enabled;
 }

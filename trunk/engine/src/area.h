@@ -16,6 +16,8 @@ class Area
         int h();
         std::string event();
         void event(std::string event);
+        void enabled(bool value);
+        bool enabled();
     protected:
     private:
         bool _enabled;

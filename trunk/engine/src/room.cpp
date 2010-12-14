@@ -86,7 +86,7 @@ std::string Room::eventAt(int x, int y)
     }
     for (std::map <std::string, Area *>::iterator i = _areas.begin(); i != _areas.end(); i++)
     {
-        if (pointInsideArea(x, y, i->second))
+        if (pointInsideArea(x, y, i->second) && i->second->enabled())
             return i->second->event();
     }
     return "";

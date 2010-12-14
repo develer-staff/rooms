@@ -16,6 +16,7 @@ class EventsManager;
 class Event;
 class Action;
 class DrawDevice;
+class Area;
 
 class Engine
 {
@@ -57,6 +58,7 @@ class Engine
         void apiRoomGoto(std::string id);
         void apiVarSet(std::string id, int value);
         void apiItemMove(std::string id, std::string dest);
+        void apiAreaSetEnable(std::string id, int value);
 
 };
 

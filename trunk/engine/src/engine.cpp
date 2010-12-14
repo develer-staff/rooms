@@ -4,6 +4,7 @@
 #include "event.h"
 #include "action.h"
 #include "drawdevice.h"
+#include "area.h"
 
 Engine *Engine::_engine = 0;
 
@@ -152,15 +153,17 @@ bool Engine::loadWorld(std::string filename)
             for (std::vector<TiXmlElement *>::iterator j = areas.begin();
                  j != areas.end(); j++)
             {
-                int area_x, area_y, area_w, area_h;
+                int area_x, area_y, area_w, area_h, area_enab;
                 (*j)->QueryIntAttribute("x", &area_x);
                 (*j)->QueryIntAttribute("y", &area_y);
                 (*j)->QueryIntAttribute("width", &area_w);
                 (*j)->QueryIntAttribute("height", &area_h);
-                _rooms_mgr->addArea((*j)->Attribute("id"),
+                Area * a = _rooms_mgr->addArea((*j)->Attribute("id"),
                                     (*i)->Attribute("id"),
                                     area_x, area_y, area_w, area_h,
                                     (*j)->FirstChildElement("do_event")->Attribute("value"));
+                (*j)->QueryIntAttribute("enabled", &area_enab);
+                a->enabled(area_enab);
             }
         }
         //Load Items
@@ -222,6 +225,11 @@ void Engine::execActions(std::vector <Action *> actions)
             std::string item_dest = act->popStrParam();
             std::string item_id = act->popStrParam();
             apiItemMove(item_id, item_dest);
+        } else if (act->id == "AREA_SET_ENABLE")
+        {
+            int area_val = act->popIntParam();
+            std::string area_id = act->popStrParam();
+            apiAreaSetEnable(area_id, area_val);
         }
     }
 }
@@ -253,6 +261,15 @@ void Engine::apiItemMove(std::string id, std::string dest)
 {
     log("ITEM_MOVE: " + id + ", dest: " + dest, 2);
     _rooms_mgr->moveItem(id, dest);
+}
+
+void Engine::apiAreaSetEnable(std::string id, int value)
+{
+    bool bool_val = value;
+    std::string str_val;
+    bool_val ? str_val = "true" : str_val = "false";
+    log("AREA_SET_ENABLE: " + id + ", enabled: " + str_val, 2);
+    _rooms_mgr->area(id)->enabled(bool_val);
 }
 
 void Engine::exit(int status)
