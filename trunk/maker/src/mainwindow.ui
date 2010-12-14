@@ -45,7 +45,7 @@
        <property name="childrenCollapsible">
         <bool>false</bool>
        </property>
-       <widget class="QListView" name="rooms_list">
+       <widget class="RoomsList" name="rooms_list">
         <property name="minimumSize">
          <size>
           <width>80</width>
@@ -197,6 +197,11 @@
    <class>RoomView</class>
    <extends>QGraphicsView</extends>
    <header>roomview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>RoomsList</class>
+   <extends>QListView</extends>
+   <header>roomslist.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
