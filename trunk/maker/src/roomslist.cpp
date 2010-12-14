@@ -22,5 +22,24 @@ void RoomsList::showContextMenu(const QPoint &point)
 
 void RoomsList::addRoom()
 {
-    //world->roomsModel()
+    bool ok = false;
+    int suffix_num = 0;
+    QString suffix;
+    QString name;
+
+    while (!ok)
+    {
+        suffix.setNum(suffix_num);
+        for (int i = 0; i < world->rooms()->count(); i++)
+        {
+            if (!world->rooms()->at(i)->name().endsWith(suffix))
+            {
+                name = tr("Room") + " " + suffix;
+                ok = true;
+            }
+        }
+        suffix_num++;
+    }
+
+    world->addRoom(name);
 }
