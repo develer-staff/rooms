@@ -48,10 +48,13 @@ class Engine
         Engine();
         static Engine *_engine;
         Engine::State _state;
-
         RoomsManager *_rooms_mgr;
         EventsManager *_events_mgr;
         DrawDevice *_device;
+        bool createImgsFromXml(std::vector <TiXmlElement *> images);
+        void createEventsFromXml(std::vector <TiXmlElement *> events);
+        void createRoomsFromXml(std::vector <TiXmlElement *> rooms);
+        void createItemsFromXml(std::vector <TiXmlElement *> items);
 
         void execActions(std::vector <Action *> actions);
         //RISC API

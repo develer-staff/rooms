@@ -95,7 +95,6 @@ void Engine::loadGame(std::string filename)
 
 bool Engine::loadWorld(std::string filename)
 {
-    //TODO: simplify this method
     try
     {
         log("Loading world from " + filename, 2);
@@ -110,6 +109,7 @@ bool Engine::loadWorld(std::string filename)
         _rooms_mgr->size(width, height);
         _rooms_mgr->name(root->Attribute("name"));
         //TODO: manage different screen resolutions
+        //Loading from xml
         std::vector <TiXmlElement *> images =
             xmlGetAllChilds(root->FirstChildElement("images"), "img");
         std::vector <TiXmlElement *> rooms =
@@ -118,76 +118,95 @@ bool Engine::loadWorld(std::string filename)
             xmlGetAllChilds(root->FirstChildElement("events"), "event");
         std::vector <TiXmlElement *> items =
             xmlGetAllChilds(root->FirstChildElement("items"), "item");
-        //Load Images
-        for (std::vector<TiXmlElement *>::iterator i = images.begin();
-             i != images.end(); i++)
-            if (!_device->loadImage((*i)->Attribute("id"), (*i)->Attribute("file")))
-                throw std::string("ERROR: cannot load image!").c_str();
-        //Load Events
-        for (std::vector<TiXmlElement *>::iterator i = events.begin();
-             i != events.end(); i++)
-        {
-            Event *event = _events_mgr->addEvent((*i)->Attribute("id"));
-            std::vector <TiXmlElement *> actions =
-                xmlGetAllChilds((*i)->FirstChildElement("actions_if"), "action");
-            for (std::vector<TiXmlElement *>::iterator j = actions.begin();
-                 j != actions.end(); j++)
-            {
-                Action *act = event->addAction((*j)->Attribute("id"));
-                std::vector <TiXmlElement *> params =
-                    xmlGetAllChilds(*j, "param");
-                for (std::vector<TiXmlElement *>::iterator z = params.begin();
-                     z != params.end(); z++)
-                    act->pushParam((*z)->Attribute("value"));
-            }
-        }
-        //Load Rooms
-        for (std::vector<TiXmlElement *>::iterator i = rooms.begin();
-             i != rooms.end(); i++)
-        {
-            _rooms_mgr->addRoom((*i)->Attribute("id"), (*i)->Attribute("bg"));
-            std::vector <TiXmlElement *> areas =
-                xmlGetAllChilds((*i)->FirstChildElement("areas"), "area");
-            for (std::vector<TiXmlElement *>::iterator j = areas.begin();
-                 j != areas.end(); j++)
-            {
-                int area_x, area_y, area_w, area_h, area_enab;
-                (*j)->QueryIntAttribute("x", &area_x);
-                (*j)->QueryIntAttribute("y", &area_y);
-                (*j)->QueryIntAttribute("width", &area_w);
-                (*j)->QueryIntAttribute("height", &area_h);
-                Area * a = _rooms_mgr->addArea((*j)->Attribute("id"),
-                                    (*i)->Attribute("id"),
-                                    area_x, area_y, area_w, area_h,
-                                    (*j)->FirstChildElement("do_event")->Attribute("value"));
-                (*j)->QueryIntAttribute("enabled", &area_enab);
-                a->enabled(area_enab);
-            }
-        }
-        //Load Items
-        for (std::vector<TiXmlElement *>::iterator i = items.begin();
-             i != items.end(); i++)
-        {
-            int area_x, area_y, area_w, area_h;
-            (*i)->QueryIntAttribute("x", &area_x);
-            (*i)->QueryIntAttribute("y", &area_y);
-            (*i)->QueryIntAttribute("width", &area_w);
-            (*i)->QueryIntAttribute("height", &area_h);
-            _rooms_mgr->addItem((*i)->Attribute("id"),
-                                (*i)->Attribute("room"),
-                                area_x, area_y, area_w, area_h,
-                                (*i)->FirstChildElement("do_event")->Attribute("value"),
-                                (*i)->Attribute("image"));
-        }
+        //Populating model
+        if (!createImgsFromXml(images))
+            throw std::string("ERROR: cannot load image!").c_str();
+        createEventsFromXml(events);
+        createRoomsFromXml(rooms);
+        createItemsFromXml(items);
+        //TODO: load rest of world file
         std::string start_room = root->Attribute("start");
         apiRoomGoto(start_room);
-        //TODO: load rest of world file
         return true;
     }
     catch (const char *msg)
     {
         log(msg, 1);
         return false;
+    }
+}
+
+bool Engine::createImgsFromXml(std::vector <TiXmlElement *> images)
+{
+    for (std::vector<TiXmlElement *>::iterator i = images.begin();
+         i != images.end(); i++)
+        if (!_device->loadImage((*i)->Attribute("id"), (*i)->Attribute("file")))
+            return false;
+    return true;
+}
+
+void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
+{
+    for (std::vector<TiXmlElement *>::iterator i = events.begin();
+         i != events.end(); i++)
+    {
+        Event *event = _events_mgr->addEvent((*i)->Attribute("id"));
+        std::vector <TiXmlElement *> actions =
+            xmlGetAllChilds((*i)->FirstChildElement("actions_if"), "action");
+        for (std::vector<TiXmlElement *>::iterator j = actions.begin();
+             j != actions.end(); j++)
+        {
+            Action *act = event->addAction((*j)->Attribute("id"));
+            std::vector <TiXmlElement *> params =
+                xmlGetAllChilds(*j, "param");
+            for (std::vector<TiXmlElement *>::iterator z = params.begin();
+                 z != params.end(); z++)
+                act->pushParam((*z)->Attribute("value"));
+        }
+    }
+}
+
+void Engine::createRoomsFromXml(std::vector <TiXmlElement *> rooms)
+{
+    for (std::vector<TiXmlElement *>::iterator i = rooms.begin();
+         i != rooms.end(); i++)
+    {
+        _rooms_mgr->addRoom((*i)->Attribute("id"), (*i)->Attribute("bg"));
+        std::vector <TiXmlElement *> areas =
+            xmlGetAllChilds((*i)->FirstChildElement("areas"), "area");
+        for (std::vector<TiXmlElement *>::iterator j = areas.begin();
+             j != areas.end(); j++)
+        {
+            int area_x, area_y, area_w, area_h, area_enab;
+            (*j)->QueryIntAttribute("x", &area_x);
+            (*j)->QueryIntAttribute("y", &area_y);
+            (*j)->QueryIntAttribute("width", &area_w);
+            (*j)->QueryIntAttribute("height", &area_h);
+            Area * a = _rooms_mgr->addArea((*j)->Attribute("id"),
+                                (*i)->Attribute("id"),
+                                area_x, area_y, area_w, area_h,
+                                (*j)->FirstChildElement("do_event")->Attribute("value"));
+            (*j)->QueryIntAttribute("enabled", &area_enab);
+            a->enabled(area_enab);
+        }
+    }
+}
+
+void Engine::createItemsFromXml(std::vector <TiXmlElement *> items)
+{
+    for (std::vector<TiXmlElement *>::iterator i = items.begin();
+         i != items.end(); i++)
+    {
+        int area_x, area_y, area_w, area_h;
+        (*i)->QueryIntAttribute("x", &area_x);
+        (*i)->QueryIntAttribute("y", &area_y);
+        (*i)->QueryIntAttribute("width", &area_w);
+        (*i)->QueryIntAttribute("height", &area_h);
+        _rooms_mgr->addItem((*i)->Attribute("id"),
+                            (*i)->Attribute("room"),
+                            area_x, area_y, area_w, area_h,
+                            (*i)->FirstChildElement("do_event")->Attribute("value"),
+                            (*i)->Attribute("image"));
     }
 }
 
