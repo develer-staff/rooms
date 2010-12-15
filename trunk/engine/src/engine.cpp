@@ -63,6 +63,11 @@ Engine::State Engine::state()
     return _state;
 }
 
+void Engine::state(Engine::State state_name)
+{
+    _state = state_name;
+}
+
 void Engine::loadGame(string filename)
 {
 
