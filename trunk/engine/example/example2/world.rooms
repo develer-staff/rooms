@@ -1,0 +1,150 @@
+<?xml version="1.0" ?>
+<world version="ID_VERSIONE_ENGINE" name="Mirabolanti Avventure!" width="800" height="600" start="Locanda">
+
+  <images>
+    <img id="img_locanda" file="./data/locanda.png" />
+    <img id="img_cantina" file="./data/cantina.png" />
+    <img id="img_centrale" file="./data/stanza_centrale.png" />
+    <img id="img_star" file="./data/stanza_star.png" />
+    <img id="end" file="./data/end.png" />
+    <img id="img_chiave" file="./data/chiave.png" />
+    <img id="img_chiave_star" file="./data/chiave_star.png" />
+  </images>
+
+  <rooms>
+    <room id="0" bg="" />
+    <room id="Locanda" bg="img_locanda">
+      <areas>
+        <area id="area_porta_locanda" enabled="1" x="250" y="300" width="150" height="150">
+          <do_event value="eve_goto_locanda" />
+        </area>
+      </areas>
+    </room>
+    <room id="Stanza Centrale" bg="img_centrale">
+      <areas>
+        <area id="area_vai_cantina" enabled="1" x="250" y="350" width="300" height="200">
+          <do_event value="eve_goto_cantina" />
+        </area>
+        <area id="area_vai_star" enabled="1" x="100" y="150" width="200" height="350">
+          <do_event value="eve_goto_star" />
+        </area>
+        <area id="area_vai_end" enabled="1" x="600" y="150" width="200" height="350">
+          <do_event value="eve_goto_end" />
+        </area>
+      </areas>
+    </room>
+    <room id="Cantina" bg="img_cantina">
+      <areas>
+        <area id="area_vai_centrale1" enabled="1" x="10" y="500" width="780" height="100">
+          <do_event value="eve_goto_centrale" />
+        </area>
+      </areas>
+    </room>
+    <room id="Stanza Stella" bg="img_star">
+      <areas>
+        <area id="area_vai_centrale2" enabled="1" x="10" y="500" width="780" height="100">
+          <do_event value="eve_goto_centrale" />
+        </area>
+        <area id="area_switch1" enabled="1" x="300" y="300" width="200" height="200">
+          <do_event value="eve_switch1_on" />
+        </area>
+      </areas>
+    </room>
+    <room id="End" bg="end" />
+  </rooms>
+
+  <items>
+    <item id="Chiave Locanda" room="Locanda" x="10" y="500" width="50" height="50" image="img_chiave">
+        <do_event value="chiave_get" />
+    </item>
+    <item id="Chiave Stella" room="Cantina" x="10" y="500" width="50" height="100" image="img_chiave_star">
+        <do_event value="chiave_star_get" />
+    </item>
+  </items>
+
+  <vars>
+    <var id="switch1" value="0" />
+  </vars>
+
+  <events>
+    <event id="eve_goto_locanda">
+        <requirements>
+            <item_req id="Chiave Locanda" value="0"/>
+        </requirements>
+        <actions_if>
+            <action id="ROOM_GOTO">
+                <param value="Stanza Centrale" />
+            </action>
+        </actions_if>
+    </event>
+    <event id="eve_goto_centrale">
+        <requirements>
+        </requirements>
+        <actions_if>
+            <action id="ROOM_GOTO">
+                <param value="Stanza Centrale" />
+            </action>
+        </actions_if>
+    </event>
+    <event id="eve_goto_cantina">
+        <requirements>
+        </requirements>
+        <actions_if>
+            <action id="ROOM_GOTO">
+                <param value="Cantina" />
+            </action>
+        </actions_if>
+    </event>
+    <event id="eve_goto_star">
+        <requirements>
+            <item_req id="Chiave Stella" value="0" />
+        </requirements>
+        <actions_if>
+            <action id="ROOM_GOTO">
+                <param value="Stanza Stella" />
+            </action>
+        </actions_if>
+    </event>
+    <event id="eve_goto_end">
+        <requirements>
+            <var_req id="switch1" value="1"/>
+        </requirements>
+        <actions_if>
+            <action id="ROOM_GOTO">
+                <param value="End" />
+            </action>
+        </actions_if>
+    </event>
+    <event id="eve_switch1_on">
+        <requirements>
+        </requirements>
+        <actions_if>
+            <action id="VAR_SET">
+                <param value="switch1" />
+                <param value="1" />
+            </action>
+        </actions_if>
+    </event>
+    <event id="chiave_get">
+        <requirements>
+        </requirements>
+        <actions_if>
+            <action id="ITEM_MOVE">
+                <param value="Chiave Locanda" />
+                <param value="0" />
+            </action>
+        </actions_if>
+    </event>
+    <event id="chiave_star_get">
+        <requirements>
+        </requirements>
+        <actions_if>
+            <action id="ITEM_MOVE">
+                <param value="Chiave Stella" />
+                <param value="0" />
+            </action>
+        </actions_if>
+    </event>
+  </events>
+
+</world>

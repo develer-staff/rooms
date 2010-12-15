@@ -29,8 +29,8 @@ class EventsManager
         Event *addEvent(string id);
         Event *event(string id);
         std::vector <Action *> actionsForEvent(string id);
-        int var(string id);
         void var(string id, int value);
+        int var(string id);
     private:
         bool checkItemReqs(std::vector <std::pair <string, string> > reqs);
         bool checkVarReqs(std::vector <std::pair <string, int> > reqs);

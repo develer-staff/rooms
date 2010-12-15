@@ -93,11 +93,14 @@ bool Engine::loadWorld(string filename)
             xmlGetAllChilds(root->FirstChildElement("events"), "event");
         std::vector <TiXmlElement *> items =
             xmlGetAllChilds(root->FirstChildElement("items"), "item");
+        std::vector <TiXmlElement *> vars =
+            xmlGetAllChilds(root->FirstChildElement("vars"), "var");
         //Populating model
         createImgsFromXml(images);
         createEventsFromXml(events);
         createRoomsFromXml(rooms);
         createItemsFromXml(items);
+        createVarsFromXml(vars);
         //TODO: load rest of world file
         string start_room = root->Attribute("start");
         apiRoomGoto(start_room);
@@ -122,6 +125,17 @@ void Engine::createImgsFromXml(std::vector <TiXmlElement *> images)
     for (std::vector<TiXmlElement *>::iterator i = images.begin();
          i != images.end(); ++i)
         _images[(*i)->Attribute("id")] = (*i)->Attribute("file");
+}
+
+void Engine::createVarsFromXml(std::vector <TiXmlElement *> vars)
+{
+    for (std::vector<TiXmlElement *>::iterator i = vars.begin();
+         i != vars.end(); ++i)
+    {
+        int var_value;
+        (*i)->QueryIntAttribute("value", &var_value);
+        _events_mgr->var((*i)->Attribute("id"), var_value);
+    }
 }
 
 void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
@@ -224,25 +238,25 @@ void Engine::execActions(std::vector <Action *> actions)
     for (i = actions.begin(); i != actions.end(); ++i)
     {
         //TODO: think about improving this loop
-        Action *act = *i;
-        log("Exec action: " + act->id, 3);
-        if (act->id == "ROOM_GOTO")
+        Action act = *(*i);
+        log("Exec action: " + act.id, 3);
+        if (act.id == "ROOM_GOTO")
         {
-            apiRoomGoto(act->popStrParam());
-        } else if (act->id == "VAR_SET")
+            apiRoomGoto(act.popStrParam());
+        } else if (act.id == "VAR_SET")
         {
-            int var_value = act->popIntParam();
-            string var_name = act->popStrParam();
+            int var_value = act.popIntParam();
+            string var_name = act.popStrParam();
             apiVarSet(var_name, var_value);
-        } else if (act->id == "ITEM_MOVE")
+        } else if (act.id == "ITEM_MOVE")
         {
-            string item_dest = act->popStrParam();
-            string item_id = act->popStrParam();
+            string item_dest = act.popStrParam();
+            string item_id = act.popStrParam();
             apiItemMove(item_id, item_dest);
-        } else if (act->id == "AREA_SET_ENABLE")
+        } else if (act.id == "AREA_SET_ENABLE")
         {
-            int area_val = act->popIntParam();
-            string area_id = act->popStrParam();
+            int area_val = act.popIntParam();
+            string area_id = act.popStrParam();
             apiAreaSetEnable(area_id, area_val);
         }
     }

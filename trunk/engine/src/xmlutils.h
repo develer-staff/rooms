@@ -11,6 +11,7 @@ bool xmlCheckDoc(TiXmlDocument *doc);
 bool xmlCheckRoot(TiXmlElement *elem);
 bool xmlCheckRooms(TiXmlElement *elem);
 bool xmlCheckImages(TiXmlElement *elem);
+bool xmlCheckVars(TiXmlElement *elem);
 bool xmlCheckEvents(TiXmlElement *elem);
 bool xmlCheckActions(TiXmlElement *elem);
 bool xmlCheckParams(TiXmlElement *elem);
