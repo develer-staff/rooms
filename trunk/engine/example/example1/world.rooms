@@ -11,7 +11,7 @@
     <room id="0" bg="" />
     <room id="Locanda" bg="locanda_luce_spenta">
       <areas>
-        <area id="area_porta_locanda" enabled="0" x="250" y="480" width="150" height="150">
+        <area id="area_porta_locanda" enabled="1" x="250" y="480" width="150" height="150">
           <do_event value="apri_porta_locanda" />
         </area>
       </areas>
@@ -21,9 +21,16 @@
     </room>
   </rooms>
 
+  <items>
+    <item id="La chiave della locandiera" room="Locanda" x="10" y="700" width="50" height="50" image="chiave">
+        <do_event value="chiave_get" />
+    </item>
+  </items>
+
   <events>
     <event id="apri_porta_locanda">
         <requirements>
+            <item_req id="La chiave della locandiera" value="0"/>
         </requirements>
         <actions_if>
             <action id="ROOM_GOTO">
@@ -41,20 +48,10 @@
                 <param value="La chiave della locandiera" />
                 <param value="0" />
             </action>
-            <action id="AREA_SET_ENABLE">
-                <param value="area_porta_locanda" />
-                <param value="1" />
-            </action>
         </actions_if>
         <actions_else>
         </actions_else>
     </event>
   </events>
-
-  <items>
-    <item id="La chiave della locandiera" room="Locanda" x="10" y="700" width="50" height="50" image="chiave">
-        <do_event value="chiave_get" />
-    </item>
-  </items>
 
 </world>

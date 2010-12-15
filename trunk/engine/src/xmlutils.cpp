@@ -49,7 +49,8 @@ bool xmlCheckEvents(TiXmlElement *elem)
              i = i->NextSiblingElement("event"))
         {
             if (i->Attribute("id") == 0 ||
-                !xmlCheckActions(i->FirstChildElement("actions_if")))
+                !xmlCheckActions(i->FirstChildElement("actions_if")) ||
+                !xmlCheckReqs(i->FirstChildElement("requirements")))
                 return false;
         }
     }
@@ -77,6 +78,29 @@ bool xmlCheckParams(TiXmlElement *elem)
             if (i->Attribute("value") == 0)
                 return false;
         }
+    return true;
+}
+
+bool xmlCheckReqs(TiXmlElement *elem)
+{
+    if (elem)
+    {
+        for (TiXmlElement *i = elem->FirstChildElement("item_req"); i != 0;
+             i = i->NextSiblingElement("item_req"))
+        {
+            if (i->Attribute("id") == 0 ||
+                i->Attribute("value") == 0)
+                return false;
+        }
+        int tmp;
+        for (TiXmlElement *i = elem->FirstChildElement("var_req"); i != 0;
+             i = i->NextSiblingElement("var_req"))
+        {
+            if (i->Attribute("id") == 0 ||
+                i->QueryIntAttribute("value", &tmp) != TIXML_SUCCESS)
+                return false;
+        }
+    }
     return true;
 }
 
