@@ -5,6 +5,8 @@ Room::Room(QString const& name, QObject *parent) :
 {
     this->_name = name;
     _areas = new QList<Area*>;
+    _icon = QPixmap(QSize(64,64));
+    _icon.fill();
 }
 
 Room::~Room()
