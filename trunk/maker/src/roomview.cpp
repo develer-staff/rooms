@@ -34,6 +34,9 @@ void RoomView::setBackground()
                                                   QDir::currentPath(),
                                                   "Images (*.png *.xpm *.jpg *.gif)");
     QPixmap bg(bgFile);
+    if (bg.isNull())
+        return;
+
     bg = bg.scaled(world->getSize());
 
     world->rooms()->setRoomBackground(world->rooms()->at(active_room), bg);
