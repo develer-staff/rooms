@@ -94,7 +94,9 @@ void DrawDevice::mouseMoveEvent(QMouseEvent *event)
     else
         item_text = "";
 
-    if (area != 0 || item != 0)
+    if (item != 0)
+        setCursor(Qt::OpenHandCursor);
+    else if (area != 0)
         setCursor(Qt::PointingHandCursor);
     else
         setCursor(Qt::ArrowCursor);
