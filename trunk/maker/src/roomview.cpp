@@ -51,7 +51,6 @@ void RoomView::updateRoomView()
     {
         AreaRect *area_rect = new AreaRect(world->rooms()->at(active_room)->areas()->at(i));
         scene->addItem(area_rect);
-        //scene->addRect(QRect(QPoint(100, 100), world->getSize()));
     }
 }
 
