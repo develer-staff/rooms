@@ -14,6 +14,7 @@ bool xmlCheckImages(TiXmlElement *elem);
 bool xmlCheckEvents(TiXmlElement *elem);
 bool xmlCheckActions(TiXmlElement *elem);
 bool xmlCheckParams(TiXmlElement *elem);
+bool xmlCheckReqs(TiXmlElement *elem);
 bool xmlCheckAreas(TiXmlElement *elem);
 bool xmlCheckItems(TiXmlElement *elem);
 bool xmlCheckDoEvents(TiXmlElement *elem);

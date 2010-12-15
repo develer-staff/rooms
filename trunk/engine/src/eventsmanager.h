@@ -4,6 +4,7 @@
 #include <string> //std::string
 #include <map> //std::map
 #include <vector> //std::vector
+#include <utility> //std::pair
 
 class Engine;
 class Event;
@@ -30,6 +31,9 @@ class EventsManager
         std::vector <Action *> actionsForEvent(string id);
         int var(string id);
         void var(string id, int value);
+    private:
+        bool checkItemReqs(std::vector <std::pair <string, string> > reqs);
+        bool checkVarReqs(std::vector <std::pair <string, int> > reqs);
 };
 
 #endif // EVENTSMANAGER_H

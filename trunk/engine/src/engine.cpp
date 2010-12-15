@@ -130,6 +130,25 @@ void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
          i != events.end(); ++i)
     {
         Event *event = _events_mgr->addEvent((*i)->Attribute("id"));
+        //create items parameters
+        std::vector <TiXmlElement *> ireqs =
+            xmlGetAllChilds((*i)->FirstChildElement("requirements"), "item_req");
+        for (std::vector<TiXmlElement *>::iterator j = ireqs.begin();
+             j != ireqs.end(); ++j)
+            event->addItemReq((*j)->Attribute("id"),
+                              (*j)->Attribute("value"));
+        //create var parameters
+        std::vector <TiXmlElement *> vreqs =
+            xmlGetAllChilds((*i)->FirstChildElement("requirements"), "var_req");
+        for (std::vector<TiXmlElement *>::iterator j = vreqs.begin();
+             j != vreqs.end(); ++j)
+        {
+            int var_value;
+            (*j)->QueryIntAttribute("value", &var_value);
+            event->addVarReq((*j)->Attribute("id"),
+                              var_value);
+        }
+        //create actions
         std::vector <TiXmlElement *> actions =
             xmlGetAllChilds((*i)->FirstChildElement("actions_if"), "action");
         for (std::vector<TiXmlElement *>::iterator j = actions.begin();

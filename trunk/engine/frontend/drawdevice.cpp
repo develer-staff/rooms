@@ -32,7 +32,9 @@ bool DrawDevice::loadImage(string id, string filename)
     {
         images[id] = new QImage(filename.c_str());
         return true;
-    } else {
+    }
+    else
+    {
         return false;
     }
 }

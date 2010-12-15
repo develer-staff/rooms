@@ -55,5 +55,38 @@ void EventsManager::var(string id, int value)
 
 std::vector <Action *> EventsManager::actionsForEvent(string id)
 {
-    return events[id]->actions();
+    Event *event = events[id];
+    if (checkItemReqs(event->itemReqs()) && checkVarReqs(event->varReqs()))
+    {
+        engine->log("Requirements satisfied", 3);
+        return event->actions();
+    }
+    else
+    {
+        engine->log("Requirements not satisfied", 3);
+        std::vector <Action *> empty;
+        return empty;
+    }
+}
+
+bool EventsManager::checkItemReqs(std::vector <std::pair <string, string> > reqs)
+{
+    for (std::vector <std::pair <string, string> >::iterator i = reqs.begin();
+         i != reqs.end(); ++i)
+    {
+        if (engine->getRoomsManager()->item(i->first)->parent() != i->second)
+            return false;
+    }
+    return true;
+}
+
+bool EventsManager::checkVarReqs(std::vector <std::pair <string, int> > reqs)
+{
+    for (std::vector <std::pair <string, int> >::iterator i = reqs.begin();
+         i != reqs.end(); ++i)
+    {
+        if (var(i->first) != i->second)
+            return false;
+    }
+    return true;
 }
