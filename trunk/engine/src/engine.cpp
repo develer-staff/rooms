@@ -238,25 +238,25 @@ void Engine::execActions(std::vector <Action *> actions)
     for (i = actions.begin(); i != actions.end(); ++i)
     {
         //TODO: think about improving this loop
-        Action *act = *i;
-        log("Exec action: " + act->id, 3);
-        if (act->id == "ROOM_GOTO")
+        Action act = *(*i);
+        log("Exec action: " + act.id, 3);
+        if (act.id == "ROOM_GOTO")
         {
-            apiRoomGoto(act->popStrParam());
-        } else if (act->id == "VAR_SET")
+            apiRoomGoto(act.popStrParam());
+        } else if (act.id == "VAR_SET")
         {
-            int var_value = act->popIntParam();
-            string var_name = act->popStrParam();
+            int var_value = act.popIntParam();
+            string var_name = act.popStrParam();
             apiVarSet(var_name, var_value);
-        } else if (act->id == "ITEM_MOVE")
+        } else if (act.id == "ITEM_MOVE")
         {
-            string item_dest = act->popStrParam();
-            string item_id = act->popStrParam();
+            string item_dest = act.popStrParam();
+            string item_id = act.popStrParam();
             apiItemMove(item_id, item_dest);
-        } else if (act->id == "AREA_SET_ENABLE")
+        } else if (act.id == "AREA_SET_ENABLE")
         {
-            int area_val = act->popIntParam();
-            string area_id = act->popStrParam();
+            int area_val = act.popIntParam();
+            string area_id = act.popStrParam();
             apiAreaSetEnable(area_id, area_val);
         }
     }
