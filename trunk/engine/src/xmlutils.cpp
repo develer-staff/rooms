@@ -6,6 +6,7 @@ bool xmlCheckDoc(TiXmlDocument *doc)
         return doc->LoadFile() &&
                xmlCheckRoot(doc->RootElement()) &&
                xmlCheckImages(doc->RootElement()->FirstChildElement("images")) &&
+               xmlCheckVars(doc->RootElement()->FirstChildElement("vars")) &&
                xmlCheckEvents(doc->RootElement()->FirstChildElement("events")) &&
                xmlCheckRooms(doc->RootElement()->FirstChildElement("rooms")) &&
                xmlCheckRooms(doc->RootElement()->FirstChildElement("items"));
@@ -40,6 +41,21 @@ bool xmlCheckImages(TiXmlElement *elem)
         }
     return true;
 }
+
+bool xmlCheckVars(TiXmlElement *elem)
+{
+    if (elem)
+        for (TiXmlElement *i = elem->FirstChildElement("var"); i != 0;
+             i = i->NextSiblingElement("var"))
+        {
+            int tmp;
+            if (i->Attribute("id") == 0 ||
+                i->QueryIntAttribute("value", &tmp) != TIXML_SUCCESS)
+                return false;
+        }
+    return true;
+}
+
 
 bool xmlCheckEvents(TiXmlElement *elem)
 {

@@ -71,6 +71,7 @@ class Engine
         void createEventsFromXml(std::vector <TiXmlElement *> events);
         void createRoomsFromXml(std::vector <TiXmlElement *> rooms);
         void createItemsFromXml(std::vector <TiXmlElement *> items);
+        void createVarsFromXml(std::vector <TiXmlElement *> vars);
         //RISC API
         void apiRoomGoto(string id);
         void apiVarSet(string id, int value);

@@ -93,11 +93,14 @@ bool Engine::loadWorld(string filename)
             xmlGetAllChilds(root->FirstChildElement("events"), "event");
         std::vector <TiXmlElement *> items =
             xmlGetAllChilds(root->FirstChildElement("items"), "item");
+        std::vector <TiXmlElement *> vars =
+            xmlGetAllChilds(root->FirstChildElement("vars"), "var");
         //Populating model
         createImgsFromXml(images);
         createEventsFromXml(events);
         createRoomsFromXml(rooms);
         createItemsFromXml(items);
+        createVarsFromXml(vars);
         //TODO: load rest of world file
         string start_room = root->Attribute("start");
         apiRoomGoto(start_room);
@@ -122,6 +125,17 @@ void Engine::createImgsFromXml(std::vector <TiXmlElement *> images)
     for (std::vector<TiXmlElement *>::iterator i = images.begin();
          i != images.end(); ++i)
         _images[(*i)->Attribute("id")] = (*i)->Attribute("file");
+}
+
+void Engine::createVarsFromXml(std::vector <TiXmlElement *> vars)
+{
+    for (std::vector<TiXmlElement *>::iterator i = vars.begin();
+         i != vars.end(); ++i)
+    {
+        int var_value;
+        (*i)->QueryIntAttribute("value", &var_value);
+        _events_mgr->var((*i)->Attribute("id"), var_value);
+    }
 }
 
 void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
