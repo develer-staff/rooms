@@ -10,6 +10,11 @@ class Area : public QObject
 
 public:
     Area(const QRect &rect, QObject *parent = 0);
+
+    QRect rect() const;
+
+private:
+    QRect _rect;
 };
 
 #endif // AREA_H

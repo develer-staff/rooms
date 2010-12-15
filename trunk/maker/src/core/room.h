@@ -23,8 +23,10 @@ public:
 
     QString name() const;
 
+    QList<Area*> *areas() const;
+
 private:
-    QVector<Area*> *areas;
+    QList<Area*> *_areas;
     QString _name;
     QPixmap _background;
     QPixmap _icon;
