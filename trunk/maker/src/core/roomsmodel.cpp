@@ -71,3 +71,12 @@ void RoomsModel::setRoomBackground(Room *room, const QPixmap &background)
 
     emit dataChanged(index(i), index(i));
 }
+
+void RoomsModel::addRoomArea(Room *room, const QRect &rect)
+{
+    int i = rooms.indexOf(room);
+    if (i == -1)
+        return;
+
+    room->addArea(rect);
+}

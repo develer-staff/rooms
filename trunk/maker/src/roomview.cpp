@@ -1,4 +1,5 @@
 #include "roomview.h"
+#include "areawidget.h"
 
 RoomView::RoomView(QWidget *parent) :
     QGraphicsView(parent)
@@ -13,7 +14,9 @@ RoomView::RoomView(QWidget *parent) :
 
 void RoomView::addArea()
 {
-
+    world->rooms()->addRoomArea(world->rooms()->at(active_room),
+                                QRect(QPoint(20, 20), QSize(64, 64)));
+    updateRoomView();
 }
 
 void RoomView::showContextMenu(const QPoint &point)
@@ -41,6 +44,11 @@ void RoomView::updateRoomView()
 {
     scene->clear();
     scene->addPixmap(world->rooms()->at(active_room)->background());
+    for (int i = 0; i < world->rooms()->at(active_room)->areas()->count(); i++)
+    {
+        AreaWidget *widget = new AreaWidget(world->rooms()->at(active_room)->areas()->at(i));
+        scene->addWidget(widget, Qt::Dialog);
+    }
 }
 
 void RoomView::setWorld(World *world)

@@ -19,6 +19,7 @@ public:
     void appendRoom(const QString &name);
 
     void setRoomBackground(Room *room, const QPixmap &background);
+    void addRoomArea(Room *room, const QRect &rect);
 
 private:
     QList<Room *> rooms;
