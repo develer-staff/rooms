@@ -53,12 +53,9 @@ void RoomsModel::appendRoom(const QString &name)
 {
     Room *room = new Room(name);
 
-    if (!rooms.contains(room))
-    {
-        beginInsertRows(QModelIndex(), rooms.size(), rooms.size());
-        rooms.append(room);
-        endInsertRows();
-    }
+    beginInsertRows(QModelIndex(), rooms.size(), rooms.size());
+    rooms.append(room);
+    endInsertRows();
 }
 
 void RoomsModel::setRoomBackground(Room *room, const QPixmap &background)
