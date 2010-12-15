@@ -28,7 +28,9 @@ Area *Room::addArea(string id, Area *area_ptr)
     {
         areas[id] = area_ptr;
         return area_ptr;
-    } else {
+    }
+    else
+    {
         return 0;
     }
 }
@@ -40,7 +42,9 @@ Item *Room::addItem(string id, Item *item_ptr)
     {
         _items[id] = item_ptr;
         return item_ptr;
-    } else {
+    }
+    else
+    {
         return 0;
     }
 }

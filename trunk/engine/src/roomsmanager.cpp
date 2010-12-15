@@ -163,7 +163,9 @@ Room *RoomsManager::currentRoom(string name)
     {
         current_room = rooms[name];
         return current_room;
-    } else {
+    }
+    else
+    {
         return 0;
     }
 }

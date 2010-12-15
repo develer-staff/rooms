@@ -60,7 +60,9 @@ std::vector <Action *> EventsManager::actionsForEvent(string id)
     {
         engine->log("Requirements satisfied", 3);
         return event->actions();
-    } else {
+    }
+    else
+    {
         engine->log("Requirements not satisfied", 3);
         std::vector <Action *> empty;
         return empty;
