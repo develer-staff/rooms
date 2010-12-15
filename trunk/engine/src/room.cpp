@@ -96,6 +96,22 @@ string Room::eventAt(int x, int y)
     return "";
 }
 
+Item *Room::itemAt(int x, int y)
+{
+    for (std::map <string, Item *>::iterator i = _items.begin(); i != _items.end(); ++i)
+        if (pointInsideArea(x, y, dynamic_cast<Area *>(i->second)))
+            return i->second;
+    return 0;
+}
+
+Area *Room::areaAt(int x, int y)
+{
+    for (std::map <string, Area *>::iterator i = areas.begin(); i != areas.end(); ++i)
+        if (pointInsideArea(x, y, i->second))
+            return i->second;
+    return 0;
+}
+
 bool Room::pointInsideArea(int x, int y, Area *area)
 {
     return (x >= area->x() && x <= area->x() + area->w() && y >= area->y() &&

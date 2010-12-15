@@ -34,6 +34,8 @@ class Room
         Item *item(string id);
         std::vector <Item *> items();
         string eventAt(int x, int y);
+        Item *itemAt(int x, int y);
+        Area *areaAt(int x, int y);
     protected:
         bool pointInsideArea(int x, int y, Area *area);
 };

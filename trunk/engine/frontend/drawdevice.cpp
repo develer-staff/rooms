@@ -17,6 +17,7 @@ DrawDevice::~DrawDevice()
 
 void DrawDevice::initialize()
 {
+    setMouseTracking(true);
     RoomsManager *man = engine->getRoomsManager();
     parentWidget()->resize(man->width(), man->height());
     parentWidget()->setWindowTitle(man->name().c_str());
@@ -52,7 +53,7 @@ void DrawDevice::quit(int status)
 
 void DrawDevice::paintEvent(QPaintEvent *event)
 {
-    QPainter _painter(this);
+    QPainter painter(this);
     switch (engine->state())
     {
         case Engine::GAME:
@@ -62,15 +63,16 @@ void DrawDevice::paintEvent(QPaintEvent *event)
             QImage *bg = images[room->bg()];
             QRectF rect(0.0, 0.0, width(), height());
             std::vector <Item *> items = room->items();
-            _painter.drawImage(rect, *bg);
+            painter.drawImage(rect, *bg);
             //Draw items
             for (std::vector<Item *>::iterator i = items.begin();
                  i != items.end(); ++i)
             {
                 QImage *img = images[(*i)->image()];
                 QRectF irect((*i)->x(), (*i)->y(), (*i)->w(), (*i)->h());
-                _painter.drawImage(irect, *img);
+                painter.drawImage(irect, *img);
             }
+            painter.drawText(20, height() - 20, item_text.c_str());
             break;
         }
     }
@@ -79,6 +81,24 @@ void DrawDevice::paintEvent(QPaintEvent *event)
 void DrawDevice::mousePressEvent(QMouseEvent * event)
 {
     engine->click(event->x(), event->y());
+    repaint(QRect(0, 0, width(), height()));
+}
+void DrawDevice::mouseMoveEvent(QMouseEvent *event)
+{
+    Item *item = engine->getRoomsManager()->currentRoom()->itemAt(event->x(),
+                                                                  event->y());
+    Area *area = engine->getRoomsManager()->currentRoom()->areaAt(event->x(),
+                                                                  event->y());
+    if (item != 0)
+        item_text = item->id;
+    else
+        item_text = "";
+
+    if (area != 0 || item != 0)
+        setCursor(Qt::PointingHandCursor);
+    else
+        setCursor(Qt::ArrowCursor);
+
     repaint(QRect(0, 0, width(), height()));
 }
 
