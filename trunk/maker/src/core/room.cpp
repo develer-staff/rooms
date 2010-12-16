@@ -4,7 +4,6 @@ Room::Room(QString const& name, QObject *parent) :
     QObject(parent)
 {
     this->_name = name;
-    _areas = new QList<Area*>;
     _icon = QPixmap(QSize(64,64));
     _icon.fill();
 }
@@ -22,7 +21,7 @@ bool Room::addArea(const QRect &rect)
     if (ok)
     {
         area = new Area(rect);
-        _areas->append(area);
+        _areas.append(area);
     }
 
     return ok;
@@ -49,7 +48,7 @@ QString Room::name() const
     return _name;
 }
 
-QList<Area*> *Room::areas() const
+QList<Area*> Room::areas() const
 {
     return _areas;
 }

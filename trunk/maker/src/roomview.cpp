@@ -47,9 +47,9 @@ void RoomView::updateRoomView()
 {
     scene->clear();
     scene->addPixmap(world->rooms()->at(active_room)->background());
-    for (int i = 0; i < world->rooms()->at(active_room)->areas()->count(); i++)
+    for (int i = 0; i < world->rooms()->at(active_room)->areas().count(); i++)
     {
-        AreaRect *area_rect = new AreaRect(world->rooms()->at(active_room)->areas()->at(i));
+        AreaRect *area_rect = new AreaRect(world->rooms()->at(active_room)->areas().at(i));
         scene->addItem(area_rect);
     }
 }
