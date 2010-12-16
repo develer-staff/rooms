@@ -15,6 +15,7 @@ public:
 private:
     QRectF bounding_rect;
     qreal pen_width;
+    Area *_area;
 };
 
 #endif // AREAWIDGET_H
