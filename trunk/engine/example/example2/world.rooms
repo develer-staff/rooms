@@ -15,20 +15,20 @@
     <room id="0" bg="" />
     <room id="Locanda" bg="img_locanda">
       <areas>
-        <area id="area_porta_locanda" enabled="1" x="250" y="300" width="150" height="150">
+        <area id="area_porta_locanda" enabled="1" x="200" y="350" width="100" height="150">
           <do_event value="eve_goto_locanda" />
         </area>
       </areas>
     </room>
     <room id="Stanza Centrale" bg="img_centrale">
       <areas>
-        <area id="area_vai_cantina" enabled="1" x="250" y="350" width="300" height="200">
+        <area id="area_vai_cantina" enabled="1" x="300" y="350" width="200" height="200">
           <do_event value="eve_goto_cantina" />
         </area>
-        <area id="area_vai_star" enabled="1" x="100" y="150" width="200" height="350">
+        <area id="area_vai_star" enabled="1" x="50" y="150" width="100" height="300">
           <do_event value="eve_goto_star" />
         </area>
-        <area id="area_vai_end" enabled="1" x="600" y="150" width="200" height="350">
+        <area id="area_vai_end" enabled="1" x="650" y="150" width="100" height="300">
           <do_event value="eve_goto_end" />
         </area>
       </areas>
@@ -45,7 +45,7 @@
         <area id="area_vai_centrale2" enabled="1" x="10" y="500" width="780" height="100">
           <do_event value="eve_goto_centrale" />
         </area>
-        <area id="area_switch1" enabled="1" x="300" y="300" width="200" height="200">
+        <area id="area_switch1" enabled="1" x="325" y="325" width="150" height="150">
           <do_event value="eve_switch1_on" />
         </area>
       </areas>

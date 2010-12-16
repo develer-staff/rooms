@@ -62,6 +62,7 @@ class Engine
         RoomsManager *getRoomsManager();
         EventsManager *getEventsManager();
         Engine::State state();
+        void state(Engine::State state_name);
         void log(string text, int level);
         void exit(int status);
         std::vector<std::pair<string, string> > getImgNames();

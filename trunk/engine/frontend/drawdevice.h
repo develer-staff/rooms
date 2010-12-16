@@ -20,6 +20,7 @@ class DrawDevice: public QWidget
     private:
         Engine *engine;
         std::map <string, QImage *> images;
+        string item_text;
     public:
         DrawDevice(Engine *eng, QWidget *parent=0);
         virtual ~DrawDevice();
@@ -31,6 +32,7 @@ class DrawDevice: public QWidget
         //QT EVENTS
         void paintEvent(QPaintEvent *event);
         void mousePressEvent(QMouseEvent * event);
+        void mouseMoveEvent(QMouseEvent *event);
     private:
         bool fileExists(string filename);
 
