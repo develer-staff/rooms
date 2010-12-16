@@ -26,11 +26,11 @@ class EventsManager
         EventsManager(Engine *eng);
         virtual ~EventsManager();
     public:
-        Event *addEvent(const string id);
-        Event *event(const string id);
-        std::vector <Action *> actionsForEvent(const string id);
-        void var(const string id, const int value);
-        int var(const string id) const;
+        Event *addEvent(const string name);
+        Event *event(const string name);
+        std::vector <Action *> actionsForEvent(const string name);
+        void var(const string name, const int value);
+        int var(const string name) const;
     private:
         bool checkItemReqs(const std::vector <std::pair <string, string> > reqs) const;
         bool checkVarReqs(const std::vector <std::pair <string, int> > reqs) const;

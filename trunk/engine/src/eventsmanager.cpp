@@ -18,44 +18,44 @@ EventsManager::~EventsManager()
     events.clear();
 }
 
-Event *EventsManager::addEvent(const string id)
+Event *EventsManager::addEvent(const string name)
 {
-    if (event(id) != 0)
+    if (event(name) != 0)
         return 0;
     else
     {
-        Event *e = new Event(id);
-        events[id] = e;
+        Event *e = new Event(name);
+        events[name] = e;
         return e;
     }
 }
 
-Event *EventsManager::event(const string id)
+Event *EventsManager::event(const string name)
 {
-    std::map<string, Event *>::iterator i = events.find(id);
+    std::map<string, Event *>::iterator i = events.find(name);
     if (i == events.end())
         return 0;
     else
         return i->second;
 }
 
-int EventsManager::var(const string id) const
+int EventsManager::var(const string name) const
 {
-    std::map<string, int>::const_iterator i = _vars.find(id);
+    std::map<string, int>::const_iterator i = _vars.find(name);
     if (i == _vars.end())
         return 0;
     else
         return i->second;
 }
 
-void EventsManager::var(const string id, const int value)
+void EventsManager::var(const string name, const int value)
 {
-    _vars[id] = value;
+    _vars[name] = value;
 }
 
-std::vector <Action *> EventsManager::actionsForEvent(const string id)
+std::vector <Action *> EventsManager::actionsForEvent(const string name)
 {
-    Event *event = events[id];
+    Event *event = events[name];
     if (checkItemReqs(event->itemReqs()) && checkVarReqs(event->varReqs()))
     {
         engine->log("Requirements satisfied", 3);

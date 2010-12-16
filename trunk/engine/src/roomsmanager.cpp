@@ -64,56 +64,56 @@ int RoomsManager::height() const
     return _height;
 }
 
-Room * RoomsManager::addRoom(const string id, const string bg)
+Room * RoomsManager::addRoom(const string name, const string bg)
 {
-    if (room(id) != 0)
+    if (room(name) != 0)
         return 0;
     else
     {
-        Room *r = new Room(id);
+        Room *r = new Room(name);
         r->bg(bg);
-        rooms[id] = r;
+        rooms[name] = r;
         return r;
     }
 }
 
-Area * RoomsManager::addArea(const string id, const string room, const int x, const int y,
+Area * RoomsManager::addArea(const string name, const string room, const int x, const int y,
                              const int w, const int h, const string event)
 {
-    if (area(id) != 0)
+    if (area(name) != 0)
         return 0;
     else
     {
-        Area *a = new Area(id);
-        areas[id] = a;
+        Area *a = new Area(name);
+        areas[name] = a;
         a->size(x, y, w, h);
         a->event(event);
-        rooms[room]->addArea(id, a);
+        rooms[room]->addArea(name, a);
         return a;
     }
 }
 
-Item * RoomsManager::addItem(const string id, const string room, const int x, const int y,
+Item * RoomsManager::addItem(const string name, const string room, const int x, const int y,
                              const int w, const int h, const string event, const string image)
 {
-    if (item(id) != 0)
+    if (item(name) != 0)
         return 0;
     else
     {
-        Item *i = new Item(id);
-        items[id] = i;
+        Item *i = new Item(name);
+        items[name] = i;
         i->size(x, y, w, h);
         i->event(event);
         i->move(room);
-        rooms[room]->addItem(id, i);
+        rooms[room]->addItem(name, i);
         i->image(image);
         return i;
     }
 }
 
-void RoomsManager::moveItem(const string id, const string dest)
+void RoomsManager::moveItem(const string name, const string dest)
 {
-    Item *mov_item = item(id);
+    Item *mov_item = item(name);
     if (mov_item != 0)
     {
         string parent = mov_item->parent();
@@ -124,9 +124,9 @@ void RoomsManager::moveItem(const string id, const string dest)
             engine->log("WARNING: invalid item movement!", 2);
             return;
         }
-        r_parent->remItem(id);
+        r_parent->remItem(name);
         mov_item->move(dest);
-        r_dest->addItem(id, mov_item);
+        r_dest->addItem(name, mov_item);
     }
 }
 

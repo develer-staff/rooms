@@ -30,9 +30,9 @@ class RoomsManager
         virtual ~RoomsManager();
     public:
         Room *addRoom(const string name, const string bg);
-        Area *addArea(const string id, const string room, const int x, const int y,
+        Area *addArea(const string name, const string room, const int x, const int y,
                       const int w, const int h, const string event);
-        Item *addItem(const string id, const string room, const int x, const int y,
+        Item *addItem(const string name, const string room, const int x, const int y,
                       const int w, const int h, const string event, const string image);
         Room *room(const string name);
         Area *area(const string name);
@@ -42,10 +42,10 @@ class RoomsManager
         void size(const int width, const int height);
         int height() const;
         int width() const;
-        void currentRoom(const string id);
+        void currentRoom(const string name);
         Room *currentRoom();
         string eventAt(const int x, const int y);
-        void moveItem(const string id, const string dest);
+        void moveItem(const string name, const string dest);
 };
 
 #endif // ROOMMANAGER_H
