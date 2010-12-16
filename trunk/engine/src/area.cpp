@@ -1,6 +1,6 @@
 #include "area.h"
 
-Area::Area(std::string name): id(name)
+Area::Area(const std::string name): id(name)
 {
     enabled(true);
 }
@@ -10,7 +10,7 @@ Area::~Area()
 
 }
 
-void Area::size(int x, int y, int width, int height)
+void Area::size(const int x, const int y, const int width, const int height)
 {
     _x = x;
     _y = y;
@@ -18,43 +18,43 @@ void Area::size(int x, int y, int width, int height)
     _height = height;
 }
 
-int Area::x()
+int Area::x() const
 {
     return _x;
 }
 
-int Area::y()
+int Area::y() const
 {
     return _y;
 }
 
-int Area::h()
+int Area::h() const
 {
     return _height;
 }
 
-int Area::w()
+int Area::w() const
 {
     return _width;
 }
 
-std::string Area::event()
+std::string Area::event() const
 {
     return _event;
 }
 
-void Area::event(std::string event)
+void Area::event(const std::string event)
 {
     _event = event;
 }
 
-void Area::enabled(bool value)
+void Area::enabled(const bool value)
 {
     _enabled = value;
 }
 
 
-bool Area::enabled()
+bool Area::enabled() const
 {
     return _enabled;
 }

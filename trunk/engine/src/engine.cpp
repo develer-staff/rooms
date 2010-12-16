@@ -43,7 +43,7 @@ void Engine::exit()
     delete engine;
 }
 
-void Engine::click (int x, int y)
+void Engine::click (const int x, const int y)
 {
     log("Mouse click received", 3);
     switch (_state)
@@ -61,22 +61,22 @@ void Engine::click (int x, int y)
     }
 }
 
-Engine::State Engine::state()
+Engine::State Engine::state() const
 {
     return _state;
 }
 
-void Engine::state(Engine::State state_name)
+void Engine::state(const Engine::State state_name)
 {
     _state = state_name;
 }
 
-void Engine::loadGame(string filename)
+void Engine::loadGame(const string filename)
 {
 
 }
 
-bool Engine::loadWorld(string filename)
+bool Engine::loadWorld(const string filename)
 {
     try
     {
@@ -122,7 +122,7 @@ bool Engine::loadWorld(string filename)
     }
 }
 
-std::vector<std::pair<string, string> > Engine::getImgNames()
+std::vector<std::pair<string, string> > Engine::getImgNames() const
 {
     std::vector<std::pair<string, string> > v(_images.begin(), _images.end());
     return v;
@@ -230,12 +230,12 @@ void Engine::createItemsFromXml(std::vector <TiXmlElement *> items)
     }
 }
 
-RoomsManager *Engine::getRoomsManager()
+RoomsManager *Engine::getRoomsManager() const
 {
     return _rooms_mgr;
 }
 
-EventsManager *Engine::getEventsManager()
+EventsManager *Engine::getEventsManager() const
 {
     return _events_mgr;
 }
@@ -270,7 +270,7 @@ void Engine::execActions(std::vector <Action *> actions)
     }
 }
 
-void Engine::log(string text, int level)
+void Engine::log(const string text, const int level)
 {
     if (level <= DEBUG_LEVEL)
     {
@@ -281,25 +281,25 @@ void Engine::log(string text, int level)
     }
 }
 
-void Engine::apiRoomGoto(string id)
+void Engine::apiRoomGoto(const string id)
 {
     log("ROOM_GOTO: " + id, 2);
     _rooms_mgr->currentRoom(id);
 }
 
-void Engine::apiVarSet(string id, int value)
+void Engine::apiVarSet(const string id, const int value)
 {
     log("VAR_SET: " + id, 2);
     _events_mgr->var(id, value);
 }
 
-void Engine::apiItemMove(string id, string dest)
+void Engine::apiItemMove(const string id, const string dest)
 {
     log("ITEM_MOVE: " + id + ", dest: " + dest, 2);
     _rooms_mgr->moveItem(id, dest);
 }
 
-void Engine::apiAreaSetEnable(string id, int value)
+void Engine::apiAreaSetEnable(const string id, const int value)
 {
     bool bool_val = value;
     string str_val;

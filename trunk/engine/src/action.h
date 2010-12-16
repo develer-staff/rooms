@@ -15,10 +15,10 @@ class Action
     private:
         std::vector <std::string> params;
     public:
-        Action(std::string name);
+        Action(const std::string name);
         virtual ~Action();
     public:
-        void pushParam(std::string value);
+        void pushParam(const std::string value);
         std::string popStrParam();
         int popIntParam();
 };

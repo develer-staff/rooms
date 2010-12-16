@@ -1,6 +1,6 @@
 #include "item.h"
 
-Item::Item(string name): Area(name)
+Item::Item(const string name): Area(name)
 {
     room_parent = "";
 }
@@ -10,23 +10,23 @@ Item::~Item()
 
 }
 
-void Item::move(string room)
+void Item::move(const string room)
 {
     room_parent = room;
 }
 
-string Item::parent()
+string Item::parent() const
 {
     return room_parent;
 }
 
 
-void Item::image(string id)
+void Item::image(const string id)
 {
     _image = id;
 }
 
-string Item::image()
+string Item::image() const
 {
     return _image;
 }

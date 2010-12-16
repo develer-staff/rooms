@@ -14,21 +14,22 @@ class Action;
  */
 class Event
 {
+    public:
+        const std::string id;
     private:
         std::vector <Action *> _actions;
         std::vector <std::pair <string, string> > item_reqs;
         std::vector <std::pair <string, int> > var_reqs;
     public:
-        Event(string name);
+        Event(const string name);
         virtual ~Event();
     public:
-        const std::string id;
-        Action *addAction(string name);
-        std::vector <Action *> actions();
-        void addItemReq(string name, string room);
-        void addVarReq(string name, int value);
-        std::vector <std::pair <string, string> > itemReqs();
-        std::vector <std::pair <string, int> > varReqs();
+        Action *addAction(const string name);
+        std::vector <Action *> actions() const;
+        void addItemReq(const string name, const string room);
+        void addVarReq(const string name, const int value);
+        std::vector <std::pair <string, string> > itemReqs() const;
+        std::vector <std::pair <string, int> > varReqs() const;
 };
 
 #endif // EVENT_H

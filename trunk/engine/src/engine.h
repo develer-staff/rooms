@@ -56,28 +56,28 @@ class Engine
     public:
         static Engine *createEngine();
         static void exit();
-        void click (int x, int y);
-        bool loadWorld(string filename);
-        void loadGame(string filename);
-        RoomsManager *getRoomsManager();
-        EventsManager *getEventsManager();
-        Engine::State state();
-        void state(Engine::State state_name);
-        void log(string text, int level);
-        void exit(int status);
-        std::vector<std::pair<string, string> > getImgNames();
+        void click (const int x, const int y);
+        bool loadWorld(const string filename);
+        void loadGame(const string filename);
+        RoomsManager *getRoomsManager() const;
+        EventsManager *getEventsManager() const;
+        Engine::State state() const;
+        void state(const Engine::State state_name);
+        void log(const string text, const int level);
+        void exit(const int status);
+        std::vector<std::pair<string, string> > getImgNames() const;
     private:
-        void execActions(std::vector <Action *> actions);
+        void execActions(const std::vector <Action *> actions);
         void createImgsFromXml(std::vector <TiXmlElement *> images);
         void createEventsFromXml(std::vector <TiXmlElement *> events);
         void createRoomsFromXml(std::vector <TiXmlElement *> rooms);
         void createItemsFromXml(std::vector <TiXmlElement *> items);
         void createVarsFromXml(std::vector <TiXmlElement *> vars);
         //RISC API
-        void apiRoomGoto(string id);
-        void apiVarSet(string id, int value);
-        void apiItemMove(string id,string dest);
-        void apiAreaSetEnable(string id, int value);
+        void apiRoomGoto(const string id);
+        void apiVarSet(const string id, const int value);
+        void apiItemMove(const string id, const string dest);
+        void apiAreaSetEnable(const string id, const int value);
 };
 
 #endif // ROOMSENGINE_H

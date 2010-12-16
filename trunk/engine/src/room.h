@@ -22,22 +22,22 @@ class Room
         std::map<string, Area *> areas;
         std::map<string, Item *> _items;
     public:
-        Room(string name);
+        Room(const string name);
         virtual ~Room();
     public:
-        string bg();
-        void bg(string id);
-        Area *addArea(string id, Area *area_ptr);
-        Item *addItem(string id, Item *item_ptr);
-        void remItem(string id);
-        Area *area(string id);
-        Item *item(string id);
-        std::vector <Item *> items();
-        string eventAt(int x, int y);
-        Item *itemAt(int x, int y);
-        Area *areaAt(int x, int y);
+        string bg() const;
+        void bg(const string id);
+        Area *addArea(const string id, Area *area_ptr);
+        Item *addItem(const string id, Item *item_ptr);
+        void remItem(const string id);
+        Area *area(const string id);
+        Item *item(const string id);
+        std::vector <Item *> items() const;
+        string eventAt(const int x, const int y) const;
+        Item *itemAt(const int x, const int y);
+        Area *areaAt(const int x, const int y);
     protected:
-        bool pointInsideArea(int x, int y, Area *area);
+        bool pointInsideArea(const int x, const int y, const Area *area) const;
 };
 
 #endif // ROOM_H

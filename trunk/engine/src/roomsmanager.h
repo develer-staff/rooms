@@ -29,23 +29,23 @@ class RoomsManager
         RoomsManager(Engine *eng);
         virtual ~RoomsManager();
     public:
-        Room *addRoom(string name, string bg);
-        Area *addArea(string id, string room, int x, int y,
-                      int w, int h, string event);
-        Item *addItem(string id, string room, int x, int y,
-                      int w, int h, string event, string image);
-        Room *room(string name);
-        Area *area(string name);
-        Item *item(string name);
-        void name(string name);
-        string name();
-        void size(int width, int height);
-        int height();
-        int width();
-        Room *currentRoom(string id);
+        Room *addRoom(const string name, const string bg);
+        Area *addArea(const string id, const string room, const int x, const int y,
+                      const int w, const int h, const string event);
+        Item *addItem(const string id, const string room, const int x, const int y,
+                      const int w, const int h, const string event, const string image);
+        Room *room(const string name);
+        Area *area(const string name);
+        Item *item(const string name);
+        void name(const string name);
+        string name() const;
+        void size(const int width, const int height);
+        int height() const;
+        int width() const;
+        Room *currentRoom(const string id);
         Room *currentRoom();
-        string eventAt(int x, int y);
-        void moveItem(string id, string dest);
+        string eventAt(const int x, const int y);
+        void moveItem(const string id, const string dest);
 };
 
 #endif // ROOMMANAGER_H

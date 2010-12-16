@@ -18,18 +18,18 @@ class Area
         int _height;
         std::string _event;
     public:
-        Area(std::string name);
+        Area(const std::string name);
         virtual ~Area();
     public:
-        void size(int x, int y, int width, int height);
-        int x();
-        int y();
-        int w();
-        int h();
-        std::string event();
-        void event(std::string event);
-        void enabled(bool value);
-        bool enabled();
+        void size(const int x, const int y, const int width, const int height);
+        int x() const;
+        int y() const;
+        int w() const;
+        int h() const;
+        std::string event() const;
+        void event(const std::string event);
+        void enabled(const bool value);
+        bool enabled() const;
 };
 
 #endif // AREA_H
