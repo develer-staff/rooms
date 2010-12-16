@@ -45,7 +45,7 @@
         <area id="area_vai_centrale2" enabled="1" x="10" y="500" width="780" height="100">
           <do_event value="eve_goto_centrale" />
         </area>
-        <area id="area_switch1" enabled="1" x="325" y="325" width="150" height="150">
+        <area id="area_switch1" enabled="1" x="350" y="350" width="75" height="75">
           <do_event value="eve_switch1_on" />
         </area>
       </areas>
@@ -57,7 +57,7 @@
     <item id="Chiave Locanda" room="Locanda" x="10" y="500" width="50" height="50" image="img_chiave">
         <do_event value="chiave_get" />
     </item>
-    <item id="Chiave Stella" room="Cantina" x="10" y="500" width="50" height="100" image="img_chiave_star">
+    <item id="Chiave Stella" room="Cantina" x="50" y="400" width="60" height="50" image="img_chiave_star">
         <do_event value="chiave_star_get" />
     </item>
   </items>

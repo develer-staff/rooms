@@ -16,13 +16,13 @@ class Item: public Area
         std::string room_parent;
         std::string _image;
     public:
-        Item(std::string name);
+        Item(const std::string name);
         virtual ~Item();
     public:
-        void move(std::string room);
-        std::string parent();
-        void image(std::string id);
-        std::string image();
+        void move(const std::string room);
+        std::string parent() const;
+        void image(const std::string id);
+        std::string image() const;
 };
 
 #endif // ITEM_H

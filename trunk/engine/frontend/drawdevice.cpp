@@ -18,9 +18,6 @@ DrawDevice::~DrawDevice()
 void DrawDevice::initialize()
 {
     setMouseTracking(true);
-    RoomsManager *man = engine->getRoomsManager();
-    parentWidget()->resize(man->width(), man->height());
-    parentWidget()->setWindowTitle(man->name().c_str());
     std::vector<std::pair<string, string> > images = engine->getImgNames();
     for (std::vector<std::pair<string, string> >::iterator i = images.begin();
          i != images.end(); ++i)

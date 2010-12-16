@@ -18,7 +18,7 @@ EventsManager::~EventsManager()
     events.clear();
 }
 
-Event *EventsManager::addEvent(string id)
+Event *EventsManager::addEvent(const string id)
 {
     if (event(id) != 0)
         return 0;
@@ -30,7 +30,7 @@ Event *EventsManager::addEvent(string id)
     }
 }
 
-Event *EventsManager::event(string id)
+Event *EventsManager::event(const string id)
 {
     std::map<string, Event *>::iterator i = events.find(id);
     if (i == events.end())
@@ -39,21 +39,21 @@ Event *EventsManager::event(string id)
         return i->second;
 }
 
-int EventsManager::var(string id)
+int EventsManager::var(const string id) const
 {
-    std::map<string, int>::iterator i = _vars.find(id);
+    std::map<string, int>::const_iterator i = _vars.find(id);
     if (i == _vars.end())
         return 0;
     else
         return i->second;
 }
 
-void EventsManager::var(string id, int value)
+void EventsManager::var(const string id, const int value)
 {
     _vars[id] = value;
 }
 
-std::vector <Action *> EventsManager::actionsForEvent(string id)
+std::vector <Action *> EventsManager::actionsForEvent(const string id)
 {
     Event *event = events[id];
     if (checkItemReqs(event->itemReqs()) && checkVarReqs(event->varReqs()))
@@ -69,9 +69,9 @@ std::vector <Action *> EventsManager::actionsForEvent(string id)
     }
 }
 
-bool EventsManager::checkItemReqs(std::vector <std::pair <string, string> > reqs)
+bool EventsManager::checkItemReqs(const std::vector <std::pair <string, string> > reqs) const
 {
-    for (std::vector <std::pair <string, string> >::iterator i = reqs.begin();
+    for (std::vector <std::pair <string, string> >::const_iterator i = reqs.begin();
          i != reqs.end(); ++i)
     {
         if (engine->getRoomsManager()->item(i->first)->parent() != i->second)
@@ -80,9 +80,9 @@ bool EventsManager::checkItemReqs(std::vector <std::pair <string, string> > reqs
     return true;
 }
 
-bool EventsManager::checkVarReqs(std::vector <std::pair <string, int> > reqs)
+bool EventsManager::checkVarReqs(const std::vector <std::pair <string, int> > reqs) const
 {
-    for (std::vector <std::pair <string, int> >::iterator i = reqs.begin();
+    for (std::vector <std::pair <string, int> >::const_iterator i = reqs.begin();
          i != reqs.end(); ++i)
     {
         if (var(i->first) != i->second)

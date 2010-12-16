@@ -1,6 +1,6 @@
 #include "action.h"
 
-Action::Action(std::string name): id(name)
+Action::Action(const std::string name): id(name)
 {
 
 }
@@ -10,7 +10,7 @@ Action::~Action()
     params.clear();
 }
 
-void Action::pushParam(std::string value)
+void Action::pushParam(const std::string value)
 {
     //values will be read like a lifo stack
     params.push_back(value);
