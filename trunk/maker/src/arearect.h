@@ -1,7 +1,7 @@
 #ifndef AREAWIDGET_H
 #define AREAWIDGET_H
 
-#include <QGraphicsRectItem>
+#include <QGraphicsItem>
 #include "core/area.h"
 
 class AreaRect : public QGraphicsItem
