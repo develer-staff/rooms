@@ -16,14 +16,16 @@ public:
     void setWorld(World *world);
     void updateRoomView();
 
+public slots:
+    void setBackground();
+
 private slots:
     void addArea();
-    void setBackground();
     void showContextMenu(const QPoint &point);
     void changeActiveRoom(QModelIndex index);
 
 private:
-    QGraphicsScene *scene;
+    QHash<Room*, QGraphicsScene*> scenes;
     World *world;
     int active_room;
 };
