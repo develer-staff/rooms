@@ -4,19 +4,22 @@ Engine *Engine::engine = 0;
 
 Engine::Engine()
 {
-    _rooms_mgr = new RoomsManager(this);
-    _events_mgr = new EventsManager(this);
-    if (_rooms_mgr == 0 || _events_mgr == 0)
+    try
     {
-        log("ERROR: cannot create engine objects!", 1);
-        exit();
+        _rooms_mgr = new RoomsManager(this);
+        _events_mgr = new EventsManager(this);
+        _state = INITIALIZING;
+        if (DEBUG_LEVEL)
+        {
+            std::ofstream log_file;
+            log_file.open("rooms.log", std::ios::out);
+            log_file.close();
+        }
     }
-    _state = INITIALIZING;
-    if (DEBUG_LEVEL)
+    catch (...)
     {
-        std::ofstream log_file;
-        log_file.open("rooms.log", std::ios::out);
-        log_file.close();
+        log("ERROR: cannot create a valid engine!", 1);
+        exit();
     }
 }
 
