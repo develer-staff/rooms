@@ -1,25 +1,19 @@
 #include "arearect.h"
 #include <QPainter>
 
-AreaRect::AreaRect(const Area *area, QGraphicsScene *scene, QGraphicsItem *parent) :
-    QGraphicsItem(parent, scene)
+AreaRect::AreaRect(Area *area, QGraphicsScene *scene, QGraphicsItem *parent) :
+    QGraphicsRectItem(parent, scene)
 {
-    pen_width = 2;
-    setFlag(QGraphicsItem::ItemIsMovable, true);
-    setFlag(QGraphicsItem::ItemIsSelectable, true);
-    bounding_rect = QRectF(-10 - pen_width / 2, -10 - pen_width / 2,
-                           20 + pen_width, 20 + pen_width);
+    _area = area;
+
+    setFlag(QGraphicsItem::ItemIsMovable);
+    setFlag(QGraphicsItem::ItemIsSelectable);
+
+    setRect(QRectF(area->rect()));
 }
 
-QRectF AreaRect::boundingRect() const
+void AreaRect::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    return bounding_rect;
-}
-
-void AreaRect::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    painter->setPen(QPen(Qt::red, pen_width));
-    painter->drawRect(-10, -10, 20, 20);
-    painter->setOpacity(0.5);
-    painter->fillRect(-10, -10, 20, 20, QBrush(Qt::red));
+    QGraphicsRectItem::mouseReleaseEvent(event);
+    _area->setPos(pos().toPoint());
 }

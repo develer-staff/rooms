@@ -1,20 +1,19 @@
 #ifndef AREAWIDGET_H
 #define AREAWIDGET_H
 
-#include <QGraphicsItem>
+#include <QGraphicsRectItem>
 #include "core/area.h"
 
-class AreaRect : public QGraphicsItem
+class AreaRect : public QGraphicsRectItem
 {
 
 public:
-    explicit AreaRect(const Area *area, QGraphicsScene *scene = 0, QGraphicsItem *parent = 0);
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-    QRectF boundingRect() const;
+    explicit AreaRect(Area *area, QGraphicsScene *scene = 0, QGraphicsItem *parent = 0);
+
+protected:
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
 private:
-    QRectF bounding_rect;
-    qreal pen_width;
     Area *_area;
 };
 
