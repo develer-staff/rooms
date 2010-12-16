@@ -162,9 +162,7 @@ void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
             xmlGetAllChilds((*i)->FirstChildElement("requirements"), "item_req");
         for (std::vector<TiXmlElement *>::iterator j = ireqs.begin();
              j != ireqs.end(); ++j)
-            if (event->addItemReq((*j)->Attribute("id"),
-                                  (*j)->Attribute("value")) == 0)
-                log("WARNING: cannot create an item requirement!", 2);
+            event->addItemReq((*j)->Attribute("id"), (*j)->Attribute("value"));
         //create var parameters
         std::vector <TiXmlElement *> vreqs =
             xmlGetAllChilds((*i)->FirstChildElement("requirements"), "var_req");
@@ -173,9 +171,7 @@ void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
         {
             int var_value;
             (*j)->QueryIntAttribute("value", &var_value);
-            if (event->addVarReq((*j)->Attribute("id"),
-                                 var_value) == 0)
-                log("WARNING: cannot create a var requirement!", 2);
+            event->addVarReq((*j)->Attribute("id"), var_value);
         }
         //create actions
         std::vector <TiXmlElement *> actions =
