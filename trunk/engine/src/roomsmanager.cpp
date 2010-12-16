@@ -157,17 +157,9 @@ Item * RoomsManager::item(const string name)
         return i->second;
 }
 
-Room *RoomsManager::currentRoom(const string name)
+void RoomsManager::currentRoom(const string name)
 {
-    if (room(name) != 0)
-    {
-        current_room = rooms[name];
-        return current_room;
-    }
-    else
-    {
-        return 0;
-    }
+    current_room = room(name);
 }
 
 Room *RoomsManager::currentRoom()
