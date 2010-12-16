@@ -152,13 +152,19 @@ void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
          i != events.end(); ++i)
     {
         Event *event = events_mgr->addEvent((*i)->Attribute("id"));
+        if (event == 0)
+        {
+            log("WARNING: cannot creating a new event!", 2);
+            continue;
+        }
         //create items parameters
         std::vector <TiXmlElement *> ireqs =
             xmlGetAllChilds((*i)->FirstChildElement("requirements"), "item_req");
         for (std::vector<TiXmlElement *>::iterator j = ireqs.begin();
              j != ireqs.end(); ++j)
-            event->addItemReq((*j)->Attribute("id"),
-                              (*j)->Attribute("value"));
+            if (event->addItemReq((*j)->Attribute("id"),
+                                  (*j)->Attribute("value")) == 0)
+                log("WARNING: cannot create an item requirement!", 2);
         //create var parameters
         std::vector <TiXmlElement *> vreqs =
             xmlGetAllChilds((*i)->FirstChildElement("requirements"), "var_req");
@@ -167,8 +173,9 @@ void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
         {
             int var_value;
             (*j)->QueryIntAttribute("value", &var_value);
-            event->addVarReq((*j)->Attribute("id"),
-                              var_value);
+            if (event->addVarReq((*j)->Attribute("id"),
+                                 var_value) == 0)
+                log("WARNING: cannot create a var requirement!", 2);
         }
         //create actions
         std::vector <TiXmlElement *> actions =
@@ -177,6 +184,11 @@ void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
              j != actions.end(); ++j)
         {
             Action *act = event->addAction((*j)->Attribute("id"));
+            if (act == 0)
+            {
+                log("WARNING: cannot create a new action!", 2);
+                continue;
+            }
             std::vector <TiXmlElement *> params =
                 xmlGetAllChilds(*j, "param");
             for (std::vector<TiXmlElement *>::iterator z = params.begin();
@@ -191,7 +203,11 @@ void Engine::createRoomsFromXml(std::vector <TiXmlElement *> rooms)
     for (std::vector<TiXmlElement *>::iterator i = rooms.begin();
          i != rooms.end(); ++i)
     {
-        rooms_mgr->addRoom((*i)->Attribute("id"), (*i)->Attribute("bg"));
+        if (rooms_mgr->addRoom((*i)->Attribute("id"), (*i)->Attribute("bg")) == 0)
+        {
+            log("WARNING: cannot create a new room!", 2);
+            continue;
+        }
         std::vector <TiXmlElement *> areas =
             xmlGetAllChilds((*i)->FirstChildElement("areas"), "area");
         for (std::vector<TiXmlElement *>::iterator j = areas.begin();
@@ -206,8 +222,13 @@ void Engine::createRoomsFromXml(std::vector <TiXmlElement *> rooms)
                                 (*i)->Attribute("id"),
                                 area_x, area_y, area_w, area_h,
                                 (*j)->FirstChildElement("do_event")->Attribute("value"));
-            (*j)->QueryIntAttribute("enabled", &area_enab);
-            a->enabled(area_enab);
+            if (a == 0)
+                log("WARNING: cannot create new area!", 2);
+            else
+            {
+                (*j)->QueryIntAttribute("enabled", &area_enab);
+                a->enabled(area_enab);
+            }
         }
     }
 }
@@ -222,11 +243,12 @@ void Engine::createItemsFromXml(std::vector <TiXmlElement *> items)
         (*i)->QueryIntAttribute("y", &area_y);
         (*i)->QueryIntAttribute("width", &area_w);
         (*i)->QueryIntAttribute("height", &area_h);
-        rooms_mgr->addItem((*i)->Attribute("id"),
+        if (rooms_mgr->addItem((*i)->Attribute("id"),
                             (*i)->Attribute("room"),
                             area_x, area_y, area_w, area_h,
                             (*i)->FirstChildElement("do_event")->Attribute("value"),
-                            (*i)->Attribute("image"));
+                            (*i)->Attribute("image")) == 0)
+            log("WARNING: cannot create a new item!", 2);
     }
 }
 
