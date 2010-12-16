@@ -6,8 +6,8 @@ Engine::Engine()
 {
     try
     {
-        _rooms_mgr = new RoomsManager(this);
-        _events_mgr = new EventsManager(this);
+        rooms_mgr = new RoomsManager(this);
+        events_mgr = new EventsManager(this);
         _state = INITIALIZING;
         if (DEBUG_LEVEL)
         {
@@ -26,8 +26,8 @@ Engine::Engine()
 Engine::~Engine()
 {
     log("QUITTING ENGINE", 1);
-    delete _rooms_mgr;
-    delete _events_mgr;
+    delete rooms_mgr;
+    delete events_mgr;
 }
 
 Engine *Engine::createEngine()
@@ -51,11 +51,11 @@ void Engine::click (const int x, const int y)
         case GAME:
         {
             string event;
-            event = _rooms_mgr->eventAt(x, y);
+            event = rooms_mgr->eventAt(x, y);
             if (event == "")
                 break;
             log("Event: " + event, 3);
-            execActions(_events_mgr->actionsForEvent(event));
+            execActions(events_mgr->actionsForEvent(event));
             break;
         }
     }
@@ -89,8 +89,8 @@ bool Engine::loadWorld(const string filename)
         log(root->Attribute("name"), 2);
         root->QueryIntAttribute("width", &width);
         root->QueryIntAttribute("height", &height);
-        _rooms_mgr->size(width, height);
-        _rooms_mgr->name(root->Attribute("name"));
+        rooms_mgr->size(width, height);
+        rooms_mgr->name(root->Attribute("name"));
         //TODO: manage different screen resolutions
         //Loading from xml
         std::vector <TiXmlElement *> images =
@@ -124,15 +124,15 @@ bool Engine::loadWorld(const string filename)
 
 std::vector<std::pair<string, string> > Engine::getImgNames() const
 {
-    std::vector<std::pair<string, string> > v(_images.begin(), _images.end());
+    std::vector<std::pair<string, string> > v(images.begin(), images.end());
     return v;
 }
 
-void Engine::createImgsFromXml(std::vector <TiXmlElement *> images)
+void Engine::createImgsFromXml(std::vector <TiXmlElement *> imgs)
 {
-    for (std::vector<TiXmlElement *>::iterator i = images.begin();
-         i != images.end(); ++i)
-        _images[(*i)->Attribute("id")] = (*i)->Attribute("file");
+    for (std::vector<TiXmlElement *>::iterator i = imgs.begin();
+         i != imgs.end(); ++i)
+        images[(*i)->Attribute("id")] = (*i)->Attribute("file");
 }
 
 void Engine::createVarsFromXml(std::vector <TiXmlElement *> vars)
@@ -142,7 +142,7 @@ void Engine::createVarsFromXml(std::vector <TiXmlElement *> vars)
     {
         int var_value;
         (*i)->QueryIntAttribute("value", &var_value);
-        _events_mgr->var((*i)->Attribute("id"), var_value);
+        events_mgr->var((*i)->Attribute("id"), var_value);
     }
 }
 
@@ -151,7 +151,7 @@ void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
     for (std::vector<TiXmlElement *>::iterator i = events.begin();
          i != events.end(); ++i)
     {
-        Event *event = _events_mgr->addEvent((*i)->Attribute("id"));
+        Event *event = events_mgr->addEvent((*i)->Attribute("id"));
         //create items parameters
         std::vector <TiXmlElement *> ireqs =
             xmlGetAllChilds((*i)->FirstChildElement("requirements"), "item_req");
@@ -191,7 +191,7 @@ void Engine::createRoomsFromXml(std::vector <TiXmlElement *> rooms)
     for (std::vector<TiXmlElement *>::iterator i = rooms.begin();
          i != rooms.end(); ++i)
     {
-        _rooms_mgr->addRoom((*i)->Attribute("id"), (*i)->Attribute("bg"));
+        rooms_mgr->addRoom((*i)->Attribute("id"), (*i)->Attribute("bg"));
         std::vector <TiXmlElement *> areas =
             xmlGetAllChilds((*i)->FirstChildElement("areas"), "area");
         for (std::vector<TiXmlElement *>::iterator j = areas.begin();
@@ -202,7 +202,7 @@ void Engine::createRoomsFromXml(std::vector <TiXmlElement *> rooms)
             (*j)->QueryIntAttribute("y", &area_y);
             (*j)->QueryIntAttribute("width", &area_w);
             (*j)->QueryIntAttribute("height", &area_h);
-            Area * a = _rooms_mgr->addArea((*j)->Attribute("id"),
+            Area * a = rooms_mgr->addArea((*j)->Attribute("id"),
                                 (*i)->Attribute("id"),
                                 area_x, area_y, area_w, area_h,
                                 (*j)->FirstChildElement("do_event")->Attribute("value"));
@@ -222,7 +222,7 @@ void Engine::createItemsFromXml(std::vector <TiXmlElement *> items)
         (*i)->QueryIntAttribute("y", &area_y);
         (*i)->QueryIntAttribute("width", &area_w);
         (*i)->QueryIntAttribute("height", &area_h);
-        _rooms_mgr->addItem((*i)->Attribute("id"),
+        rooms_mgr->addItem((*i)->Attribute("id"),
                             (*i)->Attribute("room"),
                             area_x, area_y, area_w, area_h,
                             (*i)->FirstChildElement("do_event")->Attribute("value"),
@@ -232,12 +232,12 @@ void Engine::createItemsFromXml(std::vector <TiXmlElement *> items)
 
 RoomsManager *Engine::getRoomsManager() const
 {
-    return _rooms_mgr;
+    return rooms_mgr;
 }
 
 EventsManager *Engine::getEventsManager() const
 {
-    return _events_mgr;
+    return events_mgr;
 }
 
 void Engine::execActions(std::vector <Action *> actions)
@@ -284,19 +284,19 @@ void Engine::log(const string text, const int level)
 void Engine::apiRoomGoto(const string id)
 {
     log("ROOM_GOTO: " + id, 2);
-    _rooms_mgr->currentRoom(id);
+    rooms_mgr->currentRoom(id);
 }
 
 void Engine::apiVarSet(const string id, const int value)
 {
     log("VAR_SET: " + id, 2);
-    _events_mgr->var(id, value);
+    events_mgr->var(id, value);
 }
 
 void Engine::apiItemMove(const string id, const string dest)
 {
     log("ITEM_MOVE: " + id + ", dest: " + dest, 2);
-    _rooms_mgr->moveItem(id, dest);
+    rooms_mgr->moveItem(id, dest);
 }
 
 void Engine::apiAreaSetEnable(const string id, const int value)
@@ -305,7 +305,7 @@ void Engine::apiAreaSetEnable(const string id, const int value)
     string str_val;
     bool_val ? str_val = "true" : str_val = "false";
     log("AREA_SET_ENABLE: " + id + ", enabled: " + str_val, 2);
-    _rooms_mgr->area(id)->enabled(bool_val);
+    rooms_mgr->area(id)->enabled(bool_val);
 }
 
 

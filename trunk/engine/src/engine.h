@@ -46,9 +46,9 @@ class Engine
     private:
         static Engine *engine;
         Engine::State _state;
-        RoomsManager *_rooms_mgr;
-        EventsManager *_events_mgr;
-        std::map<string, string> _images;
+        RoomsManager *rooms_mgr;
+        EventsManager *events_mgr;
+        std::map<string, string> images;
     public:
         virtual ~Engine();
     private:
@@ -68,7 +68,7 @@ class Engine
         std::vector<std::pair<string, string> > getImgNames() const;
     private:
         void execActions(const std::vector <Action *> actions);
-        void createImgsFromXml(std::vector <TiXmlElement *> images);
+        void createImgsFromXml(std::vector <TiXmlElement *> imgs);
         void createEventsFromXml(std::vector <TiXmlElement *> events);
         void createRoomsFromXml(std::vector <TiXmlElement *> rooms);
         void createItemsFromXml(std::vector <TiXmlElement *> items);
