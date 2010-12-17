@@ -12,6 +12,7 @@ RoomView::RoomView(QWidget *parent) :
 
 void RoomView::addArea()
 {
+    updateRoomView();
     world->rooms()->addRoomArea(world->rooms()->at(active_room),
                                 QRect(QPoint(20, 20), QSize(64, 64)));
     AreaRect *area_rect = new AreaRect(world->rooms()->at(active_room)->areas().last());
@@ -29,6 +30,7 @@ void RoomView::showContextMenu(const QPoint &point)
 
 void RoomView::setBackground()
 {
+    updateRoomView();
     QString bgFile = QFileDialog::getOpenFileName(this,"Select the background file",
                                                   QDir::currentPath(),
                                                   "Images (*.png *.xpm *.jpg *.gif)");
