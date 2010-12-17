@@ -7,7 +7,7 @@ Engine::Engine()
     try
     {
         rooms_mgr = new RoomsManager(this);
-        events_mgr = new EventsManager(this);
+        events_mgr = new EventsManager();
         _state = INITIALIZING;
         if (DEBUG_LEVEL)
         {
@@ -50,12 +50,15 @@ void Engine::click (const int x, const int y)
     {
         case GAME:
         {
-            string event;
-            event = rooms_mgr->eventAt(x, y);
-            if (event == "")
+            Event *event = events_mgr->event(rooms_mgr->eventAt(x, y));
+            if (event == 0)
                 break;
-            log("Event: " + event, 3);
-            execActions(events_mgr->actionsForEvent(event));
+            log("Event: " + event->id, 3);
+            if (rooms_mgr->checkItemPlace(event->itemReqs()) &&
+                events_mgr->checkVarReqs(event->varReqs()))
+                execActions(events_mgr->actionsForEvent(event->id));
+            else
+                log("Requirements are not satisfied", 3);
             break;
         }
     }

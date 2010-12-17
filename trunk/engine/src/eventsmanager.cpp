@@ -1,11 +1,10 @@
 #include "eventsmanager.h"
 #include "event.h"
 #include "action.h"
-#include "engine.h"
 
-EventsManager::EventsManager(Engine *eng)
+EventsManager::EventsManager()
 {
-    engine = eng;
+
 }
 
 EventsManager::~EventsManager()
@@ -55,29 +54,7 @@ void EventsManager::var(const string name, const int value)
 
 std::vector <Action *> EventsManager::actionsForEvent(const string name)
 {
-    Event *event = events[name];
-    if (checkItemReqs(event->itemReqs()) && checkVarReqs(event->varReqs()))
-    {
-        engine->log("Requirements satisfied", 3);
-        return event->actions();
-    }
-    else
-    {
-        engine->log("Requirements not satisfied", 3);
-        std::vector <Action *> empty;
-        return empty;
-    }
-}
-
-bool EventsManager::checkItemReqs(const std::vector <std::pair <string, string> > reqs) const
-{
-    for (std::vector <std::pair <string, string> >::const_iterator i = reqs.begin();
-         i != reqs.end(); ++i)
-    {
-        if (engine->getRoomsManager()->item(i->first)->parent() != i->second)
-            return false;
-    }
-    return true;
+    return events[name]->actions();
 }
 
 bool EventsManager::checkVarReqs(const std::vector <std::pair <string, int> > reqs) const

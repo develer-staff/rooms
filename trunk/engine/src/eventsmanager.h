@@ -6,7 +6,6 @@
 #include <vector> //std::vector
 #include <utility> //std::pair
 
-class Engine;
 class Event;
 class Action;
 
@@ -18,12 +17,11 @@ using std::string;
 class EventsManager
 {
     private:
-        Engine *engine;
         std::map <string, Event *> events;
         //ATTENTION: var names that begin with '!' identify internal vars.
         std::map <string, int> _vars;
     public:
-        EventsManager(Engine *eng);
+        EventsManager();
         ~EventsManager();
     public:
         Event *addEvent(const string name);
@@ -31,8 +29,6 @@ class EventsManager
         std::vector <Action *> actionsForEvent(const string name);
         void var(const string name, const int value);
         int var(const string name) const;
-    private:
-        bool checkItemReqs(const std::vector <std::pair <string, string> > reqs) const;
         bool checkVarReqs(const std::vector <std::pair <string, int> > reqs) const;
 };
 

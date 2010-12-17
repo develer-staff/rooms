@@ -171,3 +171,14 @@ string RoomsManager::eventAt(const int x, const int y)
 {
     return current_room->eventAt(x, y);
 }
+
+bool RoomsManager::checkItemPlace(const std::vector <std::pair <string, string> > reqs)
+{
+    for (std::vector <std::pair <string, string> >::const_iterator i = reqs.begin();
+         i != reqs.end(); ++i)
+    {
+        if (item(i->first)->parent() != i->second)
+            return false;
+    }
+    return true;
+}

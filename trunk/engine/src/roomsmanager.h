@@ -3,6 +3,7 @@
 
 #include <string> //string
 #include <map> //std::map
+#include <vector> //std::vector
 
 class Engine;
 class Room;
@@ -46,6 +47,7 @@ class RoomsManager
         Room *currentRoom();
         string eventAt(const int x, const int y);
         void moveItem(const string name, const string dest);
+        bool checkItemPlace(const std::vector <std::pair <string, string> > reqs);
 };
 
 #endif // ROOMMANAGER_H
