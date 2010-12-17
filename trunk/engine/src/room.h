@@ -23,7 +23,7 @@ class Room
         std::map<string, Item *> _items;
     public:
         Room(const string name);
-        virtual ~Room();
+        ~Room();
     public:
         string bg() const;
         void bg(const string name);

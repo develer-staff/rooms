@@ -22,7 +22,7 @@ class Event
         std::vector <std::pair <string, int> > var_reqs;
     public:
         Event(const string name);
-        virtual ~Event();
+        ~Event();
     public:
         Action *addAction(const string name);
         std::vector <Action *> actions() const;

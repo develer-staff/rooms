@@ -17,7 +17,7 @@ class Item: public Area
         std::string _image;
     public:
         Item(const std::string name);
-        virtual ~Item();
+        ~Item();
     public:
         void move(const std::string room);
         std::string parent() const;

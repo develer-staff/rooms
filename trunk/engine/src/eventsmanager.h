@@ -24,7 +24,7 @@ class EventsManager
         std::map <string, int> _vars;
     public:
         EventsManager(Engine *eng);
-        virtual ~EventsManager();
+        ~EventsManager();
     public:
         Event *addEvent(const string name);
         Event *event(const string name);

@@ -23,7 +23,7 @@ class DrawDevice: public QWidget
         string item_text;
     public:
         DrawDevice(Engine *eng, QWidget *parent=0);
-        virtual ~DrawDevice();
+        ~DrawDevice();
     public:
         void initialize();
         bool loadImage(string id, string filename);

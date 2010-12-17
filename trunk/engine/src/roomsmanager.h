@@ -27,7 +27,7 @@ class RoomsManager
         Room *current_room;
     public:
         RoomsManager(Engine *eng);
-        virtual ~RoomsManager();
+        ~RoomsManager();
     public:
         Room *addRoom(const string name, const string bg);
         Area *addArea(const string name, const string room, const int x, const int y,

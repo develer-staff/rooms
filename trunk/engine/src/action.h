@@ -16,7 +16,7 @@ class Action
         std::vector <std::string> params;
     public:
         Action(const std::string name);
-        virtual ~Action();
+        ~Action();
     public:
         void pushParam(const std::string value);
         std::string popStrParam();

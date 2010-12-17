@@ -50,7 +50,7 @@ class Engine
         EventsManager *events_mgr;
         std::map<string, string> images;
     public:
-        virtual ~Engine();
+        ~Engine();
     private:
         Engine();
     public:
