@@ -77,7 +77,7 @@ class Engine
         void apiRoomGoto(const string id);
         void apiVarSet(const string id, const int value);
         void apiItemMove(const string id, const string dest);
-        void apiAreaSetEnable(const string id, const int value);
+        void apiAreaSetEnable(const string id, const bool value);
 };
 
 #endif // ROOMSENGINE_H

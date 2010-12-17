@@ -317,13 +317,11 @@ void Engine::apiItemMove(const string id, const string dest)
     rooms_mgr->moveItem(id, dest);
 }
 
-void Engine::apiAreaSetEnable(const string id, const int value)
+void Engine::apiAreaSetEnable(const string id, const bool value)
 {
-    bool bool_val = value;
-    string str_val;
-    bool_val ? str_val = "true" : str_val = "false";
+    string str_val = value ? "true" : "false";
     log("AREA_SET_ENABLE: " + id + ", enabled: " + str_val, 2);
-    rooms_mgr->area(id)->enabled(bool_val);
+    rooms_mgr->area(id)->enabled(value);
 }
 
 
