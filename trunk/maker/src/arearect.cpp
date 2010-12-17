@@ -6,6 +6,8 @@ AreaRect::AreaRect(Area *area, QGraphicsScene *scene, QGraphicsItem *parent) :
 {
     _area = area;
 
+    setZValue(1);
+
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemIsSelectable);
 
