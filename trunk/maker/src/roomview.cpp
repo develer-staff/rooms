@@ -47,7 +47,8 @@ void RoomView::setBackground()
 void RoomView::updateRoomView()
 {
     if (!scenes.contains(world->rooms()->at(active_room)))
-        scenes.insert(world->rooms()->at(active_room), new QGraphicsScene);
+        scenes.insert(world->rooms()->at(active_room),
+                      new QGraphicsScene(QRectF(QRect(QPoint(0, 0), world->getSize()))));
 
     setScene(scenes[world->rooms()->at(active_room)]);
 }
