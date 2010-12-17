@@ -78,7 +78,7 @@ void DrawDevice::paintEvent(QPaintEvent *event)
 void DrawDevice::mousePressEvent(QMouseEvent * event)
 {
     engine->click(event->x(), event->y());
-    repaint(QRect(0, 0, width(), height()));
+    update();
 }
 void DrawDevice::mouseMoveEvent(QMouseEvent *event)
 {
@@ -98,7 +98,7 @@ void DrawDevice::mouseMoveEvent(QMouseEvent *event)
     else
         setCursor(Qt::ArrowCursor);
 
-    repaint(QRect(0, 0, width(), height()));
+    update();
 }
 
 
