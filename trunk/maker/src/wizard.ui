@@ -144,9 +144,9 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="createButton">
-       <property name="text">
-        <string>Create</string>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Ok</set>
        </property>
       </widget>
      </item>
