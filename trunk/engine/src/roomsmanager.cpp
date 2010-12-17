@@ -117,8 +117,8 @@ void RoomsManager::moveItem(const string name, const string dest)
     if (mov_item != 0)
     {
         string parent = mov_item->parent();
-        Room *r_parent = rooms[parent];
-        Room *r_dest = rooms[dest];
+        Room *r_parent = room(parent);
+        Room *r_dest = room(dest);
         if (r_parent == 0 || r_dest == 0)
         {
             engine->log("WARNING: invalid item movement!", 2);
