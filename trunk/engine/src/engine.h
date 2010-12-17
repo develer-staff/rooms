@@ -64,7 +64,6 @@ class Engine
         Engine::State state() const;
         void state(const Engine::State state_name);
         void log(const string text, const int level);
-        void exit(const int status);
         std::vector<std::pair<string, string> > getImgNames() const;
     private:
         void execActions(const std::vector <Action *> actions);
