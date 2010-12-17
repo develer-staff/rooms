@@ -5,7 +5,6 @@ RoomView::RoomView(QWidget *parent) :
     QGraphicsView(parent)
 {
     active_room = 0;
-
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
             this, SLOT(showContextMenu(const QPoint &)));
 }
@@ -13,10 +12,9 @@ RoomView::RoomView(QWidget *parent) :
 void RoomView::addArea()
 {
     updateRoomView();
-    world->rooms()->addRoomArea(world->rooms()->at(active_room),
-                                QRect(QPoint(20, 20), QSize(64, 64)));
-    AreaRect *area_rect = new AreaRect(world->rooms()->at(active_room)->areas().last());
-    scenes[world->rooms()->at(active_room)]->addItem(area_rect);
+    world->rooms()->addRoomArea(active_room, QRect(QPoint(20, 20), QSize(64, 64)));
+    AreaRect *area_rect = new AreaRect(active_room->areas().last());
+    scenes[active_room]->addItem(area_rect);
 }
 
 void RoomView::showContextMenu(const QPoint &point)
@@ -40,26 +38,31 @@ void RoomView::setBackground()
 
     bg = bg.scaled(world->getSize());
 
-    world->rooms()->setRoomBackground(world->rooms()->at(active_room), bg);
-    scenes[world->rooms()->at(active_room)]->addPixmap(bg);
+    world->rooms()->setRoomBackground(active_room, bg);
+    scenes[active_room]->addPixmap(bg);
 }
 
 void RoomView::updateRoomView()
 {
-    if (!scenes.contains(world->rooms()->at(active_room)))
-        scenes.insert(world->rooms()->at(active_room),
+    if (!scenes.contains(active_room))
+        scenes.insert(active_room,
                       new QGraphicsScene(QRectF(QRect(QPoint(0, 0), world->getSize()))));
 
-    setScene(scenes[world->rooms()->at(active_room)]);
+    setScene(scenes[active_room]);
 }
 
 void RoomView::setWorld(World *world)
 {
     this->world = world;
+    if (active_room == 0)
+    {
+        world->rooms()->appendRoom("Room 0");
+        active_room = world->rooms()->at(0);
+    }
 }
 
 void RoomView::changeActiveRoom(QModelIndex index)
 {
-    active_room = index.row();
+    active_room = world->rooms()->at(index.row());
     updateRoomView();
 }

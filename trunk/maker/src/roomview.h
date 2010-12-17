@@ -27,7 +27,7 @@ private slots:
 private:
     QHash<Room*, QGraphicsScene*> scenes;
     World *world;
-    int active_room;
+    Room *active_room;
 };
 
 #endif // ROOMVIEW_H
