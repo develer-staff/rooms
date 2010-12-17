@@ -12,14 +12,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     wizard = new Wizard(this);
     wizard->show();
+
     connect(wizard, SIGNAL(accepted()), this, SLOT(resizeRoomView()));
 
     world = new World(wizard->getName(), wizard->getSize());
-    world->rooms()->appendRoom("Room 0");
 
     ui->room_view->setWorld(world);
     ui->rooms_list->setWorld(world);
     ui->rooms_list->setModel(world->roomsModel());
+
+    world->rooms()->appendRoom("Room 0");
 }
 
 MainWindow::~MainWindow()
