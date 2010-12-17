@@ -11,11 +11,8 @@ MainWindow::MainWindow(QWidget *parent) :
             ui->room_view, SLOT(changeActiveRoom(QModelIndex)));
 
     wizard = new Wizard(this);
-    wizard->exec();
-
-    ui->room_view->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    ui->room_view->setFixedSize(wizard->getSize());
-    adjustSize();
+    wizard->show();
+    connect(wizard, SIGNAL(accepted()), this, SLOT(resizeRoomView()));
 
     world = new World(wizard->getName(), wizard->getSize());
     world->rooms()->appendRoom("Room 0");
@@ -29,4 +26,11 @@ MainWindow::~MainWindow()
 {
     delete ui;
     delete wizard;
+}
+
+void MainWindow::resizeRoomView()
+{
+    ui->room_view->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    ui->room_view->setFixedSize(wizard->getSize());
+    adjustSize();
 }
