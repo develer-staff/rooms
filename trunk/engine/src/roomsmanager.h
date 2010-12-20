@@ -15,6 +15,10 @@ using std::string;
 /*! \brief Rooms interface.
  *         Safely creates and garbage-collects rooms, areas and items.
  */
+
+template <class T> T *getElement(string name, std::map<string, T *> container);
+template <class T> T *freeElements(std::map<string , T *> &container);
+
 class RoomsManager
 {
     private:
@@ -49,5 +53,7 @@ class RoomsManager
         void moveItem(const string name, const string dest);
         bool checkItemPlace(const std::vector <std::pair <string, string> > reqs);
 };
+
+
 
 #endif // ROOMMANAGER_H

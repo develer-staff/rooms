@@ -4,6 +4,25 @@
 #include "item.h"
 #include "area.h"
 
+template <class T> T *freeElements(std::map<string , T *> &container)
+{
+    for (typename std::map<string, T *>::iterator i = container.begin();
+         i != container.end(); ++i)
+    {
+        //TODO: insert a log here
+        delete i->second;
+    }
+    container.clear();
+}
+
+template <class T> T *getElement(string name, std::map<string, T *> container)
+{
+    typename std::map<string, T *>::iterator i = container.find(name);
+    if (i == container.end())
+        return 0;
+    else
+        return i->second;
+}
 
 RoomsManager::RoomsManager(Engine *eng)
 {
@@ -13,29 +32,9 @@ RoomsManager::RoomsManager(Engine *eng)
 
 RoomsManager::~RoomsManager()
 {
-    for (std::map<string, Room *>::iterator i = rooms.begin();
-         i != rooms.end(); ++i)
-    {
-        engine->log ("DELETING: room " + i->second->id, 3);
-        delete i->second;
-    }
-    rooms.clear();
-
-    for (std::map<string, Item *>::iterator i = items.begin();
-         i != items.end(); ++i)
-    {
-        engine->log ("DELETING: item " + i->second->id, 3);
-        delete i->second;
-    }
-    items.clear();
-
-    for (std::map<string, Area *>::iterator i = areas.begin();
-         i != areas.end(); ++i)
-    {
-        engine->log ("DELETING: area " + i->second->id, 3);
-        delete i->second;
-    }
-    areas.clear();
+    freeElements(rooms);
+    freeElements(items);
+    freeElements(areas);
 }
 
 void RoomsManager::name(const string name)
@@ -132,29 +131,17 @@ void RoomsManager::moveItem(const string name, const string dest)
 
 Room * RoomsManager::room(const string name)
 {
-    std::map<string, Room *>::iterator i = rooms.find(name);
-    if (i == rooms.end())
-        return 0;
-    else
-        return i->second;
+    return getElement(name, rooms);
 }
 
 Area * RoomsManager::area(const string name)
 {
-    std::map<string, Area *>::iterator i = areas.find(name);
-    if (i == areas.end())
-        return 0;
-    else
-        return i->second;
+    return getElement(name, areas);
 }
 
 Item * RoomsManager::item(const string name)
 {
-    std::map<string, Item *>::iterator i = items.find(name);
-    if (i == items.end())
-        return 0;
-    else
-        return i->second;
+    return getElement(name, items);
 }
 
 void RoomsManager::currentRoom(const string name)
@@ -182,3 +169,4 @@ bool RoomsManager::checkItemPlace(const std::vector <std::pair <string, string> 
     }
     return true;
 }
+
