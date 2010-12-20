@@ -95,15 +95,15 @@ bool Engine::loadWorld(const string filename)
         rooms_mgr->name(root->Attribute("name"));
         //TODO: manage different screen resolutions
         //Loading from xml
-        std::vector <TiXmlElement *> images =
+        XmlVect images =
             std::xmlGetAllChilds(root->FirstChildElement("images"), "img");
-        std::vector <TiXmlElement *> rooms =
+        XmlVect rooms =
             std::xmlGetAllChilds(root->FirstChildElement("rooms"), "room");
-        std::vector <TiXmlElement *> events =
+        XmlVect events =
             std::xmlGetAllChilds(root->FirstChildElement("events"), "event");
-        std::vector <TiXmlElement *> items =
+        XmlVect items =
             std::xmlGetAllChilds(root->FirstChildElement("items"), "item");
-        std::vector <TiXmlElement *> vars =
+        XmlVect vars =
             std::xmlGetAllChilds(root->FirstChildElement("vars"), "var");
         //Populating model
         createImgsFromXml(images);
@@ -130,24 +130,23 @@ std::vector<std::pair<string, string> > Engine::getImgNames() const
     return v;
 }
 
-void Engine::createImgsFromXml(std::vector <TiXmlElement *> imgs)
+void Engine::createImgsFromXml(XmlVect imgs)
 {
-    for (std::vector<TiXmlElement *>::iterator i = imgs.begin();
+    for (XmlVect::iterator i = imgs.begin();
          i != imgs.end(); ++i)
         images[(*i)->Attribute("id")] = (*i)->Attribute("file");
 }
 
-void Engine::createVarsFromXml(std::vector <TiXmlElement *> vars)
+void Engine::createVarsFromXml(XmlVect vars)
 {
-    for (std::vector<TiXmlElement *>::iterator i = vars.begin();
+    for (XmlVect::iterator i = vars.begin();
          i != vars.end(); ++i)
         events_mgr->var((*i)->Attribute("id"), std::xmlReadInt((*i), "value"));
 }
 
-void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
+void Engine::createEventsFromXml(XmlVect events)
 {
-    for (std::vector<TiXmlElement *>::iterator i = events.begin();
-         i != events.end(); ++i)
+    for (XmlVect::iterator i = events.begin(); i != events.end(); ++i)
     {
         Event *event = events_mgr->addEvent((*i)->Attribute("id"));
         if (event == 0)
@@ -156,22 +155,16 @@ void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
             continue;
         }
         //create items parameters
-        std::vector <TiXmlElement *> ireqs =
-            std::xmlGetAllChilds((*i)->FirstChildElement("requirements"), "item_req");
-        for (std::vector<TiXmlElement *>::iterator j = ireqs.begin();
-             j != ireqs.end(); ++j)
+        XmlVect ireqs = std::xmlGetAllChilds((*i)->FirstChildElement("requirements"), "item_req");
+        for (XmlVect::iterator j = ireqs.begin(); j != ireqs.end(); ++j)
             event->addItemReq((*j)->Attribute("id"), (*j)->Attribute("value"));
         //create var parameters
-        std::vector <TiXmlElement *> vreqs =
-            std::xmlGetAllChilds((*i)->FirstChildElement("requirements"), "var_req");
-        for (std::vector<TiXmlElement *>::iterator j = vreqs.begin();
-             j != vreqs.end(); ++j)
-            event->addVarReq((*j)->Attribute("id"), std::xmlReadInt((*i), "value"));
+        XmlVect vreqs = std::xmlGetAllChilds((*i)->FirstChildElement("requirements"), "var_req");
+        for (XmlVect::iterator j = vreqs.begin(); j != vreqs.end(); ++j)
+            event->addVarReq((*j)->Attribute("id"), std::xmlReadInt((*j), "value"));
         //create actions
-        std::vector <TiXmlElement *> actions =
-            std::xmlGetAllChilds((*i)->FirstChildElement("actions_if"), "action");
-        for (std::vector<TiXmlElement *>::iterator j = actions.begin();
-             j != actions.end(); ++j)
+        XmlVect actions = std::xmlGetAllChilds((*i)->FirstChildElement("actions_if"), "action");
+        for (XmlVect::iterator j = actions.begin(); j != actions.end(); ++j)
         {
             Action *act = event->addAction((*j)->Attribute("id"));
             if (act == 0)
@@ -179,29 +172,24 @@ void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
                 logger.write("WARNING: cannot create a new action!", Log::WARNING);
                 continue;
             }
-            std::vector <TiXmlElement *> params =
-                std::xmlGetAllChilds(*j, "param");
-            for (std::vector<TiXmlElement *>::iterator z = params.begin();
-                 z != params.end(); ++z)
+            XmlVect params = std::xmlGetAllChilds(*j, "param");
+            for (XmlVect::iterator z = params.begin(); z != params.end(); ++z)
                 act->pushParam((*z)->Attribute("value"));
         }
     }
 }
 
-void Engine::createRoomsFromXml(std::vector <TiXmlElement *> rooms)
+void Engine::createRoomsFromXml(XmlVect rooms)
 {
-    for (std::vector<TiXmlElement *>::iterator i = rooms.begin();
-         i != rooms.end(); ++i)
+    for (XmlVect::iterator i = rooms.begin(); i != rooms.end(); ++i)
     {
         if (rooms_mgr->addRoom((*i)->Attribute("id"), (*i)->Attribute("bg")) == 0)
         {
             logger.write("WARNING: cannot create a new room!", Log::WARNING);
             continue;
         }
-        std::vector <TiXmlElement *> areas =
-            std::xmlGetAllChilds((*i)->FirstChildElement("areas"), "area");
-        for (std::vector<TiXmlElement *>::iterator j = areas.begin();
-             j != areas.end(); ++j)
+        XmlVect areas = std::xmlGetAllChilds((*i)->FirstChildElement("areas"), "area");
+        for (XmlVect::iterator j = areas.begin(); j != areas.end(); ++j)
         {
             Area * a = rooms_mgr->addArea((*j)->Attribute("id"),
                                 (*i)->Attribute("id"),
@@ -218,10 +206,9 @@ void Engine::createRoomsFromXml(std::vector <TiXmlElement *> rooms)
     }
 }
 
-void Engine::createItemsFromXml(std::vector <TiXmlElement *> items)
+void Engine::createItemsFromXml(XmlVect items)
 {
-    for (std::vector<TiXmlElement *>::iterator i = items.begin();
-         i != items.end(); ++i)
+    for (XmlVect::iterator i = items.begin(); i != items.end(); ++i)
     {
         if (rooms_mgr->addItem((*i)->Attribute("id"),
                             (*i)->Attribute("room"),

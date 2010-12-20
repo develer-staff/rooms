@@ -40,6 +40,7 @@ class Engine
             INVENTORY,
             ENDING
         };
+        typedef std::vector<TiXmlElement *> XmlVect;
     private:
         static Engine *engine;
         Engine::State _state;
@@ -64,11 +65,11 @@ class Engine
         Log *getLogger();
     private:
         void execActions(const std::vector <Action *> actions);
-        void createImgsFromXml(std::vector <TiXmlElement *> imgs);
-        void createEventsFromXml(std::vector <TiXmlElement *> events);
-        void createRoomsFromXml(std::vector <TiXmlElement *> rooms);
-        void createItemsFromXml(std::vector <TiXmlElement *> items);
-        void createVarsFromXml(std::vector <TiXmlElement *> vars);
+        void createImgsFromXml(XmlVect imgs);
+        void createEventsFromXml(XmlVect events);
+        void createRoomsFromXml(XmlVect rooms);
+        void createItemsFromXml(XmlVect items);
+        void createVarsFromXml(XmlVect vars);
         //RISC API
         void apiRoomGoto(const string id);
         void apiVarSet(const string id, const int value);
