@@ -12,13 +12,16 @@ class Item;
 
 using std::string;
 
+
+namespace std
+{
+    template <class T> T *getElement(string name, std::map<string, T *> container);
+    template <class T> void freeElements(std::map<string , T *> &container);
+}
+
 /*! \brief Rooms interface.
  *         Safely creates and garbage-collects rooms, areas and items.
  */
-
-template <class T> T *getElement(string name, std::map<string, T *> container);
-template <class T> T *freeElements(std::map<string , T *> &container);
-
 class RoomsManager
 {
     private:

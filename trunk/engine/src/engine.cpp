@@ -86,7 +86,7 @@ bool Engine::loadWorld(const string filename)
         log("Loading world from " + filename, 2);
         TiXmlDocument document(filename.c_str());
         int width = 0, height = 0;
-        if (!xmlCheckDoc(&document)) throw "ERROR: wrong xml document!";
+        if (!std::xmlCheckDoc(&document)) throw "ERROR: wrong xml document!";
         TiXmlElement *root = document.RootElement();
         //Load World attributes
         log(root->Attribute("name"), 2);
@@ -97,15 +97,15 @@ bool Engine::loadWorld(const string filename)
         //TODO: manage different screen resolutions
         //Loading from xml
         std::vector <TiXmlElement *> images =
-            xmlGetAllChilds(root->FirstChildElement("images"), "img");
+            std::xmlGetAllChilds(root->FirstChildElement("images"), "img");
         std::vector <TiXmlElement *> rooms =
-            xmlGetAllChilds(root->FirstChildElement("rooms"), "room");
+            std::xmlGetAllChilds(root->FirstChildElement("rooms"), "room");
         std::vector <TiXmlElement *> events =
-            xmlGetAllChilds(root->FirstChildElement("events"), "event");
+            std::xmlGetAllChilds(root->FirstChildElement("events"), "event");
         std::vector <TiXmlElement *> items =
-            xmlGetAllChilds(root->FirstChildElement("items"), "item");
+            std::xmlGetAllChilds(root->FirstChildElement("items"), "item");
         std::vector <TiXmlElement *> vars =
-            xmlGetAllChilds(root->FirstChildElement("vars"), "var");
+            std::xmlGetAllChilds(root->FirstChildElement("vars"), "var");
         //Populating model
         createImgsFromXml(images);
         createEventsFromXml(events);
@@ -162,13 +162,13 @@ void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
         }
         //create items parameters
         std::vector <TiXmlElement *> ireqs =
-            xmlGetAllChilds((*i)->FirstChildElement("requirements"), "item_req");
+            std::xmlGetAllChilds((*i)->FirstChildElement("requirements"), "item_req");
         for (std::vector<TiXmlElement *>::iterator j = ireqs.begin();
              j != ireqs.end(); ++j)
             event->addItemReq((*j)->Attribute("id"), (*j)->Attribute("value"));
         //create var parameters
         std::vector <TiXmlElement *> vreqs =
-            xmlGetAllChilds((*i)->FirstChildElement("requirements"), "var_req");
+            std::xmlGetAllChilds((*i)->FirstChildElement("requirements"), "var_req");
         for (std::vector<TiXmlElement *>::iterator j = vreqs.begin();
              j != vreqs.end(); ++j)
         {
@@ -178,7 +178,7 @@ void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
         }
         //create actions
         std::vector <TiXmlElement *> actions =
-            xmlGetAllChilds((*i)->FirstChildElement("actions_if"), "action");
+            std::xmlGetAllChilds((*i)->FirstChildElement("actions_if"), "action");
         for (std::vector<TiXmlElement *>::iterator j = actions.begin();
              j != actions.end(); ++j)
         {
@@ -189,7 +189,7 @@ void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
                 continue;
             }
             std::vector <TiXmlElement *> params =
-                xmlGetAllChilds(*j, "param");
+                std::xmlGetAllChilds(*j, "param");
             for (std::vector<TiXmlElement *>::iterator z = params.begin();
                  z != params.end(); ++z)
                 act->pushParam((*z)->Attribute("value"));
@@ -208,7 +208,7 @@ void Engine::createRoomsFromXml(std::vector <TiXmlElement *> rooms)
             continue;
         }
         std::vector <TiXmlElement *> areas =
-            xmlGetAllChilds((*i)->FirstChildElement("areas"), "area");
+            std::xmlGetAllChilds((*i)->FirstChildElement("areas"), "area");
         for (std::vector<TiXmlElement *>::iterator j = areas.begin();
              j != areas.end(); ++j)
         {

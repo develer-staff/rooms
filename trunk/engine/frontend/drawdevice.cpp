@@ -1,5 +1,6 @@
 #include "drawdevice.h"
 
+
 DrawDevice::DrawDevice(Engine *eng, QWidget *parent): QWidget(parent)
 {
     engine = eng;
@@ -35,12 +36,6 @@ bool DrawDevice::loadImage(string id, string filename)
     {
         return false;
     }
-}
-
-bool DrawDevice::fileExists(string filename)
-{
-    std::ifstream ifile(filename.c_str());
-    return ifile;
 }
 
 void DrawDevice::quit(int status)

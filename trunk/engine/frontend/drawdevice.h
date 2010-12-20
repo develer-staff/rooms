@@ -10,6 +10,14 @@
 
 using std::string;
 
+namespace
+{
+    bool fileExists(string filename)
+    {
+        std::ifstream ifile(filename.c_str());
+        return ifile;
+    }
+}
 
 /*! \brief Graphic interface class.
  *         It handles user event and it controls engine.
@@ -33,9 +41,6 @@ class DrawDevice: public QWidget
         void paintEvent(QPaintEvent *event);
         void mousePressEvent(QMouseEvent * event);
         void mouseMoveEvent(QMouseEvent *event);
-    private:
-        bool fileExists(string filename);
-
 };
 
 #endif // DRAWDEVICE_H
