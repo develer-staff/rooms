@@ -64,49 +64,34 @@ int RoomsManager::height() const
 
 Room * RoomsManager::addRoom(const string name, const string bg)
 {
-    if (room(name) != 0)
-        return 0;
-    else
-    {
-        Room *r = new Room(name);
-        r->bg(bg);
-        rooms[name] = r;
-        return r;
-    }
+    Room *r = new Room(name);
+    r->bg(bg);
+    rooms[name] = r;
+    return r;
 }
 
 Area * RoomsManager::addArea(const string name, const string room, const int x, const int y,
                              const int w, const int h, const string event)
 {
-    if (area(name) != 0)
-        return 0;
-    else
-    {
-        Area *a = new Area(name);
-        areas[name] = a;
-        a->size(x, y, w, h);
-        a->event(event);
-        rooms[room]->addArea(name, a);
-        return a;
-    }
+    Area *a = new Area(name);
+    areas[name] = a;
+    a->size(x, y, w, h);
+    a->event(event);
+    rooms[room]->addArea(name, a);
+    return a;
 }
 
 Item * RoomsManager::addItem(const string name, const string room, const int x, const int y,
                              const int w, const int h, const string event, const string image)
 {
-    if (item(name) != 0)
-        return 0;
-    else
-    {
-        Item *i = new Item(name);
-        items[name] = i;
-        i->size(x, y, w, h);
-        i->event(event);
-        i->move(room);
-        rooms[room]->addItem(name, i);
-        i->image(image);
-        return i;
-    }
+    Item *i = new Item(name);
+    items[name] = i;
+    i->size(x, y, w, h);
+    i->event(event);
+    i->move(room);
+    rooms[room]->addItem(name, i);
+    i->image(image);
+    return i;
 }
 
 void RoomsManager::moveItem(const string name, const string dest)

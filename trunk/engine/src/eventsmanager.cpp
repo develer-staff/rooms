@@ -19,14 +19,9 @@ EventsManager::~EventsManager()
 
 Event *EventsManager::addEvent(const string name)
 {
-    if (event(name) != 0)
-        return 0;
-    else
-    {
-        Event *e = new Event(name);
-        events[name] = e;
-        return e;
-    }
+    Event *e = new Event(name);
+    events[name] = e;
+    return e;
 }
 
 Event *EventsManager::event(const string name)

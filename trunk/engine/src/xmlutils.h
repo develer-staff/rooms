@@ -5,6 +5,7 @@
 
 #include <string> //std::string
 #include <vector> //std::vector
+#include <set> //std::set
 
 namespace std
 {

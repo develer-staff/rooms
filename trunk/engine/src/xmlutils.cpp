@@ -38,27 +38,35 @@ bool std::xmlCheckRoot(TiXmlElement *elem)
 
 bool std::xmlCheckImages(TiXmlElement *elem)
 {
+    std::set<std::string> ids;
     if (elem)
         for (TiXmlElement *i = elem->FirstChildElement("img"); i != 0;
              i = i->NextSiblingElement("img"))
         {
             if (i->Attribute("id") == 0 ||
-                i->Attribute("file") == 0)
+                i->Attribute("file") == 0 ||
+                ids.count(i->Attribute("id")) > 0)
                 return false;
+            else
+                ids.insert(i->Attribute("id"));
         }
     return true;
 }
 
 bool std::xmlCheckVars(TiXmlElement *elem)
 {
+    std::set<std::string> ids;
     if (elem)
         for (TiXmlElement *i = elem->FirstChildElement("var"); i != 0;
              i = i->NextSiblingElement("var"))
         {
             int tmp;
             if (i->Attribute("id") == 0 ||
+                ids.count(i->Attribute("id")) > 0 ||
                 i->QueryIntAttribute("value", &tmp) != TIXML_SUCCESS)
                 return false;
+            else
+                ids.insert(i->Attribute("id"));
         }
     return true;
 }
@@ -66,15 +74,19 @@ bool std::xmlCheckVars(TiXmlElement *elem)
 
 bool std::xmlCheckEvents(TiXmlElement *elem)
 {
+    std::set<std::string> ids;
     if (elem)
     {
         for (TiXmlElement *i = elem->FirstChildElement("event"); i != 0;
              i = i->NextSiblingElement("event"))
         {
             if (i->Attribute("id") == 0 ||
+                ids.count(i->Attribute("id")) > 0 ||
                 !xmlCheckActions(i->FirstChildElement("actions_if")) ||
                 !xmlCheckReqs(i->FirstChildElement("requirements")))
                 return false;
+            else
+                ids.insert(i->Attribute("id"));
         }
     }
     return true;
@@ -129,26 +141,32 @@ bool std::xmlCheckReqs(TiXmlElement *elem)
 
 bool std::xmlCheckRooms(TiXmlElement *elem)
 {
+    std::set<std::string> ids;
     if (elem)
         for (TiXmlElement *i = elem->FirstChildElement("room"); i != 0;
              i = i->NextSiblingElement("room"))
         {
             if (i->Attribute("id") == 0 ||
+                ids.count(i->Attribute("id")) > 0 ||
                 i->Attribute("bg") == 0 ||
                 !xmlCheckAreas(i->FirstChildElement("areas")))
                 return false;
+            else
+                ids.insert(i->Attribute("id"));
         }
     return true;
 }
 
 bool std::xmlCheckAreas(TiXmlElement *elem)
 {
+    std::set<std::string> ids;
     int tmp;
     if (elem)
         for (TiXmlElement *i = elem->FirstChildElement("area"); i != 0;
              i = i->NextSiblingElement("area"))
         {
             if (i->Attribute("id") == 0 ||
+                ids.count(i->Attribute("id")) > 0 ||
                 i->QueryIntAttribute("enabled", &tmp) != TIXML_SUCCESS ||
                 i->QueryIntAttribute("x", &tmp) != TIXML_SUCCESS ||
                 i->QueryIntAttribute("y", &tmp) != TIXML_SUCCESS ||
@@ -156,18 +174,22 @@ bool std::xmlCheckAreas(TiXmlElement *elem)
                 i->QueryIntAttribute("height", &tmp) != TIXML_SUCCESS ||
                 !xmlCheckDoEvents(i))
                 return false;
+            else
+                ids.insert(i->Attribute("id"));
         }
     return true;
 }
 
 bool std::xmlCheckItems(TiXmlElement *elem)
 {
+    std::set<std::string> ids;
     int tmp;
     if (elem)
         for (TiXmlElement *i = elem->FirstChildElement("item"); i != 0;
              i = i->NextSiblingElement("item"))
         {
             if (i->Attribute("id") == 0 ||
+                ids.count(i->Attribute("id")) > 0 ||
                 i->QueryIntAttribute("x", &tmp) != TIXML_SUCCESS ||
                 i->QueryIntAttribute("y", &tmp) != TIXML_SUCCESS ||
                 i->QueryIntAttribute("width", &tmp) != TIXML_SUCCESS ||
@@ -176,6 +198,8 @@ bool std::xmlCheckItems(TiXmlElement *elem)
                 i->Attribute("room") == 0 ||
                 !xmlCheckDoEvents(i))
                 return false;
+            else
+                ids.insert(i->Attribute("id"));
         }
     return true;
 }

@@ -149,11 +149,6 @@ void Engine::createEventsFromXml(XmlVect events)
     for (XmlVect::iterator i = events.begin(); i != events.end(); ++i)
     {
         Event *event = events_mgr->addEvent((*i)->Attribute("id"));
-        if (event == 0)
-        {
-            logger.write("WARNING: cannot creating a new event!", Log::WARNING);
-            continue;
-        }
         //create items parameters
         XmlVect ireqs = std::xmlGetAllChilds((*i)->FirstChildElement("requirements"), "item_req");
         for (XmlVect::iterator j = ireqs.begin(); j != ireqs.end(); ++j)
@@ -167,11 +162,6 @@ void Engine::createEventsFromXml(XmlVect events)
         for (XmlVect::iterator j = actions.begin(); j != actions.end(); ++j)
         {
             Action *act = event->addAction((*j)->Attribute("id"));
-            if (act == 0)
-            {
-                logger.write("WARNING: cannot create a new action!", Log::WARNING);
-                continue;
-            }
             XmlVect params = std::xmlGetAllChilds(*j, "param");
             for (XmlVect::iterator z = params.begin(); z != params.end(); ++z)
                 act->pushParam((*z)->Attribute("value"));
@@ -183,11 +173,7 @@ void Engine::createRoomsFromXml(XmlVect rooms)
 {
     for (XmlVect::iterator i = rooms.begin(); i != rooms.end(); ++i)
     {
-        if (rooms_mgr->addRoom((*i)->Attribute("id"), (*i)->Attribute("bg")) == 0)
-        {
-            logger.write("WARNING: cannot create a new room!", Log::WARNING);
-            continue;
-        }
+        rooms_mgr->addRoom((*i)->Attribute("id"), (*i)->Attribute("bg"));
         XmlVect areas = std::xmlGetAllChilds((*i)->FirstChildElement("areas"), "area");
         for (XmlVect::iterator j = areas.begin(); j != areas.end(); ++j)
         {
@@ -198,10 +184,7 @@ void Engine::createRoomsFromXml(XmlVect rooms)
                                 std::xmlReadInt((*j), "width"),
                                 std::xmlReadInt((*j), "height"),
                                 (*j)->FirstChildElement("do_event")->Attribute("value"));
-            if (a == 0)
-                logger.write("WARNING: cannot create new area!", Log::WARNING);
-            else
-                a->enabled(std::xmlReadInt((*j), "enabled"));
+            a->enabled(std::xmlReadInt((*j), "enabled"));
         }
     }
 }
@@ -210,15 +193,14 @@ void Engine::createItemsFromXml(XmlVect items)
 {
     for (XmlVect::iterator i = items.begin(); i != items.end(); ++i)
     {
-        if (rooms_mgr->addItem((*i)->Attribute("id"),
+        rooms_mgr->addItem((*i)->Attribute("id"),
                             (*i)->Attribute("room"),
                             std::xmlReadInt((*i), "x"),
                             std::xmlReadInt((*i), "y"),
                             std::xmlReadInt((*i), "width"),
                             std::xmlReadInt((*i), "height"),
                             (*i)->FirstChildElement("do_event")->Attribute("value"),
-                            (*i)->Attribute("image")) == 0)
-            logger.write("WARNING: cannot create a new item!", Log::WARNING);
+                            (*i)->Attribute("image"));
     }
 }
 
