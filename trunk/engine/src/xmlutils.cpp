@@ -16,7 +16,7 @@ bool std::xmlCheckDoc(TiXmlDocument *doc)
                std::xmlCheckVars(doc->RootElement()->FirstChildElement("vars")) &&
                std::xmlCheckEvents(doc->RootElement()->FirstChildElement("events")) &&
                std::xmlCheckRooms(doc->RootElement()->FirstChildElement("rooms")) &&
-               std::xmlCheckRooms(doc->RootElement()->FirstChildElement("items"));
+               std::xmlCheckItems(doc->RootElement()->FirstChildElement("items"));
     return false;
 }
 
