@@ -9,7 +9,7 @@ template <class T> void std::freeElements(std::map<string , T *> &container)
     for (typename std::map<string, T *>::iterator i = container.begin();
          i != container.end(); ++i)
     {
-        //TODO: insert a log here
+        logger.write("Garbage collector: " + i->second->id, Log::NOTE);
         delete i->second;
     }
     container.clear();
