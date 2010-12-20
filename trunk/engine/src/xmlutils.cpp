@@ -1,5 +1,12 @@
 #include "xmlutils.h"
 
+int std::xmlReadInt(TiXmlElement *elem, std::string attribute)
+{
+    int tmp;
+    elem->QueryIntAttribute(attribute.c_str(), &tmp);
+    return tmp;
+}
+
 bool std::xmlCheckDoc(TiXmlDocument *doc)
 {
     if (doc)

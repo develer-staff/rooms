@@ -21,6 +21,7 @@ namespace std
     bool xmlCheckAreas(TiXmlElement *elem);
     bool xmlCheckItems(TiXmlElement *elem);
     bool xmlCheckDoEvents(TiXmlElement *elem);
+    int xmlReadInt(TiXmlElement *elem, std::string attribute);
 }
 
 #endif // XMLMANAGER_H

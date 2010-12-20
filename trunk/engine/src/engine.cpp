@@ -86,14 +86,12 @@ bool Engine::loadWorld(const string filename)
     {
         logger.write("Loading world from " + filename, Log::NOTE);
         TiXmlDocument document(filename.c_str());
-        int width = 0, height = 0;
         if (!std::xmlCheckDoc(&document)) throw "ERROR: wrong xml document!";
         TiXmlElement *root = document.RootElement();
         //Load World attributes
         logger.write(root->Attribute("name"), Log::NOTE);
-        root->QueryIntAttribute("width", &width);
-        root->QueryIntAttribute("height", &height);
-        rooms_mgr->size(width, height);
+        rooms_mgr->size(std::xmlReadInt(root, "width"),
+                        std::xmlReadInt(root, "height"));
         rooms_mgr->name(root->Attribute("name"));
         //TODO: manage different screen resolutions
         //Loading from xml
@@ -143,11 +141,7 @@ void Engine::createVarsFromXml(std::vector <TiXmlElement *> vars)
 {
     for (std::vector<TiXmlElement *>::iterator i = vars.begin();
          i != vars.end(); ++i)
-    {
-        int var_value;
-        (*i)->QueryIntAttribute("value", &var_value);
-        events_mgr->var((*i)->Attribute("id"), var_value);
-    }
+        events_mgr->var((*i)->Attribute("id"), std::xmlReadInt((*i), "value"));
 }
 
 void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
@@ -172,11 +166,7 @@ void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
             std::xmlGetAllChilds((*i)->FirstChildElement("requirements"), "var_req");
         for (std::vector<TiXmlElement *>::iterator j = vreqs.begin();
              j != vreqs.end(); ++j)
-        {
-            int var_value;
-            (*j)->QueryIntAttribute("value", &var_value);
-            event->addVarReq((*j)->Attribute("id"), var_value);
-        }
+            event->addVarReq((*j)->Attribute("id"), std::xmlReadInt((*i), "value"));
         //create actions
         std::vector <TiXmlElement *> actions =
             std::xmlGetAllChilds((*i)->FirstChildElement("actions_if"), "action");
@@ -213,22 +203,17 @@ void Engine::createRoomsFromXml(std::vector <TiXmlElement *> rooms)
         for (std::vector<TiXmlElement *>::iterator j = areas.begin();
              j != areas.end(); ++j)
         {
-            int area_x, area_y, area_w, area_h, area_enab;
-            (*j)->QueryIntAttribute("x", &area_x);
-            (*j)->QueryIntAttribute("y", &area_y);
-            (*j)->QueryIntAttribute("width", &area_w);
-            (*j)->QueryIntAttribute("height", &area_h);
             Area * a = rooms_mgr->addArea((*j)->Attribute("id"),
                                 (*i)->Attribute("id"),
-                                area_x, area_y, area_w, area_h,
+                                std::xmlReadInt((*j), "x"),
+                                std::xmlReadInt((*j), "y"),
+                                std::xmlReadInt((*j), "width"),
+                                std::xmlReadInt((*j), "height"),
                                 (*j)->FirstChildElement("do_event")->Attribute("value"));
             if (a == 0)
                 logger.write("WARNING: cannot create new area!", Log::WARNING);
             else
-            {
-                (*j)->QueryIntAttribute("enabled", &area_enab);
-                a->enabled(area_enab);
-            }
+                a->enabled(std::xmlReadInt((*j), "enabled"));
         }
     }
 }
@@ -238,14 +223,12 @@ void Engine::createItemsFromXml(std::vector <TiXmlElement *> items)
     for (std::vector<TiXmlElement *>::iterator i = items.begin();
          i != items.end(); ++i)
     {
-        int area_x, area_y, area_w, area_h;
-        (*i)->QueryIntAttribute("x", &area_x);
-        (*i)->QueryIntAttribute("y", &area_y);
-        (*i)->QueryIntAttribute("width", &area_w);
-        (*i)->QueryIntAttribute("height", &area_h);
         if (rooms_mgr->addItem((*i)->Attribute("id"),
                             (*i)->Attribute("room"),
-                            area_x, area_y, area_w, area_h,
+                            std::xmlReadInt((*i), "x"),
+                            std::xmlReadInt((*i), "y"),
+                            std::xmlReadInt((*i), "width"),
+                            std::xmlReadInt((*i), "height"),
                             (*i)->FirstChildElement("do_event")->Attribute("value"),
                             (*i)->Attribute("image")) == 0)
             logger.write("WARNING: cannot create a new item!", Log::WARNING);
