@@ -27,7 +27,7 @@ class DrawDevice: public QWidget
     Q_OBJECT
     private:
         Engine *engine;
-        std::map <string, QImage *> images;
+        std::map <string, QPixmap *> images;
         string item_text;
     public:
         DrawDevice(Engine *eng, QWidget *parent=0);
