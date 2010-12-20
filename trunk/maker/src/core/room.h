@@ -14,7 +14,7 @@ class Room : public QObject
 public:
     Room(const QString &name, QObject *parent = 0);
     ~Room();
-    bool addArea(const QRect &rect);
+    void addArea(const QRect &rect);
 
     void setBackground(const QPixmap &rect);
     QPixmap background() const;
@@ -23,10 +23,10 @@ public:
 
     QString name() const;
 
-    QList<Area*> *areas() const;
+    QList<Area*> areas() const;
 
 private:
-    QList<Area*> *_areas;
+    QList<Area*> _areas;
     QString _name;
     QPixmap _background;
     QPixmap _icon;

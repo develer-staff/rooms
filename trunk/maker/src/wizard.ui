@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>Wizard</class>
  <widget class="QDialog" name="Wizard">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -141,9 +144,9 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="createButton">
-       <property name="text">
-        <string>Create</string>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Ok</set>
        </property>
       </widget>
      </item>

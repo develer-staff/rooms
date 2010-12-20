@@ -10,3 +10,8 @@ QRect Area::rect() const
 {
     return _rect;
 }
+
+void Area::setPos(const QPoint &point)
+{
+    _rect.translate(point);
+}
