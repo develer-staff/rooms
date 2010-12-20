@@ -1,31 +1,27 @@
 #include "engine.h"
 
+Log logger;
+
 Engine *Engine::engine = 0;
 
 Engine::Engine()
 {
     try
     {
-        rooms_mgr = new RoomsManager(this);
+        rooms_mgr = new RoomsManager();
         events_mgr = new EventsManager();
         _state = INITIALIZING;
-        if (DEBUG_LEVEL)
-        {
-            std::ofstream log_file;
-            log_file.open("rooms.log", std::ios::out);
-            log_file.close();
-        }
     }
     catch (...)
     {
-        log("ERROR: cannot create a valid engine!", 1);
+        logger.write("ERROR: cannot create a valid engine!", Log::ERROR);
         exit();
     }
 }
 
 Engine::~Engine()
 {
-    log("QUITTING ENGINE", 1);
+    logger.write("QUITTING ENGINE", Log::ERROR);
     delete rooms_mgr;
     delete events_mgr;
 }
@@ -38,6 +34,11 @@ Engine *Engine::createEngine()
     return engine;
 }
 
+Log *Engine::getLogger()
+{
+    return &logger;
+}
+
 void Engine::exit()
 {
     delete engine;
@@ -45,7 +46,7 @@ void Engine::exit()
 
 void Engine::click (const int x, const int y)
 {
-    log("Mouse click received", 3);
+    logger.write("Mouse click received", Log::NOTE);
     switch (_state)
     {
         case GAME:
@@ -53,12 +54,12 @@ void Engine::click (const int x, const int y)
             Event *event = events_mgr->event(rooms_mgr->eventAt(x, y));
             if (event == 0)
                 break;
-            log("Event: " + event->id, 3);
+            logger.write("Event: " + event->id, Log::NOTE);
             if (rooms_mgr->checkItemPlace(event->itemReqs()) &&
                 events_mgr->checkVarReqs(event->varReqs()))
                 execActions(events_mgr->actionsForEvent(event->id));
             else
-                log("Requirements are not satisfied", 3);
+                logger.write("Requirements are not satisfied", Log::NOTE);
             break;
         }
     }
@@ -83,13 +84,13 @@ bool Engine::loadWorld(const string filename)
 {
     try
     {
-        log("Loading world from " + filename, 2);
+        logger.write("Loading world from " + filename, Log::NOTE);
         TiXmlDocument document(filename.c_str());
         int width = 0, height = 0;
         if (!std::xmlCheckDoc(&document)) throw "ERROR: wrong xml document!";
         TiXmlElement *root = document.RootElement();
         //Load World attributes
-        log(root->Attribute("name"), 2);
+        logger.write(root->Attribute("name"), Log::NOTE);
         root->QueryIntAttribute("width", &width);
         root->QueryIntAttribute("height", &height);
         rooms_mgr->size(width, height);
@@ -120,7 +121,7 @@ bool Engine::loadWorld(const string filename)
     }
     catch (const char *msg)
     {
-        log(msg, 1);
+        logger.write(msg, Log::ERROR);
         return false;
     }
 }
@@ -157,7 +158,7 @@ void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
         Event *event = events_mgr->addEvent((*i)->Attribute("id"));
         if (event == 0)
         {
-            log("WARNING: cannot creating a new event!", 2);
+            logger.write("WARNING: cannot creating a new event!", Log::WARNING);
             continue;
         }
         //create items parameters
@@ -185,7 +186,7 @@ void Engine::createEventsFromXml(std::vector <TiXmlElement *> events)
             Action *act = event->addAction((*j)->Attribute("id"));
             if (act == 0)
             {
-                log("WARNING: cannot create a new action!", 2);
+                logger.write("WARNING: cannot create a new action!", Log::WARNING);
                 continue;
             }
             std::vector <TiXmlElement *> params =
@@ -204,7 +205,7 @@ void Engine::createRoomsFromXml(std::vector <TiXmlElement *> rooms)
     {
         if (rooms_mgr->addRoom((*i)->Attribute("id"), (*i)->Attribute("bg")) == 0)
         {
-            log("WARNING: cannot create a new room!", 2);
+            logger.write("WARNING: cannot create a new room!", Log::WARNING);
             continue;
         }
         std::vector <TiXmlElement *> areas =
@@ -222,7 +223,7 @@ void Engine::createRoomsFromXml(std::vector <TiXmlElement *> rooms)
                                 area_x, area_y, area_w, area_h,
                                 (*j)->FirstChildElement("do_event")->Attribute("value"));
             if (a == 0)
-                log("WARNING: cannot create new area!", 2);
+                logger.write("WARNING: cannot create new area!", Log::WARNING);
             else
             {
                 (*j)->QueryIntAttribute("enabled", &area_enab);
@@ -247,7 +248,7 @@ void Engine::createItemsFromXml(std::vector <TiXmlElement *> items)
                             area_x, area_y, area_w, area_h,
                             (*i)->FirstChildElement("do_event")->Attribute("value"),
                             (*i)->Attribute("image")) == 0)
-            log("WARNING: cannot create a new item!", 2);
+            logger.write("WARNING: cannot create a new item!", Log::WARNING);
     }
 }
 
@@ -268,7 +269,7 @@ void Engine::execActions(std::vector <Action *> actions)
     {
         //TODO: think about improving this loop
         Action act = *(*i);
-        log("Exec action: " + act.id, 3);
+        logger.write("Exec action: " + act.id, Log::NOTE);
         if (act.id == "ROOM_GOTO")
         {
             apiRoomGoto(act.popStrParam());
@@ -291,39 +292,28 @@ void Engine::execActions(std::vector <Action *> actions)
     }
 }
 
-void Engine::log(const string text, const int level)
-{
-    if (level <= DEBUG_LEVEL)
-    {
-        std::ofstream log_file;
-        log_file.open("rooms.log", std::ios::out | std::ios::app);
-        log_file << time(0) << ": " << text << '\n';
-        log_file.close();
-    }
-}
-
 void Engine::apiRoomGoto(const string id)
 {
-    log("ROOM_GOTO: " + id, 2);
+    logger.write("ROOM_GOTO: " + id, Log::NOTE);
     rooms_mgr->currentRoom(id);
 }
 
 void Engine::apiVarSet(const string id, const int value)
 {
-    log("VAR_SET: " + id, 2);
+    logger.write("VAR_SET: " + id, Log::NOTE);
     events_mgr->var(id, value);
 }
 
 void Engine::apiItemMove(const string id, const string dest)
 {
-    log("ITEM_MOVE: " + id + ", dest: " + dest, 2);
+    logger.write("ITEM_MOVE: " + id + ", dest: " + dest, Log::NOTE);
     rooms_mgr->moveItem(id, dest);
 }
 
 void Engine::apiAreaSetEnable(const string id, const bool value)
 {
     string str_val = value ? "true" : "false";
-    log("AREA_SET_ENABLE: " + id + ", enabled: " + str_val, 2);
+    logger.write("AREA_SET_ENABLE: " + id + ", enabled: " + str_val, Log::NOTE);
     rooms_mgr->area(id)->enabled(value);
 }
 

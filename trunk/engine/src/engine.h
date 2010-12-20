@@ -1,8 +1,7 @@
 #ifndef ROOMSENGINE_H
 #define ROOMSENGINE_H
 
-#define DEBUG_LEVEL 3
-
+#include "log.h"
 #include "roomsmanager.h"
 #include "room.h"
 #include "item.h"
@@ -13,12 +12,11 @@
 #include "xmlutils.h"
 
 #include <string> //std::string
-#include <fstream> //std::ofstream
-#include <time.h> //time()
 #include <utility> //std::pair
 
 using std::string;
 
+class Log;
 class RoomsManager;
 class EventsManager;
 class Event;
@@ -26,7 +24,6 @@ class Action;
 class Area;
 class Room;
 class Item;
-
 
 /*! \brief Main class.
  *         It's driven by frontend and it manages game state.
@@ -63,8 +60,8 @@ class Engine
         EventsManager *getEventsManager() const;
         Engine::State state() const;
         void state(const Engine::State state_name);
-        void log(const string text, const int level);
         std::vector<std::pair<string, string> > getImgNames() const;
+        Log *getLogger();
     private:
         void execActions(const std::vector <Action *> actions);
         void createImgsFromXml(std::vector <TiXmlElement *> imgs);
@@ -78,5 +75,7 @@ class Engine
         void apiItemMove(const string id, const string dest);
         void apiAreaSetEnable(const string id, const bool value);
 };
+
+extern Log logger;
 
 #endif // ROOMSENGINE_H

@@ -5,7 +5,6 @@
 #include <map> //std::map
 #include <vector> //std::vector
 
-class Engine;
 class Room;
 class Area;
 class Item;
@@ -25,7 +24,6 @@ namespace std
 class RoomsManager
 {
     private:
-        Engine *engine;
         std::map <string, Room *> rooms;
         std::map <string, Area *> areas;
         std::map <string, Item *> items;
@@ -34,7 +32,7 @@ class RoomsManager
         int _width;
         Room *current_room;
     public:
-        RoomsManager(Engine *eng);
+        RoomsManager();
         ~RoomsManager();
     public:
         Room *addRoom(const string name, const string bg);

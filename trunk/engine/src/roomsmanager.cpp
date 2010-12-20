@@ -24,9 +24,8 @@ template <class T> T *std::getElement(string name, std::map<string, T *> contain
         return i->second;
 }
 
-RoomsManager::RoomsManager(Engine *eng)
+RoomsManager::RoomsManager()
 {
-    engine = eng;
     current_room = 0;
 }
 
@@ -120,7 +119,7 @@ void RoomsManager::moveItem(const string name, const string dest)
         Room *r_dest = room(dest);
         if (r_parent == 0 || r_dest == 0)
         {
-            engine->log("WARNING: invalid item movement!", 2);
+            logger.write("WARNING: invalid item movement!", Log::WARNING);
             return;
         }
         r_parent->remItem(name);

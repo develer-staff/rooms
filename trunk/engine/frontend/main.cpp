@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     Engine *eng = Engine::createEngine();
     if (!eng->loadWorld("world.rooms"))
     {
-        eng->log("ERROR: cannot load world.rooms!", 1);
+        eng->getLogger()->write("ERROR: cannot load world.rooms!", Log::ERROR);
         eng->exit();
         return 1;
     }
