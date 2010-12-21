@@ -8,15 +8,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(ui->room_view, SIGNAL(roomChanged(Room*)), this, SLOT(updateRoomSettings(Room*)));
-    connect(ui->room_view, SIGNAL(selected(Room*)), this, SLOT(updateRoomSettings(Room*)));
-    connect(ui->room_view, SIGNAL(selected(Area*)), this, SLOT(updateAreaSettings(Area*)));
+    connect(ui->room_view, SIGNAL(roomChanged(Room*)), ui->room_view, SIGNAL(selected(Room*)));
+    connect(ui->room_view, SIGNAL(selected(Room*)), ui->settings, SLOT(updateRoomSettings(Room*)));
+    connect(ui->room_view, SIGNAL(selected(Area*)), ui->settings, SLOT(updateAreaSettings(Area*)));
 
     connect(ui->rooms_list, SIGNAL(clicked(QModelIndex)),
             ui->room_view, SLOT(changeActiveRoom(QModelIndex)));
-
-    //Setting up the MainWindow
-    ui->area_settings->hide();
 
     wizard = new Wizard(this);
     wizard->show();
@@ -27,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->room_view->setWorld(world);
     ui->rooms_list->setWorld(world);
     ui->rooms_list->setModel(world->rooms());
+    ui->settings->setWorld(world);
 
     resizeRoomView();
 }
@@ -42,18 +40,4 @@ void MainWindow::resizeRoomView()
     ui->room_view->setFixedSize(wizard->worldSize());
     world->setSize(wizard->worldSize());
     adjustSize();
-}
-
-void MainWindow::updateRoomSettings(Room *room)
-{
-    ui->area_settings->hide();
-    ui->room_settings->show();
-    ui->room_name->setText(room->name());
-}
-
-void MainWindow::updateAreaSettings(Area *area)
-{
-    ui->room_settings->hide();
-    ui->area_settings->show();
-    ui->area_name->setText(area->name());
 }
