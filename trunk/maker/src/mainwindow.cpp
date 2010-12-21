@@ -55,5 +55,5 @@ void MainWindow::updateAreaSettings(Area *area)
 {
     ui->room_settings->hide();
     ui->area_settings->show();
-    ui->room_name->setText(area->name());
+    ui->area_name->setText(area->name());
 }
