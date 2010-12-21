@@ -165,7 +165,7 @@
          <number>9</number>
         </property>
         <item>
-         <widget class="QGroupBox" name="groupBox">
+         <widget class="QGroupBox" name="room_settings">
           <property name="title">
            <string>Room settings:</string>
           </property>
