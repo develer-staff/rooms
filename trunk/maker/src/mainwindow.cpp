@@ -34,11 +34,6 @@ MainWindow::~MainWindow()
 void MainWindow::resizeRoomView()
 {
     ui->room_view->setFixedSize(wizard->worldSize());
+    world->setSize(wizard->worldSize());
     adjustSize();
-
-    world = new World(wizard->worldName(), wizard->worldSize());
-
-    ui->room_view->setWorld(world);
-    ui->rooms_list->setWorld(world);
-    ui->rooms_list->setModel(world->rooms());
 }
