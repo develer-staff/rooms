@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(wizard, SIGNAL(accepted()), this, SLOT(resizeRoomView()));
 
-    world = new World(wizard->getName(), wizard->getSize());
+    world = new World(wizard->worldName(), wizard->worldSize());
 
     ui->room_view->setWorld(world);
     ui->rooms_list->setWorld(world);
@@ -33,10 +33,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::resizeRoomView()
 {
-    ui->room_view->setFixedSize(wizard->getSize());
+    ui->room_view->setFixedSize(wizard->worldSize());
     adjustSize();
 
-    world = new World(wizard->getName(), wizard->getSize());
+    world = new World(wizard->worldName(), wizard->worldSize());
 
     ui->room_view->setWorld(world);
     ui->rooms_list->setWorld(world);

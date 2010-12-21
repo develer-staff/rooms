@@ -3,19 +3,19 @@
 World::World(const QString &name, const QSize &size, QObject *parent) :
     QObject(parent)
 {
-    this->name = name;
-    this->_size = size;
+    this->world_name = name;
+    this->world_size = size;
     _rooms = new RoomsModel(this);
 }
 
 QSize World::size() const
 {
-    return _size;
+    return world_size;
 }
 
 void World::setSize(const QSize &size)
 {
-    _size = size;
+    world_size = size;
 }
 
 RoomsModel *World::rooms() const

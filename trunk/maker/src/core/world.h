@@ -22,8 +22,8 @@ public:
     RoomsModel *rooms() const;
 
 private:
-    QString name;
-    QSize _size;
+    QString world_name;
+    QSize world_size;
     RoomsModel *_rooms;
 };
 

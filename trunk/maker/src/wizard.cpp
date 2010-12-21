@@ -26,12 +26,12 @@ void Wizard::setInfo()
     close();
 }
 
-QString Wizard::getName() const
+QString Wizard::worldName() const
 {
     return name;
 }
 
-QSize Wizard::getSize() const
+QSize Wizard::worldSize() const
 {
     return QSize(width, height);
 }
