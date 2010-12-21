@@ -17,6 +17,7 @@ public:
     void updateRoomView();
 
 signals:
+    void roomChanged(Room *room);
     void selected(Room *room);
     void selected(Area *area);
 

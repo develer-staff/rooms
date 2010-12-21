@@ -66,6 +66,7 @@ void RoomView::changeActiveRoom(QModelIndex index)
 {
     active_room = world->rooms()->at(index.row());
     updateRoomView();
+    emit roomChanged(active_room);
 }
 
 void RoomView::mousePressEvent(QMouseEvent *event)
