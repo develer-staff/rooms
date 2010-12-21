@@ -15,6 +15,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->rooms_list, SIGNAL(clicked(QModelIndex)),
             ui->room_view, SLOT(changeActiveRoom(QModelIndex)));
 
+    //Setting up the MainWindow
+    ui->area_settings->hide();
+
     wizard = new Wizard(this);
     wizard->show();
     connect(wizard, SIGNAL(accepted()), this, SLOT(resizeRoomView()));
@@ -43,6 +46,14 @@ void MainWindow::resizeRoomView()
 
 void MainWindow::updateRoomSettings(Room *room)
 {
+    ui->area_settings->hide();
+    ui->room_settings->show();
     ui->room_name->setText(room->name());
+}
 
+void MainWindow::updateAreaSettings(Area *area)
+{
+    ui->room_settings->hide();
+    ui->area_settings->show();
+    ui->room_name->setText(area->name());
 }
