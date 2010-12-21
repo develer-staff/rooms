@@ -57,7 +57,7 @@ void RoomView::setWorld(World *world)
     this->world = world;
     if (active_room == 0)
     {
-        world->rooms()->appendRoom("Room 0");
+        world->rooms()->appendRoom();
         active_room = world->rooms()->at(0);
     }
 }

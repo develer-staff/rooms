@@ -16,16 +16,18 @@ public:
     int count() const;
     int rowCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
-    void appendRoom(const QString &name);
+    void appendRoom();
 
     void setRoomBackground(Room *room, const QPixmap &background);
     void addRoomArea(Room *room, const QRect &rect);
 
 private:
     bool areaExists(const QString &name);
+    bool roomExists(const QString &name);
 
     QList<Room *> rooms;
     int area_count;
+    int room_count;
 };
 
 #endif // ROOMSMODEL_H
