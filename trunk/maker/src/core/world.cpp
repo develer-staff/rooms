@@ -13,6 +13,11 @@ QSize World::size() const
     return _size;
 }
 
+void World::setSize(const QSize &size)
+{
+    _size = size;
+}
+
 RoomsModel *World::rooms() const
 {
     return _rooms;
