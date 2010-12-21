@@ -17,13 +17,13 @@ class World : public QObject
 public:
     World(const QString &name, const QSize &size, QObject *parent = 0);
 
-    QSize getSize() const;
+    QSize size() const;
     RoomsModel *rooms() const;
     QAbstractItemModel *roomsModel() const;
 
 private:
     QString name;
-    QSize size;
+    QSize _size;
     RoomsModel *_rooms;
 };
 
