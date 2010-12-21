@@ -46,7 +46,7 @@ void RoomView::updateRoomView()
 {
     if (!scenes.contains(active_room))
         scenes.insert(active_room,
-                      new QGraphicsScene(QRectF(QRect(QPoint(0, 0), world->getSize()))));
+                      new QGraphicsScene(QRectF(QPoint(0, 0), world->getSize())));
 
     setScene(scenes[active_room]);
 }
