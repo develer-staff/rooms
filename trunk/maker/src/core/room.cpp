@@ -12,9 +12,9 @@ Room::~Room()
 {
 }
 
-void Room::addArea(const QRect &rect)
+void Room::addArea(const QString &name, const QRect &rect)
 {
-    _areas.append(new Area(rect));
+    _areas.append(new Area(name, rect));
 }
 
 void Room::setBackground(const QPixmap &background)

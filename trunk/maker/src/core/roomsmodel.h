@@ -22,7 +22,10 @@ public:
     void addRoomArea(Room *room, const QRect &rect);
 
 private:
+    bool areaExists(const QString &name);
+
     QList<Room *> rooms;
+    int area_count;
 };
 
 #endif // ROOMSMODEL_H
