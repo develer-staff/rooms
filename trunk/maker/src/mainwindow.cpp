@@ -8,6 +8,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    connect(ui->room_view, SIGNAL(selected(Room*)), this, SLOT(updateRoomSettings(Room*)));
+    connect(ui->room_view, SIGNAL(selected(Area*)), this, SLOT(updateAreaSettings(Area*)));
+
     connect(ui->rooms_list, SIGNAL(clicked(QModelIndex)),
             ui->room_view, SLOT(changeActiveRoom(QModelIndex)));
 
@@ -35,4 +38,9 @@ void MainWindow::resizeRoomView()
     ui->room_view->setFixedSize(wizard->worldSize());
     world->setSize(wizard->worldSize());
     adjustSize();
+}
+
+void MainWindow::updateRoomSettings(Room *room)
+{
+    ui->room_name->setText(room->name());
 }

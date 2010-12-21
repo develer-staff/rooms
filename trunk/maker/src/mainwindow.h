@@ -20,6 +20,7 @@ public:
 
 public slots:
     void resizeRoomView();
+    void updateRoomSettings(Room *room);
 
 private:
     Ui::MainWindow *ui;
