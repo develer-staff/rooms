@@ -1,8 +1,7 @@
 #ifndef ROOMSENGINE_H
 #define ROOMSENGINE_H
 
-#define DEBUG_LEVEL 3
-
+#include "log.h"
 #include "roomsmanager.h"
 #include "room.h"
 #include "item.h"
@@ -13,12 +12,11 @@
 #include "xmlutils.h"
 
 #include <string> //std::string
-#include <fstream> //std::ofstream
-#include <time.h> //time()
 #include <utility> //std::pair
 
 using std::string;
 
+class Log;
 class RoomsManager;
 class EventsManager;
 class Event;
@@ -26,7 +24,6 @@ class Action;
 class Area;
 class Room;
 class Item;
-
 
 /*! \brief Main class.
  *         It's driven by frontend and it manages game state.
@@ -43,14 +40,15 @@ class Engine
             INVENTORY,
             ENDING
         };
+        typedef std::vector<TiXmlElement *> XmlVect;
     private:
         static Engine *engine;
         Engine::State _state;
-        RoomsManager *_rooms_mgr;
-        EventsManager *_events_mgr;
-        std::map<string, string> _images;
+        RoomsManager *rooms_mgr;
+        EventsManager *events_mgr;
+        std::map<string, string> images;
     public:
-        virtual ~Engine();
+        ~Engine();
     private:
         Engine();
     public:
@@ -63,21 +61,22 @@ class Engine
         EventsManager *getEventsManager() const;
         Engine::State state() const;
         void state(const Engine::State state_name);
-        void log(const string text, const int level);
-        void exit(const int status);
         std::vector<std::pair<string, string> > getImgNames() const;
+        Log *getLogger();
     private:
         void execActions(const std::vector <Action *> actions);
-        void createImgsFromXml(std::vector <TiXmlElement *> images);
-        void createEventsFromXml(std::vector <TiXmlElement *> events);
-        void createRoomsFromXml(std::vector <TiXmlElement *> rooms);
-        void createItemsFromXml(std::vector <TiXmlElement *> items);
-        void createVarsFromXml(std::vector <TiXmlElement *> vars);
+        void createImgsFromXml(XmlVect imgs);
+        void createEventsFromXml(XmlVect events);
+        void createRoomsFromXml(XmlVect rooms);
+        void createItemsFromXml(XmlVect items);
+        void createVarsFromXml(XmlVect vars);
         //RISC API
         void apiRoomGoto(const string id);
         void apiVarSet(const string id, const int value);
         void apiItemMove(const string id, const string dest);
-        void apiAreaSetEnable(const string id, const int value);
+        void apiAreaSetEnable(const string id, const bool value);
 };
+
+extern Log logger;
 
 #endif // ROOMSENGINE_H

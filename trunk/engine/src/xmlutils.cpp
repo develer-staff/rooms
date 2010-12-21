@@ -1,19 +1,26 @@
 #include "xmlutils.h"
 
-bool xmlCheckDoc(TiXmlDocument *doc)
+int std::xmlReadInt(TiXmlElement *elem, std::string attribute)
+{
+    int tmp;
+    elem->QueryIntAttribute(attribute.c_str(), &tmp);
+    return tmp;
+}
+
+bool std::xmlCheckDoc(TiXmlDocument *doc)
 {
     if (doc)
         return doc->LoadFile() &&
-               xmlCheckRoot(doc->RootElement()) &&
-               xmlCheckImages(doc->RootElement()->FirstChildElement("images")) &&
-               xmlCheckVars(doc->RootElement()->FirstChildElement("vars")) &&
-               xmlCheckEvents(doc->RootElement()->FirstChildElement("events")) &&
-               xmlCheckRooms(doc->RootElement()->FirstChildElement("rooms")) &&
-               xmlCheckRooms(doc->RootElement()->FirstChildElement("items"));
+               std::xmlCheckRoot(doc->RootElement()) &&
+               std::xmlCheckImages(doc->RootElement()->FirstChildElement("images")) &&
+               std::xmlCheckVars(doc->RootElement()->FirstChildElement("vars")) &&
+               std::xmlCheckEvents(doc->RootElement()->FirstChildElement("events")) &&
+               std::xmlCheckRooms(doc->RootElement()->FirstChildElement("rooms")) &&
+               std::xmlCheckItems(doc->RootElement()->FirstChildElement("items"));
     return false;
 }
 
-bool xmlCheckRoot(TiXmlElement *elem)
+bool std::xmlCheckRoot(TiXmlElement *elem)
 {
     int tmp;
     if (!elem)
@@ -29,51 +36,63 @@ bool xmlCheckRoot(TiXmlElement *elem)
     return true;
 }
 
-bool xmlCheckImages(TiXmlElement *elem)
+bool std::xmlCheckImages(TiXmlElement *elem)
 {
+    std::set<std::string> ids;
     if (elem)
         for (TiXmlElement *i = elem->FirstChildElement("img"); i != 0;
              i = i->NextSiblingElement("img"))
         {
             if (i->Attribute("id") == 0 ||
-                i->Attribute("file") == 0)
+                i->Attribute("file") == 0 ||
+                ids.count(i->Attribute("id")) > 0)
                 return false;
+            else
+                ids.insert(i->Attribute("id"));
         }
     return true;
 }
 
-bool xmlCheckVars(TiXmlElement *elem)
+bool std::xmlCheckVars(TiXmlElement *elem)
 {
+    std::set<std::string> ids;
     if (elem)
         for (TiXmlElement *i = elem->FirstChildElement("var"); i != 0;
              i = i->NextSiblingElement("var"))
         {
             int tmp;
             if (i->Attribute("id") == 0 ||
+                ids.count(i->Attribute("id")) > 0 ||
                 i->QueryIntAttribute("value", &tmp) != TIXML_SUCCESS)
                 return false;
+            else
+                ids.insert(i->Attribute("id"));
         }
     return true;
 }
 
 
-bool xmlCheckEvents(TiXmlElement *elem)
+bool std::xmlCheckEvents(TiXmlElement *elem)
 {
+    std::set<std::string> ids;
     if (elem)
     {
         for (TiXmlElement *i = elem->FirstChildElement("event"); i != 0;
              i = i->NextSiblingElement("event"))
         {
             if (i->Attribute("id") == 0 ||
+                ids.count(i->Attribute("id")) > 0 ||
                 !xmlCheckActions(i->FirstChildElement("actions_if")) ||
                 !xmlCheckReqs(i->FirstChildElement("requirements")))
                 return false;
+            else
+                ids.insert(i->Attribute("id"));
         }
     }
     return true;
 }
 
-bool xmlCheckActions(TiXmlElement *elem)
+bool std::xmlCheckActions(TiXmlElement *elem)
 {
     if (elem)
         for (TiXmlElement *i = elem->FirstChildElement("action"); i != 0;
@@ -85,7 +104,7 @@ bool xmlCheckActions(TiXmlElement *elem)
     return true;
 }
 
-bool xmlCheckParams(TiXmlElement *elem)
+bool std::xmlCheckParams(TiXmlElement *elem)
 {
     if (elem)
         for (TiXmlElement *i = elem->FirstChildElement("param"); i != 0;
@@ -97,7 +116,7 @@ bool xmlCheckParams(TiXmlElement *elem)
     return true;
 }
 
-bool xmlCheckReqs(TiXmlElement *elem)
+bool std::xmlCheckReqs(TiXmlElement *elem)
 {
     if (elem)
     {
@@ -120,28 +139,34 @@ bool xmlCheckReqs(TiXmlElement *elem)
     return true;
 }
 
-bool xmlCheckRooms(TiXmlElement *elem)
+bool std::xmlCheckRooms(TiXmlElement *elem)
 {
+    std::set<std::string> ids;
     if (elem)
         for (TiXmlElement *i = elem->FirstChildElement("room"); i != 0;
              i = i->NextSiblingElement("room"))
         {
             if (i->Attribute("id") == 0 ||
+                ids.count(i->Attribute("id")) > 0 ||
                 i->Attribute("bg") == 0 ||
                 !xmlCheckAreas(i->FirstChildElement("areas")))
                 return false;
+            else
+                ids.insert(i->Attribute("id"));
         }
     return true;
 }
 
-bool xmlCheckAreas(TiXmlElement *elem)
+bool std::xmlCheckAreas(TiXmlElement *elem)
 {
+    std::set<std::string> ids;
     int tmp;
     if (elem)
         for (TiXmlElement *i = elem->FirstChildElement("area"); i != 0;
              i = i->NextSiblingElement("area"))
         {
             if (i->Attribute("id") == 0 ||
+                ids.count(i->Attribute("id")) > 0 ||
                 i->QueryIntAttribute("enabled", &tmp) != TIXML_SUCCESS ||
                 i->QueryIntAttribute("x", &tmp) != TIXML_SUCCESS ||
                 i->QueryIntAttribute("y", &tmp) != TIXML_SUCCESS ||
@@ -149,18 +174,22 @@ bool xmlCheckAreas(TiXmlElement *elem)
                 i->QueryIntAttribute("height", &tmp) != TIXML_SUCCESS ||
                 !xmlCheckDoEvents(i))
                 return false;
+            else
+                ids.insert(i->Attribute("id"));
         }
     return true;
 }
 
-bool xmlCheckItems(TiXmlElement *elem)
+bool std::xmlCheckItems(TiXmlElement *elem)
 {
+    std::set<std::string> ids;
     int tmp;
     if (elem)
         for (TiXmlElement *i = elem->FirstChildElement("item"); i != 0;
              i = i->NextSiblingElement("item"))
         {
             if (i->Attribute("id") == 0 ||
+                ids.count(i->Attribute("id")) > 0 ||
                 i->QueryIntAttribute("x", &tmp) != TIXML_SUCCESS ||
                 i->QueryIntAttribute("y", &tmp) != TIXML_SUCCESS ||
                 i->QueryIntAttribute("width", &tmp) != TIXML_SUCCESS ||
@@ -169,11 +198,13 @@ bool xmlCheckItems(TiXmlElement *elem)
                 i->Attribute("room") == 0 ||
                 !xmlCheckDoEvents(i))
                 return false;
+            else
+                ids.insert(i->Attribute("id"));
         }
     return true;
 }
 
-bool xmlCheckDoEvents(TiXmlElement *elem)
+bool std::xmlCheckDoEvents(TiXmlElement *elem)
 {
     if (elem)
         for (TiXmlElement *i = elem->FirstChildElement("do_event"); i != 0;
@@ -185,7 +216,7 @@ bool xmlCheckDoEvents(TiXmlElement *elem)
     return true;
 }
 
-std::vector <TiXmlElement *> xmlGetAllChilds(TiXmlElement *elem, std::string id)
+std::vector <TiXmlElement *> std::xmlGetAllChilds(TiXmlElement *elem, std::string id)
 {
     std::vector <TiXmlElement *> childs;
     if (elem)

@@ -3,13 +3,20 @@
 
 #include <string> //string
 #include <map> //std::map
+#include <vector> //std::vector
 
-class Engine;
 class Room;
 class Area;
 class Item;
 
 using std::string;
+
+
+namespace std
+{
+    template <class T> T *getElement(string name, std::map<string, T *> container);
+    template <class T> void freeElements(std::map<string , T *> &container);
+}
 
 /*! \brief Rooms interface.
  *         Safely creates and garbage-collects rooms, areas and items.
@@ -17,7 +24,6 @@ using std::string;
 class RoomsManager
 {
     private:
-        Engine *engine;
         std::map <string, Room *> rooms;
         std::map <string, Area *> areas;
         std::map <string, Item *> items;
@@ -26,13 +32,13 @@ class RoomsManager
         int _width;
         Room *current_room;
     public:
-        RoomsManager(Engine *eng);
-        virtual ~RoomsManager();
+        RoomsManager();
+        ~RoomsManager();
     public:
         Room *addRoom(const string name, const string bg);
-        Area *addArea(const string id, const string room, const int x, const int y,
+        Area *addArea(const string name, const string room, const int x, const int y,
                       const int w, const int h, const string event);
-        Item *addItem(const string id, const string room, const int x, const int y,
+        Item *addItem(const string name, const string room, const int x, const int y,
                       const int w, const int h, const string event, const string image);
         Room *room(const string name);
         Area *area(const string name);
@@ -42,10 +48,13 @@ class RoomsManager
         void size(const int width, const int height);
         int height() const;
         int width() const;
-        Room *currentRoom(const string id);
+        void currentRoom(const string name);
         Room *currentRoom();
         string eventAt(const int x, const int y);
-        void moveItem(const string id, const string dest);
+        void moveItem(const string name, const string dest);
+        bool checkItemPlace(const std::vector <std::pair <string, string> > reqs);
 };
+
+
 
 #endif // ROOMMANAGER_H

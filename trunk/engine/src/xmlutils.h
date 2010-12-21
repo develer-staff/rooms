@@ -5,19 +5,24 @@
 
 #include <string> //std::string
 #include <vector> //std::vector
+#include <set> //std::set
 
-std::vector <TiXmlElement *> xmlGetAllChilds(TiXmlElement *elem, std::string id);
-bool xmlCheckDoc(TiXmlDocument *doc);
-bool xmlCheckRoot(TiXmlElement *elem);
-bool xmlCheckRooms(TiXmlElement *elem);
-bool xmlCheckImages(TiXmlElement *elem);
-bool xmlCheckVars(TiXmlElement *elem);
-bool xmlCheckEvents(TiXmlElement *elem);
-bool xmlCheckActions(TiXmlElement *elem);
-bool xmlCheckParams(TiXmlElement *elem);
-bool xmlCheckReqs(TiXmlElement *elem);
-bool xmlCheckAreas(TiXmlElement *elem);
-bool xmlCheckItems(TiXmlElement *elem);
-bool xmlCheckDoEvents(TiXmlElement *elem);
+namespace std
+{
+    std::vector <TiXmlElement *> xmlGetAllChilds(TiXmlElement *elem, std::string id);
+    bool xmlCheckDoc(TiXmlDocument *doc);
+    bool xmlCheckRoot(TiXmlElement *elem);
+    bool xmlCheckRooms(TiXmlElement *elem);
+    bool xmlCheckImages(TiXmlElement *elem);
+    bool xmlCheckVars(TiXmlElement *elem);
+    bool xmlCheckEvents(TiXmlElement *elem);
+    bool xmlCheckActions(TiXmlElement *elem);
+    bool xmlCheckParams(TiXmlElement *elem);
+    bool xmlCheckReqs(TiXmlElement *elem);
+    bool xmlCheckAreas(TiXmlElement *elem);
+    bool xmlCheckItems(TiXmlElement *elem);
+    bool xmlCheckDoEvents(TiXmlElement *elem);
+    int xmlReadInt(TiXmlElement *elem, std::string attribute);
+}
 
 #endif // XMLMANAGER_H

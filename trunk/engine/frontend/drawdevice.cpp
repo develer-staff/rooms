@@ -1,5 +1,6 @@
 #include "drawdevice.h"
 
+
 DrawDevice::DrawDevice(Engine *eng, QWidget *parent): QWidget(parent)
 {
     engine = eng;
@@ -7,7 +8,7 @@ DrawDevice::DrawDevice(Engine *eng, QWidget *parent): QWidget(parent)
 
 DrawDevice::~DrawDevice()
 {
-    for (std::map<string, QImage *>::iterator i = images.begin();
+    for (std::map<string, QPixmap *>::iterator i = images.begin();
          i != images.end(); ++i)
     {
         delete i->second;
@@ -28,19 +29,13 @@ bool DrawDevice::loadImage(string id, string filename)
 {
     if (fileExists(filename))
     {
-        images[id] = new QImage(filename.c_str());
+        images[id] = new QPixmap(filename.c_str());
         return true;
     }
     else
     {
         return false;
     }
-}
-
-bool DrawDevice::fileExists(string filename)
-{
-    std::ifstream ifile(filename.c_str());
-    return ifile;
 }
 
 void DrawDevice::quit(int status)
@@ -57,17 +52,17 @@ void DrawDevice::paintEvent(QPaintEvent *event)
         {
             //Draw room
             Room *room = engine->getRoomsManager()->currentRoom();
-            QImage *bg = images[room->bg()];
-            QRectF rect(0.0, 0.0, width(), height());
+            QPixmap *bg = images[room->bg()];
+            QRect rect(0, 0, width(), height());
             std::vector <Item *> items = room->items();
-            painter.drawImage(rect, *bg);
+            painter.drawPixmap(rect, *bg);
             //Draw items
             for (std::vector<Item *>::iterator i = items.begin();
                  i != items.end(); ++i)
             {
-                QImage *img = images[(*i)->image()];
-                QRectF irect((*i)->x(), (*i)->y(), (*i)->w(), (*i)->h());
-                painter.drawImage(irect, *img);
+                QPixmap *img = images[(*i)->image()];
+                QRect irect((*i)->x(), (*i)->y(), (*i)->w(), (*i)->h());
+                painter.drawPixmap(irect, *img);
             }
             painter.drawText(20, height() - 20, item_text.c_str());
             break;
@@ -78,7 +73,7 @@ void DrawDevice::paintEvent(QPaintEvent *event)
 void DrawDevice::mousePressEvent(QMouseEvent * event)
 {
     engine->click(event->x(), event->y());
-    repaint(QRect(0, 0, width(), height()));
+    update();
 }
 void DrawDevice::mouseMoveEvent(QMouseEvent *event)
 {
@@ -98,7 +93,7 @@ void DrawDevice::mouseMoveEvent(QMouseEvent *event)
     else
         setCursor(Qt::ArrowCursor);
 
-    repaint(QRect(0, 0, width(), height()));
+    update();
 }
 
 

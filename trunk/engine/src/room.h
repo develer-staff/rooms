@@ -23,15 +23,15 @@ class Room
         std::map<string, Item *> _items;
     public:
         Room(const string name);
-        virtual ~Room();
+        ~Room();
     public:
         string bg() const;
-        void bg(const string id);
-        Area *addArea(const string id, Area *area_ptr);
-        Item *addItem(const string id, Item *item_ptr);
-        void remItem(const string id);
-        Area *area(const string id);
-        Item *item(const string id);
+        void bg(const string name);
+        Area *addArea(const string name, Area *area_ptr);
+        Item *addItem(const string name, Item *item_ptr);
+        void remItem(const string name);
+        Area *area(const string name);
+        Item *item(const string name);
         std::vector <Item *> items() const;
         string eventAt(const int x, const int y) const;
         Item *itemAt(const int x, const int y);

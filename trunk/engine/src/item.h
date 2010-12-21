@@ -17,11 +17,11 @@ class Item: public Area
         std::string _image;
     public:
         Item(const std::string name);
-        virtual ~Item();
+        ~Item();
     public:
         void move(const std::string room);
         std::string parent() const;
-        void image(const std::string id);
+        void image(const std::string name);
         std::string image() const;
 };
 

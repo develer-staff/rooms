@@ -16,17 +16,17 @@ string Room::bg() const
 {
     return _bg;
 }
-void Room::bg(const string id)
+void Room::bg(const string name)
 {
-    _bg = id;
+    _bg = name;
 }
 
-Area *Room::addArea(const string id, Area *area_ptr)
+Area *Room::addArea(const string name, Area *area_ptr)
 {
     //TODO: a better return check
-    if (area(id) == 0)
+    if (area(name) == 0)
     {
-        areas[id] = area_ptr;
+        areas[name] = area_ptr;
         return area_ptr;
     }
     else
@@ -35,12 +35,12 @@ Area *Room::addArea(const string id, Area *area_ptr)
     }
 }
 
-Item *Room::addItem(const string id, Item *item_ptr)
+Item *Room::addItem(const string name, Item *item_ptr)
 {
     //TODO: a better return check
-    if (item(id) == 0)
+    if (item(name) == 0)
     {
-        _items[id] = item_ptr;
+        _items[name] = item_ptr;
         return item_ptr;
     }
     else
@@ -49,23 +49,23 @@ Item *Room::addItem(const string id, Item *item_ptr)
     }
 }
 
-void Room::remItem(const string id)
+void Room::remItem(const string name)
 {
-    _items.erase(id);
+    _items.erase(name);
 }
 
-Area *Room::area(const string id)
+Area *Room::area(const string name)
 {
-    std::map <string, Area *>::const_iterator i = areas.find(id);
+    std::map <string, Area *>::const_iterator i = areas.find(name);
     if (i ==  areas.end())
         return 0;
     else
         return i->second;
 }
 
-Item *Room::item(const string id)
+Item *Room::item(const string name)
 {
-    std::map <string, Item *>::const_iterator i = _items.find(id);
+    std::map <string, Item *>::const_iterator i = _items.find(name);
     if (i ==  _items.end())
         return 0;
     else

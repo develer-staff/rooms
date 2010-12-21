@@ -21,9 +21,9 @@ string Item::parent() const
 }
 
 
-void Item::image(const string id)
+void Item::image(const string name)
 {
-    _image = id;
+    _image = name;
 }
 
 string Item::image() const
