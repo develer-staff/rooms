@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -34,4 +35,10 @@ void MainWindow::resizeRoomView()
 {
     ui->room_view->setFixedSize(wizard->getSize());
     adjustSize();
+
+    world = new World(wizard->getName(), wizard->getSize());
+
+    ui->room_view->setWorld(world);
+    ui->rooms_list->setWorld(world);
+    ui->rooms_list->setModel(world->roomsModel());
 }
