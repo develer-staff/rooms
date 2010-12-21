@@ -33,6 +33,11 @@ QPixmap Room::icon() const
     return _icon;
 }
 
+void Room::setName(const QString &name)
+{
+    _name = name;
+}
+
 QString Room::name() const
 {
     return _name;

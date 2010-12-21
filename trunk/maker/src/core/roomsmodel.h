@@ -21,10 +21,10 @@ public:
     void setRoomBackground(Room *room, const QPixmap &background);
     void addRoomArea(Room *room, const QRect &rect);
 
-private:
     bool areaExists(const QString &name);
     bool roomExists(const QString &name);
 
+private:
     QList<Room *> rooms;
     int area_count;
     int room_count;

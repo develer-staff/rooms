@@ -22,6 +22,7 @@ public:
     QPixmap icon() const;
 
     QString name() const;
+    void setName(const QString &name);
 
     QList<Area*> areas() const;
 
