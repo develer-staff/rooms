@@ -9,6 +9,7 @@ class AreaRect : public QGraphicsRectItem
 
 public:
     explicit AreaRect(Area *area, QGraphicsScene *scene = 0, QGraphicsItem *parent = 0);
+    Area *area() const;
 
 protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);

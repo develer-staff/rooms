@@ -1,5 +1,6 @@
 #include "roomview.h"
 #include "arearect.h"
+#include <QMouseEvent>
 
 RoomView::RoomView(QWidget *parent) :
     QGraphicsView(parent)
@@ -65,4 +66,14 @@ void RoomView::changeActiveRoom(QModelIndex index)
 {
     active_room = world->rooms()->at(index.row());
     updateRoomView();
+}
+
+void RoomView::mousePressEvent(QMouseEvent *event)
+{
+    QGraphicsView::mousePressEvent(event);
+    QGraphicsItem *item = itemAt(event->pos());
+    if (item == 0 || item->zValue() == 0)
+        emit selected(active_room);
+    else
+        emit selected((AreaRect *)item->area());
 }

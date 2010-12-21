@@ -16,6 +16,10 @@ public:
     void setWorld(World *world);
     void updateRoomView();
 
+signals:
+    void selected(Room *room);
+    void selected(Area *area);
+
 public slots:
     void setBackground();
 
@@ -23,6 +27,9 @@ private slots:
     void addArea();
     void showContextMenu(const QPoint &point);
     void changeActiveRoom(QModelIndex index);
+
+protected:
+    void mousePressEvent(QMouseEvent *event);
 
 private:
     QHash<Room*, QGraphicsScene*> scenes;

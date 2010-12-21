@@ -19,3 +19,8 @@ void AreaRect::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsRectItem::mouseReleaseEvent(event);
     _area->setPos(pos().toPoint());
 }
+
+Area *AreaRect::area() const
+{
+    return _area;
+}
