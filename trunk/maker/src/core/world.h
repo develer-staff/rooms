@@ -20,7 +20,6 @@ public:
     void setSize(const QSize &size);
     QSize size() const;
     RoomsModel *rooms() const;
-    QAbstractItemModel *roomsModel() const;
 
 private:
     QString name;
