@@ -44,4 +44,9 @@ void RoomsList::addRoom()
 
     name = tr("Room") + " " + suffix;
     world->rooms()->appendRoom(name);
+
+    const QModelIndex index = model()->index(world->rooms()->count()-1, 0);
+    setCurrentIndex(index);
+    emit clicked(index);
+
 }
