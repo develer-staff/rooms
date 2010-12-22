@@ -177,14 +177,13 @@ void Engine::createRoomsFromXml(XmlVect rooms)
         XmlVect areas = std::xmlGetAllChilds((*i)->FirstChildElement("areas"), "area");
         for (XmlVect::iterator j = areas.begin(); j != areas.end(); ++j)
         {
-            Area * a = rooms_mgr->addArea((*j)->Attribute("id"),
-                                (*i)->Attribute("id"),
-                                std::xmlReadInt((*j), "x"),
-                                std::xmlReadInt((*j), "y"),
-                                std::xmlReadInt((*j), "width"),
-                                std::xmlReadInt((*j), "height"),
-                                (*j)->FirstChildElement("do_event")->Attribute("value"));
-            a->enabled(std::xmlReadInt((*j), "enabled"));
+            rooms_mgr->addArea((*j)->Attribute("id"),
+                               (*i)->Attribute("id"),
+                               std::xmlReadInt((*j), "x"),
+                               std::xmlReadInt((*j), "y"),
+                               std::xmlReadInt((*j), "width"),
+                               std::xmlReadInt((*j), "height"),
+                               (*j)->FirstChildElement("do_event")->Attribute("value"));
         }
     }
 }
@@ -235,11 +234,6 @@ void Engine::execActions(std::vector <Action *> actions)
             string item_dest = act.popStrParam();
             string item_id = act.popStrParam();
             apiItemMove(item_id, item_dest);
-        } else if (act.id == "AREA_SET_ENABLE")
-        {
-            int area_val = act.popIntParam();
-            string area_id = act.popStrParam();
-            apiAreaSetEnable(area_id, area_val);
         }
     }
 }
@@ -260,13 +254,6 @@ void Engine::apiItemMove(const string id, const string dest)
 {
     logger.write("ITEM_MOVE: " + id + ", dest: " + dest, Log::NOTE);
     rooms_mgr->moveItem(id, dest);
-}
-
-void Engine::apiAreaSetEnable(const string id, const bool value)
-{
-    string str_val = value ? "true" : "false";
-    logger.write("AREA_SET_ENABLE: " + id + ", enabled: " + str_val, Log::NOTE);
-    rooms_mgr->area(id)->enabled(value);
 }
 
 
