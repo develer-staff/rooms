@@ -1,6 +1,7 @@
 #include "room.h"
 #include "area.h"
 #include "item.h"
+#include "engine.h"
 
 Room::Room(const string name): id(name)
 {
@@ -9,7 +10,13 @@ Room::Room(const string name): id(name)
 
 Room::~Room()
 {
-
+    for (std::map<string, Area *>::iterator i = areas.begin();
+         i != areas.end(); ++i)
+    {
+        logger.write("Garbage collector: " + i->second->id, Log::NOTE);
+        delete i->second;
+    }
+    areas.clear();
 }
 
 string Room::bg() const
@@ -21,32 +28,17 @@ void Room::bg(const string name)
     _bg = name;
 }
 
-Area *Room::addArea(const string name, Area *area_ptr)
+Area *Room::addArea(const string name)
 {
-    //TODO: a better return check
-    if (area(name) == 0)
-    {
-        areas[name] = area_ptr;
-        return area_ptr;
-    }
-    else
-    {
-        return 0;
-    }
+    Area *a = new Area(name);
+    areas[name] = a;
+    return a;
 }
 
 Item *Room::addItem(const string name, Item *item_ptr)
 {
-    //TODO: a better return check
-    if (item(name) == 0)
-    {
-        _items[name] = item_ptr;
-        return item_ptr;
-    }
-    else
-    {
-        return 0;
-    }
+    _items[name] = item_ptr;
+    return item_ptr;
 }
 
 void Room::remItem(const string name)
@@ -90,7 +82,7 @@ string Room::eventAt(const int x, const int y) const
     }
     for (std::map <string, Area *>::const_iterator i = areas.begin(); i != areas.end(); ++i)
     {
-        if (pointInsideArea(x, y, i->second) && i->second->enabled())
+        if (pointInsideArea(x, y, i->second))
             return i->second->event();
     }
     return "";

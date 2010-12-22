@@ -21,7 +21,7 @@ string Item::parent() const
 }
 
 
-void Item::image(const string name)
+void Item::setImage(const string name)
 {
     _image = name;
 }

@@ -21,7 +21,7 @@ class Item: public Area
     public:
         void move(const std::string room);
         std::string parent() const;
-        void image(const std::string name);
+        void setImage(const std::string name);
         std::string image() const;
 };
 

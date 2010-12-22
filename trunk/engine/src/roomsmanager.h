@@ -12,10 +12,10 @@ class Item;
 using std::string;
 
 
-namespace std
+namespace utils
 {
-    template <class T> T *getElement(string name, std::map<string, T *> container);
     template <class T> void freeElements(std::map<string , T *> &container);
+    template <class T> T *getElement(string name, std::map<string, T *> container);
 }
 
 /*! \brief Rooms interface.
@@ -25,7 +25,6 @@ class RoomsManager
 {
     private:
         std::map <string, Room *> rooms;
-        std::map <string, Area *> areas;
         std::map <string, Item *> items;
         string _name;
         int _height;
@@ -48,7 +47,7 @@ class RoomsManager
         void size(const int width, const int height);
         int height() const;
         int width() const;
-        void currentRoom(const string name);
+        void setCurrentRoom(const string name);
         Room *currentRoom();
         string eventAt(const int x, const int y);
         void moveItem(const string name, const string dest);

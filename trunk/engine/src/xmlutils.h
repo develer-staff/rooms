@@ -7,7 +7,7 @@
 #include <vector> //std::vector
 #include <set> //std::set
 
-namespace std
+namespace xml
 {
     std::vector <TiXmlElement *> xmlGetAllChilds(TiXmlElement *elem, std::string id);
     bool xmlCheckDoc(TiXmlDocument *doc);

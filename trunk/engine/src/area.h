@@ -11,7 +11,6 @@ class Area
     public:
         const std::string id;
     protected:
-        bool _enabled;
         int _x;
         int _y;
         int _width;
@@ -27,9 +26,7 @@ class Area
         int w() const;
         int h() const;
         std::string event() const;
-        void event(const std::string event);
-        void enabled(const bool value);
-        bool enabled() const;
+        void setEvent(const std::string event);
 };
 
 #endif // AREA_H

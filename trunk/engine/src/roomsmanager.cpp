@@ -4,7 +4,7 @@
 #include "item.h"
 #include "area.h"
 
-template <class T> void std::freeElements(std::map<string , T *> &container)
+template <class T> void utils::freeElements(std::map<string , T *> &container)
 {
     for (typename std::map<string, T *>::iterator i = container.begin();
          i != container.end(); ++i)
@@ -15,7 +15,7 @@ template <class T> void std::freeElements(std::map<string , T *> &container)
     container.clear();
 }
 
-template <class T> T *std::getElement(string name, std::map<string, T *> container)
+template <class T> T *utils::getElement(string name, std::map<string, T *> container)
 {
     typename std::map<string, T *>::iterator i = container.find(name);
     if (i == container.end())
@@ -31,9 +31,8 @@ RoomsManager::RoomsManager()
 
 RoomsManager::~RoomsManager()
 {
-    std::freeElements(rooms);
-    std::freeElements(items);
-    std::freeElements(areas);
+    utils::freeElements(rooms);
+    utils::freeElements(items);
 }
 
 void RoomsManager::name(const string name)
@@ -73,11 +72,9 @@ Room * RoomsManager::addRoom(const string name, const string bg)
 Area * RoomsManager::addArea(const string name, const string room, const int x, const int y,
                              const int w, const int h, const string event)
 {
-    Area *a = new Area(name);
-    areas[name] = a;
+    Area *a = this->room(room)->addArea(name);
     a->size(x, y, w, h);
-    a->event(event);
-    rooms[room]->addArea(name, a);
+    a->setEvent(event);
     return a;
 }
 
@@ -87,10 +84,10 @@ Item * RoomsManager::addItem(const string name, const string room, const int x, 
     Item *i = new Item(name);
     items[name] = i;
     i->size(x, y, w, h);
-    i->event(event);
+    i->setEvent(event);
     i->move(room);
     rooms[room]->addItem(name, i);
-    i->image(image);
+    i->setImage(image);
     return i;
 }
 
@@ -115,20 +112,20 @@ void RoomsManager::moveItem(const string name, const string dest)
 
 Room * RoomsManager::room(const string name)
 {
-    return std::getElement(name, rooms);
+    return utils::getElement(name, rooms);
 }
 
 Area * RoomsManager::area(const string name)
 {
-    return std::getElement(name, areas);
+    return current_room->area(name);
 }
 
 Item * RoomsManager::item(const string name)
 {
-    return std::getElement(name, items);
+    return utils::getElement(name, items);
 }
 
-void RoomsManager::currentRoom(const string name)
+void RoomsManager::setCurrentRoom(const string name)
 {
     current_room = room(name);
 }

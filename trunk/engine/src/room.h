@@ -27,7 +27,7 @@ class Room
     public:
         string bg() const;
         void bg(const string name);
-        Area *addArea(const string name, Area *area_ptr);
+        Area *addArea(const string name);
         Item *addItem(const string name, Item *item_ptr);
         void remItem(const string name);
         Area *area(const string name);

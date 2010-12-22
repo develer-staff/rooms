@@ -60,7 +60,7 @@ class Engine
         RoomsManager *getRoomsManager() const;
         EventsManager *getEventsManager() const;
         Engine::State state() const;
-        void state(const Engine::State state_name);
+        void setState(const Engine::State state_name);
         std::vector<std::pair<string, string> > getImgNames() const;
         Log *getLogger();
     private:
@@ -74,7 +74,6 @@ class Engine
         void apiRoomGoto(const string id);
         void apiVarSet(const string id, const int value);
         void apiItemMove(const string id, const string dest);
-        void apiAreaSetEnable(const string id, const bool value);
 };
 
 extern Log logger;

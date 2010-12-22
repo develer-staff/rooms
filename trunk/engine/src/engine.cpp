@@ -70,7 +70,7 @@ Engine::State Engine::state() const
     return _state;
 }
 
-void Engine::state(const Engine::State state_name)
+void Engine::setState(const Engine::State state_name)
 {
     _state = state_name;
 }
@@ -86,25 +86,25 @@ bool Engine::loadWorld(const string filename)
     {
         logger.write("Loading world from " + filename, Log::NOTE);
         TiXmlDocument document(filename.c_str());
-        if (!std::xmlCheckDoc(&document)) throw "ERROR: wrong xml document!";
+        if (!xml::xmlCheckDoc(&document)) throw "ERROR: wrong xml document!";
         TiXmlElement *root = document.RootElement();
         //Load World attributes
         logger.write(root->Attribute("name"), Log::NOTE);
-        rooms_mgr->size(std::xmlReadInt(root, "width"),
-                        std::xmlReadInt(root, "height"));
+        rooms_mgr->size(xml::xmlReadInt(root, "width"),
+                        xml::xmlReadInt(root, "height"));
         rooms_mgr->name(root->Attribute("name"));
         //TODO: manage different screen resolutions
         //Loading from xml
         XmlVect images =
-            std::xmlGetAllChilds(root->FirstChildElement("images"), "img");
+            xml::xmlGetAllChilds(root->FirstChildElement("images"), "img");
         XmlVect rooms =
-            std::xmlGetAllChilds(root->FirstChildElement("rooms"), "room");
+            xml::xmlGetAllChilds(root->FirstChildElement("rooms"), "room");
         XmlVect events =
-            std::xmlGetAllChilds(root->FirstChildElement("events"), "event");
+            xml::xmlGetAllChilds(root->FirstChildElement("events"), "event");
         XmlVect items =
-            std::xmlGetAllChilds(root->FirstChildElement("items"), "item");
+            xml::xmlGetAllChilds(root->FirstChildElement("items"), "item");
         XmlVect vars =
-            std::xmlGetAllChilds(root->FirstChildElement("vars"), "var");
+            xml::xmlGetAllChilds(root->FirstChildElement("vars"), "var");
         //Populating model
         createImgsFromXml(images);
         createEventsFromXml(events);
@@ -141,7 +141,7 @@ void Engine::createVarsFromXml(XmlVect vars)
 {
     for (XmlVect::iterator i = vars.begin();
          i != vars.end(); ++i)
-        events_mgr->var((*i)->Attribute("id"), std::xmlReadInt((*i), "value"));
+        events_mgr->setVar((*i)->Attribute("id"), xml::xmlReadInt((*i), "value"));
 }
 
 void Engine::createEventsFromXml(XmlVect events)
@@ -150,19 +150,19 @@ void Engine::createEventsFromXml(XmlVect events)
     {
         Event *event = events_mgr->addEvent((*i)->Attribute("id"));
         //create items parameters
-        XmlVect ireqs = std::xmlGetAllChilds((*i)->FirstChildElement("requirements"), "item_req");
+        XmlVect ireqs = xml::xmlGetAllChilds((*i)->FirstChildElement("requirements"), "item_req");
         for (XmlVect::iterator j = ireqs.begin(); j != ireqs.end(); ++j)
             event->addItemReq((*j)->Attribute("id"), (*j)->Attribute("value"));
         //create var parameters
-        XmlVect vreqs = std::xmlGetAllChilds((*i)->FirstChildElement("requirements"), "var_req");
+        XmlVect vreqs = xml::xmlGetAllChilds((*i)->FirstChildElement("requirements"), "var_req");
         for (XmlVect::iterator j = vreqs.begin(); j != vreqs.end(); ++j)
-            event->addVarReq((*j)->Attribute("id"), std::xmlReadInt((*j), "value"));
+            event->addVarReq((*j)->Attribute("id"), xml::xmlReadInt((*j), "value"));
         //create actions
-        XmlVect actions = std::xmlGetAllChilds((*i)->FirstChildElement("actions_if"), "action");
+        XmlVect actions = xml::xmlGetAllChilds((*i)->FirstChildElement("actions_if"), "action");
         for (XmlVect::iterator j = actions.begin(); j != actions.end(); ++j)
         {
             Action *act = event->addAction((*j)->Attribute("id"));
-            XmlVect params = std::xmlGetAllChilds(*j, "param");
+            XmlVect params = xml::xmlGetAllChilds(*j, "param");
             for (XmlVect::iterator z = params.begin(); z != params.end(); ++z)
                 act->pushParam((*z)->Attribute("value"));
         }
@@ -174,17 +174,16 @@ void Engine::createRoomsFromXml(XmlVect rooms)
     for (XmlVect::iterator i = rooms.begin(); i != rooms.end(); ++i)
     {
         rooms_mgr->addRoom((*i)->Attribute("id"), (*i)->Attribute("bg"));
-        XmlVect areas = std::xmlGetAllChilds((*i)->FirstChildElement("areas"), "area");
+        XmlVect areas = xml::xmlGetAllChilds((*i)->FirstChildElement("areas"), "area");
         for (XmlVect::iterator j = areas.begin(); j != areas.end(); ++j)
         {
-            Area * a = rooms_mgr->addArea((*j)->Attribute("id"),
-                                (*i)->Attribute("id"),
-                                std::xmlReadInt((*j), "x"),
-                                std::xmlReadInt((*j), "y"),
-                                std::xmlReadInt((*j), "width"),
-                                std::xmlReadInt((*j), "height"),
-                                (*j)->FirstChildElement("do_event")->Attribute("value"));
-            a->enabled(std::xmlReadInt((*j), "enabled"));
+            rooms_mgr->addArea((*j)->Attribute("id"),
+                               (*i)->Attribute("id"),
+                               xml::xmlReadInt((*j), "x"),
+                               xml::xmlReadInt((*j), "y"),
+                               xml::xmlReadInt((*j), "width"),
+                               xml::xmlReadInt((*j), "height"),
+                               (*j)->FirstChildElement("do_event")->Attribute("value"));
         }
     }
 }
@@ -195,10 +194,10 @@ void Engine::createItemsFromXml(XmlVect items)
     {
         rooms_mgr->addItem((*i)->Attribute("id"),
                             (*i)->Attribute("room"),
-                            std::xmlReadInt((*i), "x"),
-                            std::xmlReadInt((*i), "y"),
-                            std::xmlReadInt((*i), "width"),
-                            std::xmlReadInt((*i), "height"),
+                            xml::xmlReadInt((*i), "x"),
+                            xml::xmlReadInt((*i), "y"),
+                            xml::xmlReadInt((*i), "width"),
+                            xml::xmlReadInt((*i), "height"),
                             (*i)->FirstChildElement("do_event")->Attribute("value"),
                             (*i)->Attribute("image"));
     }
@@ -235,11 +234,6 @@ void Engine::execActions(std::vector <Action *> actions)
             string item_dest = act.popStrParam();
             string item_id = act.popStrParam();
             apiItemMove(item_id, item_dest);
-        } else if (act.id == "AREA_SET_ENABLE")
-        {
-            int area_val = act.popIntParam();
-            string area_id = act.popStrParam();
-            apiAreaSetEnable(area_id, area_val);
         }
     }
 }
@@ -247,26 +241,19 @@ void Engine::execActions(std::vector <Action *> actions)
 void Engine::apiRoomGoto(const string id)
 {
     logger.write("ROOM_GOTO: " + id, Log::NOTE);
-    rooms_mgr->currentRoom(id);
+    rooms_mgr->setCurrentRoom(id);
 }
 
 void Engine::apiVarSet(const string id, const int value)
 {
     logger.write("VAR_SET: " + id, Log::NOTE);
-    events_mgr->var(id, value);
+    events_mgr->setVar(id, value);
 }
 
 void Engine::apiItemMove(const string id, const string dest)
 {
     logger.write("ITEM_MOVE: " + id + ", dest: " + dest, Log::NOTE);
     rooms_mgr->moveItem(id, dest);
-}
-
-void Engine::apiAreaSetEnable(const string id, const bool value)
-{
-    string str_val = value ? "true" : "false";
-    logger.write("AREA_SET_ENABLE: " + id + ", enabled: " + str_val, Log::NOTE);
-    rooms_mgr->area(id)->enabled(value);
 }
 
 
