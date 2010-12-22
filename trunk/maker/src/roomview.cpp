@@ -2,10 +2,18 @@
 #include "arearect.h"
 #include <QMouseEvent>
 
-RoomView::RoomView(QWidget *parent) :
+RoomView::RoomView(World *world, QWidget *parent) :
     QGraphicsView(parent)
 {
-    active_room = 0;
+    _world = world;
+    world->rooms()->appendRoom();
+    active_room = world->rooms()->at(0);
+
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setContextMenuPolicy(Qt::CustomContextMenu);
+    setRenderHint(QPainter::Antialiasing);
+
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
             this, SLOT(showContextMenu(const QPoint &)));
 }
@@ -50,16 +58,6 @@ void RoomView::updateRoomView()
                       new QGraphicsScene(QRectF(QPoint(0, 0), _world->size())));
 
     setScene(scenes[active_room]);
-}
-
-void RoomView::setWorld(World *world)
-{
-    _world = world;
-    if (active_room == 0)
-    {
-        world->rooms()->appendRoom();
-        active_room = world->rooms()->at(0);
-    }
 }
 
 void RoomView::changeActiveRoom(QModelIndex index)

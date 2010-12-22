@@ -4,29 +4,40 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    wizard(new Wizard(this)),
+    world(new World(wizard->worldName(), wizard->worldSize()))
 {
     ui->setupUi(this);
 
-    connect(ui->room_view, SIGNAL(roomChanged(Room*)), ui->room_view, SIGNAL(selected(Room*)));
-    connect(ui->room_view, SIGNAL(selected(Room*)), ui->settings, SLOT(updateRoomSettings(Room*)));
-    connect(ui->room_view, SIGNAL(selected(Area*)), ui->settings, SLOT(updateAreaSettings(Area*)));
+    rooms_list = new RoomsList(world);
+    room_view = new RoomView(world);
+    settings = new SettingsWidget(world);
 
-    connect(ui->rooms_list, SIGNAL(clicked(QModelIndex)),
-            ui->room_view, SLOT(changeActiveRoom(QModelIndex)));
+    ui->splitter->addWidget(rooms_list);
+    widget = new QWidget;
+    layout = new QGridLayout;
+    vspacer = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    hspacer = new QSpacerItem(0, 0, QSizePolicy::Expanding);
+    layout->addWidget(room_view, 0, 0);
+    layout->addItem(hspacer, 0, 1);
+    layout->addItem(vspacer, 1, 0, 1, 2);
+    layout->setMargin(0);
+    widget->setLayout(layout);
+    ui->splitter->addWidget(widget);
+    ui->splitter->addWidget(settings);
 
-    wizard = new Wizard(this);
-    wizard->show();
+    connect(room_view, SIGNAL(roomChanged(Room*)), room_view, SIGNAL(selected(Room*)));
+    connect(room_view, SIGNAL(selected(Room*)), settings, SLOT(updateRoomSettings(Room*)));
+    connect(room_view, SIGNAL(selected(Area*)), settings, SLOT(updateAreaSettings(Area*)));
+
+    connect(rooms_list, SIGNAL(clicked(QModelIndex)),
+            room_view, SLOT(changeActiveRoom(QModelIndex)));
+
     connect(wizard, SIGNAL(accepted()), this, SLOT(resizeRoomView()));
 
-    world = new World(wizard->worldName(), wizard->worldSize());
-
-    ui->room_view->setWorld(world);
-    ui->rooms_list->setWorld(world);
-    ui->rooms_list->setModel(world->rooms());
-    ui->settings->setWorld(world);
-
     resizeRoomView();
+    wizard->show();
 }
 
 MainWindow::~MainWindow()
@@ -37,7 +48,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::resizeRoomView()
 {
-    ui->room_view->setFixedSize(wizard->worldSize());
+    room_view->setFixedSize(wizard->worldSize());
     world->setSize(wizard->worldSize());
     adjustSize();
 }

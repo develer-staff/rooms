@@ -13,14 +13,15 @@ class SettingsWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit SettingsWidget(QWidget *parent = 0);
-    void setWorld(World *world);
+    explicit SettingsWidget(World *world, QWidget *parent = 0);
 
 public slots:
     void updateRoomSettings(Room *room);
     void updateAreaSettings(Area *area);
     void validateRoomName(const QString &text);
     void validateAreaName(const QString &text);
+    void setRoomName();
+    void setAreaName();
 
 private:
     void setupUi();

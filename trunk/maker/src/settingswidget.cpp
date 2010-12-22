@@ -1,19 +1,19 @@
 #include "settingswidget.h"
 
-SettingsWidget::SettingsWidget(QWidget *parent) :
+SettingsWidget::SettingsWidget(World *world, QWidget *parent) :
     QWidget(parent)
 {
+    _world = world;
     setupUi();
 
+    setFixedWidth(200);
+
     connect(room_name, SIGNAL(textEdited(QString)), this, SLOT(validateRoomName(QString)));
+    connect(room_name, SIGNAL(editingFinished()), this, SLOT(setRoomName()));
     connect(area_name, SIGNAL(textEdited(QString)), this, SLOT(validateAreaName(QString)));
+    connect(area_name, SIGNAL(editingFinished()), this, SLOT(setAreaName()));
 
     area_settings->hide();
-}
-
-void SettingsWidget::setWorld(World *world)
-{
-    _world = world;
 }
 
 void SettingsWidget::updateRoomSettings(Room *room)
@@ -41,10 +41,17 @@ void SettingsWidget::validateRoomName(const QString &text)
         room_name->setPalette(palette);
     }
     else
-    {
         room_name->setPalette(QPalette(QPalette::Base, Qt::white));
-        active_room->setName(text);
-    }
+}
+
+void SettingsWidget::setRoomName()
+{
+    if (!_world->rooms()->roomExists(room_name->text()))
+        active_room->setName(room_name->text());
+    else
+        room_name->setText(active_room->name());
+
+    room_name->setPalette(QPalette(QPalette::Base, Qt::white));
 }
 
 void SettingsWidget::validateAreaName(const QString &text)
@@ -56,10 +63,17 @@ void SettingsWidget::validateAreaName(const QString &text)
         area_name->setPalette(palette);
     }
     else
-    {
         area_name->setPalette(QPalette(QPalette::Base, Qt::white));
-        active_area->setName(text);
-    }
+}
+
+void SettingsWidget::setAreaName()
+{
+    if (!active_room->areaExists(area_name->text()))
+        active_area->setName(area_name->text());
+    else
+        area_name->setText(active_area->name());
+
+    area_name->setPalette(QPalette(QPalette::Base, Qt::white));
 }
 
 void SettingsWidget::setupUi()

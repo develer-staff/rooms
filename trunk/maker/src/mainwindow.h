@@ -4,6 +4,9 @@
 #include <QMainWindow>
 #include "wizard.h"
 #include "core/world.h"
+#include "roomslist.h"
+#include "roomview.h"
+#include "settingswidget.h"
 
 namespace Ui
 {
@@ -22,6 +25,13 @@ public slots:
     void resizeRoomView();
 
 private:
+    QWidget *widget;
+    QGridLayout *layout;
+    QSpacerItem *vspacer;
+    QSpacerItem *hspacer;
+    RoomsList *rooms_list;
+    RoomView *room_view;
+    SettingsWidget *settings;
     Ui::MainWindow *ui;
     Wizard *wizard;
     World *world;
