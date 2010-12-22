@@ -12,10 +12,7 @@ Room::~Room()
 {
     for (std::map<string, Area *>::iterator i = areas.begin();
          i != areas.end(); ++i)
-    {
-        logger.write("Garbage collector: " + i->second->id, Log::NOTE);
         delete i->second;
-    }
     areas.clear();
 }
 
