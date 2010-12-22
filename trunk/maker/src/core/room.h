@@ -26,6 +26,9 @@ public:
 
     QList<Area*> areas() const;
 
+signals:
+    void changed();
+
 private:
     QList<Area*> _areas;
     QString _name;

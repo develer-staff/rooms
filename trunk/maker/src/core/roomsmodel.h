@@ -18,11 +18,13 @@ public:
     QVariant data(const QModelIndex &index, int role) const;
     void appendRoom();
 
-    void setRoomBackground(Room *room, const QPixmap &background);
     void addRoomArea(Room *room, const QRect &rect);
 
     bool areaExists(const QString &name);
     bool roomExists(const QString &name);
+
+private slots:
+    void onDataChanged();
 
 private:
     QList<Room *> rooms;

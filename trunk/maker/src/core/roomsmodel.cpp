@@ -63,21 +63,11 @@ void RoomsModel::appendRoom()
     while (roomExists(name));
 
     Room *room = new Room(name);
+    connect(room, SIGNAL(changed()), this, SLOT(onDataChanged()));
 
     beginInsertRows(QModelIndex(), rooms.size(), rooms.size());
     rooms.append(room);
     endInsertRows();
-}
-
-void RoomsModel::setRoomBackground(Room *room, const QPixmap &background)
-{
-    int i = rooms.indexOf(room);
-    if (i == -1)
-        return;
-
-    room->setBackground(background);
-
-    emit dataChanged(index(i), index(i));
 }
 
 void RoomsModel::addRoomArea(Room *room, const QRect &rect)
@@ -126,4 +116,15 @@ bool RoomsModel::roomExists(const QString &name)
         }
     }
     return exists;
+}
+
+void RoomsModel::onDataChanged()
+{
+    Room *room = (Room *)sender();
+    int i = rooms.indexOf(room);
+
+    if (i == -1)
+        return;
+
+    emit dataChanged(index(i), index(i));
 }

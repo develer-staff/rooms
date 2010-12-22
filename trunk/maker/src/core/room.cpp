@@ -21,6 +21,7 @@ void Room::setBackground(const QPixmap &background)
 {
     _background = background;
     _icon = _background.scaled(QSize(64, 64));
+    emit changed();
 }
 
 QPixmap Room::background() const
@@ -36,6 +37,7 @@ QPixmap Room::icon() const
 void Room::setName(const QString &name)
 {
     _name = name;
+    emit changed();
 }
 
 QString Room::name() const
