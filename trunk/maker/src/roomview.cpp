@@ -37,7 +37,7 @@ void RoomView::setBackground()
     if (bg.isNull())
         return;
 
-    bg = bg.scaled(world->size());
+    bg = bg.scaled(_world->size());
 
     active_room->setBackground(bg);
     scenes[active_room]->addPixmap(bg);
@@ -47,14 +47,14 @@ void RoomView::updateRoomView()
 {
     if (!scenes.contains(active_room))
         scenes.insert(active_room,
-                      new QGraphicsScene(QRectF(QPoint(0, 0), world->size())));
+                      new QGraphicsScene(QRectF(QPoint(0, 0), _world->size())));
 
     setScene(scenes[active_room]);
 }
 
 void RoomView::setWorld(World *world)
 {
-    this->world = world;
+    _world = world;
     if (active_room == 0)
     {
         world->rooms()->appendRoom();
@@ -64,7 +64,7 @@ void RoomView::setWorld(World *world)
 
 void RoomView::changeActiveRoom(QModelIndex index)
 {
-    active_room = world->rooms()->at(index.row());
+    active_room = _world->rooms()->at(index.row());
     updateRoomView();
     emit roomChanged(active_room);
 }

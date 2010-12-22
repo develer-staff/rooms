@@ -3,8 +3,8 @@
 World::World(const QString &name, const QSize &size, QObject *parent) :
     QObject(parent)
 {
-    this->world_name = name;
-    this->world_size = size;
+    world_name = name;
+    world_size = size;
     _rooms = new RoomsModel(this);
 }
 

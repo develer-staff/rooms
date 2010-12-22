@@ -3,7 +3,7 @@
 Room::Room(QString const& name, QObject *parent) :
     QObject(parent)
 {
-    this->_name = name;
+    _name = name;
     _icon = QPixmap(QSize(64,64));
     _icon.fill();
     area_count = 0;

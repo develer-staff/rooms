@@ -34,7 +34,7 @@ protected:
 
 private:
     QHash<Room*, QGraphicsScene*> scenes;
-    World *world;
+    World *_world;
     Room *active_room;
 };
 

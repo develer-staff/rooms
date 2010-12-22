@@ -17,7 +17,7 @@ private slots:
     void showContextMenu(const QPoint &point);
 
 private:
-    World *world;
+    World *_world;
 
 };
 

@@ -10,7 +10,7 @@ RoomsList::RoomsList(QWidget *parent) :
 
 void RoomsList::setWorld(World *world)
 {
-    this->world = world;
+    _world = world;
 }
 
 void RoomsList::showContextMenu(const QPoint &point)
@@ -22,9 +22,9 @@ void RoomsList::showContextMenu(const QPoint &point)
 
 void RoomsList::addRoom()
 {
-    world->rooms()->appendRoom();
+    _world->rooms()->appendRoom();
 
-    const QModelIndex index = model()->index(world->rooms()->count()-1, 0);
+    const QModelIndex index = model()->index(_world->rooms()->count()-1, 0);
     setCurrentIndex(index);
     emit clicked(index);
 
