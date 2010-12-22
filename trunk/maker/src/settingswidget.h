@@ -23,6 +23,8 @@ public slots:
     void validateAreaName(const QString &text);
 
 private:
+    void setupUi();
+
     QVBoxLayout *settings_layout;
 
     QGroupBox *room_settings;

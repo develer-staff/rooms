@@ -3,41 +3,7 @@
 SettingsWidget::SettingsWidget(QWidget *parent) :
     QWidget(parent)
 {
-
-    //Room settings
-    room_settings = new QGroupBox("Room settings", this);
-    room_settings_layout = new QVBoxLayout(this);
-
-    room_name_layout = new QHBoxLayout(this);
-    room_name_label = new QLabel("Room name:", this);
-    room_name = new QLineEdit(this);
-    room_name_layout->addWidget(room_name_label);
-    room_name_layout->addWidget(room_name);
-
-    room_settings_layout->addLayout(room_name_layout);
-    room_settings->setLayout(room_settings_layout);
-
-    //Area settings
-    area_settings = new QGroupBox("Area settings", this);
-    area_settings_layout = new QVBoxLayout(this);
-
-    area_name_layout = new QHBoxLayout(this);
-    area_name_label = new QLabel("Area name:", this);
-    area_name = new QLineEdit(this);
-    area_name_layout->addWidget(area_name_label);
-    area_name_layout->addWidget(area_name);
-
-    area_settings_layout->addLayout(area_name_layout);
-    area_settings->setLayout(area_settings_layout);
-
-    //Settings
-    settings_layout = new QVBoxLayout(this);
-    settings_layout->addWidget(room_settings);
-    settings_layout->addWidget(area_settings);
-    spacer = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
-    settings_layout->addSpacerItem(spacer);
-
-    setLayout(settings_layout);
+    setupUi();
 
     connect(room_name, SIGNAL(textEdited(QString)), this, SLOT(validateRoomName(QString)));
     connect(area_name, SIGNAL(textEdited(QString)), this, SLOT(validateAreaName(QString)));
@@ -94,4 +60,42 @@ void SettingsWidget::validateAreaName(const QString &text)
         area_name->setPalette(QPalette(QPalette::Base, Qt::white));
         active_area->setName(text);
     }
+}
+
+void SettingsWidget::setupUi()
+{
+    //Room settings
+    room_settings = new QGroupBox("Room settings", this);
+    room_settings_layout = new QVBoxLayout(this);
+
+    room_name_layout = new QHBoxLayout(this);
+    room_name_label = new QLabel("Room name:", this);
+    room_name = new QLineEdit(this);
+    room_name_layout->addWidget(room_name_label);
+    room_name_layout->addWidget(room_name);
+
+    room_settings_layout->addLayout(room_name_layout);
+    room_settings->setLayout(room_settings_layout);
+
+    //Area settings
+    area_settings = new QGroupBox("Area settings", this);
+    area_settings_layout = new QVBoxLayout(this);
+
+    area_name_layout = new QHBoxLayout(this);
+    area_name_label = new QLabel("Area name:", this);
+    area_name = new QLineEdit(this);
+    area_name_layout->addWidget(area_name_label);
+    area_name_layout->addWidget(area_name);
+
+    area_settings_layout->addLayout(area_name_layout);
+    area_settings->setLayout(area_settings_layout);
+
+    //Settings
+    settings_layout = new QVBoxLayout(this);
+    settings_layout->addWidget(room_settings);
+    settings_layout->addWidget(area_settings);
+    spacer = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    settings_layout->addSpacerItem(spacer);
+
+    setLayout(settings_layout);
 }
