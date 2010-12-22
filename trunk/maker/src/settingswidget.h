@@ -21,6 +21,8 @@ public slots:
     void updateAreaSettings(Area *area);
     void validateRoomName(const QString &text);
     void validateAreaName(const QString &text);
+    void setRoomName();
+    void setAreaName();
 
 private:
     void setupUi();
