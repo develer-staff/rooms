@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<world version="ID_VERSIONE_ENGINE" name="Mirabolanti Avventure!" width="800" height="600" start="Locanda">
+<world version="ROOMS_VANILLA" name="Mirabolanti Avventure!" width="800" height="600" start="Locanda">
 
   <images>
     <img id="img_locanda" file="./data/locanda.png" />

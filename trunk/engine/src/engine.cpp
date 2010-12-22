@@ -4,10 +4,14 @@ Log logger;
 
 Engine *Engine::engine = 0;
 
+const string Engine::VERSION = "ROOMS_VANILLA";
+
 Engine::Engine()
 {
     try
     {
+        logger.write("\n* --------------\n* Engine version: " + VERSION +
+                     "\n* --------------", Log::NOTE);
         rooms_mgr = new RoomsManager();
         events_mgr = new EventsManager();
         _state = INITIALIZING;
@@ -86,7 +90,7 @@ bool Engine::loadWorld(const string filename)
     {
         logger.write("Loading world from " + filename, Log::NOTE);
         TiXmlDocument document(filename.c_str());
-        if (!xml::xmlCheckDoc(&document)) throw "ERROR: wrong xml document!";
+        if (!xml::xmlCheckDoc(&document, Engine::VERSION)) throw "ERROR: wrong xml document!";
         TiXmlElement *root = document.RootElement();
         //Load World attributes
         logger.write(root->Attribute("name"), Log::NOTE);

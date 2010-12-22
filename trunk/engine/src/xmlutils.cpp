@@ -7,11 +7,11 @@ int xml::xmlReadInt(TiXmlElement *elem, std::string attribute)
     return tmp;
 }
 
-bool xml::xmlCheckDoc(TiXmlDocument *doc)
+bool xml::xmlCheckDoc(TiXmlDocument *doc, const std::string &eng_ver)
 {
     if (doc)
         return doc->LoadFile() &&
-               xml::xmlCheckRoot(doc->RootElement()) &&
+               xml::xmlCheckRoot(doc->RootElement(), eng_ver) &&
                xml::xmlCheckImages(doc->RootElement()->FirstChildElement("images")) &&
                xml::xmlCheckVars(doc->RootElement()->FirstChildElement("vars")) &&
                xml::xmlCheckEvents(doc->RootElement()->FirstChildElement("events")) &&
@@ -20,7 +20,7 @@ bool xml::xmlCheckDoc(TiXmlDocument *doc)
     return false;
 }
 
-bool xml::xmlCheckRoot(TiXmlElement *elem)
+bool xml::xmlCheckRoot(TiXmlElement *elem, const std::string &eng_ver)
 {
     int tmp;
     if (!elem)
@@ -30,7 +30,7 @@ bool xml::xmlCheckRoot(TiXmlElement *elem)
         elem->Attribute("name") == 0 ||
         elem->QueryIntAttribute("width", &tmp) != TIXML_SUCCESS ||
         elem->QueryIntAttribute("height", &tmp) != TIXML_SUCCESS ||
-        elem->Attribute("version") == 0 ||
+        std::string(elem->Attribute("version")) != eng_ver ||
         elem->Attribute("start") == 0)
         return false;
     return true;

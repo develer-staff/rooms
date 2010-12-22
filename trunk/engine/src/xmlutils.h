@@ -10,8 +10,8 @@
 namespace xml
 {
     std::vector <TiXmlElement *> xmlGetAllChilds(TiXmlElement *elem, std::string id);
-    bool xmlCheckDoc(TiXmlDocument *doc);
-    bool xmlCheckRoot(TiXmlElement *elem);
+    bool xmlCheckDoc(TiXmlDocument *doc, const std::string &eng_ver);
+    bool xmlCheckRoot(TiXmlElement *elem, const std::string &eng_ver);
     bool xmlCheckRooms(TiXmlElement *elem);
     bool xmlCheckImages(TiXmlElement *elem);
     bool xmlCheckVars(TiXmlElement *elem);
