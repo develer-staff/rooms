@@ -23,7 +23,6 @@ SettingsWidget::SettingsWidget(QWidget *parent) :
 
     area_name_layout = new QHBoxLayout(this);
     area_name_label = new QLabel("Area name:", this);
-    //area_name_label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     area_name = new QLineEdit(this);
     area_name_layout->addWidget(area_name_label);
     area_name_layout->addWidget(area_name);
