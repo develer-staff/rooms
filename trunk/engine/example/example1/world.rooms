@@ -11,7 +11,7 @@
     <room id="0" bg="" />
     <room id="Locanda" bg="locanda_luce_spenta">
       <areas>
-        <area id="area_porta_locanda" enabled="1" x="250" y="480" width="150" height="150">
+        <area id="area_porta_locanda" x="250" y="480" width="150" height="150">
           <do_event value="apri_porta_locanda" />
         </area>
       </areas>
