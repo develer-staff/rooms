@@ -37,16 +37,8 @@ Area *Room::addArea(const string name)
 
 Item *Room::addItem(const string name, Item *item_ptr)
 {
-    //TODO: a better return check
-    if (item(name) == 0)
-    {
-        _items[name] = item_ptr;
-        return item_ptr;
-    }
-    else
-    {
-        return 0;
-    }
+    _items[name] = item_ptr;
+    return item_ptr;
 }
 
 void Room::remItem(const string name)
