@@ -33,7 +33,6 @@ RoomsManager::~RoomsManager()
 {
     std::freeElements(rooms);
     std::freeElements(items);
-    std::freeElements(areas);
 }
 
 void RoomsManager::name(const string name)
@@ -73,11 +72,9 @@ Room * RoomsManager::addRoom(const string name, const string bg)
 Area * RoomsManager::addArea(const string name, const string room, const int x, const int y,
                              const int w, const int h, const string event)
 {
-    Area *a = new Area(name);
-    areas[name] = a;
+    Area *a = this->room(room)->addArea(name);
     a->size(x, y, w, h);
     a->event(event);
-    rooms[room]->addArea(name, a);
     return a;
 }
 
@@ -120,7 +117,7 @@ Room * RoomsManager::room(const string name)
 
 Area * RoomsManager::area(const string name)
 {
-    return std::getElement(name, areas);
+    return current_room->area(name);
 }
 
 Item * RoomsManager::item(const string name)

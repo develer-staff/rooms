@@ -1,6 +1,7 @@
 #include "room.h"
 #include "area.h"
 #include "item.h"
+#include "engine.h"
 
 Room::Room(const string name): id(name)
 {
@@ -9,7 +10,13 @@ Room::Room(const string name): id(name)
 
 Room::~Room()
 {
-
+    for (std::map<string, Area *>::iterator i = areas.begin();
+         i != areas.end(); ++i)
+    {
+        logger.write("Garbage collector: " + i->second->id, Log::NOTE);
+        delete i->second;
+    }
+    areas.clear();
 }
 
 string Room::bg() const
@@ -21,18 +28,11 @@ void Room::bg(const string name)
     _bg = name;
 }
 
-Area *Room::addArea(const string name, Area *area_ptr)
+Area *Room::addArea(const string name)
 {
-    //TODO: a better return check
-    if (area(name) == 0)
-    {
-        areas[name] = area_ptr;
-        return area_ptr;
-    }
-    else
-    {
-        return 0;
-    }
+    Area *a = new Area(name);
+    areas[name] = a;
+    return a;
 }
 
 Item *Room::addItem(const string name, Item *item_ptr)

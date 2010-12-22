@@ -25,7 +25,6 @@ class RoomsManager
 {
     private:
         std::map <string, Room *> rooms;
-        std::map <string, Area *> areas;
         std::map <string, Item *> items;
         string _name;
         int _height;
