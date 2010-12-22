@@ -1,9 +1,12 @@
 #include "settingswidget.h"
 
-SettingsWidget::SettingsWidget(QWidget *parent) :
+SettingsWidget::SettingsWidget(World *world, QWidget *parent) :
     QWidget(parent)
 {
+    _world = world;
     setupUi();
+
+    setFixedWidth(200);
 
     connect(room_name, SIGNAL(textEdited(QString)), this, SLOT(validateRoomName(QString)));
     connect(room_name, SIGNAL(editingFinished()), this, SLOT(setRoomName()));
@@ -11,11 +14,6 @@ SettingsWidget::SettingsWidget(QWidget *parent) :
     connect(area_name, SIGNAL(editingFinished()), this, SLOT(setAreaName()));
 
     area_settings->hide();
-}
-
-void SettingsWidget::setWorld(World *world)
-{
-    _world = world;
 }
 
 void SettingsWidget::updateRoomSettings(Room *room)

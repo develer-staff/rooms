@@ -9,8 +9,7 @@ class RoomsList : public QListView
     Q_OBJECT
 
 public:
-    explicit RoomsList(QWidget *parent = 0);
-    void setWorld(World *world);
+    explicit RoomsList(World *world, QWidget *parent = 0);
 
 private slots:
     void addRoom();

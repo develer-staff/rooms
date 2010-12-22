@@ -1,16 +1,17 @@
 #include "roomslist.h"
 #include <QMenu>
 
-RoomsList::RoomsList(QWidget *parent) :
+RoomsList::RoomsList(World *world, QWidget *parent) :
     QListView(parent)
 {
+    _world = world;
+    setModel(_world->rooms());
+
+    setFixedWidth(200);
+    setContextMenuPolicy(Qt::CustomContextMenu);
+
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
             this, SLOT(showContextMenu(const QPoint &)));
-}
-
-void RoomsList::setWorld(World *world)
-{
-    _world = world;
 }
 
 void RoomsList::showContextMenu(const QPoint &point)
