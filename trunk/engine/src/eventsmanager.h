@@ -27,7 +27,7 @@ class EventsManager
         Event *addEvent(const string name);
         Event *event(const string name);
         std::vector <Action *> actionsForEvent(const string name);
-        void var(const string name, const int value);
+        void setVar(const string name, const int value);
         int var(const string name) const;
         bool checkVarReqs(const std::vector <std::pair <string, int> > reqs) const;
 };

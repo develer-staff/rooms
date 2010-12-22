@@ -42,7 +42,7 @@ int EventsManager::var(const string name) const
         return i->second;
 }
 
-void EventsManager::var(const string name, const int value)
+void EventsManager::setVar(const string name, const int value)
 {
     _vars[name] = value;
 }

@@ -70,7 +70,7 @@ Engine::State Engine::state() const
     return _state;
 }
 
-void Engine::state(const Engine::State state_name)
+void Engine::setState(const Engine::State state_name)
 {
     _state = state_name;
 }
@@ -141,7 +141,7 @@ void Engine::createVarsFromXml(XmlVect vars)
 {
     for (XmlVect::iterator i = vars.begin();
          i != vars.end(); ++i)
-        events_mgr->var((*i)->Attribute("id"), std::xmlReadInt((*i), "value"));
+        events_mgr->setVar((*i)->Attribute("id"), std::xmlReadInt((*i), "value"));
 }
 
 void Engine::createEventsFromXml(XmlVect events)
@@ -241,13 +241,13 @@ void Engine::execActions(std::vector <Action *> actions)
 void Engine::apiRoomGoto(const string id)
 {
     logger.write("ROOM_GOTO: " + id, Log::NOTE);
-    rooms_mgr->currentRoom(id);
+    rooms_mgr->setCurrentRoom(id);
 }
 
 void Engine::apiVarSet(const string id, const int value)
 {
     logger.write("VAR_SET: " + id, Log::NOTE);
-    events_mgr->var(id, value);
+    events_mgr->setVar(id, value);
 }
 
 void Engine::apiItemMove(const string id, const string dest)

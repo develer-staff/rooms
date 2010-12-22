@@ -26,7 +26,7 @@ class Area
         int w() const;
         int h() const;
         std::string event() const;
-        void event(const std::string event);
+        void setEvent(const std::string event);
 };
 
 #endif // AREA_H

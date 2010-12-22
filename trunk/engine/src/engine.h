@@ -60,7 +60,7 @@ class Engine
         RoomsManager *getRoomsManager() const;
         EventsManager *getEventsManager() const;
         Engine::State state() const;
-        void state(const Engine::State state_name);
+        void setState(const Engine::State state_name);
         std::vector<std::pair<string, string> > getImgNames() const;
         Log *getLogger();
     private:

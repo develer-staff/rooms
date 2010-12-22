@@ -74,7 +74,7 @@ Area * RoomsManager::addArea(const string name, const string room, const int x, 
 {
     Area *a = this->room(room)->addArea(name);
     a->size(x, y, w, h);
-    a->event(event);
+    a->setEvent(event);
     return a;
 }
 
@@ -84,10 +84,10 @@ Item * RoomsManager::addItem(const string name, const string room, const int x, 
     Item *i = new Item(name);
     items[name] = i;
     i->size(x, y, w, h);
-    i->event(event);
+    i->setEvent(event);
     i->move(room);
     rooms[room]->addItem(name, i);
-    i->image(image);
+    i->setImage(image);
     return i;
 }
 
@@ -125,7 +125,7 @@ Item * RoomsManager::item(const string name)
     return std::getElement(name, items);
 }
 
-void RoomsManager::currentRoom(const string name)
+void RoomsManager::setCurrentRoom(const string name)
 {
     current_room = room(name);
 }

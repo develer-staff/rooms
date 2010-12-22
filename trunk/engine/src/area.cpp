@@ -43,7 +43,7 @@ std::string Area::event() const
     return _event;
 }
 
-void Area::event(const std::string event)
+void Area::setEvent(const std::string event)
 {
     _event = event;
 }

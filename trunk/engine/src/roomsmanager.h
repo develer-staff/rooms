@@ -47,7 +47,7 @@ class RoomsManager
         void size(const int width, const int height);
         int height() const;
         int width() const;
-        void currentRoom(const string name);
+        void setCurrentRoom(const string name);
         Room *currentRoom();
         string eventAt(const int x, const int y);
         void moveItem(const string name, const string dest);
