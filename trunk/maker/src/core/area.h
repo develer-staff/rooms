@@ -13,6 +13,8 @@ public:
     void setPos(const QPoint &point);
 
     QRect rect() const;
+
+    void setName(const QString &name);
     QString name() const;
 
 private:

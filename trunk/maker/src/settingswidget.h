@@ -20,6 +20,7 @@ public slots:
     void updateRoomSettings(Room *room);
     void updateAreaSettings(Area *area);
     void validateRoomName(const QString &text);
+    void validateAreaName(const QString &text);
 
 private:
     QVBoxLayout *settings_layout;

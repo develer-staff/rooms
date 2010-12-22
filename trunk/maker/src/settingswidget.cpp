@@ -40,6 +40,7 @@ SettingsWidget::SettingsWidget(QWidget *parent) :
     setLayout(settings_layout);
 
     connect(room_name, SIGNAL(textEdited(QString)), this, SLOT(validateRoomName(QString)));
+    connect(area_name, SIGNAL(textEdited(QString)), this, SLOT(validateAreaName(QString)));
 
     area_settings->hide();
 }
@@ -77,5 +78,20 @@ void SettingsWidget::validateRoomName(const QString &text)
     {
         room_name->setPalette(QPalette(QPalette::Base, Qt::white));
         active_room->setName(text);
+    }
+}
+
+void SettingsWidget::validateAreaName(const QString &text)
+{
+    if (active_room->areaExists(text))
+    {
+        QPalette palette = area_name->palette();
+        palette.setColor(QPalette::Base, QColor(255, 0, 0));
+        area_name->setPalette(palette);
+    }
+    else
+    {
+        area_name->setPalette(QPalette(QPalette::Base, Qt::white));
+        active_area->setName(text);
     }
 }

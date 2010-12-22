@@ -21,3 +21,8 @@ void Area::setPos(const QPoint &point)
 {
     _rect.translate(point);
 }
+
+void Area::setName(const QString &name)
+{
+    _name = name;
+}
