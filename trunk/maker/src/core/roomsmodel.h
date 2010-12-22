@@ -16,11 +16,8 @@ public:
     int count() const;
     int rowCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
+
     void appendRoom();
-
-    void addRoomArea(Room *room, const QRect &rect);
-
-    bool areaExists(const QString &name);
     bool roomExists(const QString &name);
 
 private slots:
@@ -28,7 +25,6 @@ private slots:
 
 private:
     QList<Room *> rooms;
-    int area_count;
     int room_count;
 };
 

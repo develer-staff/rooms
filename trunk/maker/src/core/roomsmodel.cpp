@@ -6,7 +6,6 @@ RoomsModel::RoomsModel(QObject *parent) :
     QAbstractListModel(parent)
 {
     room_count = 0;
-    area_count = 0;
 }
 
 Room *RoomsModel::at(int index) const
@@ -68,40 +67,6 @@ void RoomsModel::appendRoom()
     beginInsertRows(QModelIndex(), rooms.size(), rooms.size());
     rooms.append(room);
     endInsertRows();
-}
-
-void RoomsModel::addRoomArea(Room *room, const QRect &rect)
-{
-    QString name;
-    int i = rooms.indexOf(room);
-    if (i == -1)
-        return;
-
-    do
-    {
-        name.setNum(area_count++);
-        name.insert(0, "Area ");
-    }
-    while (areaExists(name));
-
-    room->addArea(name, rect);
-}
-
-bool RoomsModel::areaExists(const QString &name)
-{
-    bool exists = false;
-    for (int i = 0; i < rooms.count(); i++)
-    {
-        for (int j = 0; j < rooms[i]->areas().count(); j++)
-        {
-            if (rooms[i]->areas().at(j)->name() == name)
-            {
-                exists = true;
-                break;
-            }
-        }
-    }
-    return exists;
 }
 
 bool RoomsModel::roomExists(const QString &name)

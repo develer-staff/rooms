@@ -13,7 +13,7 @@ RoomView::RoomView(QWidget *parent) :
 void RoomView::addArea()
 {
     updateRoomView();
-    world->rooms()->addRoomArea(active_room, QRect(QPoint(20, 20), QSize(64, 64)));
+    active_room->addArea(QRect(QPoint(20, 20), QSize(64, 64)));
     AreaRect *area_rect = new AreaRect(active_room->areas().last());
     scenes[active_room]->addItem(area_rect);
 }

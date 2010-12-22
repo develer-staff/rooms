@@ -14,7 +14,7 @@ class Room : public QObject
 public:
     Room(const QString &name, QObject *parent = 0);
     ~Room();
-    void addArea(const QString &name, const QRect &rect);
+    void addArea(const QRect &rect);
 
     void setBackground(const QPixmap &rect);
     QPixmap background() const;
@@ -26,6 +26,8 @@ public:
 
     QList<Area*> areas() const;
 
+    bool areaExists(const QString &name);
+
 signals:
     void changed();
 
@@ -34,6 +36,7 @@ private:
     QString _name;
     QPixmap _background;
     QPixmap _icon;
+    int area_count;
 };
 
 #endif // ROOM_H

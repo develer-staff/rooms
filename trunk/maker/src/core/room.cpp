@@ -6,14 +6,24 @@ Room::Room(QString const& name, QObject *parent) :
     this->_name = name;
     _icon = QPixmap(QSize(64,64));
     _icon.fill();
+    area_count = 0;
 }
 
 Room::~Room()
 {
 }
 
-void Room::addArea(const QString &name, const QRect &rect)
+void Room::addArea(const QRect &rect)
 {
+    QString name;
+
+    do
+    {
+        name.setNum(area_count++);
+        name.insert(0, "Area ");
+    }
+    while (areaExists(name));
+
     _areas.append(new Area(name, rect));
 }
 
@@ -48,4 +58,20 @@ QString Room::name() const
 QList<Area*> Room::areas() const
 {
     return _areas;
+}
+
+bool Room::areaExists(const QString &name)
+{
+    bool exists = false;
+
+    for (int i = 0; i < _areas.count(); i++)
+    {
+        if (_areas[i]->name() == name)
+        {
+            exists = true;
+            break;
+        }
+    }
+
+    return exists;
 }
