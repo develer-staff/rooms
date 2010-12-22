@@ -1,26 +1,26 @@
 #include "xmlutils.h"
 
-int std::xmlReadInt(TiXmlElement *elem, std::string attribute)
+int xml::xmlReadInt(TiXmlElement *elem, std::string attribute)
 {
     int tmp;
     elem->QueryIntAttribute(attribute.c_str(), &tmp);
     return tmp;
 }
 
-bool std::xmlCheckDoc(TiXmlDocument *doc)
+bool xml::xmlCheckDoc(TiXmlDocument *doc)
 {
     if (doc)
         return doc->LoadFile() &&
-               std::xmlCheckRoot(doc->RootElement()) &&
-               std::xmlCheckImages(doc->RootElement()->FirstChildElement("images")) &&
-               std::xmlCheckVars(doc->RootElement()->FirstChildElement("vars")) &&
-               std::xmlCheckEvents(doc->RootElement()->FirstChildElement("events")) &&
-               std::xmlCheckRooms(doc->RootElement()->FirstChildElement("rooms")) &&
-               std::xmlCheckItems(doc->RootElement()->FirstChildElement("items"));
+               xml::xmlCheckRoot(doc->RootElement()) &&
+               xml::xmlCheckImages(doc->RootElement()->FirstChildElement("images")) &&
+               xml::xmlCheckVars(doc->RootElement()->FirstChildElement("vars")) &&
+               xml::xmlCheckEvents(doc->RootElement()->FirstChildElement("events")) &&
+               xml::xmlCheckRooms(doc->RootElement()->FirstChildElement("rooms")) &&
+               xml::xmlCheckItems(doc->RootElement()->FirstChildElement("items"));
     return false;
 }
 
-bool std::xmlCheckRoot(TiXmlElement *elem)
+bool xml::xmlCheckRoot(TiXmlElement *elem)
 {
     int tmp;
     if (!elem)
@@ -36,7 +36,7 @@ bool std::xmlCheckRoot(TiXmlElement *elem)
     return true;
 }
 
-bool std::xmlCheckImages(TiXmlElement *elem)
+bool xml::xmlCheckImages(TiXmlElement *elem)
 {
     std::set<std::string> ids;
     if (elem)
@@ -53,7 +53,7 @@ bool std::xmlCheckImages(TiXmlElement *elem)
     return true;
 }
 
-bool std::xmlCheckVars(TiXmlElement *elem)
+bool xml::xmlCheckVars(TiXmlElement *elem)
 {
     std::set<std::string> ids;
     if (elem)
@@ -72,7 +72,7 @@ bool std::xmlCheckVars(TiXmlElement *elem)
 }
 
 
-bool std::xmlCheckEvents(TiXmlElement *elem)
+bool xml::xmlCheckEvents(TiXmlElement *elem)
 {
     std::set<std::string> ids;
     if (elem)
@@ -92,7 +92,7 @@ bool std::xmlCheckEvents(TiXmlElement *elem)
     return true;
 }
 
-bool std::xmlCheckActions(TiXmlElement *elem)
+bool xml::xmlCheckActions(TiXmlElement *elem)
 {
     if (elem)
         for (TiXmlElement *i = elem->FirstChildElement("action"); i != 0;
@@ -104,7 +104,7 @@ bool std::xmlCheckActions(TiXmlElement *elem)
     return true;
 }
 
-bool std::xmlCheckParams(TiXmlElement *elem)
+bool xml::xmlCheckParams(TiXmlElement *elem)
 {
     if (elem)
         for (TiXmlElement *i = elem->FirstChildElement("param"); i != 0;
@@ -116,7 +116,7 @@ bool std::xmlCheckParams(TiXmlElement *elem)
     return true;
 }
 
-bool std::xmlCheckReqs(TiXmlElement *elem)
+bool xml::xmlCheckReqs(TiXmlElement *elem)
 {
     if (elem)
     {
@@ -139,7 +139,7 @@ bool std::xmlCheckReqs(TiXmlElement *elem)
     return true;
 }
 
-bool std::xmlCheckRooms(TiXmlElement *elem)
+bool xml::xmlCheckRooms(TiXmlElement *elem)
 {
     std::set<std::string> ids;
     if (elem)
@@ -157,7 +157,7 @@ bool std::xmlCheckRooms(TiXmlElement *elem)
     return true;
 }
 
-bool std::xmlCheckAreas(TiXmlElement *elem)
+bool xml::xmlCheckAreas(TiXmlElement *elem)
 {
     std::set<std::string> ids;
     int tmp;
@@ -180,7 +180,7 @@ bool std::xmlCheckAreas(TiXmlElement *elem)
     return true;
 }
 
-bool std::xmlCheckItems(TiXmlElement *elem)
+bool xml::xmlCheckItems(TiXmlElement *elem)
 {
     std::set<std::string> ids;
     int tmp;
@@ -204,7 +204,7 @@ bool std::xmlCheckItems(TiXmlElement *elem)
     return true;
 }
 
-bool std::xmlCheckDoEvents(TiXmlElement *elem)
+bool xml::xmlCheckDoEvents(TiXmlElement *elem)
 {
     if (elem)
         for (TiXmlElement *i = elem->FirstChildElement("do_event"); i != 0;
@@ -216,7 +216,7 @@ bool std::xmlCheckDoEvents(TiXmlElement *elem)
     return true;
 }
 
-std::vector <TiXmlElement *> std::xmlGetAllChilds(TiXmlElement *elem, std::string id)
+std::vector <TiXmlElement *> xml::xmlGetAllChilds(TiXmlElement *elem, std::string id)
 {
     std::vector <TiXmlElement *> childs;
     if (elem)

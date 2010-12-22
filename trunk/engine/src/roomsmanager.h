@@ -12,10 +12,10 @@ class Item;
 using std::string;
 
 
-namespace std
+namespace utils
 {
-    template <class T> T *getElement(string name, std::map<string, T *> container);
     template <class T> void freeElements(std::map<string , T *> &container);
+    template <class T> T *getElement(string name, std::map<string, T *> container);
 }
 
 /*! \brief Rooms interface.

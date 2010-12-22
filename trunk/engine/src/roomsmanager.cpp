@@ -4,7 +4,7 @@
 #include "item.h"
 #include "area.h"
 
-template <class T> void std::freeElements(std::map<string , T *> &container)
+template <class T> void utils::freeElements(std::map<string , T *> &container)
 {
     for (typename std::map<string, T *>::iterator i = container.begin();
          i != container.end(); ++i)
@@ -15,7 +15,7 @@ template <class T> void std::freeElements(std::map<string , T *> &container)
     container.clear();
 }
 
-template <class T> T *std::getElement(string name, std::map<string, T *> container)
+template <class T> T *utils::getElement(string name, std::map<string, T *> container)
 {
     typename std::map<string, T *>::iterator i = container.find(name);
     if (i == container.end())
@@ -31,8 +31,8 @@ RoomsManager::RoomsManager()
 
 RoomsManager::~RoomsManager()
 {
-    std::freeElements(rooms);
-    std::freeElements(items);
+    utils::freeElements(rooms);
+    utils::freeElements(items);
 }
 
 void RoomsManager::name(const string name)
@@ -112,7 +112,7 @@ void RoomsManager::moveItem(const string name, const string dest)
 
 Room * RoomsManager::room(const string name)
 {
-    return std::getElement(name, rooms);
+    return utils::getElement(name, rooms);
 }
 
 Area * RoomsManager::area(const string name)
@@ -122,7 +122,7 @@ Area * RoomsManager::area(const string name)
 
 Item * RoomsManager::item(const string name)
 {
-    return std::getElement(name, items);
+    return utils::getElement(name, items);
 }
 
 void RoomsManager::setCurrentRoom(const string name)
