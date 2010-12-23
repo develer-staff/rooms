@@ -5,9 +5,8 @@
 RoomView::RoomView(World *world, QWidget *parent) :
     QGraphicsView(parent)
 {
-    _world = world;
-    world->rooms()->appendRoom();
-    active_room = world->rooms()->at(0);
+    setWorld(world);
+    active_room = 0;
 
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -16,6 +15,11 @@ RoomView::RoomView(World *world, QWidget *parent) :
 
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
             this, SLOT(showContextMenu(const QPoint &)));
+}
+
+void RoomView::setWorld(World *world)
+{
+    _world = world;
 }
 
 void RoomView::addArea()

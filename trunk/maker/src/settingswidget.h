@@ -14,6 +14,7 @@ class SettingsWidget : public QWidget
 
 public:
     explicit SettingsWidget(World *world, QWidget *parent = 0);
+    void setWorld(World *world);
 
 public slots:
     void updateRoomSettings(Room *room);

@@ -84,6 +84,9 @@ void MainWindow::openProject()
     file.close();
 
     world = createWorld(doc);
+    rooms_list->setWorld(world);
+    room_view->setWorld(world);
+    settings->setWorld(world);
 }
 
 QString MainWindow::createXml() const

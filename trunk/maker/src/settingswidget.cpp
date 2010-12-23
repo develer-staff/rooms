@@ -3,7 +3,7 @@
 SettingsWidget::SettingsWidget(World *world, QWidget *parent) :
     QWidget(parent)
 {
-    _world = world;
+    setWorld(world);
     setupUi();
 
     setFixedWidth(200);
@@ -14,6 +14,11 @@ SettingsWidget::SettingsWidget(World *world, QWidget *parent) :
     connect(area_name, SIGNAL(editingFinished()), this, SLOT(setAreaName()));
 
     area_settings->hide();
+}
+
+void SettingsWidget::setWorld(World *world)
+{
+    _world = world;
 }
 
 void SettingsWidget::updateRoomSettings(Room *room)

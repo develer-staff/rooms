@@ -4,14 +4,19 @@
 RoomsList::RoomsList(World *world, QWidget *parent) :
     QListView(parent)
 {
-    _world = world;
-    setModel(_world->rooms());
+    setWorld(world);
 
     setFixedWidth(200);
     setContextMenuPolicy(Qt::CustomContextMenu);
 
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
             this, SLOT(showContextMenu(const QPoint &)));
+}
+
+void RoomsList::setWorld(World *world)
+{
+    _world = world;
+    setModel(_world->rooms());
 }
 
 void RoomsList::showContextMenu(const QPoint &point)
