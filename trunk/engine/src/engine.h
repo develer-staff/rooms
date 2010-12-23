@@ -59,6 +59,7 @@ class Engine
         Engine::State state() const;
         void setState(const Engine::State state_name);
         std::vector<string> getImgNames() const;
+        std::vector<Item *> getInventory() const;
         Log *getLogger();
     protected:
         void execActions(const std::vector <Action *> actions);
