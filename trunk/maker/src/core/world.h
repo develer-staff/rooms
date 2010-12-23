@@ -19,6 +19,9 @@ public:
 
     void setSize(const QSize &size);
     QSize size() const;
+
+    QString name() const;
+
     RoomsModel *rooms() const;
 
 private:

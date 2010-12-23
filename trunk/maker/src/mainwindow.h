@@ -23,8 +23,10 @@ public:
 
 public slots:
     void resizeRoomView();
+    void saveProject();
 
 private:
+    QString createXml() const;
     QWidget *widget;
     QGridLayout *layout;
     QSpacerItem *vspacer;
