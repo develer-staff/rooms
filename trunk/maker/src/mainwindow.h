@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QDomDocument>
 #include "wizard.h"
 #include "core/world.h"
 #include "roomslist.h"
@@ -24,9 +25,11 @@ public:
 public slots:
     void resizeRoomView();
     void saveProject();
+    void openProject();
 
 private:
     QString createXml() const;
+    World *createWorld(const QDomDocument &doc);
     QWidget *widget;
     QGridLayout *layout;
     QSpacerItem *vspacer;
