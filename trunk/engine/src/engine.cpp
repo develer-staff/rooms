@@ -2,8 +2,6 @@
 
 Log logger;
 
-Engine *Engine::engine = 0;
-
 const string Engine::VERSION = "ROOMS_VANILLA";
 
 Engine::Engine()
@@ -19,7 +17,6 @@ Engine::Engine()
     catch (...)
     {
         logger.write("ERROR: cannot create a valid engine!", Log::ERROR);
-        exit();
     }
 }
 
@@ -30,22 +27,9 @@ Engine::~Engine()
     delete events_mgr;
 }
 
-Engine *Engine::createEngine()
-{
-    if (engine == 0)
-        engine = new Engine();
-
-    return engine;
-}
-
 Log *Engine::getLogger()
 {
     return &logger;
-}
-
-void Engine::exit()
-{
-    delete engine;
 }
 
 void Engine::click (const int x, const int y)

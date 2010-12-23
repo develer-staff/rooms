@@ -43,18 +43,14 @@ class Engine
         };
         typedef std::vector<TiXmlElement *> XmlVect;
     private:
-        static Engine *engine;
         Engine::State _state;
         RoomsManager *rooms_mgr;
         EventsManager *events_mgr;
         std::map<string, string> images;
     public:
-        ~Engine();
-    private:
         Engine();
+        ~Engine();
     public:
-        static Engine *createEngine();
-        static void exit();
         void click (const int x, const int y);
         bool loadWorld(const string filename);
         void loadGame(const string filename);
