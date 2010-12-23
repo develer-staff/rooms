@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QDomDocument>
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -32,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(room_view, SIGNAL(selected(Room*)), settings, SLOT(updateRoomSettings(Room*)));
     connect(room_view, SIGNAL(selected(Area*)), settings, SLOT(updateAreaSettings(Area*)));
     connect(ui->action_Save, SIGNAL(triggered()), this, SLOT(saveProject()));
+    connect(ui->action_Open, SIGNAL(triggered()), this, SLOT(openProject()));
 
     connect(rooms_list, SIGNAL(clicked(QModelIndex)),
             room_view, SLOT(changeActiveRoom(QModelIndex)));
@@ -65,6 +65,25 @@ void MainWindow::saveProject()
     file.write(createXml().toAscii());
 
     file.close();
+}
+
+void MainWindow::openProject()
+{
+    QDomDocument doc("RoomsProjectFile");
+    QString project_filename = QFileDialog::getOpenFileName(this, "Open project",
+                                                            QDir::currentPath(),
+                                                            "Rooms project (*.rooms)");
+    QFile file(project_filename);
+    if (!file.open(QIODevice::ReadOnly))
+        return;
+    if (!doc.setContent(&file))
+    {
+        file.close();
+        return;
+    }
+    file.close();
+
+    world = createWorld(doc);
 }
 
 QString MainWindow::createXml() const
@@ -117,4 +136,56 @@ QString MainWindow::createXml() const
 
     xml = doc.toString();
     return xml;
+}
+
+World *MainWindow::createWorld(const QDomDocument &doc)
+{
+    QDomElement xworld = doc.elementsByTagName("world").at(0).toElement();
+    World *world = new World(xworld.attribute("name"), QSize(xworld.attribute("width").toInt(),
+                                                             xworld.attribute("height").toInt()));
+
+    //<images>
+    RoomsModel *rooms = world->rooms();
+    QDomNode ximages = xworld.elementsByTagName("images").at(0);
+    QDomElement ximg = ximages.firstChildElement();
+    while (!ximg.isNull())
+    {
+        qDebug() << ximg.attribute("file");
+        ximg = ximg.nextSiblingElement();
+    }
+    //</images>
+
+    //<rooms>
+    QDomNode xrooms = xworld.elementsByTagName("rooms").at(0);
+    QDomElement xroom = xrooms.firstChildElement();
+    while (!xroom.isNull())
+    {
+        rooms->appendRoom();
+        Room *room = rooms->at(rooms->count()-1);
+        QString id(xroom.attribute("id"));
+        QString bg_file(xroom.attribute("bg"));
+        QPixmap bg(bg_file);
+        bg = bg.scaled(world->size());
+        room->setName(id);
+        room->setBackground(bg);
+        //<areas>
+        QDomNode xareas = xroom.firstChild();
+        QDomElement xarea = xareas.firstChildElement();
+        while (!xarea.isNull())
+        {
+            QString id(xarea.attribute("id"));
+            QRect rect(xarea.attribute("x").toInt(),
+                       xarea.attribute("y").toInt(),
+                       xarea.attribute("width").toInt(),
+                       xarea.attribute("height").toInt());
+            room->addArea(rect);
+            room->areas().at(room->areas().count()-1)->setName(id);
+            xarea = xarea.nextSiblingElement();
+        }
+        //</areas>
+        xroom = xroom.nextSiblingElement();
+    }
+    //</rooms>
+
+    return world;
 }
