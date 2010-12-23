@@ -60,7 +60,7 @@ class Engine
         void setState(const Engine::State state_name);
         std::vector<std::pair<string, string> > getImgNames() const;
         Log *getLogger();
-    private:
+    protected:
         void execActions(const std::vector <Action *> actions);
         void createImgsFromXml(XmlVect imgs);
         void createEventsFromXml(XmlVect events);
