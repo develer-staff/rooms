@@ -117,6 +117,11 @@ std::vector<string> Engine::getImgNames() const
     return images;
 }
 
+std::vector<Item *> Engine::getInventory() const
+{
+    return rooms_mgr->room("0")->items();
+}
+
 void Engine::createImgsFromXml(XmlVect imgs)
 {
     for (XmlVect::iterator i = imgs.begin();
