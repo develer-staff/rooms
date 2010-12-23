@@ -100,6 +100,8 @@ QString MainWindow::createXml() const
     doc.appendChild(xworld);
 
     //<images>
+    //this block is useless for now because <img> contains only the filepath, which is
+    //already included as "bg" attribute of <room>
     QDomElement ximages = doc.createElement("images");
     for (int i = 0; i < world->rooms()->count(); i++)
     {
@@ -145,6 +147,8 @@ World *MainWindow::createWorld(const QDomDocument &doc)
                                                              xworld.attribute("height").toInt()));
 
     //<images>
+    //this block is useless for now because <img> contains only the filepath, which is
+    //already included as "bg" attribute of <room>
     RoomsModel *rooms = world->rooms();
     QDomNode ximages = xworld.elementsByTagName("images").at(0);
     QDomElement ximg = ximages.firstChildElement();
