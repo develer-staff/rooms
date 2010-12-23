@@ -2,8 +2,6 @@
 
 Log logger;
 
-Engine *Engine::engine = 0;
-
 const string Engine::VERSION = "ROOMS_VANILLA";
 
 Engine::Engine()
@@ -19,7 +17,6 @@ Engine::Engine()
     catch (...)
     {
         logger.write("ERROR: cannot create a valid engine!", Log::ERROR);
-        exit();
     }
 }
 
@@ -30,22 +27,9 @@ Engine::~Engine()
     delete events_mgr;
 }
 
-Engine *Engine::createEngine()
-{
-    if (engine == 0)
-        engine = new Engine();
-
-    return engine;
-}
-
 Log *Engine::getLogger()
 {
     return &logger;
-}
-
-void Engine::exit()
-{
-    delete engine;
 }
 
 void Engine::click (const int x, const int y)
@@ -90,7 +74,7 @@ bool Engine::loadWorld(const string filename)
     {
         logger.write("Loading world from " + filename, Log::NOTE);
         TiXmlDocument document(filename.c_str());
-        if (!xml::xmlCheckDoc(&document, Engine::VERSION)) throw "ERROR: wrong xml document!";
+        if (!document.LoadFile() || !xml::xmlCheckDoc(&document, Engine::VERSION)) throw "ERROR: wrong xml document!";
         TiXmlElement *root = document.RootElement();
         //Load World attributes
         logger.write(root->Attribute("name"), Log::NOTE);
@@ -128,17 +112,16 @@ bool Engine::loadWorld(const string filename)
     }
 }
 
-std::vector<std::pair<string, string> > Engine::getImgNames() const
+std::vector<string> Engine::getImgNames() const
 {
-    std::vector<std::pair<string, string> > v(images.begin(), images.end());
-    return v;
+    return images;
 }
 
 void Engine::createImgsFromXml(XmlVect imgs)
 {
     for (XmlVect::iterator i = imgs.begin();
          i != imgs.end(); ++i)
-        images[(*i)->Attribute("id")] = (*i)->Attribute("file");
+        images.push_back((*i)->Attribute("file"));
 }
 
 void Engine::createVarsFromXml(XmlVect vars)

@@ -5,11 +5,11 @@
 
 int main(int argc, char *argv[])
 {
-    Engine *eng = Engine::createEngine();
+    Engine *eng = new Engine;
     if (!eng->loadWorld("world.rooms"))
     {
         eng->getLogger()->write("ERROR: cannot load world.rooms!", Log::ERROR);
-        eng->exit();
+        delete eng;
         return 1;
     }
     QApplication qt_app(argc, argv);
@@ -22,6 +22,6 @@ int main(int argc, char *argv[])
     qt_wnd.setCentralWidget(&qt_draw_device);
     qt_wnd.show();
     int r = qt_app.exec();
-    eng->exit();
+    delete eng;
     return r;
 }

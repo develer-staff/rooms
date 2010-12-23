@@ -2,27 +2,27 @@
 <world version="ROOMS_VANILLA" name="Mirabolanti Avventure!" width="1024" height="768" start="Locanda">
 
   <images>
-    <img id="locanda_luce_spenta" file="./data/locanda.png" />
-    <img id="cucina" file="./data/cucina.png" />
-    <img id="chiave" file="./data/chiave.png" />
+    <img file="./data/locanda.png" />
+    <img file="./data/cucina.png" />
+    <img file="./data/chiave.png" />
   </images>
 
   <rooms>
     <room id="0" bg="" />
-    <room id="Locanda" bg="locanda_luce_spenta">
+    <room id="Locanda" bg="./data/locanda.png">
       <areas>
         <area id="area_porta_locanda" x="250" y="480" width="150" height="150">
           <do_event value="apri_porta_locanda" />
         </area>
       </areas>
     </room>
-    <room id="Cucina" bg="cucina">
+    <room id="Cucina" bg="./data/cucina.png">
       <areas />
     </room>
   </rooms>
 
   <items>
-    <item id="La chiave della locandiera" room="Locanda" x="10" y="700" width="50" height="50" image="chiave">
+    <item id="La chiave della locandiera" room="Locanda" x="10" y="700" width="50" height="50" image="./data/chiave.png">
         <do_event value="chiave_get" />
     </item>
   </items>

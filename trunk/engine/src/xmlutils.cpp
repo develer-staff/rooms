@@ -10,8 +10,7 @@ int xml::xmlReadInt(TiXmlElement *elem, std::string attribute)
 bool xml::xmlCheckDoc(TiXmlDocument *doc, const std::string &eng_ver)
 {
     if (doc)
-        return doc->LoadFile() &&
-               xml::xmlCheckRoot(doc->RootElement(), eng_ver) &&
+        return xml::xmlCheckRoot(doc->RootElement(), eng_ver) &&
                xml::xmlCheckImages(doc->RootElement()->FirstChildElement("images")) &&
                xml::xmlCheckVars(doc->RootElement()->FirstChildElement("vars")) &&
                xml::xmlCheckEvents(doc->RootElement()->FirstChildElement("events")) &&
@@ -43,12 +42,11 @@ bool xml::xmlCheckImages(TiXmlElement *elem)
         for (TiXmlElement *i = elem->FirstChildElement("img"); i != 0;
              i = i->NextSiblingElement("img"))
         {
-            if (i->Attribute("id") == 0 ||
-                i->Attribute("file") == 0 ||
-                ids.count(i->Attribute("id")) > 0)
+            if (i->Attribute("file") == 0 ||
+                ids.count(i->Attribute("file")) > 0)
                 return false;
             else
-                ids.insert(i->Attribute("id"));
+                ids.insert(i->Attribute("file"));
         }
     return true;
 }
