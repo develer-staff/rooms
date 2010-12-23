@@ -8,6 +8,7 @@ int main()
     runner.addTest(ActionTests::suite());
     runner.addTest(RoomTests::suite());
     runner.addTest(ApiTests::suite());
+    runner.addTest(XmlTests::suite());
     runner.run();
     return 0;
 }
