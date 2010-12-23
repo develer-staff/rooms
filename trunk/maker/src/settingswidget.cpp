@@ -84,12 +84,12 @@ void SettingsWidget::setAreaName()
 void SettingsWidget::setupUi()
 {
     //Room settings
-    room_settings = new QGroupBox("Room settings", this);
-    room_settings_layout = new QVBoxLayout(this);
+    room_settings = new QGroupBox("Room settings");
+    room_settings_layout = new QVBoxLayout;
 
-    room_name_layout = new QHBoxLayout(this);
-    room_name_label = new QLabel("Room name:", this);
-    room_name = new QLineEdit(this);
+    room_name_layout = new QHBoxLayout;
+    room_name_label = new QLabel("Room name:");
+    room_name = new QLineEdit;
     room_name_layout->addWidget(room_name_label);
     room_name_layout->addWidget(room_name);
 
@@ -97,12 +97,12 @@ void SettingsWidget::setupUi()
     room_settings->setLayout(room_settings_layout);
 
     //Area settings
-    area_settings = new QGroupBox("Area settings", this);
-    area_settings_layout = new QVBoxLayout(this);
+    area_settings = new QGroupBox("Area settings");
+    area_settings_layout = new QVBoxLayout;
 
-    area_name_layout = new QHBoxLayout(this);
-    area_name_label = new QLabel("Area name:", this);
-    area_name = new QLineEdit(this);
+    area_name_layout = new QHBoxLayout;
+    area_name_label = new QLabel("Area name:");
+    area_name = new QLineEdit;
     area_name_layout->addWidget(area_name_label);
     area_name_layout->addWidget(area_name);
 
@@ -110,7 +110,7 @@ void SettingsWidget::setupUi()
     area_settings->setLayout(area_settings_layout);
 
     //Settings
-    settings_layout = new QVBoxLayout(this);
+    settings_layout = new QVBoxLayout;
     settings_layout->addWidget(room_settings);
     settings_layout->addWidget(area_settings);
     spacer = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
