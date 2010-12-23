@@ -3,5 +3,6 @@
 
 #include "actiontests.h"
 #include "roomtests.h"
+#include "enginetests.h"
 
 #endif // TESTS_H_INCLUDED
