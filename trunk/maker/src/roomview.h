@@ -14,6 +14,7 @@ class RoomView : public QGraphicsView
 public:
     explicit RoomView(World *world, QWidget *parent = 0);
     void updateRoomView();
+    void setWorld(World *world);
 
 signals:
     void roomChanged(Room *room);

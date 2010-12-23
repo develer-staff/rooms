@@ -10,6 +10,7 @@ class RoomsList : public QListView
 
 public:
     explicit RoomsList(World *world, QWidget *parent = 0);
+    void setWorld(World *world);
 
 private slots:
     void addRoom();
