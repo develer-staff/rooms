@@ -74,7 +74,7 @@ bool Engine::loadWorld(const string filename)
     {
         logger.write("Loading world from " + filename, Log::NOTE);
         TiXmlDocument document(filename.c_str());
-        if (!xml::xmlCheckDoc(&document, Engine::VERSION)) throw "ERROR: wrong xml document!";
+        if (!document.LoadFile() || !xml::xmlCheckDoc(&document, Engine::VERSION)) throw "ERROR: wrong xml document!";
         TiXmlElement *root = document.RootElement();
         //Load World attributes
         logger.write(root->Attribute("name"), Log::NOTE);

@@ -10,8 +10,7 @@ int xml::xmlReadInt(TiXmlElement *elem, std::string attribute)
 bool xml::xmlCheckDoc(TiXmlDocument *doc, const std::string &eng_ver)
 {
     if (doc)
-        return doc->LoadFile() &&
-               xml::xmlCheckRoot(doc->RootElement(), eng_ver) &&
+        return xml::xmlCheckRoot(doc->RootElement(), eng_ver) &&
                xml::xmlCheckImages(doc->RootElement()->FirstChildElement("images")) &&
                xml::xmlCheckVars(doc->RootElement()->FirstChildElement("vars")) &&
                xml::xmlCheckEvents(doc->RootElement()->FirstChildElement("events")) &&
