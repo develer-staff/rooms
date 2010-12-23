@@ -58,8 +58,16 @@ void RoomView::setBackground()
 void RoomView::updateRoomView()
 {
     if (!scenes.contains(active_room))
+    {
         scenes.insert(active_room,
                       new QGraphicsScene(QRectF(QPoint(0, 0), _world->size())));
+        scenes[active_room]->addPixmap(active_room->background());
+        for (int i = 0; i < active_room->areas().count(); i++)
+        {
+            AreaRect *area_rect = new AreaRect(active_room->areas().at(i));
+            scenes[active_room]->addItem(area_rect);
+        }
+    }
 
     setScene(scenes[active_room]);
 }
