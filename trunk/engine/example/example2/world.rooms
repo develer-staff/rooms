@@ -2,25 +2,25 @@
 <world version="ROOMS_VANILLA" name="Mirabolanti Avventure!" width="800" height="600" start="Locanda">
 
   <images>
-    <img id="img_locanda" file="./data/locanda.png" />
-    <img id="img_cantina" file="./data/cantina.png" />
-    <img id="img_centrale" file="./data/stanza_centrale.png" />
-    <img id="img_star" file="./data/stanza_star.png" />
-    <img id="end" file="./data/end.png" />
-    <img id="img_chiave" file="./data/chiave.png" />
-    <img id="img_chiave_star" file="./data/chiave_star.png" />
+    <img file="./data/locanda.png" />
+    <img file="./data/cantina.png" />
+    <img file="./data/stanza_centrale.png" />
+    <img file="./data/stanza_star.png" />
+    <img file="./data/end.png" />
+    <img file="./data/chiave.png" />
+    <img file="./data/chiave_star.png" />
   </images>
 
   <rooms>
     <room id="0" bg="" />
-    <room id="Locanda" bg="img_locanda">
+    <room id="Locanda" bg="./data/locanda.png">
       <areas>
         <area id="area_porta_locanda" x="200" y="350" width="100" height="150">
           <do_event value="eve_goto_locanda" />
         </area>
       </areas>
     </room>
-    <room id="Stanza Centrale" bg="img_centrale">
+    <room id="Stanza Centrale" bg="./data/stanza_centrale.png">
       <areas>
         <area id="area_vai_cantina" x="300" y="350" width="200" height="200">
           <do_event value="eve_goto_cantina" />
@@ -33,14 +33,14 @@
         </area>
       </areas>
     </room>
-    <room id="Cantina" bg="img_cantina">
+    <room id="Cantina" bg="./data/cantina.png">
       <areas>
         <area id="area_vai_centrale1" x="10" y="500" width="780" height="100">
           <do_event value="eve_goto_centrale" />
         </area>
       </areas>
     </room>
-    <room id="Stanza Stella" bg="img_star">
+    <room id="Stanza Stella" bg="./data/stanza_star.png">
       <areas>
         <area id="area_vai_centrale2" x="10" y="500" width="780" height="100">
           <do_event value="eve_goto_centrale" />
@@ -50,14 +50,14 @@
         </area>
       </areas>
     </room>
-    <room id="End" bg="end" />
+    <room id="End" bg="./data/end.png" />
   </rooms>
 
   <items>
-    <item id="Chiave Locanda" room="Locanda" x="10" y="500" width="50" height="50" image="img_chiave">
+    <item id="Chiave Locanda" room="Locanda" x="10" y="500" width="50" height="50" image="./data/chiave.png">
         <do_event value="chiave_get" />
     </item>
-    <item id="Chiave Stella" room="Cantina" x="50" y="400" width="60" height="50" image="img_chiave_star">
+    <item id="Chiave Stella" room="Cantina" x="50" y="400" width="60" height="50" image="./data/chiave_star.png">
         <do_event value="chiave_star_get" />
     </item>
   </items>

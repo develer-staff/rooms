@@ -34,7 +34,7 @@ public:
         TiXmlDocument doc;
         doc.Parse("<?xml version='1.0' ?>"
                    "<world version='ROOMS_VANILLA' name='name' width='800' height='600' start='room'>"
-                   "<images><img id='id' file='file' /></images>"
+                   "<images><img file='file' /></images>"
                    "<rooms /> <events /> <items />"
                    "</world>\n", 0, TIXML_ENCODING_UTF8);
         CPPUNIT_ASSERT(xml::xmlCheckDoc(&doc, Engine::VERSION));
@@ -45,7 +45,7 @@ public:
         TiXmlDocument doc;
         doc.Parse("<?xml version='1.0' ?>"
                    "<world version='ROOMS_VANILLA' name='name' width='800' height='600' start='room'>"
-                   "<images><img id='id'/></images>"
+                   "<images><img /></images>"
                    "<rooms /> <events /> <items />"
                    "</world>\n", 0, TIXML_ENCODING_UTF8);
         CPPUNIT_ASSERT(!xml::xmlCheckDoc(&doc, Engine::VERSION));

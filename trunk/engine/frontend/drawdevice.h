@@ -34,7 +34,7 @@ class DrawDevice: public QWidget
         ~DrawDevice();
     public:
         void initialize();
-        bool loadImage(string id, string filename);
+        bool loadImage(string filename);
         void quit(int status);
     public slots:
         //QT EVENTS

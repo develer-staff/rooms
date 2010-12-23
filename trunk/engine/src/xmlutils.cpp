@@ -42,12 +42,11 @@ bool xml::xmlCheckImages(TiXmlElement *elem)
         for (TiXmlElement *i = elem->FirstChildElement("img"); i != 0;
              i = i->NextSiblingElement("img"))
         {
-            if (i->Attribute("id") == 0 ||
-                i->Attribute("file") == 0 ||
-                ids.count(i->Attribute("id")) > 0)
+            if (i->Attribute("file") == 0 ||
+                ids.count(i->Attribute("file")) > 0)
                 return false;
             else
-                ids.insert(i->Attribute("id"));
+                ids.insert(i->Attribute("file"));
         }
     return true;
 }

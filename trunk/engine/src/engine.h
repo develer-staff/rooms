@@ -46,7 +46,7 @@ class Engine
         Engine::State _state;
         RoomsManager *rooms_mgr;
         EventsManager *events_mgr;
-        std::map<string, string> images;
+        std::vector<string> images;
     public:
         Engine();
         ~Engine();
@@ -58,7 +58,7 @@ class Engine
         EventsManager *getEventsManager() const;
         Engine::State state() const;
         void setState(const Engine::State state_name);
-        std::vector<std::pair<string, string> > getImgNames() const;
+        std::vector<string> getImgNames() const;
         Log *getLogger();
     protected:
         void execActions(const std::vector <Action *> actions);

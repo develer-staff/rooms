@@ -19,17 +19,17 @@ DrawDevice::~DrawDevice()
 void DrawDevice::initialize()
 {
     setMouseTracking(true);
-    std::vector<std::pair<string, string> > images = engine->getImgNames();
-    for (std::vector<std::pair<string, string> >::iterator i = images.begin();
+    std::vector<string> images = engine->getImgNames();
+    for (std::vector<string>::iterator i = images.begin();
          i != images.end(); ++i)
-         loadImage((*i).first, (*i).second);
+         loadImage(*i);
 }
 
-bool DrawDevice::loadImage(string id, string filename)
+bool DrawDevice::loadImage(string filename)
 {
     if (fileExists(filename))
     {
-        images[id] = new QPixmap(filename.c_str());
+        images[filename] = new QPixmap(filename.c_str());
         return true;
     }
     else

@@ -112,17 +112,16 @@ bool Engine::loadWorld(const string filename)
     }
 }
 
-std::vector<std::pair<string, string> > Engine::getImgNames() const
+std::vector<string> Engine::getImgNames() const
 {
-    std::vector<std::pair<string, string> > v(images.begin(), images.end());
-    return v;
+    return images;
 }
 
 void Engine::createImgsFromXml(XmlVect imgs)
 {
     for (XmlVect::iterator i = imgs.begin();
          i != imgs.end(); ++i)
-        images[(*i)->Attribute("id")] = (*i)->Attribute("file");
+        images.push_back((*i)->Attribute("file"));
 }
 
 void Engine::createVarsFromXml(XmlVect vars)
