@@ -32,7 +32,7 @@ public:
         room_man->addRoom("room2", "");
     }
 
-    void testDown()
+    void tearDown()
     {
         delete mock;
     }

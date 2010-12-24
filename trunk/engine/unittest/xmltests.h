@@ -15,7 +15,7 @@ public:
     {
     }
 
-    void testDown()
+    void tearDown()
     {
     }
 

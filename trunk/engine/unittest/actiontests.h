@@ -18,7 +18,7 @@ public:
         act1 = new Action("test");
     }
 
-    void testDown()
+    void tearDown()
     {
         delete act1;
     }

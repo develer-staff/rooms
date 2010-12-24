@@ -21,7 +21,7 @@ public:
         item1->size(10, 0, 10, 10);
     }
 
-    void testDown()
+    void tearDown()
     {
         delete item1;
         delete room1;
