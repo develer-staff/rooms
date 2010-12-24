@@ -19,6 +19,7 @@ SettingsWidget::SettingsWidget(World *world, QWidget *parent) :
 
 void SettingsWidget::setWorld(World *world)
 {
+    setDisabled(true);
     _world = world;
 }
 
@@ -28,6 +29,7 @@ void SettingsWidget::updateRoomSettings(Room *room)
     area_settings->hide();
     room_settings->show();
     room_name->setText(room->name());
+    setEnabled(true);
 }
 
 void SettingsWidget::updateAreaSettings(Area *area)
