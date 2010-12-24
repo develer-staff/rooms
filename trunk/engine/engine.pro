@@ -3,9 +3,11 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET = 
+TARGET =
 DEPENDPATH += . frontend src lib/tinyxml
 INCLUDEPATH += . frontend src lib/tinyxml
+OBJECTS_DIR = ./build
+MOC_DIR = ./build
 
 # Input
 HEADERS += frontend/drawdevice.h \
