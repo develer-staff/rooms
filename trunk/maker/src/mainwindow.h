@@ -26,6 +26,7 @@ public slots:
     void resizeRoomView();
     void saveProject();
     void openProject();
+    void newProject();
 
 private:
     QString createXml() const;

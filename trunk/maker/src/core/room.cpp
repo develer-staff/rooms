@@ -29,9 +29,12 @@ void Room::addArea(const QRect &rect)
 
 void Room::setBackground(const QPixmap &background)
 {
-    _background = background;
-    _icon = _background.scaled(QSize(64, 64));
-    emit changed();
+    if (!background.isNull())
+    {
+        _background = background;
+        _icon = _background.scaled(QSize(64, 64));
+        emit changed();
+    }
 }
 
 QPixmap Room::background() const

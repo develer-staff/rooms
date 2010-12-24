@@ -24,6 +24,9 @@ void Wizard::setInfo()
     height = ui->height->value();
     accepted();
     close();
+    ui->worldName->setText("Example world");
+    ui->width->setValue(600);
+    ui->height->setValue(500);
 }
 
 QString Wizard::worldName() const
