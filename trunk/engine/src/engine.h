@@ -61,7 +61,7 @@ class Engine
         std::vector<string> getImgNames() const;
         std::vector<Item *> getInventory() const;
         Log *getLogger();
-    protected:
+    private:
         void execActions(const std::vector <Action *> actions);
         void createImgsFromXml(XmlVect imgs);
         void createEventsFromXml(XmlVect events);
@@ -72,6 +72,36 @@ class Engine
         void apiRoomGoto(const string id);
         void apiVarSet(const string id, const int value);
         void apiItemMove(const string id, const string dest);
+
+        friend class MockEngine;
+};
+
+//Unit Test Class
+
+class MockEngine
+{
+    private:
+        Engine *engine;
+    public:
+        MockEngine(Engine *engine)
+        {
+            this->engine = engine;
+        }
+
+        void apiRoomGoto(const std::string name)
+        {
+            engine->apiRoomGoto(name);
+        }
+
+        void apiVarSet(const std::string name, const int value)
+        {
+            engine->apiVarSet(name, value);
+        }
+
+        void apiItemMove(const std::string name, const std::string dest)
+        {
+            engine->apiItemMove(name, dest);
+        }
 };
 
 extern Log logger;

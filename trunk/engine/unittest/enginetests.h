@@ -11,28 +11,13 @@
 class ApiTests : public CppUnit::TestFixture
 {
 private:
-    class MockEngine: public Engine
-    {
-        public:
-            void apiRoomGoto(const std::string name)
-            {
-                Engine::apiRoomGoto(name);
-            }
-            void apiVarSet(const std::string name, const int value)
-            {
-                Engine::apiVarSet(name, value);
-            }
-            void apiItemMove(const std::string name, const std::string dest)
-            {
-                Engine::apiItemMove(name, dest);
-            }
-    };
-private:
-    MockEngine *engine;
+    Engine *engine;
+    MockEngine *mock;
 public:
     void setUp()
     {
-        engine = new MockEngine;
+        engine = new Engine;
+        mock = new MockEngine(engine);
         engine->getRoomsManager()->addRoom("room1", "");
         engine->getRoomsManager()->addRoom("room2", "");
     }
@@ -44,13 +29,13 @@ public:
 
     void testRoomGoto()
     {
-        engine->apiRoomGoto("room1");
+        mock->apiRoomGoto("room1");
         CPPUNIT_ASSERT(engine->getRoomsManager()->currentRoom()->id == "room1");
     }
 
     void testVarSet()
     {
-        engine->apiVarSet("var1", 10);
+        mock->apiVarSet("var1", 10);
         CPPUNIT_ASSERT(engine->getEventsManager()->var("var1") == 10);
     }
 
@@ -59,7 +44,7 @@ public:
         Item *item = engine->getRoomsManager()->addItem("item1", "room1",
                                            10, 10, 10, 10, "", "");
         CPPUNIT_ASSERT(engine->getRoomsManager()->room("room1")->item("item1") == item);
-        engine->apiItemMove("item1", "room2");
+        mock->apiItemMove("item1", "room2");
         CPPUNIT_ASSERT(engine->getRoomsManager()->room("room2")->item("item1") == item);
         CPPUNIT_ASSERT(engine->getRoomsManager()->room("room1")->item("item1") == 0);
     }
