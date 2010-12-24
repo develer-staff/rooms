@@ -8,60 +8,55 @@
 #include <cppunit/TestCaller.h>
 #include <cppunit/TestSuite.h>
 
+//Unit Test Class
+
+class MockEngine : public Engine
+{
+    public:
+        using Engine::apiItemMove;
+        using Engine::apiRoomGoto;
+        using Engine::apiVarSet;
+};
+
 class ApiTests : public CppUnit::TestFixture
 {
 private:
-    class MockEngine: public Engine
-    {
-        public:
-            void apiRoomGoto(const std::string name)
-            {
-                Engine::apiRoomGoto(name);
-            }
-            void apiVarSet(const std::string name, const int value)
-            {
-                Engine::apiVarSet(name, value);
-            }
-            void apiItemMove(const std::string name, const std::string dest)
-            {
-                Engine::apiItemMove(name, dest);
-            }
-    };
-private:
-    MockEngine *engine;
+    MockEngine *mock;
+    RoomsManager *room_man;
 public:
     void setUp()
     {
-        engine = new MockEngine;
-        engine->getRoomsManager()->addRoom("room1", "");
-        engine->getRoomsManager()->addRoom("room2", "");
+        mock = new MockEngine;
+        room_man = mock->getRoomsManager();
+        room_man->addRoom("room1", "");
+        room_man->addRoom("room2", "");
     }
 
     void testDown()
     {
-        delete engine;
+        delete mock;
     }
 
     void testRoomGoto()
     {
-        engine->apiRoomGoto("room1");
-        CPPUNIT_ASSERT(engine->getRoomsManager()->currentRoom()->id == "room1");
+        mock->apiRoomGoto("room1");
+        CPPUNIT_ASSERT(room_man->currentRoom()->id == "room1");
     }
 
     void testVarSet()
     {
-        engine->apiVarSet("var1", 10);
-        CPPUNIT_ASSERT(engine->getEventsManager()->var("var1") == 10);
+        mock->apiVarSet("var1", 10);
+        CPPUNIT_ASSERT(mock->getEventsManager()->var("var1") == 10);
     }
 
     void testItemMove()
     {
-        Item *item = engine->getRoomsManager()->addItem("item1", "room1",
+        Item *item = room_man->addItem("item1", "room1",
                                            10, 10, 10, 10, "", "");
-        CPPUNIT_ASSERT(engine->getRoomsManager()->room("room1")->item("item1") == item);
-        engine->apiItemMove("item1", "room2");
-        CPPUNIT_ASSERT(engine->getRoomsManager()->room("room2")->item("item1") == item);
-        CPPUNIT_ASSERT(engine->getRoomsManager()->room("room1")->item("item1") == 0);
+        CPPUNIT_ASSERT(room_man->room("room1")->item("item1") == item);
+        mock->apiItemMove("item1", "room2");
+        CPPUNIT_ASSERT(room_man->room("room2")->item("item1") == item);
+        CPPUNIT_ASSERT(room_man->room("room1")->item("item1") == 0);
     }
 
     static CppUnit::Test *suite()

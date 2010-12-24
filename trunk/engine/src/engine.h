@@ -13,6 +13,8 @@
 
 #include <string> //std::string
 #include <utility> //std::pair
+#include <fstream> //std::ifstream
+
 
 using std::string;
 
@@ -52,7 +54,8 @@ class Engine
         ~Engine();
     public:
         void click (const int x, const int y);
-        bool loadWorld(const string filename);
+        bool loadWorldFromStr(const string content);
+        bool loadWorldFromFile(const string filename);
         void loadGame(const string filename);
         RoomsManager *getRoomsManager() const;
         EventsManager *getEventsManager() const;
@@ -61,7 +64,7 @@ class Engine
         std::vector<string> getImgNames() const;
         std::vector<Item *> getInventory() const;
         Log *getLogger();
-    protected:
+    private:
         void execActions(const std::vector <Action *> actions);
         void createImgsFromXml(XmlVect imgs);
         void createEventsFromXml(XmlVect events);
@@ -72,6 +75,8 @@ class Engine
         void apiRoomGoto(const string id);
         void apiVarSet(const string id, const int value);
         void apiItemMove(const string id, const string dest);
+
+        friend class MockEngine;
 };
 
 extern Log logger;

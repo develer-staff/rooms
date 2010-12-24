@@ -7,6 +7,8 @@ TARGET =
 DEPENDPATH += . ../frontend ../src ../lib/tinyxml
 INCLUDEPATH += . ../frontend ../src ../lib/tinyxml
 LIBS += -lcppunit
+OBJECTS_DIR = ./build
+MOC_DIR = ./build
 
 # Input
 HEADERS += ../src/action.h \

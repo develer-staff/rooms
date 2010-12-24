@@ -68,13 +68,28 @@ void Engine::loadGame(const string filename)
 
 }
 
-bool Engine::loadWorld(const string filename)
+bool Engine::loadWorldFromFile(const string filename)
+{
+    logger.write("Loading world from: " + filename, Log::NOTE);
+    std::ifstream xml(filename.c_str(), std::ios::binary);
+    xml.seekg (0, std::ios::end);
+    long length = xml.tellg();
+    char *buffer = new char [length];
+    xml.seekg (0, std::ios::beg);
+    xml.read(buffer, length);
+    bool res = loadWorldFromStr(buffer);
+    xml.close();
+    delete [] buffer;
+    return res;
+}
+
+bool Engine::loadWorldFromStr(const string content)
 {
     try
     {
-        logger.write("Loading world from " + filename, Log::NOTE);
-        TiXmlDocument document(filename.c_str());
-        if (!document.LoadFile() || !xml::xmlCheckDoc(&document, Engine::VERSION)) throw "ERROR: wrong xml document!";
+        TiXmlDocument document;
+        document.Parse(content.c_str());
+        if (!xml::xmlCheckDoc(&document, Engine::VERSION)) throw "ERROR: wrong xml document!";
         TiXmlElement *root = document.RootElement();
         //Load World attributes
         logger.write(root->Attribute("name"), Log::NOTE);
