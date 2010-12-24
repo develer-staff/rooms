@@ -89,6 +89,7 @@ void MainWindow::openProject()
     rooms_list->setWorld(world);
     room_view->setWorld(world);
     settings->setWorld(world);
+    resizeRoomView();
     ui->centralWidget->setEnabled(true);
 }
 
