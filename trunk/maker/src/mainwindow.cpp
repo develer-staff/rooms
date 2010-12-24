@@ -27,6 +27,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->splitter->addWidget(widget);
     ui->splitter->addWidget(settings);
 
+    ui->centralWidget->setDisabled(true);
+
     connect(room_view, SIGNAL(roomChanged(Room*)), room_view, SIGNAL(selected(Room*)));
     connect(room_view, SIGNAL(selected(Room*)), settings, SLOT(updateRoomSettings(Room*)));
     connect(room_view, SIGNAL(selected(Area*)), settings, SLOT(updateAreaSettings(Area*)));
@@ -87,6 +89,7 @@ void MainWindow::openProject()
     rooms_list->setWorld(world);
     room_view->setWorld(world);
     settings->setWorld(world);
+    ui->centralWidget->setEnabled(true);
 }
 
 void MainWindow::newProject()
@@ -95,6 +98,7 @@ void MainWindow::newProject()
     room_view->setWorld(world);
     settings->setWorld(world);
     resizeRoomView();
+    ui->centralWidget->setEnabled(true);
 }
 
 QString MainWindow::createXml() const
