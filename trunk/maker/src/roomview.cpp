@@ -19,6 +19,7 @@ RoomView::RoomView(World *world, QWidget *parent) :
 
 void RoomView::setWorld(World *world)
 {
+    setDisabled(true);
     _world = world;
 }
 
@@ -74,6 +75,7 @@ void RoomView::updateRoomView()
 
 void RoomView::changeActiveRoom(QModelIndex index)
 {
+    setEnabled(true);
     active_room = _world->rooms()->at(index.row());
     updateRoomView();
     emit roomChanged(active_room);
