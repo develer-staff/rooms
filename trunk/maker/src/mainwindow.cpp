@@ -32,14 +32,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(room_view, SIGNAL(selected(Area*)), settings, SLOT(updateAreaSettings(Area*)));
     connect(ui->action_Save, SIGNAL(triggered()), this, SLOT(saveProject()));
     connect(ui->action_Open, SIGNAL(triggered()), this, SLOT(openProject()));
+    connect(ui->action_New, SIGNAL(triggered()), wizard, SLOT(show()));
 
     connect(rooms_list, SIGNAL(clicked(QModelIndex)),
             room_view, SLOT(changeActiveRoom(QModelIndex)));
 
-    connect(wizard, SIGNAL(accepted()), this, SLOT(resizeRoomView()));
+    connect(wizard, SIGNAL(accepted()), this, SLOT(newProject()));
 
     resizeRoomView();
-    wizard->show();
 }
 
 MainWindow::~MainWindow()
@@ -87,6 +87,14 @@ void MainWindow::openProject()
     rooms_list->setWorld(world);
     room_view->setWorld(world);
     settings->setWorld(world);
+}
+
+void MainWindow::newProject()
+{
+    rooms_list->setWorld(world);
+    room_view->setWorld(world);
+    settings->setWorld(world);
+    resizeRoomView();
 }
 
 QString MainWindow::createXml() const
