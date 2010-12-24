@@ -6,12 +6,13 @@ SettingsWidget::SettingsWidget(World *world, QWidget *parent) :
     setWorld(world);
     setupUi();
 
-    setFixedWidth(200);
+    setFixedWidth(250);
 
     connect(room_name, SIGNAL(textEdited(QString)), this, SLOT(validateRoomName(QString)));
     connect(room_name, SIGNAL(editingFinished()), this, SLOT(setRoomName()));
     connect(area_name, SIGNAL(textEdited(QString)), this, SLOT(validateAreaName(QString)));
     connect(area_name, SIGNAL(editingFinished()), this, SLOT(setAreaName()));
+    connect(new_action_button, SIGNAL(clicked()), this, SLOT(newAction()));
 
     area_settings->hide();
 }
@@ -35,6 +36,11 @@ void SettingsWidget::updateAreaSettings(Area *area)
     room_settings->hide();
     area_settings->show();
     area_name->setText(area->name());
+    actions_list->clear();
+    for (int i = 0; i < active_area->actions().count(); i++)
+    {
+        actions_list->addItem(active_area->actions().at(i)->toString());
+    }
 }
 
 void SettingsWidget::validateRoomName(const QString &text)
@@ -81,8 +87,19 @@ void SettingsWidget::setAreaName()
     area_name->setPalette(QPalette(QPalette::Base, Qt::white));
 }
 
+void SettingsWidget::newAction()
+{
+    Action *action = active_area->addAction();
+    action->setType((Action::ActionType)action_combobox->currentIndex());
+    action->setRoom(room_combobox->currentText());
+    actions_list->addItem(action->toString());
+}
+
 void SettingsWidget::setupUi()
 {
+    vspacer = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    hspacer = new QSpacerItem(0, 0, QSizePolicy::Expanding);
+
     //Room settings
     room_settings = new QGroupBox("Room settings");
     room_settings_layout = new QVBoxLayout;
@@ -106,15 +123,39 @@ void SettingsWidget::setupUi()
     area_name_layout->addWidget(area_name_label);
     area_name_layout->addWidget(area_name);
 
+    action_comboboxes_layout = new QHBoxLayout;
+    action_combobox = new QComboBox;
+    room_combobox = new QComboBox;
+    action_combobox->addItem("Go to room");
+    action_combobox->setFixedHeight(20);
+    room_combobox->setFixedHeight(20);
+    room_combobox->setModel(_world->rooms());
+    action_comboboxes_layout->addWidget(action_combobox);
+    action_comboboxes_layout->addWidget(room_combobox);
+
+    actions_label = new QLabel("<b>Do actions:</b>");
+
+    new_action_layout = new QHBoxLayout;
+    new_action_button = new QPushButton("Add action");
+    new_action_button->setFixedHeight(20);
+    new_action_layout->addSpacerItem(hspacer);
+    new_action_layout->addWidget(new_action_button);
+
+    actions_list = new QListWidget;
+
     area_settings_layout->addLayout(area_name_layout);
+    area_settings_layout->addWidget(actions_label);
+    area_settings_layout->addLayout(action_comboboxes_layout);
+    area_settings_layout->addLayout(new_action_layout);
+    area_settings_layout->addWidget(actions_list);
+
     area_settings->setLayout(area_settings_layout);
 
     //Settings
     settings_layout = new QVBoxLayout;
     settings_layout->addWidget(room_settings);
     settings_layout->addWidget(area_settings);
-    spacer = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
-    settings_layout->addSpacerItem(spacer);
+    settings_layout->addSpacerItem(vspacer);
 
     setLayout(settings_layout);
 }

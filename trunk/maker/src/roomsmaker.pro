@@ -21,7 +21,8 @@ SOURCES += main.cpp \
     core/roomsmodel.cpp \
     roomslist.cpp \
     arearect.cpp \
-    settingswidget.cpp
+    settingswidget.cpp \
+    core/action.cpp
 
 HEADERS += mainwindow.h \
     wizard.h \
@@ -33,7 +34,8 @@ HEADERS += mainwindow.h \
     core/roomsmodel.h \
     roomslist.h \
     arearect.h \
-    settingswidget.h
+    settingswidget.h \
+    core/action.h
 
 FORMS += mainwindow.ui \
     wizard.ui

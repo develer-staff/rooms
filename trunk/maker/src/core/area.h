@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QRect>
+#include "action.h"
 
 class Area : public QObject
 {
@@ -17,7 +18,11 @@ public:
     void setName(const QString &name);
     QString name() const;
 
+    Action *addAction();
+    QList<Action *> actions() const;
+
 private:
+    QList<Action *> _actions;
     QString _name;
     QRect _rect;
 };

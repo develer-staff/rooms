@@ -6,6 +6,9 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QSpacerItem>
+#include <QPushButton>
+#include <QComboBox>
+#include <QListWidget>
 #include "core/world.h"
 
 class SettingsWidget : public QWidget
@@ -23,6 +26,7 @@ public slots:
     void validateAreaName(const QString &text);
     void setRoomName();
     void setAreaName();
+    void newAction();
 
 private:
     void setupUi();
@@ -35,13 +39,25 @@ private:
     QLabel *room_name_label;
     QLineEdit *room_name;
 
+    QLabel *actions_label;
+
+    QHBoxLayout *action_comboboxes_layout;
+    QComboBox *action_combobox;
+    QComboBox *room_combobox;
+
+    QHBoxLayout *new_action_layout;
+    QPushButton *new_action_button;
+
     QGroupBox *area_settings;
     QVBoxLayout *area_settings_layout;
     QHBoxLayout *area_name_layout;
     QLabel *area_name_label;
     QLineEdit *area_name;
 
-    QSpacerItem *spacer;
+    QListWidget *actions_list;
+
+    QSpacerItem *vspacer;
+    QSpacerItem *hspacer;
 
     Area *active_area;
     Room *active_room;
