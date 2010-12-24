@@ -6,7 +6,7 @@
 int main(int argc, char *argv[])
 {
     Engine *eng = new Engine;
-    if (!eng->loadWorld("world.rooms"))
+    if (!eng->loadWorldFromFile("world.rooms"))
     {
         eng->getLogger()->write("ERROR: cannot load world.rooms!", Log::ERROR);
         delete eng;
