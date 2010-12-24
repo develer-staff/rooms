@@ -76,34 +76,6 @@ class Engine
         friend class MockEngine;
 };
 
-//Unit Test Class
-
-class MockEngine
-{
-    private:
-        Engine *engine;
-    public:
-        MockEngine(Engine *engine)
-        {
-            this->engine = engine;
-        }
-
-        void apiRoomGoto(const std::string name)
-        {
-            engine->apiRoomGoto(name);
-        }
-
-        void apiVarSet(const std::string name, const int value)
-        {
-            engine->apiVarSet(name, value);
-        }
-
-        void apiItemMove(const std::string name, const std::string dest)
-        {
-            engine->apiItemMove(name, dest);
-        }
-};
-
 extern Log logger;
 
 #endif // ROOMSENGINE_H
