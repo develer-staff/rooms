@@ -36,5 +36,6 @@ void RoomsList::addRoom()
 
 void RoomsList::selectionChanged(const QItemSelection &new_selected, const QItemSelection &old_selected)
 {
+    Q_UNUSED(old_selected);
     emit selected(new_selected.indexes().first());
 }
