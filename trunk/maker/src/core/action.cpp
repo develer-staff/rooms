@@ -1,7 +1,6 @@
 #include "action.h"
 
-Action::Action(ActionType type, QString room, QObject *parent) :
-    QObject(parent)
+Action::Action(ActionType type, QString room)
 {
     _type = type;
     _room = room;

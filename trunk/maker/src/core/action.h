@@ -1,17 +1,16 @@
 #ifndef ACTION_H
 #define ACTION_H
 
-#include <QObject>
+#include <QString>
 
-class Action : public QObject
+class Action
 {
-    Q_OBJECT
 
 public:
     enum ActionType {
         ChangeRoom
     };
-    Action(ActionType type = ChangeRoom, QString room = "", QObject *parent = 0);
+    Action(ActionType type = ChangeRoom, QString room = "");
 
     ActionType type() const;
 
