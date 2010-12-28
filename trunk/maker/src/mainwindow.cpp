@@ -58,13 +58,12 @@ void MainWindow::resizeRoomView()
 
 void MainWindow::saveProject()
 {
-    QString project_filename = QFileDialog::getSaveFileName(this, "Save project", QDir::currentPath());
+    QString project_filename = QFileDialog::getSaveFileName(this, "Save project", QDir::homePath());
     QFile file(project_filename);
     if (!file.open(QIODevice::WriteOnly))
         return;
 
     file.write(createXml().toAscii());
-
     file.close();
 }
 
@@ -72,7 +71,7 @@ void MainWindow::openProject()
 {
     QDomDocument doc("RoomsProjectFile");
     QString project_filename = QFileDialog::getOpenFileName(this, "Open project",
-                                                            QDir::currentPath(),
+                                                            QDir::homePath(),
                                                             "Rooms project (*.rooms)");
     QFile file(project_filename);
     if (!file.open(QIODevice::ReadOnly))
