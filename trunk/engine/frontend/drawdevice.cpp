@@ -22,9 +22,11 @@ void DrawDevice::initialize()
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
     dialog_list.setParent(this);
+    dialog_text.setParent(this);
     dialog_list.hide();
-    dialog_list.setWindowOpacity(0.5);
+    dialog_text.hide();
     dialog_list.setGeometry(10, 410, width() - 20, 180);
+    dialog_text.setGeometry(20, 350, width() - 40, 50);
     std::vector<string> images = engine->getImgNames();
     for (std::vector<string>::iterator i = images.begin();
          i != images.end(); ++i)
@@ -85,7 +87,7 @@ void DrawDevice::paintEvent(QPaintEvent *event)
         }
         case Engine::DIALOG:
         {
-            painter.fillRect(0, 0, width(), height(), QColor(0, 0, 0, 128));
+            painter.fillRect(0, 0, width(), height(), QColor(0, 0, 0, 200));
             break;
         }
     }
@@ -154,14 +156,18 @@ void DrawDevice::update()
         std::map<string, string> choices = engine->getDialogChoices();
         string text = engine->getDialogText();
         dialog_list.clear();
-//        dialog_list.setColumnText(0, QString::fromUtf8(text.c_str()));
+        dialog_text.setText("<font color=#FFFFFF>" + QString::fromUtf8(text.c_str()) + "</font>");
         for (std::map<string, string>::iterator i = choices.begin();
              i != choices.end(); ++i)
             dialog_list.addItem(QString::fromUtf8(i->first.c_str()));
         dialog_list.show();
+        dialog_text.show();
     }
     else
+    {
+        dialog_text.hide();
         dialog_list.hide();
+    }
 
     QWidget::update();
 }

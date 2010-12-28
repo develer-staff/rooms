@@ -30,6 +30,7 @@ class DrawDevice: public QWidget
         std::map <string, QPixmap *> images;
         string item_text;
         QListWidget dialog_list;
+        QLabel dialog_text;
     public:
         DrawDevice(Engine *eng, QWidget *parent=0);
         ~DrawDevice();
