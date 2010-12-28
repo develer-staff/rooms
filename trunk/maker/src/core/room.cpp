@@ -9,10 +9,6 @@ Room::Room(QString const& name, QObject *parent) :
     area_count = 0;
 }
 
-Room::~Room()
-{
-}
-
 void Room::addArea(const QRect &rect)
 {
     QString name;
