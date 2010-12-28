@@ -9,7 +9,7 @@ Room::Room(QString const& name, QObject *parent) :
     area_count = 0;
 }
 
-void Room::addArea(const QRect &rect)
+Area *Room::addArea(const QRect &rect)
 {
     QString name;
 
@@ -20,7 +20,10 @@ void Room::addArea(const QRect &rect)
     }
     while (areaExists(name));
 
-    _areas.append(new Area(name, rect));
+    Area *area = new Area(name, rect);
+    _areas.append(area);
+
+    return area;
 }
 
 void Room::setBackground(const QPixmap &background)
