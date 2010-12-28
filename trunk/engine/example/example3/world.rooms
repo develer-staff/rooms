@@ -14,7 +14,7 @@
 
   <dialogs>
     <dialog id="dialog_locandiera" start="0">
-      <step id="0" text="Non ti darò mai la mia chiave!">
+      <step id="0" text="Cosa vuoi da me?">
         <requirements />
         <actions_if />
         <link id="1" text="Forse hai qualcosa che mi serve..." />
