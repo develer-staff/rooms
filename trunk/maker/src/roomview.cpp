@@ -2,10 +2,9 @@
 #include "arearect.h"
 #include <QMouseEvent>
 
-RoomView::RoomView(World *world, QWidget *parent) :
+RoomView::RoomView(QWidget *parent) :
     QGraphicsView(parent)
 {
-    setWorld(world);
     active_room = 0;
 
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

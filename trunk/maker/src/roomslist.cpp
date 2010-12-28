@@ -1,11 +1,9 @@
 #include "roomslist.h"
 #include <QMenu>
 
-RoomsList::RoomsList(World *world, QWidget *parent) :
+RoomsList::RoomsList(QWidget *parent) :
     QListView(parent)
 {
-    setWorld(world);
-
     setFixedWidth(200);
     setContextMenuPolicy(Qt::CustomContextMenu);
 

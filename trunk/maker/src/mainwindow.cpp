@@ -9,9 +9,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    rooms_list = new RoomsList(world);
-    room_view = new RoomView(world);
-    settings = new SettingsWidget(world);
+    rooms_list = new RoomsList;
+    room_view = new RoomView;
+    settings = new SettingsWidget;
 
     ui->splitter->addWidget(rooms_list);
     widget = new QWidget;

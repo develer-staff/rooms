@@ -1,10 +1,9 @@
 #include "settingswidget.h"
 
-SettingsWidget::SettingsWidget(World *world, QWidget *parent) :
+SettingsWidget::SettingsWidget(QWidget *parent) :
     QWidget(parent)
 {
     setupUi();
-    setWorld(world);
 
     setFixedWidth(250);
 
