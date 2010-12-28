@@ -15,14 +15,20 @@
   <dialogs>
     <dialog id="dialog_locandiera" start="0">
       <step id="0" text="Non ti darò mai la mia chiave!">
+        <requirements />
+        <actions_if />
+        <link id="1" text="Forse hai qualcosa che mi serve..." />
+        <link id="-1" text="Addio bella pulzella!" />
+      </step>
+      <step id="1" text="Non ti darò mai la mia chiave!">
         <requirements>
             <item_req id="Chiave Locanda" value="!NOWHERE" />
         </requirements>
         <actions_if>
         </actions_if>
-        <link id="1" text="Dammi la chiave, bella locandiera!" />
+        <link id="2" text="Dammi la chiave, bella locandiera!" />
       </step>
-      <step id="1" text="Sei così gentile che ti darò subito la mia chiave!">
+      <step id="2" text="Sei così gentile che ti darò subito la mia chiave!">
         <requirements>
         </requirements>
         <actions_if>
@@ -80,7 +86,7 @@
   </rooms>
 
   <items>
-    <item id="Locandiera" room="Locanda" x="10" y="200" width="200" height="270" image="./data/locandiera.png">
+    <item id="Locandiera" room="Locanda" x="400" y="300" width="200" height="270" image="./data/locandiera.png">
         <do_event value="start_dialog_locandiera" />
     </item>
     <item id="Chiave Locanda" room="!NOWHERE" x="10" y="500" width="50" height="50" image="./data/chiave.png">
