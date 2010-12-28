@@ -16,6 +16,12 @@ private slots:
     void addRoom();
     void showContextMenu(const QPoint &point);
 
+signals:
+    void selected(QModelIndex index);
+
+protected:
+    void selectionChanged(const QItemSelection &new_selected, const QItemSelection &old_selected);
+
 private:
     World *_world;
 

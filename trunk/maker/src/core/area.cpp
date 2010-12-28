@@ -26,3 +26,15 @@ void Area::setName(const QString &name)
 {
     _name = name;
 }
+
+Action *Area::addAction()
+{
+    Action *action = new Action;
+    _actions.append(action);
+    return action;
+}
+
+QList<Action *> Area::actions() const
+{
+    return _actions;
+}

@@ -2,7 +2,6 @@
 #define ROOM_H
 
 #include <QObject>
-#include <QVector>
 #include <QRect>
 #include <QPixmap>
 #include "area.h"

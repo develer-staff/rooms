@@ -32,6 +32,10 @@ void RoomsList::addRoom()
 
     const QModelIndex index = model()->index(_world->rooms()->count()-1, 0);
     setCurrentIndex(index);
-    emit clicked(index);
+}
 
+void RoomsList::selectionChanged(const QItemSelection &new_selected, const QItemSelection &old_selected)
+{
+    Q_UNUSED(old_selected);
+    emit selected(new_selected.indexes().first());
 }

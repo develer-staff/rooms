@@ -4,7 +4,6 @@
 #include <QGraphicsView>
 #include <QMenu>
 #include <QFileDialog>
-#include <QVector>
 #include "core/world.h"
 
 class RoomView : public QGraphicsView

@@ -2,8 +2,6 @@
 #define WORLD_H
 
 #include <QObject>
-#include <QVector>
-#include "room.h"
 #include "item.h"
 #include "roomsmodel.h"
 

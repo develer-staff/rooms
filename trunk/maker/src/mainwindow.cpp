@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -27,19 +26,22 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->splitter->addWidget(widget);
     ui->splitter->addWidget(settings);
 
+    ui->centralWidget->setDisabled(true);
+
     connect(room_view, SIGNAL(roomChanged(Room*)), room_view, SIGNAL(selected(Room*)));
     connect(room_view, SIGNAL(selected(Room*)), settings, SLOT(updateRoomSettings(Room*)));
     connect(room_view, SIGNAL(selected(Area*)), settings, SLOT(updateAreaSettings(Area*)));
     connect(ui->action_Save, SIGNAL(triggered()), this, SLOT(saveProject()));
     connect(ui->action_Open, SIGNAL(triggered()), this, SLOT(openProject()));
     connect(ui->action_New, SIGNAL(triggered()), wizard, SLOT(show()));
+    connect(ui->action_Quit, SIGNAL(triggered()), this, SLOT(close()));
 
-    connect(rooms_list, SIGNAL(clicked(QModelIndex)),
+    connect(rooms_list, SIGNAL(selected(QModelIndex)),
             room_view, SLOT(changeActiveRoom(QModelIndex)));
 
     connect(wizard, SIGNAL(accepted()), this, SLOT(newProject()));
 
-    resizeRoomView();
+    adjustSize();
 }
 
 MainWindow::~MainWindow()
@@ -48,22 +50,14 @@ MainWindow::~MainWindow()
     delete wizard;
 }
 
-void MainWindow::resizeRoomView()
-{
-    room_view->setFixedSize(wizard->worldSize());
-    world->setSize(wizard->worldSize());
-    adjustSize();
-}
-
 void MainWindow::saveProject()
 {
-    QString project_filename = QFileDialog::getSaveFileName(this, "Save project", QDir::currentPath());
+    QString project_filename = QFileDialog::getSaveFileName(this, "Save project", QDir::homePath());
     QFile file(project_filename);
     if (!file.open(QIODevice::WriteOnly))
         return;
 
     file.write(createXml().toAscii());
-
     file.close();
 }
 
@@ -71,7 +65,7 @@ void MainWindow::openProject()
 {
     QDomDocument doc("RoomsProjectFile");
     QString project_filename = QFileDialog::getOpenFileName(this, "Open project",
-                                                            QDir::currentPath(),
+                                                            QDir::homePath(),
                                                             "Rooms project (*.rooms)");
     QFile file(project_filename);
     if (!file.open(QIODevice::ReadOnly))
@@ -87,6 +81,8 @@ void MainWindow::openProject()
     rooms_list->setWorld(world);
     room_view->setWorld(world);
     settings->setWorld(world);
+    adjustSize();
+    ui->centralWidget->setEnabled(true);
 }
 
 void MainWindow::newProject()
@@ -94,7 +90,8 @@ void MainWindow::newProject()
     rooms_list->setWorld(world);
     room_view->setWorld(world);
     settings->setWorld(world);
-    resizeRoomView();
+    adjustSize();
+    ui->centralWidget->setEnabled(true);
 }
 
 QString MainWindow::createXml() const
@@ -165,7 +162,6 @@ World *MainWindow::createWorld(const QDomDocument &doc)
     QDomElement ximg = ximages.firstChildElement();
     while (!ximg.isNull())
     {
-        qDebug() << ximg.attribute("file");
         ximg = ximg.nextSiblingElement();
     }
     //</images>

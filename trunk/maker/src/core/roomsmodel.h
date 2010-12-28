@@ -2,10 +2,7 @@
 #define ROOMSMODEL_H
 
 #include <QAbstractListModel>
-
-
-class Room;
-
+#include "room.h"
 
 class RoomsModel : public QAbstractListModel
 {
