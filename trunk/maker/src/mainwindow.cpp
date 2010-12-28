@@ -87,6 +87,7 @@ void MainWindow::openProject()
 
 void MainWindow::newProject()
 {
+    world = new World(wizard->worldName(), wizard->worldSize());
     rooms_list->setWorld(world);
     room_view->setWorld(world);
     settings->setWorld(world);
