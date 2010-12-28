@@ -14,6 +14,7 @@ class World : public QObject
 
 public:
     World(const QString &name, const QSize &size, QObject *parent = 0);
+    ~World();
 
     void setSize(const QSize &size);
     QSize size() const;

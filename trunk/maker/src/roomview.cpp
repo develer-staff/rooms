@@ -2,16 +2,17 @@
 #include "arearect.h"
 #include <QMouseEvent>
 
-RoomView::RoomView(World *world, QWidget *parent) :
+RoomView::RoomView(QWidget *parent) :
     QGraphicsView(parent)
 {
-    setWorld(world);
     active_room = 0;
 
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setContextMenuPolicy(Qt::CustomContextMenu);
     setRenderHint(QPainter::Antialiasing);
+
+    setFixedSize(600, 500);
 
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
             this, SLOT(showContextMenu(const QPoint &)));
@@ -21,6 +22,7 @@ void RoomView::setWorld(World *world)
 {
     setDisabled(true);
     _world = world;
+    setFixedSize(_world->size());
 }
 
 void RoomView::addArea()

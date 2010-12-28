@@ -5,13 +5,13 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     wizard(new Wizard(this)),
-    world(new World(wizard->worldName(), wizard->worldSize()))
+    world(NULL)
 {
     ui->setupUi(this);
 
-    rooms_list = new RoomsList(world);
-    room_view = new RoomView(world);
-    settings = new SettingsWidget(world);
+    rooms_list = new RoomsList;
+    room_view = new RoomView;
+    settings = new SettingsWidget;
 
     ui->splitter->addWidget(rooms_list);
     widget = new QWidget;
@@ -46,19 +46,40 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    delete widget;
+    delete rooms_list;
+    delete settings;
     delete ui;
     delete wizard;
+    delete world;
 }
 
 void MainWindow::saveProject()
 {
     QString project_filename = QFileDialog::getSaveFileName(this, "Save project", QDir::homePath());
+    QDir::setCurrent(project_filename.section("/", 0, -2));
     QFile file(project_filename);
     if (!file.open(QIODevice::WriteOnly))
         return;
 
     file.write(createXml().toAscii());
     file.close();
+
+    QDir data_dir(QDir::currentPath() + "/" + world->name() + "_data");
+    data_dir.mkpath(data_dir.absolutePath());
+
+    QPixmap void_bg(world->size());
+    void_bg.fill();
+
+    for (int i = 0; i < world->rooms()->count(); i++)
+    {
+        QString bg_filename(data_dir.absolutePath() + "/" +
+                            world->rooms()->at(i)->name() + "_bg.png");
+        if (world->rooms()->at(i)->background().isNull())
+            void_bg.save(bg_filename);
+        else
+            world->rooms()->at(i)->background().save(bg_filename);
+    }
 }
 
 void MainWindow::openProject()
@@ -66,7 +87,8 @@ void MainWindow::openProject()
     QDomDocument doc("RoomsProjectFile");
     QString project_filename = QFileDialog::getOpenFileName(this, "Open project",
                                                             QDir::homePath(),
-                                                            "Rooms project (*.rooms)");
+                                                            "Rooms project (*.rooms);;All files (*)");
+    QDir::setCurrent(project_filename.section("/", 0, -2));
     QFile file(project_filename);
     if (!file.open(QIODevice::ReadOnly))
         return;
@@ -77,6 +99,8 @@ void MainWindow::openProject()
     }
     file.close();
 
+    if (world != NULL)
+        delete world;
     world = createWorld(doc);
     rooms_list->setWorld(world);
     room_view->setWorld(world);
@@ -87,6 +111,9 @@ void MainWindow::openProject()
 
 void MainWindow::newProject()
 {
+    if (world != NULL)
+        delete world;
+    world = new World(wizard->worldName(), wizard->worldSize());
     rooms_list->setWorld(world);
     room_view->setWorld(world);
     settings->setWorld(world);
@@ -126,7 +153,8 @@ QString MainWindow::createXml() const
     {
         QDomElement xroom = doc.createElement("room");
         xroom.setAttribute("id", world->rooms()->at(i)->name());
-        xroom.setAttribute("bg", world->rooms()->at(i)->name());
+        xroom.setAttribute("bg", "./" + world->name() + "_data/" +
+                           world->rooms()->at(i)->name() + "_bg.png");
         QDomElement xareas = doc.createElement("areas");
         for (int j = 0; j < world->rooms()->at(i)->areas().count(); j++)
         {
@@ -136,6 +164,11 @@ QString MainWindow::createXml() const
             xarea.setAttribute("y", world->rooms()->at(i)->areas().at(j)->rect().y());
             xarea.setAttribute("width", world->rooms()->at(i)->areas().at(j)->rect().width());
             xarea.setAttribute("height", world->rooms()->at(i)->areas().at(j)->rect().height());
+            QDomElement xdo_event = doc.createElement("do_event");
+            xdo_event.setAttribute("value", world->rooms()->at(i)->name() +
+                                         world->rooms()->at(i)->areas().at(j)->name() +
+                                         "_event");
+            xarea.appendChild(xdo_event);
             xareas.appendChild(xarea);
         }
         xroom.appendChild(xareas);
@@ -143,6 +176,33 @@ QString MainWindow::createXml() const
     }
     xworld.appendChild(xrooms);
     //</rooms>
+
+    //<events>
+    QDomElement xevents = doc.createElement("events");
+    for (int i = 0; i < world->rooms()->count(); i++)
+    {
+        for (int j = 0; j < world->rooms()->at(i)->areas().count(); j++)
+        {
+            QDomElement xevent = doc.createElement("event");
+            xevent.setAttribute("id", world->rooms()->at(i)->name() +
+                                      world->rooms()->at(i)->areas().at(j)->name() +
+                                      "_event");
+            QDomElement xrequirements = doc.createElement("requirements");
+            xevent.appendChild(xrequirements);
+            QDomElement xactions_if = doc.createElement("actions_if");
+            for (int k = 0; k < world->rooms()->at(i)->areas().at(j)->actions().count(); k++)
+            {
+                QDomElement xaction = doc.createElement("action");
+                xaction.setAttribute("id", world->rooms()->at(i)->areas().at(j)->actions().at(k)->typeToString());
+                xaction.setAttribute("value", world->rooms()->at(i)->areas().at(j)->actions().at(k)->room());
+                xactions_if.appendChild(xaction);
+            }
+            xevent.appendChild(xactions_if);
+            xevents.appendChild(xevent);
+        }
+    }
+    xworld.appendChild(xevents);
+    //</events>
 
     xml = doc.toString();
     return xml;
@@ -166,6 +226,29 @@ World *MainWindow::createWorld(const QDomDocument &doc)
     }
     //</images>
 
+    //<events>
+    QHash<QString, QList<Action*> > events;
+    QDomNode xevents = xworld.elementsByTagName("events").at(0);
+    QDomElement xevent = xevents.firstChildElement();
+    while (!xevent.isNull())
+    {
+        QList<Action*> actions_if;
+        QDomNode xactions_if = xevent.elementsByTagName("actions_if").at(0);
+        QDomElement xaction = xactions_if.firstChildElement();
+        while (!xaction.isNull())
+        {
+            Action *action = new Action();
+            action->setType(xaction.attribute("id"));
+            QDomElement xparam = xaction.firstChildElement();
+            action->setRoom(xparam.attribute("value"));
+            actions_if.append(action);
+            xaction = xaction.nextSiblingElement();
+        }
+        events.insert(xevent.attribute("id"), actions_if);
+        xevent = xevent.nextSiblingElement();
+    }
+    //</events>
+
     //<rooms>
     QDomNode xrooms = xworld.elementsByTagName("rooms").at(0);
     QDomElement xroom = xrooms.firstChildElement();
@@ -174,8 +257,7 @@ World *MainWindow::createWorld(const QDomDocument &doc)
         rooms->appendRoom();
         Room *room = rooms->at(rooms->count()-1);
         QString id(xroom.attribute("id"));
-        QString bg_file(xroom.attribute("bg"));
-        QPixmap bg(bg_file);
+        QPixmap bg(xroom.attribute("bg"));
         bg = bg.scaled(world->size());
         room->setName(id);
         room->setBackground(bg);
@@ -189,8 +271,10 @@ World *MainWindow::createWorld(const QDomDocument &doc)
                        xarea.attribute("y").toInt(),
                        xarea.attribute("width").toInt(),
                        xarea.attribute("height").toInt());
-            room->addArea(rect);
-            room->areas().at(room->areas().count()-1)->setName(id);
+            Area *area = room->addArea(rect);
+            area->setName(id);
+            QDomElement xdo_event = xarea.firstChildElement();
+            area->setActions(events[xdo_event.attribute("value")]);
             xarea = xarea.nextSiblingElement();
         }
         //</areas>

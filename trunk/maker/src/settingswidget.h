@@ -16,7 +16,7 @@ class SettingsWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit SettingsWidget(World *world, QWidget *parent = 0);
+    explicit SettingsWidget(QWidget *parent = 0);
     void setWorld(World *world);
 
 public slots:

@@ -38,3 +38,8 @@ QList<Action *> Area::actions() const
 {
     return _actions;
 }
+
+void Area::setActions(const QList<Action*> &actions)
+{
+    _actions = actions;
+}
