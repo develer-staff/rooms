@@ -23,7 +23,9 @@ HEADERS += ../src/action.h \
            ../src/xmlutils.h \
            ../lib/tinyxml/tinystr.h \
            ../lib/tinyxml/tinyxml.h
+
 SOURCES += main.cpp \
+           enginetests.cpp \
            ../src/action.cpp \
            ../src/area.cpp \
            ../src/engine.cpp \

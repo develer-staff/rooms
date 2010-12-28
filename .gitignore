@@ -2,4 +2,6 @@
 *dia~
 *.o
 moc_*
+*.exe
+Makefile
 

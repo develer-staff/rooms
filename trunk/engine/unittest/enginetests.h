@@ -3,6 +3,7 @@
 
 #include "../src/engine.h"
 
+#include <string>
 #include <cppunit/TestAssert.h> //CPPUNIT_ASSERT
 #include <cppunit/TestFixture.h>
 #include <cppunit/TestCaller.h>
@@ -18,46 +19,37 @@ class MockEngine : public Engine
         using Engine::apiVarSet;
 };
 
+class WorldTests : public CppUnit::TestFixture
+{
+private:
+    MockEngine *mock;
+    RoomsManager *room_man;
+    EventsManager *event_man;
+public:
+    void setUp();
+    void tearDown();
+    void testLoadWorld();
+
+    static CppUnit::Test *suite()
+    {
+        CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "WorldTests" );
+        suiteOfTests->addTest(new CppUnit::TestCaller<WorldTests>("testLoadWorld",
+                                       &WorldTests::testLoadWorld));
+        return suiteOfTests;
+    }
+};
+
 class ApiTests : public CppUnit::TestFixture
 {
 private:
     MockEngine *mock;
     RoomsManager *room_man;
 public:
-    void setUp()
-    {
-        mock = new MockEngine;
-        room_man = mock->getRoomsManager();
-        room_man->addRoom("room1", "");
-        room_man->addRoom("room2", "");
-    }
-
-    void testDown()
-    {
-        delete mock;
-    }
-
-    void testRoomGoto()
-    {
-        mock->apiRoomGoto("room1");
-        CPPUNIT_ASSERT(room_man->currentRoom()->id == "room1");
-    }
-
-    void testVarSet()
-    {
-        mock->apiVarSet("var1", 10);
-        CPPUNIT_ASSERT(mock->getEventsManager()->var("var1") == 10);
-    }
-
-    void testItemMove()
-    {
-        Item *item = room_man->addItem("item1", "room1",
-                                           10, 10, 10, 10, "", "");
-        CPPUNIT_ASSERT(room_man->room("room1")->item("item1") == item);
-        mock->apiItemMove("item1", "room2");
-        CPPUNIT_ASSERT(room_man->room("room2")->item("item1") == item);
-        CPPUNIT_ASSERT(room_man->room("room1")->item("item1") == 0);
-    }
+    void setUp();
+    void tearDown();
+    void testRoomGoto();
+    void testVarSet();
+    void testItemMove();
 
     static CppUnit::Test *suite()
     {

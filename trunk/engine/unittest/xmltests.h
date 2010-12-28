@@ -15,7 +15,7 @@ public:
     {
     }
 
-    void testDown()
+    void tearDown()
     {
     }
 
@@ -140,7 +140,6 @@ public:
                    "</world>\n", 0, TIXML_ENCODING_UTF8);
         CPPUNIT_ASSERT(!xml::xmlCheckDoc(&doc, Engine::VERSION));
     }
-
 
     static CppUnit::Test *suite()
     {

@@ -3,7 +3,7 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET =
+TARGET = engine.exe
 DEPENDPATH += . frontend src lib/tinyxml
 INCLUDEPATH += . frontend src lib/tinyxml
 OBJECTS_DIR = ./build
