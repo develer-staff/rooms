@@ -91,7 +91,7 @@ void MainWindow::openProject()
     QDomDocument doc("RoomsProjectFile");
     QString project_filename = QFileDialog::getOpenFileName(this, "Open project",
                                                             QDir::homePath(),
-                                                            "Rooms project (*.rooms)");
+                                                            "Rooms project (*.rooms);;All files (*)");
     QFile file(project_filename);
     if (!file.open(QIODevice::ReadOnly))
         return;
