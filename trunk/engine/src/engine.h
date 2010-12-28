@@ -6,6 +6,7 @@
 #include "room.h"
 #include "item.h"
 #include "eventsmanager.h"
+#include "dialog.h"
 #include "event.h"
 #include "action.h"
 #include "area.h"
@@ -21,6 +22,7 @@ using std::string;
 class Log;
 class RoomsManager;
 class EventsManager;
+class Dialog;
 class Event;
 class Action;
 class Area;
@@ -49,11 +51,14 @@ class Engine
         RoomsManager *rooms_mgr;
         EventsManager *events_mgr;
         std::vector<string> images;
+        std::map<string, Dialog *> dialogs;
+        Dialog *dialog;
     public:
         Engine();
         ~Engine();
     public:
         void click (const int x, const int y);
+        void clickDialog(const string link);
         bool loadWorldFromStr(const string content);
         bool loadWorldFromFile(const string filename);
         void loadGame(const string filename);
@@ -63,18 +68,23 @@ class Engine
         void setState(const Engine::State state_name);
         std::vector<string> getImgNames() const;
         std::vector<Item *> getInventory() const;
+        string getDialogText();
+        std::map<string, string> getDialogChoices();
         Log *getLogger();
     private:
         void execActions(const std::vector <Action *> actions);
         void createImgsFromXml(XmlVect imgs);
+        void fillEventFromXml(TiXmlElement *elem, Event *event);
         void createEventsFromXml(XmlVect events);
         void createRoomsFromXml(XmlVect rooms);
         void createItemsFromXml(XmlVect items);
         void createVarsFromXml(XmlVect vars);
+        void createDialogsFromXml(XmlVect diags);
         //RISC API
         void apiRoomGoto(const string id);
         void apiVarSet(const string id, const int value);
         void apiItemMove(const string id, const string dest);
+        void apiDialogStart(const string id);
 
         friend class MockEngine;
 };

@@ -23,6 +23,13 @@ Engine::Engine()
 Engine::~Engine()
 {
     logger.write("QUITTING ENGINE", Log::ERROR);
+    for (std::map<string, Dialog *>::iterator i = dialogs.begin();
+         i != dialogs.end(); ++i)
+    {
+        logger.write("Garbage collector: " + i->second->id, Log::NOTE);
+        delete i->second;
+    }
+    dialogs.clear();
     delete rooms_mgr;
     delete events_mgr;
 }
@@ -35,22 +42,26 @@ Log *Engine::getLogger()
 void Engine::click (const int x, const int y)
 {
     logger.write("Mouse click received", Log::NOTE);
-    switch (_state)
+    Event *event = events_mgr->event(rooms_mgr->eventAt(x, y));
+    if (event == 0)
+        return;
+    logger.write("Event: " + event->id, Log::NOTE);
+    if (rooms_mgr->checkItemPlace(event->itemReqs()) &&
+        events_mgr->checkVarReqs(event->varReqs()))
+        execActions(events_mgr->actionsForEvent(event->id));
+    else
+        logger.write("Requirements are not satisfied", Log::NOTE);
+}
+
+void Engine::clickDialog(const string link)
+{
+    logger.write("Dialog choice received", Log::NOTE);
+    if (link == "-1")
     {
-        case GAME:
-        {
-            Event *event = events_mgr->event(rooms_mgr->eventAt(x, y));
-            if (event == 0)
-                break;
-            logger.write("Event: " + event->id, Log::NOTE);
-            if (rooms_mgr->checkItemPlace(event->itemReqs()) &&
-                events_mgr->checkVarReqs(event->varReqs()))
-                execActions(events_mgr->actionsForEvent(event->id));
-            else
-                logger.write("Requirements are not satisfied", Log::NOTE);
-            break;
-        }
+        setState(GAME);
+        return;
     }
+    execActions(dialog->jump(link));
 }
 
 Engine::State Engine::state() const
@@ -108,12 +119,15 @@ bool Engine::loadWorldFromStr(const string content)
             xml::xmlGetAllChilds(root->FirstChildElement("items"), "item");
         XmlVect vars =
             xml::xmlGetAllChilds(root->FirstChildElement("vars"), "var");
+        XmlVect diags =
+            xml::xmlGetAllChilds(root->FirstChildElement("dialogs"), "dialog");
         //Populating model
         createImgsFromXml(images);
         createEventsFromXml(events);
         createRoomsFromXml(rooms);
         createItemsFromXml(items);
         createVarsFromXml(vars);
+        createDialogsFromXml(diags);
         //TODO: load rest of world file
         string start_room = root->Attribute("start");
         apiRoomGoto(start_room);
@@ -151,29 +165,31 @@ void Engine::createVarsFromXml(XmlVect vars)
         events_mgr->setVar((*i)->Attribute("id"), xml::xmlReadInt((*i), "value"));
 }
 
+void Engine::fillEventFromXml(TiXmlElement *elem, Event *event)
+{
+    //create items parameters
+    XmlVect ireqs = xml::xmlGetAllChilds(elem->FirstChildElement("requirements"), "item_req");
+    for (XmlVect::iterator j = ireqs.begin(); j != ireqs.end(); ++j)
+        event->addItemReq((*j)->Attribute("id"), (*j)->Attribute("value"));
+    //create var parameters
+    XmlVect vreqs = xml::xmlGetAllChilds(elem->FirstChildElement("requirements"), "var_req");
+    for (XmlVect::iterator j = vreqs.begin(); j != vreqs.end(); ++j)
+        event->addVarReq((*j)->Attribute("id"), xml::xmlReadInt((*j), "value"));
+    //create actions
+    XmlVect actions = xml::xmlGetAllChilds(elem->FirstChildElement("actions_if"), "action");
+    for (XmlVect::iterator j = actions.begin(); j != actions.end(); ++j)
+    {
+        Action *act = event->addAction((*j)->Attribute("id"));
+        XmlVect params = xml::xmlGetAllChilds(*j, "param");
+        for (XmlVect::iterator z = params.begin(); z != params.end(); ++z)
+            act->pushParam((*z)->Attribute("value"));
+    }
+}
+
 void Engine::createEventsFromXml(XmlVect events)
 {
     for (XmlVect::iterator i = events.begin(); i != events.end(); ++i)
-    {
-        Event *event = events_mgr->addEvent((*i)->Attribute("id"));
-        //create items parameters
-        XmlVect ireqs = xml::xmlGetAllChilds((*i)->FirstChildElement("requirements"), "item_req");
-        for (XmlVect::iterator j = ireqs.begin(); j != ireqs.end(); ++j)
-            event->addItemReq((*j)->Attribute("id"), (*j)->Attribute("value"));
-        //create var parameters
-        XmlVect vreqs = xml::xmlGetAllChilds((*i)->FirstChildElement("requirements"), "var_req");
-        for (XmlVect::iterator j = vreqs.begin(); j != vreqs.end(); ++j)
-            event->addVarReq((*j)->Attribute("id"), xml::xmlReadInt((*j), "value"));
-        //create actions
-        XmlVect actions = xml::xmlGetAllChilds((*i)->FirstChildElement("actions_if"), "action");
-        for (XmlVect::iterator j = actions.begin(); j != actions.end(); ++j)
-        {
-            Action *act = event->addAction((*j)->Attribute("id"));
-            XmlVect params = xml::xmlGetAllChilds(*j, "param");
-            for (XmlVect::iterator z = params.begin(); z != params.end(); ++z)
-                act->pushParam((*z)->Attribute("value"));
-        }
-    }
+        fillEventFromXml(*i, events_mgr->addEvent((*i)->Attribute("id")));
 }
 
 void Engine::createRoomsFromXml(XmlVect rooms)
@@ -210,6 +226,21 @@ void Engine::createItemsFromXml(XmlVect items)
     }
 }
 
+void Engine::createDialogsFromXml(XmlVect diags)
+{
+    for (XmlVect::iterator i = diags.begin(); i != diags.end(); ++i)
+    {
+        Dialog *d = new Dialog((*i)->Attribute("id"), (*i)->Attribute("start"));
+        dialogs[d->id] = d;
+        XmlVect steps = xml::xmlGetAllChilds((*i), "step");
+        for (XmlVect::iterator j = steps.begin(); j != steps.end(); ++j)
+        {
+            DialogStep *step = d->addStep((*j)->Attribute("id"), (*j)->Attribute("text"));
+            fillEventFromXml(*j, step->event);
+        }
+    }
+}
+
 RoomsManager *Engine::getRoomsManager() const
 {
     return rooms_mgr;
@@ -218,6 +249,27 @@ RoomsManager *Engine::getRoomsManager() const
 EventsManager *Engine::getEventsManager() const
 {
     return events_mgr;
+}
+
+string Engine::getDialogText()
+{
+    return dialog->text();
+}
+std::map<string, string> Engine::getDialogChoices()
+{
+    std::map<string, string> choices;
+    std::vector< std::pair<string, string> > links = dialog->links();
+    for (std::vector< std::pair<string, string> >::iterator i = links.begin();
+         i != links.end(); ++i)
+    {
+        DialogStep *step = dialog->step(i->first);
+        if (step == 0) //its an end-of-dialog link
+            choices[i->first] = i->second;
+        else if (rooms_mgr->checkItemPlace(step->event->itemReqs()) &&
+            events_mgr->checkVarReqs(step->event->varReqs()))
+            choices[i->first] = i->second;
+    }
+    return choices;
 }
 
 void Engine::execActions(std::vector <Action *> actions)
@@ -241,6 +293,10 @@ void Engine::execActions(std::vector <Action *> actions)
             string item_dest = act.popStrParam();
             string item_id = act.popStrParam();
             apiItemMove(item_id, item_dest);
+        } else if (act.id == "DIALOG_START")
+        {
+            string diag_id = act.popStrParam();
+            apiDialogStart(diag_id);
         }
     }
 }
@@ -263,4 +319,12 @@ void Engine::apiItemMove(const string id, const string dest)
     rooms_mgr->moveItem(id, dest);
 }
 
+void Engine::apiDialogStart(const string id)
+{
+    logger.write("DIALOG_START: " + id, Log::NOTE);
+    setState(DIALOG);
+    dialog = dialogs[id];
+    dialog->reset();
+    execActions(dialog->actions());
+}
 
