@@ -12,6 +12,8 @@ RoomView::RoomView(QWidget *parent) :
     setContextMenuPolicy(Qt::CustomContextMenu);
     setRenderHint(QPainter::Antialiasing);
 
+    setFixedSize(600, 500);
+
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
             this, SLOT(showContextMenu(const QPoint &)));
 }
