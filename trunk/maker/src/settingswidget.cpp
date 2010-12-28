@@ -93,7 +93,7 @@ void SettingsWidget::setAreaName()
 void SettingsWidget::newAction()
 {
     Action *action = active_area->addAction();
-    action->setType((Action::ActionType)action_combobox->currentIndex());
+    action->setType(action_combobox->currentIndex());
     action->setRoom(room_combobox->currentText());
     actions_list->addItem(action->toHumanReadable());
 }
