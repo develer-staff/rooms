@@ -141,7 +141,8 @@ QString MainWindow::createXml() const
     {
         QDomElement xroom = doc.createElement("room");
         xroom.setAttribute("id", world->rooms()->at(i)->name());
-        xroom.setAttribute("bg", world->rooms()->at(i)->name());
+        xroom.setAttribute("bg", "./" + world->name() + "_data/" +
+                           world->rooms()->at(i)->name() + "_bg.png");
         QDomElement xareas = doc.createElement("areas");
         for (int j = 0; j < world->rooms()->at(i)->areas().count(); j++)
         {
