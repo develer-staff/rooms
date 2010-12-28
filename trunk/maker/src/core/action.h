@@ -2,6 +2,7 @@
 #define ACTION_H
 
 #include <QString>
+#include <QHash>
 
 class Action
 {
@@ -24,6 +25,7 @@ public:
 private:
     ActionType _type;
     QString _room;
+    QHash<ActionType, QString> actions_hr;
 };
 
 #endif // ACTION_H

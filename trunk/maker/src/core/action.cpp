@@ -4,6 +4,7 @@ Action::Action(ActionType type, QString room)
 {
     _type = type;
     _room = room;
+    actions_hr.insert(ChangeRoom, "Go to room");
 }
 
 void Action::setType(const int type)
@@ -28,5 +29,5 @@ QString Action::room() const
 
 QString Action::toHumanReadable() const
 {
-    return "Prova prova";
+    return actions_hr[_type] + " " + _room;
 }
