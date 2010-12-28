@@ -72,10 +72,17 @@ void MainWindow::saveProject()
     QDir data_dir(QDir::currentPath() + "/" + world->name() + "_data");
     data_dir.mkpath(data_dir.absolutePath());
 
+    QPixmap void_bg(world->size());
+    void_bg.fill();
+
     for (int i = 0; i < world->rooms()->count(); i++)
     {
-        world->rooms()->at(i)->background().save(data_dir.absolutePath() + "/" +
-                                                 world->rooms()->at(i)->name() + "_bg.png");
+        QString bg_filename(data_dir.absolutePath() + "/" +
+                            world->rooms()->at(i)->name() + "_bg.png");
+        if (world->rooms()->at(i)->background().isNull())
+            void_bg.save(bg_filename);
+        else
+            world->rooms()->at(i)->background().save(bg_filename);
     }
 }
 
