@@ -34,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->action_Save, SIGNAL(triggered()), this, SLOT(saveProject()));
     connect(ui->action_Open, SIGNAL(triggered()), this, SLOT(openProject()));
     connect(ui->action_New, SIGNAL(triggered()), wizard, SLOT(show()));
+    connect(ui->action_Quit, SIGNAL(triggered()), this, SLOT(close()));
 
     connect(rooms_list, SIGNAL(selected(QModelIndex)),
             room_view, SLOT(changeActiveRoom(QModelIndex)));
