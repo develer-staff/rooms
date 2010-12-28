@@ -147,9 +147,9 @@ void SettingsWidget::setupUi()
 
     area_settings_layout->addLayout(area_name_layout);
     area_settings_layout->addWidget(actions_label);
+    area_settings_layout->addWidget(actions_list);
     area_settings_layout->addLayout(action_comboboxes_layout);
     area_settings_layout->addLayout(new_action_layout);
-    area_settings_layout->addWidget(actions_list);
 
     area_settings->setLayout(area_settings_layout);
 
