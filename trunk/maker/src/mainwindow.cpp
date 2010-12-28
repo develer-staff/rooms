@@ -5,7 +5,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     wizard(new Wizard(this)),
-    world(new World(wizard->worldName(), wizard->worldSize()))
+    world(NULL)
 {
     ui->setupUi(this);
 
@@ -77,6 +77,8 @@ void MainWindow::openProject()
     }
     file.close();
 
+    if (world != NULL)
+        delete world;
     world = createWorld(doc);
     rooms_list->setWorld(world);
     room_view->setWorld(world);
@@ -87,6 +89,8 @@ void MainWindow::openProject()
 
 void MainWindow::newProject()
 {
+    if (world != NULL)
+        delete world;
     world = new World(wizard->worldName(), wizard->worldSize());
     rooms_list->setWorld(world);
     room_view->setWorld(world);

@@ -8,6 +8,11 @@ World::World(const QString &name, const QSize &size, QObject *parent) :
     _rooms = new RoomsModel(this);
 }
 
+World::~World()
+{
+    delete _rooms;
+}
+
 QString World::name() const
 {
     return world_name;
