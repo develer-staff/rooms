@@ -21,6 +21,7 @@ void RoomView::setWorld(World *world)
 {
     setDisabled(true);
     _world = world;
+    setFixedSize(_world->size());
 }
 
 void RoomView::addArea()
