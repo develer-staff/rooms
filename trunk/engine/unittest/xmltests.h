@@ -141,7 +141,6 @@ public:
         CPPUNIT_ASSERT(!xml::xmlCheckDoc(&doc, Engine::VERSION));
     }
 
-
     static CppUnit::Test *suite()
     {
         CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "XmlTests" );
