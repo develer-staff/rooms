@@ -17,7 +17,7 @@ public:
 
     QString room() const;
 
-    QString toString() const;
+    QString toHumanReadable() const;
 
 public slots:
     void setType(const int type);

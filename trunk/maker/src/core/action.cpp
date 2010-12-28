@@ -27,7 +27,7 @@ QString Action::room() const
     return _room;
 }
 
-QString Action::toString() const
+QString Action::toHumanReadable() const
 {
     return "Prova prova";
 }

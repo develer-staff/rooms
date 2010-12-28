@@ -42,7 +42,7 @@ void SettingsWidget::updateAreaSettings(Area *area)
     actions_list->clear();
     for (int i = 0; i < active_area->actions().count(); i++)
     {
-        actions_list->addItem(active_area->actions().at(i)->toString());
+        actions_list->addItem(active_area->actions().at(i)->toHumanReadable());
     }
 }
 
@@ -95,7 +95,7 @@ void SettingsWidget::newAction()
     Action *action = active_area->addAction();
     action->setType((Action::ActionType)action_combobox->currentIndex());
     action->setRoom(room_combobox->currentText());
-    actions_list->addItem(action->toString());
+    actions_list->addItem(action->toHumanReadable());
 }
 
 void SettingsWidget::setupUi()
