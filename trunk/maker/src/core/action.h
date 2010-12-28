@@ -14,6 +14,7 @@ public:
     Action(ActionType type = ChangeRoom, QString room = "");
 
     ActionType type() const;
+    QString typeToString() const;
 
     QString room() const;
 
@@ -26,6 +27,7 @@ private:
     ActionType _type;
     QString _room;
     QHash<ActionType, QString> actions_hr;
+    QHash<ActionType, QString> actions_str;
 };
 
 #endif // ACTION_H

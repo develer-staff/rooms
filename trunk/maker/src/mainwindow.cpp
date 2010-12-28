@@ -164,6 +164,11 @@ QString MainWindow::createXml() const
             xarea.setAttribute("y", world->rooms()->at(i)->areas().at(j)->rect().y());
             xarea.setAttribute("width", world->rooms()->at(i)->areas().at(j)->rect().width());
             xarea.setAttribute("height", world->rooms()->at(i)->areas().at(j)->rect().height());
+            QDomElement xdo_event = doc.createElement("do_event");
+            xdo_event.setAttribute("value", world->rooms()->at(i)->name() +
+                                         world->rooms()->at(i)->areas().at(j)->name() +
+                                         "_event");
+            xarea.appendChild(xdo_event);
             xareas.appendChild(xarea);
         }
         xroom.appendChild(xareas);
@@ -171,6 +176,33 @@ QString MainWindow::createXml() const
     }
     xworld.appendChild(xrooms);
     //</rooms>
+
+    //<events>
+    QDomElement xevents = doc.createElement("events");
+    for (int i = 0; i < world->rooms()->count(); i++)
+    {
+        for (int j = 0; j < world->rooms()->at(i)->areas().count(); j++)
+        {
+            QDomElement xevent = doc.createElement("event");
+            xevent.setAttribute("id", world->rooms()->at(i)->name() +
+                                      world->rooms()->at(i)->areas().at(j)->name() +
+                                      "_event");
+            QDomElement xrequirements = doc.createElement("requirements");
+            xevent.appendChild(xrequirements);
+            QDomElement xactions_if = doc.createElement("actions_if");
+            for (int k = 0; k < world->rooms()->at(i)->areas().at(j)->actions().count(); k++)
+            {
+                QDomElement xaction = doc.createElement("action");
+                xaction.setAttribute("id", world->rooms()->at(i)->areas().at(j)->actions().at(k)->typeToString());
+                xaction.setAttribute("value", world->rooms()->at(i)->areas().at(j)->actions().at(k)->room());
+                xactions_if.appendChild(xaction);
+            }
+            xevent.appendChild(xactions_if);
+            xevents.appendChild(xevent);
+        }
+    }
+    xworld.appendChild(xevents);
+    //</events>
 
     xml = doc.toString();
     return xml;
