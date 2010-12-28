@@ -20,6 +20,7 @@ public:
 
     Action *addAction();
     QList<Action *> actions() const;
+    void setActions(const QList<Action*> &actions);
 
 private:
     QList<Action *> _actions;

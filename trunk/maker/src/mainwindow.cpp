@@ -226,6 +226,29 @@ World *MainWindow::createWorld(const QDomDocument &doc)
     }
     //</images>
 
+    //<events>
+    QHash<QString, QList<Action*> > events;
+    QDomNode xevents = xworld.elementsByTagName("events").at(0);
+    QDomElement xevent = xevents.firstChildElement();
+    while (!xevent.isNull())
+    {
+        QList<Action*> actions_if;
+        QDomNode xactions_if = xevent.elementsByTagName("actions_if").at(0);
+        QDomElement xaction = xactions_if.firstChildElement();
+        while (!xaction.isNull())
+        {
+            Action *action = new Action();
+            action->setType(xaction.attribute("id"));
+            QDomElement xparam = xaction.firstChildElement();
+            action->setRoom(xparam.attribute("value"));
+            actions_if.append(action);
+            xaction = xaction.nextSiblingElement();
+        }
+        events.insert(xevent.attribute("id"), actions_if);
+        xevent = xevent.nextSiblingElement();
+    }
+    //</events>
+
     //<rooms>
     QDomNode xrooms = xworld.elementsByTagName("rooms").at(0);
     QDomElement xroom = xrooms.firstChildElement();
@@ -248,8 +271,10 @@ World *MainWindow::createWorld(const QDomDocument &doc)
                        xarea.attribute("y").toInt(),
                        xarea.attribute("width").toInt(),
                        xarea.attribute("height").toInt());
-            room->addArea(rect);
-            room->areas().at(room->areas().count()-1)->setName(id);
+            Area *area = room->addArea(rect);
+            area->setName(id);
+            QDomElement xdo_event = xarea.firstChildElement();
+            area->setActions(events[xdo_event.attribute("value")]);
             xarea = xarea.nextSiblingElement();
         }
         //</areas>

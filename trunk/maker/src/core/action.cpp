@@ -13,6 +13,11 @@ void Action::setType(const int type)
     _type = (ActionType)type;
 }
 
+void Action::setType(const QString &type)
+{
+    _type = actions_str.key(type);
+}
+
 Action::ActionType Action::type() const
 {
     return _type;

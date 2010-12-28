@@ -21,6 +21,7 @@ public:
     QString toHumanReadable() const;
 
     void setType(const int type);
+    void setType(const QString &type);
     void setRoom(const QString &room);
 
 private:
