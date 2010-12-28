@@ -23,7 +23,6 @@ public:
     ~MainWindow();
 
 public slots:
-    void resizeRoomView();
     void saveProject();
     void openProject();
     void newProject();

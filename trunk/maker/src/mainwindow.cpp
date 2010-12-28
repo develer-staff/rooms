@@ -40,20 +40,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(wizard, SIGNAL(accepted()), this, SLOT(newProject()));
 
-    resizeRoomView();
+    adjustSize();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
     delete wizard;
-}
-
-void MainWindow::resizeRoomView()
-{
-    room_view->setFixedSize(wizard->worldSize());
-    world->setSize(wizard->worldSize());
-    adjustSize();
 }
 
 void MainWindow::saveProject()
@@ -87,7 +80,7 @@ void MainWindow::openProject()
     rooms_list->setWorld(world);
     room_view->setWorld(world);
     settings->setWorld(world);
-    resizeRoomView();
+    adjustSize();
     ui->centralWidget->setEnabled(true);
 }
 
@@ -96,7 +89,7 @@ void MainWindow::newProject()
     rooms_list->setWorld(world);
     room_view->setWorld(world);
     settings->setWorld(world);
-    resizeRoomView();
+    adjustSize();
     ui->centralWidget->setEnabled(true);
 }
 
