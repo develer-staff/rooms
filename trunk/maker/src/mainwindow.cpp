@@ -190,8 +190,7 @@ World *MainWindow::createWorld(const QDomDocument &doc)
         rooms->appendRoom();
         Room *room = rooms->at(rooms->count()-1);
         QString id(xroom.attribute("id"));
-        QString bg_file(xroom.attribute("bg"));
-        QPixmap bg(bg_file);
+        QPixmap bg(xroom.attribute("bg"));
         bg = bg.scaled(world->size());
         room->setName(id);
         room->setBackground(bg);
