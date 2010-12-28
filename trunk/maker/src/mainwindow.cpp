@@ -53,12 +53,22 @@ MainWindow::~MainWindow()
 void MainWindow::saveProject()
 {
     QString project_filename = QFileDialog::getSaveFileName(this, "Save project", QDir::homePath());
+    QDir::setCurrent(project_filename.section("/", 0, -2));
     QFile file(project_filename);
     if (!file.open(QIODevice::WriteOnly))
         return;
 
     file.write(createXml().toAscii());
     file.close();
+
+    QDir data_dir(QDir::currentPath() + "/" + world->name() + "_data");
+    data_dir.mkpath(data_dir.absolutePath());
+
+    for (int i = 0; i < world->rooms()->count(); i++)
+    {
+        world->rooms()->at(i)->background().save(data_dir.absolutePath() + "/" +
+                                                 world->rooms()->at(i)->name() + "_bg.png");
+    }
 }
 
 void MainWindow::openProject()
