@@ -16,6 +16,7 @@
     <dialog id="dialog_locandiera" start="0">
       <step id="0" text="Non ti darò mai la mia chiave!">
         <requirements>
+            <item_req id="Chiave Locanda" value="!NOWHERE" />
         </requirements>
         <actions_if>
         </actions_if>
@@ -24,12 +25,12 @@
       <step id="1" text="Sei così gentile che ti darò subito la mia chiave!">
         <requirements>
         </requirements>
-        <actions>
+        <actions_if>
             <action id="ITEM_MOVE">
                 <param value="Chiave Locanda" />
                 <param value="0" />
             </action>
-        </actions>
+        </actions_if>
         <link id="-1" text="Grazie bella locandiera!" />
       </step>
     </dialog>

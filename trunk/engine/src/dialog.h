@@ -36,7 +36,7 @@ class Dialog
         std::vector <Action *> jump(const string step_name);
         string text() const;
         DialogStep *addStep(const string name, const string text);
-        void addLink(const string name, const string text);
+        void addLink(const string name, const string dest, const string text);
         DialogStep *step(const string name);
         std::vector <Action *> actions();
         std::vector< std::pair<string, string> > links();

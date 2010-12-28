@@ -59,3 +59,8 @@ DialogStep *Dialog::addStep(const string name, const string text)
     step->event = new Event(id + name);
     return step;
 }
+
+void Dialog::addLink(const string name, const string dest, const string text)
+{
+    steps[name].links.push_back(std::make_pair(dest, text));
+}

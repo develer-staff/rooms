@@ -55,7 +55,7 @@ void Engine::click (const int x, const int y)
 
 void Engine::clickDialog(const string link)
 {
-    logger.write("Dialog choice received", Log::NOTE);
+    logger.write("Dialog choice received: " + link, Log::NOTE);
     if (link == "-1")
     {
         setState(GAME);
@@ -237,6 +237,11 @@ void Engine::createDialogsFromXml(XmlVect diags)
         {
             DialogStep *step = d->addStep((*j)->Attribute("id"), (*j)->Attribute("text"));
             fillEventFromXml(*j, step->event);
+            XmlVect links = xml::xmlGetAllChilds((*j), "link");
+            for (XmlVect::iterator z = links.begin(); z != links.end(); ++z)
+            {
+                d->addLink(step->id, (*z)->Attribute("id"), (*z)->Attribute("text"));
+            }
         }
     }
 }
@@ -264,10 +269,10 @@ std::map<string, string> Engine::getDialogChoices()
     {
         DialogStep *step = dialog->step(i->first);
         if (step == 0) //its an end-of-dialog link
-            choices[i->first] = i->second;
+            choices[i->second] = i->first;
         else if (rooms_mgr->checkItemPlace(step->event->itemReqs()) &&
             events_mgr->checkVarReqs(step->event->varReqs()))
-            choices[i->first] = i->second;
+            choices[i->second] = i->first;
     }
     return choices;
 }
@@ -322,9 +327,9 @@ void Engine::apiItemMove(const string id, const string dest)
 void Engine::apiDialogStart(const string id)
 {
     logger.write("DIALOG_START: " + id, Log::NOTE);
-    setState(DIALOG);
     dialog = dialogs[id];
     dialog->reset();
+    setState(DIALOG);
     execActions(dialog->actions());
 }
 
