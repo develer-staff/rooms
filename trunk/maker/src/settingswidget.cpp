@@ -3,8 +3,8 @@
 SettingsWidget::SettingsWidget(World *world, QWidget *parent) :
     QWidget(parent)
 {
-    setWorld(world);
     setupUi();
+    setWorld(world);
 
     setFixedWidth(250);
 
@@ -21,6 +21,7 @@ void SettingsWidget::setWorld(World *world)
 {
     setDisabled(true);
     _world = world;
+    room_combobox->setModel(_world->rooms());
 }
 
 void SettingsWidget::updateRoomSettings(Room *room)
@@ -131,7 +132,6 @@ void SettingsWidget::setupUi()
     action_combobox->addItem("Go to room");
     action_combobox->setFixedHeight(20);
     room_combobox->setFixedHeight(20);
-    room_combobox->setModel(_world->rooms());
     action_comboboxes_layout->addWidget(action_combobox);
     action_comboboxes_layout->addWidget(room_combobox);
 
