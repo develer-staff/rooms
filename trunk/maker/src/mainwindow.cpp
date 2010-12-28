@@ -46,8 +46,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    delete widget;
+    delete layout;
+    delete vspacer;
+    delete hspacer;
+    delete rooms_list;
+    delete room_view;
+    delete settings;
     delete ui;
     delete wizard;
+    delete world;
 }
 
 void MainWindow::saveProject()
