@@ -1,5 +1,4 @@
 #include "arearect.h"
-#include <QPainter>
 
 AreaRect::AreaRect(Area *area, QGraphicsScene *scene, QGraphicsItem *parent) :
     QGraphicsRectItem(parent, scene)

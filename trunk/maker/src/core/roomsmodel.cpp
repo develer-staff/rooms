@@ -1,7 +1,5 @@
 #include "roomsmodel.h"
 
-#include "core/room.h"
-
 RoomsModel::RoomsModel(QObject *parent) :
     QAbstractListModel(parent)
 {
