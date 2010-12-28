@@ -161,7 +161,6 @@ World *MainWindow::createWorld(const QDomDocument &doc)
     QDomElement ximg = ximages.firstChildElement();
     while (!ximg.isNull())
     {
-        qDebug() << ximg.attribute("file");
         ximg = ximg.nextSiblingElement();
     }
     //</images>
