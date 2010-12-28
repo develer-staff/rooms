@@ -92,6 +92,7 @@ void MainWindow::openProject()
     QString project_filename = QFileDialog::getOpenFileName(this, "Open project",
                                                             QDir::homePath(),
                                                             "Rooms project (*.rooms);;All files (*)");
+    QDir::setCurrent(project_filename.section("/", 0, -2));
     QFile file(project_filename);
     if (!file.open(QIODevice::ReadOnly))
         return;
