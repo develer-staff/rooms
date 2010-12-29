@@ -15,6 +15,7 @@ HEADERS += ../src/action.h \
            ../src/area.h \
            ../src/engine.h \
            ../src/event.h \
+           ../src/dialog.h \
            ../src/eventsmanager.h \
            ../src/item.h \
            ../src/log.h \
@@ -27,6 +28,7 @@ HEADERS += ../src/action.h \
 SOURCES += main.cpp \
            enginetests.cpp \
            ../src/action.cpp \
+           ../src/dialog.cpp \
            ../src/area.cpp \
            ../src/engine.cpp \
            ../src/event.cpp \
