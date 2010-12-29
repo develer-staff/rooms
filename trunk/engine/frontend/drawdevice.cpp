@@ -97,7 +97,7 @@ void DrawDevice::mousePressEvent(QMouseEvent * event)
 {
     if (engine->state() == Engine::GAME)
     {
-        engine->click(event->x(), event->y());
+        engine->clickArea(event->x(), event->y());
         update();
     }
 }

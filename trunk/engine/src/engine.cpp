@@ -39,7 +39,7 @@ Log *Engine::getLogger()
     return &logger;
 }
 
-void Engine::click (const int x, const int y)
+void Engine::clickArea(const int x, const int y)
 {
     logger.write("Mouse click received", Log::NOTE);
     Event *event = events_mgr->event(rooms_mgr->eventAt(x, y));
