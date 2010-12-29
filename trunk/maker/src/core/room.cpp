@@ -9,7 +9,7 @@ Room::Room(QString const& name, QObject *parent) :
     area_count = 0;
 }
 
-Area *Room::addArea(const QRect &rect)
+Area *Room::addArea(const QPoint &pos, const QSize &size)
 {
     QString name;
 
@@ -20,7 +20,7 @@ Area *Room::addArea(const QRect &rect)
     }
     while (areaExists(name));
 
-    Area *area = new Area(name, rect);
+    Area *area = new Area(name, pos, size);
     _areas.append(area);
 
     return area;

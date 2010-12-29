@@ -11,6 +11,7 @@ AreaRect::AreaRect(Area *area, QGraphicsScene *scene, QGraphicsItem *parent) :
     setFlag(QGraphicsItem::ItemIsSelectable);
 
     setRect(area->rect());
+    setPos(area->pos());
 }
 
 void AreaRect::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)

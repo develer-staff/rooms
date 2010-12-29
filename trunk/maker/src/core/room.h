@@ -13,7 +13,7 @@ class Room : public QObject
 public:
     Room(const QString &name, QObject *parent = 0);
 
-    Area *addArea(const QRect &rect);
+    Area *addArea(const QPoint &pos, const QSize &size);
 
     void setBackground(const QPixmap &rect);
     QPixmap background() const;

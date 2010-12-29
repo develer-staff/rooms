@@ -160,8 +160,8 @@ QString MainWindow::createXml() const
         {
             QDomElement xarea = doc.createElement("area");
             xarea.setAttribute("id", world->rooms()->at(i)->areas().at(j)->name());
-            xarea.setAttribute("x", world->rooms()->at(i)->areas().at(j)->rect().x());
-            xarea.setAttribute("y", world->rooms()->at(i)->areas().at(j)->rect().y());
+            xarea.setAttribute("x", world->rooms()->at(i)->areas().at(j)->pos().x());
+            xarea.setAttribute("y", world->rooms()->at(i)->areas().at(j)->pos().y());
             xarea.setAttribute("width", world->rooms()->at(i)->areas().at(j)->rect().width());
             xarea.setAttribute("height", world->rooms()->at(i)->areas().at(j)->rect().height());
             QDomElement xdo_event = doc.createElement("do_event");
@@ -269,11 +269,11 @@ World *MainWindow::createWorld(const QDomDocument &doc)
         while (!xarea.isNull())
         {
             QString id(xarea.attribute("id"));
-            QRect rect(xarea.attribute("x").toInt(),
-                       xarea.attribute("y").toInt(),
-                       xarea.attribute("width").toInt(),
+            QPoint pos(xarea.attribute("x").toInt(),
+                       xarea.attribute("y").toInt());
+            QSize size(xarea.attribute("width").toInt(),
                        xarea.attribute("height").toInt());
-            Area *area = room->addArea(rect);
+            Area *area = room->addArea(pos, size);
             area->setName(id);
             QDomElement xdo_event = xarea.firstChildElement();
             area->setActions(events[xdo_event.attribute("value")]);

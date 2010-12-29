@@ -1,15 +1,16 @@
 #include "area.h"
 
-Area::Area(const QString &name, const QRect &rect, QObject *parent) :
+Area::Area(const QString &name, const QPoint &pos, const QSize &size, QObject *parent) :
     QObject(parent)
 {
     _name = name;
-    _rect = rect;
+    _size = size;
+    _pos = pos;
 }
 
 QRect Area::rect() const
 {
-    return _rect;
+    return QRect(QPoint(0, 0), _size);
 }
 
 QString Area::name() const
@@ -17,9 +18,14 @@ QString Area::name() const
     return _name;
 }
 
-void Area::setPos(const QPoint &point)
+void Area::setPos(const QPoint &pos)
 {
-    _rect.moveTo(point);
+    _pos = pos;
+}
+
+QPoint Area::pos() const
+{
+    return _pos;
 }
 
 void Area::setName(const QString &name)

@@ -10,10 +10,11 @@ class Area : public QObject
     Q_OBJECT
 
 public:
-    Area(const QString &name, const QRect &rect, QObject *parent = 0);
-    void setPos(const QPoint &point);
+    Area(const QString &name, const QPoint &pos, const QSize &size, QObject *parent = 0);
+    void setPos(const QPoint &pos);
 
     QRect rect() const;
+    QPoint pos() const;
 
     void setName(const QString &name);
     QString name() const;
@@ -25,7 +26,8 @@ public:
 private:
     QList<Action *> _actions;
     QString _name;
-    QRect _rect;
+    QSize _size;
+    QPoint _pos;
 };
 
 #endif // AREA_H

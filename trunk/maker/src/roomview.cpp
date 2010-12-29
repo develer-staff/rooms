@@ -28,7 +28,7 @@ void RoomView::setWorld(World *world)
 void RoomView::addArea()
 {
     updateRoomView();
-    active_room->addArea(QRect(QPoint(0, 0), QSize(64, 64)));
+    active_room->addArea(QPoint(0, 0), QSize(64, 64));
     AreaRect *area_rect = new AreaRect(active_room->areas().last());
     scenes[active_room]->addItem(area_rect);
 }
