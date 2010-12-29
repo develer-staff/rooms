@@ -28,7 +28,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->centralWidget->setDisabled(true);
 
-    connect(room_view, SIGNAL(roomChanged(Room*)), room_view, SIGNAL(selected(Room*)));
     connect(room_view, SIGNAL(selected(Room*)), settings, SLOT(updateRoomSettings(Room*)));
     connect(room_view, SIGNAL(selected(Area*)), settings, SLOT(updateAreaSettings(Area*)));
     connect(ui->action_Save, SIGNAL(triggered()), this, SLOT(saveProject()));

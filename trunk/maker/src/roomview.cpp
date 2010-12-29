@@ -5,8 +5,6 @@
 RoomView::RoomView(QWidget *parent) :
     QGraphicsView(parent)
 {
-    active_room = 0;
-
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setContextMenuPolicy(Qt::CustomContextMenu);
@@ -22,15 +20,16 @@ void RoomView::setWorld(World *world)
 {
     setDisabled(true);
     _world = world;
+    connect(_world->rooms(), SIGNAL(activeRoomChanged()), this, SLOT(updateRoomView()));
     setFixedSize(_world->size());
 }
 
 void RoomView::addArea()
 {
     updateRoomView();
-    active_room->addArea(QPoint(0, 0), QSize(64, 64));
-    AreaRect *area_rect = new AreaRect(active_room->areas().last());
-    scenes[active_room]->addItem(area_rect);
+    activeRoom()->addArea(QPoint(0, 0), QSize(64, 64));
+    AreaRect *area_rect = new AreaRect(activeRoom()->areas().last());
+    scenes[activeRoom()]->addItem(area_rect);
 }
 
 void RoomView::showContextMenu(const QPoint &point)
@@ -54,33 +53,32 @@ void RoomView::setBackground()
 
     bg = bg.scaled(_world->size());
 
-    active_room->setBackground(bg);
-    scenes[active_room]->addPixmap(bg);
+    activeRoom()->setBackground(bg);
+    scenes[activeRoom()]->addPixmap(bg);
 }
 
 void RoomView::updateRoomView()
 {
-    if (!scenes.contains(active_room))
+    setEnabled(true);
+    if (!scenes.contains(activeRoom()))
     {
-        scenes.insert(active_room,
+        scenes.insert(activeRoom(),
                       new QGraphicsScene(QRectF(QPoint(0, 0), _world->size())));
-        scenes[active_room]->addPixmap(active_room->background());
-        for (int i = 0; i < active_room->areas().count(); i++)
+        scenes[activeRoom()]->addPixmap(activeRoom()->background());
+        for (int i = 0; i < activeRoom()->areas().count(); i++)
         {
-            AreaRect *area_rect = new AreaRect(active_room->areas().at(i));
-            scenes[active_room]->addItem(area_rect);
+            AreaRect *area_rect = new AreaRect(activeRoom()->areas().at(i));
+            scenes[activeRoom()]->addItem(area_rect);
         }
     }
 
-    setScene(scenes[active_room]);
+    setScene(scenes[activeRoom()]);
+    emit selected(activeRoom());
 }
 
-void RoomView::changeActiveRoom(QModelIndex index)
+Room *RoomView::activeRoom() const
 {
-    setEnabled(true);
-    active_room = _world->rooms()->at(index.row());
-    updateRoomView();
-    emit roomChanged(active_room);
+    return _world->rooms()->activeRoom();
 }
 
 void RoomView::mousePressEvent(QMouseEvent *event)
@@ -88,7 +86,7 @@ void RoomView::mousePressEvent(QMouseEvent *event)
     QGraphicsView::mousePressEvent(event);
     QGraphicsItem *item = itemAt(event->pos());
     if (item == 0 || item->zValue() == 0)
-        emit selected(active_room);
+        emit selected(activeRoom());
     else
         emit selected(((AreaRect *)item)->area());
 }

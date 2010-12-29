@@ -25,7 +25,6 @@ void SettingsWidget::setWorld(World *world)
 
 void SettingsWidget::updateRoomSettings(Room *room)
 {
-    active_room = room;
     area_settings->hide();
     room_settings->show();
     room_name->setText(room->name());
@@ -60,16 +59,16 @@ void SettingsWidget::validateRoomName(const QString &text)
 void SettingsWidget::setRoomName()
 {
     if (!_world->rooms()->roomExists(room_name->text()))
-        active_room->setName(room_name->text());
+        activeRoom()->setName(room_name->text());
     else
-        room_name->setText(active_room->name());
+        room_name->setText(activeRoom()->name());
 
     room_name->setPalette(QPalette(QPalette::Base, Qt::white));
 }
 
 void SettingsWidget::validateAreaName(const QString &text)
 {
-    if (active_room->areaExists(text))
+    if (activeRoom()->areaExists(text))
     {
         QPalette palette = area_name->palette();
         palette.setColor(QPalette::Base, QColor(255, 0, 0));
@@ -81,7 +80,7 @@ void SettingsWidget::validateAreaName(const QString &text)
 
 void SettingsWidget::setAreaName()
 {
-    if (!active_room->areaExists(area_name->text()))
+    if (!activeRoom()->areaExists(area_name->text()))
         active_area->setName(area_name->text());
     else
         area_name->setText(active_area->name());
@@ -95,6 +94,11 @@ void SettingsWidget::newAction()
     action->setType(action_combobox->currentIndex());
     action->setRoom(room_combobox->currentText());
     actions_list->addItem(action->toHumanReadable());
+}
+
+Room *SettingsWidget::activeRoom() const
+{
+    return _world->rooms()->activeRoom();
 }
 
 void SettingsWidget::setupUi()

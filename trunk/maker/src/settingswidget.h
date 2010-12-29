@@ -28,6 +28,9 @@ public slots:
     void setAreaName();
     void newAction();
 
+protected:
+    Room *activeRoom() const;
+
 private:
     void setupUi();
 
@@ -60,7 +63,6 @@ private:
     QSpacerItem *hspacer;
 
     Area *active_area;
-    Room *active_room;
     World *_world;
 };
 

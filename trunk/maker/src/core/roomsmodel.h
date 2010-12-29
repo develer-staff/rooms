@@ -17,12 +17,19 @@ public:
     Room *appendRoom();
     bool roomExists(const QString &name);
 
+    Room *activeRoom() const;
+    void setActiveRoom(Room *room);
+
 private slots:
     void onDataChanged();
+
+signals:
+    void activeRoomChanged();
 
 private:
     QList<Room *> rooms;
     int room_count;
+    Room *active_room;
 };
 
 #endif // ROOMSMODEL_H

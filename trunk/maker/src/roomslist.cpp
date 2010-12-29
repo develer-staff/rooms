@@ -36,4 +36,6 @@ void RoomsList::selectionChanged(const QItemSelection &new_selected, const QItem
 {
     Q_UNUSED(old_selected);
     emit selected(new_selected.indexes().first());
+    Room *selected_room = _world->rooms()->at(new_selected.indexes().first().row());
+    _world->rooms()->setActiveRoom(selected_room);
 }
