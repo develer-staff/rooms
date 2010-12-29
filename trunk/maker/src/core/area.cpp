@@ -19,7 +19,7 @@ QString Area::name() const
 
 void Area::setPos(const QPoint &point)
 {
-    _rect.translate(point);
+    _rect.moveTo(point);
 }
 
 void Area::setName(const QString &name)

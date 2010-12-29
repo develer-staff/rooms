@@ -10,7 +10,7 @@ AreaRect::AreaRect(Area *area, QGraphicsScene *scene, QGraphicsItem *parent) :
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemIsSelectable);
 
-    setRect(QRectF(area->rect()));
+    setRect(area->rect());
 }
 
 void AreaRect::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
