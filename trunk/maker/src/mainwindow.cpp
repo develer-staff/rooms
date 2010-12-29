@@ -194,7 +194,9 @@ QString MainWindow::createXml() const
             {
                 QDomElement xaction = doc.createElement("action");
                 xaction.setAttribute("id", world->rooms()->at(i)->areas().at(j)->actions().at(k)->typeToString());
-                xaction.setAttribute("value", world->rooms()->at(i)->areas().at(j)->actions().at(k)->room());
+                QDomElement xparam = doc.createElement("param");
+                xparam.setAttribute("value", world->rooms()->at(i)->areas().at(j)->actions().at(k)->room());
+                xaction.appendChild(xparam);
                 xactions_if.appendChild(xaction);
             }
             xevent.appendChild(xactions_if);
