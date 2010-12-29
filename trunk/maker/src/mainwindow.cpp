@@ -141,7 +141,8 @@ QString MainWindow::createXml() const
     for (int i = 0; i < world->rooms()->count(); i++)
     {
         QDomElement ximg = doc.createElement("img");
-        ximg.setAttribute("file", world->rooms()->at(i)->name());
+        ximg.setAttribute("file", "./" + world->name() + "_data/" +
+                          world->rooms()->at(i)->name() + "_bg.png");
         ximages.appendChild(ximg);
     }
     xworld.appendChild(ximages);
