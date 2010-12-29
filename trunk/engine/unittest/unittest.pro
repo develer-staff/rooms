@@ -3,7 +3,7 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET =
+TARGET = test.exe
 DEPENDPATH += . ../frontend ../src ../lib/tinyxml
 INCLUDEPATH += . ../frontend ../src ../lib/tinyxml
 LIBS += -lcppunit

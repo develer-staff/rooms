@@ -22,6 +22,8 @@ namespace xml
     bool xmlCheckAreas(TiXmlElement *elem);
     bool xmlCheckItems(TiXmlElement *elem);
     bool xmlCheckDoEvents(TiXmlElement *elem);
+    bool xmlCheckDialogs(TiXmlElement *elem);
+    bool xmlCheckDialogSteps(TiXmlElement *elem);
     int xmlReadInt(TiXmlElement *elem, std::string attribute);
 }
 

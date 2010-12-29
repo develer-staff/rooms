@@ -29,6 +29,8 @@ class DrawDevice: public QWidget
         Engine *engine;
         std::map <string, QPixmap *> images;
         string item_text;
+        QListWidget dialog_list;
+        QLabel dialog_text;
     public:
         DrawDevice(Engine *eng, QWidget *parent=0);
         ~DrawDevice();
@@ -37,11 +39,13 @@ class DrawDevice: public QWidget
         bool loadImage(string filename);
         void quit(int status);
     public slots:
+        void dialogChosed(QListWidgetItem *item);
         //QT EVENTS
         void paintEvent(QPaintEvent *event);
         void mousePressEvent(QMouseEvent * event);
         void mouseMoveEvent(QMouseEvent *event);
         void keyPressEvent(QKeyEvent *event);
+        void update();
     protected:
         void drawRoom(QPainter &painter);
 };

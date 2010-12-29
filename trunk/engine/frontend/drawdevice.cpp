@@ -4,6 +4,7 @@
 DrawDevice::DrawDevice(Engine *eng, QWidget *parent): QWidget(parent)
 {
     engine = eng;
+    setGeometry(parent->geometry());
 }
 
 DrawDevice::~DrawDevice()
@@ -20,10 +21,17 @@ void DrawDevice::initialize()
 {
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
+    dialog_list.setParent(this);
+    dialog_text.setParent(this);
+    dialog_list.hide();
+    dialog_text.hide();
+    dialog_list.setGeometry(10, 410, width() - 20, 180);
+    dialog_text.setGeometry(20, 350, width() - 40, 50);
     std::vector<string> images = engine->getImgNames();
     for (std::vector<string>::iterator i = images.begin();
          i != images.end(); ++i)
          loadImage(*i);
+    connect(&dialog_list, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(dialogChosed(QListWidgetItem *)));
 }
 
 bool DrawDevice::loadImage(string filename)
@@ -42,6 +50,13 @@ bool DrawDevice::loadImage(string filename)
 void DrawDevice::quit(int status)
 {
     qApp->exit(status);
+}
+
+void DrawDevice::dialogChosed(QListWidgetItem *item)
+{
+    std::map<string, string> choices = engine->getDialogChoices();
+    engine->clickDialog(choices[item->text().toStdString()]);
+    update();
 }
 
 void DrawDevice::paintEvent(QPaintEvent *event)
@@ -70,13 +85,21 @@ void DrawDevice::paintEvent(QPaintEvent *event)
             }
             break;
         }
+        case Engine::DIALOG:
+        {
+            painter.fillRect(0, 0, width(), height(), QColor(0, 0, 0, 200));
+            break;
+        }
     }
 }
 
 void DrawDevice::mousePressEvent(QMouseEvent * event)
 {
-    engine->click(event->x(), event->y());
-    update();
+    if (engine->state() == Engine::GAME)
+    {
+        engine->click(event->x(), event->y());
+        update();
+    }
 }
 
 void DrawDevice::keyPressEvent(QKeyEvent * event)
@@ -123,6 +146,30 @@ void DrawDevice::mouseMoveEvent(QMouseEvent *event)
 
         update();
     }
+}
+
+void DrawDevice::update()
+{
+    if (engine->state() == Engine::DIALOG)
+    {
+        setCursor(Qt::ArrowCursor);
+        std::map<string, string> choices = engine->getDialogChoices();
+        string text = engine->getDialogText();
+        dialog_list.clear();
+        dialog_text.setText("<font color=#FFFFFF>" + QString::fromUtf8(text.c_str()) + "</font>");
+        for (std::map<string, string>::iterator i = choices.begin();
+             i != choices.end(); ++i)
+            dialog_list.addItem(QString::fromUtf8(i->first.c_str()));
+        dialog_list.show();
+        dialog_text.show();
+    }
+    else
+    {
+        dialog_text.hide();
+        dialog_list.hide();
+    }
+
+    QWidget::update();
 }
 
 void DrawDevice::drawRoom(QPainter &painter)

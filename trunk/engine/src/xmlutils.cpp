@@ -15,6 +15,7 @@ bool xml::xmlCheckDoc(TiXmlDocument *doc, const std::string &eng_ver)
                xml::xmlCheckVars(doc->RootElement()->FirstChildElement("vars")) &&
                xml::xmlCheckEvents(doc->RootElement()->FirstChildElement("events")) &&
                xml::xmlCheckRooms(doc->RootElement()->FirstChildElement("rooms")) &&
+               xml::xmlCheckDialogs(doc->RootElement()->FirstChildElement("dialogs")) &&
                xml::xmlCheckItems(doc->RootElement()->FirstChildElement("items"));
     return false;
 }
@@ -110,6 +111,43 @@ bool xml::xmlCheckParams(TiXmlElement *elem)
         {
             if (i->Attribute("value") == 0)
                 return false;
+        }
+    return true;
+}
+
+bool xml::xmlCheckDialogSteps(TiXmlElement *elem)
+{
+    std::set<std::string> ids;
+    if (elem)
+        for (TiXmlElement *i = elem->FirstChildElement("step"); i != 0;
+             i = i->NextSiblingElement("step"))
+        {
+            if (i->Attribute("id") == 0 ||
+                ids.count(i->Attribute("id")) > 0 ||
+                i->Attribute("text") == 0 ||
+                !xmlCheckReqs(i->FirstChildElement("requirements")) ||
+                !xmlCheckActions(i->FirstChildElement("actions")))
+                return false;
+            else
+                ids.insert(i->Attribute("id"));
+        }
+    return true;
+}
+
+bool xml::xmlCheckDialogs(TiXmlElement *elem)
+{
+    std::set<std::string> ids;
+    if (elem)
+        for (TiXmlElement *i = elem->FirstChildElement("dialog"); i != 0;
+             i = i->NextSiblingElement("dialog"))
+        {
+            if (i->Attribute("id") == 0 ||
+                ids.count(i->Attribute("id")) > 0 ||
+                i->Attribute("start") == 0 ||
+                !xmlCheckDialogSteps(i))
+                return false;
+            else
+                ids.insert(i->Attribute("id"));
         }
     return true;
 }
