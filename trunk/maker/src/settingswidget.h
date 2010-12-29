@@ -30,6 +30,7 @@ public slots:
 
 protected:
     Room *activeRoom() const;
+    Area *activeArea() const;
 
 private:
     void setupUi();

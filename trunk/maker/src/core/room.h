@@ -15,6 +15,9 @@ public:
 
     Area *addArea(const QPoint &pos, const QSize &size);
 
+    void setActiveArea(Area *area);
+    Area *activeArea() const;
+
     void setBackground(const QPixmap &rect);
     QPixmap background() const;
 
@@ -28,6 +31,7 @@ public:
     bool areaExists(const QString &name);
 
 signals:
+    void activeAreaChanged();
     void changed();
 
 private:
@@ -36,6 +40,7 @@ private:
     QPixmap _background;
     QPixmap _icon;
     int area_count;
+    Area *active_area;
 };
 
 #endif // ROOM_H

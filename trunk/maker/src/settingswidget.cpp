@@ -33,14 +33,13 @@ void SettingsWidget::updateRoomSettings(Room *room)
 
 void SettingsWidget::updateAreaSettings(Area *area)
 {
-    active_area = area;
     room_settings->hide();
     area_settings->show();
     area_name->setText(area->name());
     actions_list->clear();
-    for (int i = 0; i < active_area->actions().count(); i++)
+    for (int i = 0; i < activeArea()->actions().count(); i++)
     {
-        actions_list->addItem(active_area->actions().at(i)->toHumanReadable());
+        actions_list->addItem(activeArea()->actions().at(i)->toHumanReadable());
     }
 }
 
@@ -81,16 +80,16 @@ void SettingsWidget::validateAreaName(const QString &text)
 void SettingsWidget::setAreaName()
 {
     if (!activeRoom()->areaExists(area_name->text()))
-        active_area->setName(area_name->text());
+        activeArea()->setName(area_name->text());
     else
-        area_name->setText(active_area->name());
+        area_name->setText(activeArea()->name());
 
     area_name->setPalette(QPalette(QPalette::Base, Qt::white));
 }
 
 void SettingsWidget::newAction()
 {
-    Action *action = active_area->addAction();
+    Action *action = activeArea()->addAction();
     action->setType(action_combobox->currentIndex());
     action->setRoom(room_combobox->currentText());
     actions_list->addItem(action->toHumanReadable());
@@ -99,6 +98,11 @@ void SettingsWidget::newAction()
 Room *SettingsWidget::activeRoom() const
 {
     return _world->rooms()->activeRoom();
+}
+
+Area *SettingsWidget::activeArea() const
+{
+    return activeRoom()->activeArea();
 }
 
 void SettingsWidget::setupUi()

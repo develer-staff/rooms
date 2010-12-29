@@ -88,5 +88,9 @@ void RoomView::mousePressEvent(QMouseEvent *event)
     if (item == 0 || item->zValue() == 0)
         emit selected(activeRoom());
     else
-        emit selected(((AreaRect *)item)->area());
+    {
+        Area *area = ((AreaRect *)item)->area();
+        activeRoom()->setActiveArea(area);
+        emit selected(area);
+    }
 }

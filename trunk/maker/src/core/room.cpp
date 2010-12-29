@@ -7,6 +7,7 @@ Room::Room(QString const& name, QObject *parent) :
     _icon = QPixmap(QSize(50, 50));
     _icon.fill();
     area_count = 0;
+    active_area = 0;
 }
 
 Area *Room::addArea(const QPoint &pos, const QSize &size)
@@ -23,7 +24,20 @@ Area *Room::addArea(const QPoint &pos, const QSize &size)
     Area *area = new Area(name, pos, size);
     _areas.append(area);
 
+    setActiveArea(area);
+
     return area;
+}
+
+void Room::setActiveArea(Area *area)
+{
+    active_area = area;
+    emit activeAreaChanged();
+}
+
+Area *Room::activeArea() const
+{
+    return active_area;
 }
 
 void Room::setBackground(const QPixmap &background)
