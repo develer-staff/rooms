@@ -131,7 +131,10 @@ QString MainWindow::createXml() const
     xworld.setAttribute("name", world->name());
     xworld.setAttribute("width", world->size().width());
     xworld.setAttribute("height", world->size().height());
-    xworld.setAttribute("start", 0);
+    if (world->rooms()->count() >= 1)
+        xworld.setAttribute("start", world->rooms()->at(0)->name());
+    else
+        xworld.setAttribute("start", 0);
     doc.appendChild(xworld);
 
     //<images>
