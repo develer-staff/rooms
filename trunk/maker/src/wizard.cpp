@@ -10,6 +10,7 @@ Wizard::Wizard(QWidget *parent) :
     height = 500;
     name = "Example world";
     connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(setInfo()));
+    connect(ui->buttonBox, SIGNAL(rejected()), this, SLOT(close()));
 }
 
 Wizard::~Wizard()
