@@ -4,7 +4,7 @@ Room::Room(QString const& name, QObject *parent) :
     QObject(parent)
 {
     _name = name;
-    _icon = QPixmap(QSize(64,64));
+    _icon = QPixmap(QSize(50, 50));
     _icon.fill();
     area_count = 0;
 }
@@ -31,7 +31,7 @@ void Room::setBackground(const QPixmap &background)
     if (!background.isNull())
     {
         _background = background;
-        _icon = _background.scaled(QSize(64, 64));
+        _icon = _background.scaled(_icon.size());
         emit changed();
     }
 }
