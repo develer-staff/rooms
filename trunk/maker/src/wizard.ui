@@ -29,7 +29,7 @@
      <item>
       <widget class="QLineEdit" name="worldName">
        <property name="text">
-        <string>Example World</string>
+        <string>Example world</string>
        </property>
       </widget>
      </item>
