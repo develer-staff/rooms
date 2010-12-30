@@ -20,15 +20,21 @@ void SettingsWidget::setWorld(World *world)
     setDisabled(true);
     _world = world;
     rooms = _world->rooms();
+    connect(rooms, SIGNAL(activeRoomChanged(Room*)), this, SLOT(updateRoomSettings(Room*)));
     room_combobox->setModel(rooms);
 }
 
 void SettingsWidget::updateRoomSettings(Room *room)
 {
+    if (room == 0)
+    {
+        setDisabled(true);
+        return;
+    }
+    setEnabled(true);
     area_settings->hide();
     room_settings->show();
     room_name->setText(room->name());
-    setEnabled(true);
 }
 
 void SettingsWidget::updateAreaSettings(Area *area)
@@ -38,9 +44,7 @@ void SettingsWidget::updateAreaSettings(Area *area)
     area_name->setText(area->name());
     actions_list->clear();
     for (int i = 0; i < area->actions().count(); i++)
-    {
         actions_list->addItem(area->actions().at(i)->toHumanReadable());
-    }
 }
 
 void SettingsWidget::validateRoomName(const QString &text)

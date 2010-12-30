@@ -9,6 +9,7 @@ MainWindow::MainWindow() :
     ui->setupUi(this);
     setupUi();
 
+    connect(rooms_list, SIGNAL(selected(Room*)), room_view, SLOT(updateRoomView(Room*)));
     connect(room_view, SIGNAL(selected(Room*)), settings, SLOT(updateRoomSettings(Room*)));
     connect(room_view, SIGNAL(selected(Area*)), settings, SLOT(updateAreaSettings(Area*)));
     connect(wizard, SIGNAL(accepted()), this, SLOT(newProject()));
@@ -75,7 +76,6 @@ void MainWindow::openProject()
     if (world != NULL)
         delete world;
     world = createWorld(doc);
-    rooms = world->rooms();
     rooms_list->setWorld(world);
     room_view->setWorld(world);
     settings->setWorld(world);
@@ -196,6 +196,7 @@ World *MainWindow::createWorld(const QDomDocument &doc)
     QDomElement xworld = doc.elementsByTagName("world").at(0).toElement();
     World *world = new World(xworld.attribute("name"), QSize(xworld.attribute("width").toInt(),
                                                              xworld.attribute("height").toInt()));
+    rooms = world->rooms();
     //<events>
     QHash<QString, QList<Action*> > events;
     QDomNode xevents = xworld.elementsByTagName("events").at(0);

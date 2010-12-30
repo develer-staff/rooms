@@ -13,10 +13,11 @@ public:
     void setWorld(World *world);
 
 signals:
-    void selected(QModelIndex index);
+    void selected(Room *room);
 
 private slots:
     void addRoom();
+    void removeRoom();
     void showContextMenu(const QPoint &point);
 
 protected:

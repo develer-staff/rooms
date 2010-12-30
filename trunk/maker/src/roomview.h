@@ -18,9 +18,11 @@ signals:
     void selected(Room *room);
     void selected(Area *area);
 
+public slots:
+    void updateRoomView(Room *room);
+
 private slots:
     void setBackground();
-    void updateRoomView();
     void addArea();
     void showContextMenu(const QPoint &point);
 

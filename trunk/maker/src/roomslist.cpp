@@ -20,6 +20,11 @@ void RoomsList::setWorld(World *world)
 void RoomsList::showContextMenu(const QPoint &point)
 {
     QMenu *menu = new QMenu;
+    if (indexAt(point).isValid())
+    {
+        menu->addAction(tr("Remove %1").arg(rooms->activeRoom()->name()),
+                        this, SLOT(removeRoom()));
+    }
     menu->addAction(tr("Add a room"), this, SLOT(addRoom()));
     menu->exec(mapToGlobal(point));
     delete menu;
@@ -32,10 +37,28 @@ void RoomsList::addRoom()
     setCurrentIndex(index);
 }
 
+void RoomsList::removeRoom()
+{
+    int room_index = rooms->removeRoom();
+    if (room_index >= rooms->count())
+        room_index--;
+
+    if (room_index == -1)
+    {
+        Room *room = 0;
+        rooms->setActiveRoom(room);
+    }
+    else
+    {
+        rooms->setActiveRoom(rooms->at(room_index));
+        setCurrentIndex(rooms->index(room_index));
+    }
+}
+
 void RoomsList::selectionChanged(const QItemSelection &new_selected, const QItemSelection &old_selected)
 {
     Q_UNUSED(old_selected);
-    emit selected(new_selected.indexes().first());
     Room *selected_room = rooms->at(new_selected.indexes().first().row());
+    emit selected(selected_room);
     rooms->setActiveRoom(selected_room);
 }

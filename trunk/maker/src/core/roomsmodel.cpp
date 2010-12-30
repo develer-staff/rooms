@@ -9,7 +9,7 @@ RoomsModel::RoomsModel()
 void RoomsModel::setActiveRoom(Room *room)
 {
     active_room = room;
-    emit activeRoomChanged();
+    emit activeRoomChanged(room);
 }
 
 Room *RoomsModel::activeRoom() const
@@ -39,6 +39,9 @@ QVariant RoomsModel::data(const QModelIndex &index, int role) const
     QVariant result;
 
     if (!index.isValid())
+        return result;
+
+    if (index.row() >= rooms.count())
         return result;
 
     Room *room = rooms.at(index.row());
@@ -80,6 +83,16 @@ Room *RoomsModel::appendRoom()
     setActiveRoom(room);
 
     return room;
+}
+
+int RoomsModel::removeRoom()
+{
+    int room_index = rooms.indexOf(active_room);
+    beginRemoveRows(QModelIndex(), rooms.size(), rooms.size());
+    rooms.removeAt(room_index);
+    endRemoveRows();
+    delete active_room;
+    return room_index;
 }
 
 bool RoomsModel::roomExists(const QString &name)

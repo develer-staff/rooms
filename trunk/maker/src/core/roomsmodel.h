@@ -24,7 +24,10 @@ public:
     Room *activeRoom() const;
 
 signals:
-    void activeRoomChanged();
+    void activeRoomChanged(Room *room);
+
+public slots:
+    int removeRoom();
 
 private slots:
     void onDataChanged();
