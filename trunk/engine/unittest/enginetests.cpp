@@ -65,3 +65,18 @@ void ApiTests::testItemMove()
     CPPUNIT_ASSERT(room_man->room("room2")->item("item1") == item);
     CPPUNIT_ASSERT(room_man->room("room1")->item("item1") == 0);
 }
+
+void ApiTests::testDialogStart()
+{
+    std::string xml = "<?xml version='1.0' ?>"
+                      "<world version='ROOMS_VANILLA' name='testLoadWorld' width='800' height='600' start='room'>"
+                      "<rooms><room id='room' bg='bg' /></rooms>"
+                      "<images><img file='../example/example2/data/chiave.png'/></images>"
+                      "<dialogs><dialog id='dialog'start='firststep'><step id='firststep' text='text'></step></dialog></dialogs>"
+                      "</world>\n";
+    mock->loadWorldFromStr(xml);
+    mock->apiDialogStart("dialog");
+    CPPUNIT_ASSERT(mock->getDialogText() == "text");
+    CPPUNIT_ASSERT(mock->state() == Engine::DIALOG);
+
+}

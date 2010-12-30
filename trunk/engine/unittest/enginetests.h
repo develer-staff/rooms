@@ -17,6 +17,7 @@ class MockEngine : public Engine
         using Engine::apiItemMove;
         using Engine::apiRoomGoto;
         using Engine::apiVarSet;
+        using Engine::apiDialogStart;
 };
 
 class WorldTests : public CppUnit::TestFixture
@@ -50,6 +51,7 @@ public:
     void testRoomGoto();
     void testVarSet();
     void testItemMove();
+    void testDialogStart();
 
     static CppUnit::Test *suite()
     {
@@ -60,6 +62,8 @@ public:
                                        &ApiTests::testVarSet));
         suiteOfTests->addTest(new CppUnit::TestCaller<ApiTests>("testItemMove",
                                        &ApiTests::testItemMove));
+        suiteOfTests->addTest(new CppUnit::TestCaller<ApiTests>("testDialogStart",
+                                       &ApiTests::testDialogStart));
         return suiteOfTests;
     }
 };
