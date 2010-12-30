@@ -1,9 +1,20 @@
 #include "roomsmodel.h"
 
-RoomsModel::RoomsModel(QObject *parent) :
-    QAbstractListModel(parent)
+RoomsModel::RoomsModel()
 {
     room_count = 0;
+    active_room = 0;
+}
+
+void RoomsModel::setActiveRoom(Room *room)
+{
+    active_room = room;
+    emit activeRoomChanged();
+}
+
+Room *RoomsModel::activeRoom() const
+{
+    return active_room;
 }
 
 Room *RoomsModel::at(int index) const
@@ -65,6 +76,8 @@ Room *RoomsModel::appendRoom()
     beginInsertRows(QModelIndex(), rooms.size(), rooms.size());
     rooms.append(room);
     endInsertRows();
+
+    setActiveRoom(room);
 
     return room;
 }

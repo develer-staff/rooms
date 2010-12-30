@@ -1,16 +1,13 @@
 #ifndef AREA_H
 #define AREA_H
 
-#include <QObject>
 #include <QRect>
 #include "action.h"
 
-class Area : public QObject
+class Area
 {
-    Q_OBJECT
-
 public:
-    Area(const QString &name, const QPoint &pos, const QSize &size, QObject *parent = 0);
+    Area(const QString &name, const QPoint &pos, const QSize &size);
     void setPos(const QPoint &pos);
 
     QRect rect() const;
@@ -20,8 +17,8 @@ public:
     QString name() const;
 
     Action *addAction();
-    QList<Action *> actions() const;
     void setActions(const QList<Action*> &actions);
+    QList<Action *> actions() const;
 
 private:
     QList<Action *> _actions;

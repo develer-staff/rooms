@@ -16,17 +16,23 @@ class SettingsWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit SettingsWidget(QWidget *parent = 0);
+    explicit SettingsWidget();
     void setWorld(World *world);
 
 public slots:
     void updateRoomSettings(Room *room);
     void updateAreaSettings(Area *area);
+
+private slots:
     void validateRoomName(const QString &text);
     void validateAreaName(const QString &text);
     void setRoomName();
     void setAreaName();
     void newAction();
+
+protected:
+    Room *activeRoom() const;
+    Area *activeArea() const;
 
 private:
     void setupUi();
@@ -60,8 +66,8 @@ private:
     QSpacerItem *hspacer;
 
     Area *active_area;
-    Room *active_room;
     World *_world;
+    RoomsModel *rooms;
 };
 
 #endif // SETTINGSWIDGET_H

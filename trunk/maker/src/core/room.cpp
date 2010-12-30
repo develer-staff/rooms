@@ -1,12 +1,12 @@
 #include "room.h"
 
-Room::Room(QString const& name, QObject *parent) :
-    QObject(parent)
+Room::Room(const QString &name)
 {
     _name = name;
-    _icon = QPixmap(QSize(64,64));
+    _icon = QPixmap(QSize(50, 50));
     _icon.fill();
     area_count = 0;
+    active_area = 0;
 }
 
 Area *Room::addArea(const QPoint &pos, const QSize &size)
@@ -23,7 +23,20 @@ Area *Room::addArea(const QPoint &pos, const QSize &size)
     Area *area = new Area(name, pos, size);
     _areas.append(area);
 
+    setActiveArea(area);
+
     return area;
+}
+
+void Room::setActiveArea(Area *area)
+{
+    active_area = area;
+    emit activeAreaChanged();
+}
+
+Area *Room::activeArea() const
+{
+    return active_area;
 }
 
 void Room::setBackground(const QPixmap &background)
@@ -31,7 +44,7 @@ void Room::setBackground(const QPixmap &background)
     if (!background.isNull())
     {
         _background = background;
-        _icon = _background.scaled(QSize(64, 64));
+        _icon = _background.scaled(_icon.size());
         emit changed();
     }
 }

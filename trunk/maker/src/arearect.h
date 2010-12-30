@@ -8,7 +8,7 @@ class AreaRect : public QGraphicsRectItem
 {
 
 public:
-    explicit AreaRect(Area *area, QGraphicsScene *scene = 0, QGraphicsItem *parent = 0);
+    explicit AreaRect(Area *area);
     Area *area() const;
 
 protected:

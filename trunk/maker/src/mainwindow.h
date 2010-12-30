@@ -19,15 +19,16 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow();
     ~MainWindow();
 
-public slots:
-    void saveProject();
-    void openProject();
+private slots:
     void newProject();
+    void openProject();
+    void saveProject();
 
 private:
+    void setupUi();
     QString createXml() const;
     World *createWorld(const QDomDocument &doc);
     QWidget *widget;
@@ -40,6 +41,7 @@ private:
     Ui::MainWindow *ui;
     Wizard *wizard;
     World *world;
+    RoomsModel *rooms;
 };
 
 #endif // MAINWINDOW_H

@@ -11,30 +11,27 @@ class RoomView : public QGraphicsView
     Q_OBJECT
 
 public:
-    explicit RoomView(QWidget *parent = 0);
-    void updateRoomView();
+    explicit RoomView();
     void setWorld(World *world);
 
 signals:
-    void roomChanged(Room *room);
     void selected(Room *room);
     void selected(Area *area);
 
-public slots:
-    void setBackground();
-
 private slots:
+    void setBackground();
+    void updateRoomView();
     void addArea();
     void showContextMenu(const QPoint &point);
-    void changeActiveRoom(QModelIndex index);
 
 protected:
     void mousePressEvent(QMouseEvent *event);
+    Room *activeRoom() const;
 
 private:
     QHash<Room*, QGraphicsScene*> scenes;
     World *_world;
-    Room *active_room;
+    RoomsModel *rooms;
 };
 
 #endif // ROOMVIEW_H

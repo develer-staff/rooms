@@ -15,7 +15,9 @@ class Wizard : public QDialog
 public:
     explicit Wizard(QWidget *parent = 0);
     ~Wizard();
+
     QString worldName() const;
+
     QSize worldSize() const;
 
 private slots:

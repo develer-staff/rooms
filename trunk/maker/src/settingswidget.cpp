@@ -1,7 +1,6 @@
 #include "settingswidget.h"
 
-SettingsWidget::SettingsWidget(QWidget *parent) :
-    QWidget(parent)
+SettingsWidget::SettingsWidget()
 {
     setupUi();
 
@@ -20,12 +19,12 @@ void SettingsWidget::setWorld(World *world)
 {
     setDisabled(true);
     _world = world;
-    room_combobox->setModel(_world->rooms());
+    rooms = _world->rooms();
+    room_combobox->setModel(rooms);
 }
 
 void SettingsWidget::updateRoomSettings(Room *room)
 {
-    active_room = room;
     area_settings->hide();
     room_settings->show();
     room_name->setText(room->name());
@@ -34,20 +33,19 @@ void SettingsWidget::updateRoomSettings(Room *room)
 
 void SettingsWidget::updateAreaSettings(Area *area)
 {
-    active_area = area;
     room_settings->hide();
     area_settings->show();
     area_name->setText(area->name());
     actions_list->clear();
-    for (int i = 0; i < active_area->actions().count(); i++)
+    for (int i = 0; i < area->actions().count(); i++)
     {
-        actions_list->addItem(active_area->actions().at(i)->toHumanReadable());
+        actions_list->addItem(area->actions().at(i)->toHumanReadable());
     }
 }
 
 void SettingsWidget::validateRoomName(const QString &text)
 {
-    if (_world->rooms()->roomExists(text))
+    if (rooms->roomExists(text))
     {
         QPalette palette = room_name->palette();
         palette.setColor(QPalette::Base, QColor(255, 0, 0));
@@ -59,17 +57,17 @@ void SettingsWidget::validateRoomName(const QString &text)
 
 void SettingsWidget::setRoomName()
 {
-    if (!_world->rooms()->roomExists(room_name->text()))
-        active_room->setName(room_name->text());
+    if (!rooms->roomExists(room_name->text()))
+        activeRoom()->setName(room_name->text());
     else
-        room_name->setText(active_room->name());
+        room_name->setText(activeRoom()->name());
 
     room_name->setPalette(QPalette(QPalette::Base, Qt::white));
 }
 
 void SettingsWidget::validateAreaName(const QString &text)
 {
-    if (active_room->areaExists(text))
+    if (activeRoom()->areaExists(text))
     {
         QPalette palette = area_name->palette();
         palette.setColor(QPalette::Base, QColor(255, 0, 0));
@@ -81,20 +79,30 @@ void SettingsWidget::validateAreaName(const QString &text)
 
 void SettingsWidget::setAreaName()
 {
-    if (!active_room->areaExists(area_name->text()))
-        active_area->setName(area_name->text());
+    if (!activeRoom()->areaExists(area_name->text()))
+        activeArea()->setName(area_name->text());
     else
-        area_name->setText(active_area->name());
+        area_name->setText(activeArea()->name());
 
     area_name->setPalette(QPalette(QPalette::Base, Qt::white));
 }
 
 void SettingsWidget::newAction()
 {
-    Action *action = active_area->addAction();
+    Action *action = activeArea()->addAction();
     action->setType(action_combobox->currentIndex());
     action->setRoom(room_combobox->currentText());
     actions_list->addItem(action->toHumanReadable());
+}
+
+Room *SettingsWidget::activeRoom() const
+{
+    return rooms->activeRoom();
+}
+
+Area *SettingsWidget::activeArea() const
+{
+    return activeRoom()->activeArea();
 }
 
 void SettingsWidget::setupUi()
