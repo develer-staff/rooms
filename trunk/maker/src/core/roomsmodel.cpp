@@ -1,7 +1,6 @@
 #include "roomsmodel.h"
 
-RoomsModel::RoomsModel(QObject *parent) :
-    QAbstractListModel(parent)
+RoomsModel::RoomsModel()
 {
     room_count = 0;
     active_room = 0;

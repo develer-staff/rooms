@@ -1,19 +1,13 @@
 #ifndef WORLD_H
 #define WORLD_H
 
-#include <QObject>
 #include "item.h"
 #include "roomsmodel.h"
 
-class QAbstractItemModel;
-class RoomsModel;
-
-class World : public QObject
+class World
 {
-    Q_OBJECT
-
 public:
-    World(const QString &name, const QSize &size, QObject *parent = 0);
+    World(const QString &name, const QSize &size);
     ~World();
 
     void setSize(const QSize &size);

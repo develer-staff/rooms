@@ -1,11 +1,10 @@
 #include "world.h"
 
-World::World(const QString &name, const QSize &size, QObject *parent) :
-    QObject(parent)
+World::World(const QString &name, const QSize &size)
 {
     world_name = name;
     world_size = size;
-    _rooms = new RoomsModel(this);
+    _rooms = new RoomsModel;
 }
 
 World::~World()

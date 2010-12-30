@@ -16,12 +16,14 @@ class SettingsWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit SettingsWidget(QWidget *parent = 0);
+    explicit SettingsWidget();
     void setWorld(World *world);
 
 public slots:
     void updateRoomSettings(Room *room);
     void updateAreaSettings(Area *area);
+
+private slots:
     void validateRoomName(const QString &text);
     void validateAreaName(const QString &text);
     void setRoomName();
@@ -65,6 +67,7 @@ private:
 
     Area *active_area;
     World *_world;
+    RoomsModel *rooms;
 };
 
 #endif // SETTINGSWIDGET_H

@@ -2,8 +2,7 @@
 #include "arearect.h"
 #include <QMouseEvent>
 
-RoomView::RoomView(QWidget *parent) :
-    QGraphicsView(parent)
+RoomView::RoomView()
 {
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -20,15 +19,16 @@ void RoomView::setWorld(World *world)
 {
     setDisabled(true);
     _world = world;
-    connect(_world->rooms(), SIGNAL(activeRoomChanged()), this, SLOT(updateRoomView()));
+    rooms = _world->rooms();
+    connect(rooms, SIGNAL(activeRoomChanged()), this, SLOT(updateRoomView()));
     setFixedSize(_world->size());
 }
 
 void RoomView::addArea()
 {
     updateRoomView();
-    activeRoom()->addArea(QPoint(0, 0), QSize(64, 64));
-    AreaRect *area_rect = new AreaRect(activeRoom()->areas().last());
+    Area *area = activeRoom()->addArea(QPoint(0, 0), QSize(64, 64));
+    AreaRect *area_rect = new AreaRect(area);
     scenes[activeRoom()]->addItem(area_rect);
 }
 
@@ -39,6 +39,7 @@ void RoomView::showContextMenu(const QPoint &point)
     menu->addSeparator();
     menu->addAction(tr("Add an area"), this, SLOT(addArea()));
     menu->exec(mapToGlobal(point));
+    delete menu;
 }
 
 void RoomView::setBackground()
@@ -78,7 +79,7 @@ void RoomView::updateRoomView()
 
 Room *RoomView::activeRoom() const
 {
-    return _world->rooms()->activeRoom();
+    return rooms->activeRoom();
 }
 
 void RoomView::mousePressEvent(QMouseEvent *event)

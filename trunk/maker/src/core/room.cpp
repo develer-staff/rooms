@@ -1,7 +1,6 @@
 #include "room.h"
 
-Room::Room(QString const& name, QObject *parent) :
-    QObject(parent)
+Room::Room(const QString &name)
 {
     _name = name;
     _icon = QPixmap(QSize(50, 50));

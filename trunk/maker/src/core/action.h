@@ -1,7 +1,6 @@
 #ifndef ACTION_H
 #define ACTION_H
 
-#include <QString>
 #include <QHash>
 
 class Action
@@ -13,16 +12,16 @@ public:
     };
     Action(ActionType type = ChangeRoom, QString room = "");
 
+    void setType(const int type);
     ActionType type() const;
+
+    void setType(const QString &type);
     QString typeToString() const;
 
+    void setRoom(const QString &room);
     QString room() const;
 
     QString toHumanReadable() const;
-
-    void setType(const int type);
-    void setType(const QString &type);
-    void setRoom(const QString &room);
 
 private:
     ActionType _type;

@@ -1,7 +1,6 @@
 #include "area.h"
 
-Area::Area(const QString &name, const QPoint &pos, const QSize &size, QObject *parent) :
-    QObject(parent)
+Area::Area(const QString &name, const QPoint &pos, const QSize &size)
 {
     _name = name;
     _size = size;

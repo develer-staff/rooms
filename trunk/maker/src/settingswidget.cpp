@@ -1,7 +1,6 @@
 #include "settingswidget.h"
 
-SettingsWidget::SettingsWidget(QWidget *parent) :
-    QWidget(parent)
+SettingsWidget::SettingsWidget()
 {
     setupUi();
 
@@ -20,7 +19,8 @@ void SettingsWidget::setWorld(World *world)
 {
     setDisabled(true);
     _world = world;
-    room_combobox->setModel(_world->rooms());
+    rooms = _world->rooms();
+    room_combobox->setModel(rooms);
 }
 
 void SettingsWidget::updateRoomSettings(Room *room)
@@ -37,15 +37,15 @@ void SettingsWidget::updateAreaSettings(Area *area)
     area_settings->show();
     area_name->setText(area->name());
     actions_list->clear();
-    for (int i = 0; i < activeArea()->actions().count(); i++)
+    for (int i = 0; i < area->actions().count(); i++)
     {
-        actions_list->addItem(activeArea()->actions().at(i)->toHumanReadable());
+        actions_list->addItem(area->actions().at(i)->toHumanReadable());
     }
 }
 
 void SettingsWidget::validateRoomName(const QString &text)
 {
-    if (_world->rooms()->roomExists(text))
+    if (rooms->roomExists(text))
     {
         QPalette palette = room_name->palette();
         palette.setColor(QPalette::Base, QColor(255, 0, 0));
@@ -57,7 +57,7 @@ void SettingsWidget::validateRoomName(const QString &text)
 
 void SettingsWidget::setRoomName()
 {
-    if (!_world->rooms()->roomExists(room_name->text()))
+    if (!rooms->roomExists(room_name->text()))
         activeRoom()->setName(room_name->text());
     else
         room_name->setText(activeRoom()->name());
@@ -97,7 +97,7 @@ void SettingsWidget::newAction()
 
 Room *SettingsWidget::activeRoom() const
 {
-    return _world->rooms()->activeRoom();
+    return rooms->activeRoom();
 }
 
 Area *SettingsWidget::activeArea() const

@@ -1,8 +1,7 @@
 #include "roomslist.h"
 #include <QMenu>
 
-RoomsList::RoomsList(QWidget *parent) :
-    QListView(parent)
+RoomsList::RoomsList()
 {
     setFixedWidth(200);
     setContextMenuPolicy(Qt::CustomContextMenu);
@@ -14,7 +13,8 @@ RoomsList::RoomsList(QWidget *parent) :
 void RoomsList::setWorld(World *world)
 {
     _world = world;
-    setModel(_world->rooms());
+    rooms = _world->rooms();
+    setModel(rooms);
 }
 
 void RoomsList::showContextMenu(const QPoint &point)
@@ -22,13 +22,13 @@ void RoomsList::showContextMenu(const QPoint &point)
     QMenu *menu = new QMenu;
     menu->addAction(tr("Add a room"), this, SLOT(addRoom()));
     menu->exec(mapToGlobal(point));
+    delete menu;
 }
 
 void RoomsList::addRoom()
 {
-    _world->rooms()->appendRoom();
-
-    const QModelIndex index = model()->index(_world->rooms()->count()-1, 0);
+    rooms->appendRoom();
+    const QModelIndex index = model()->index(rooms->count()-1, 0);
     setCurrentIndex(index);
 }
 
@@ -36,6 +36,6 @@ void RoomsList::selectionChanged(const QItemSelection &new_selected, const QItem
 {
     Q_UNUSED(old_selected);
     emit selected(new_selected.indexes().first());
-    Room *selected_room = _world->rooms()->at(new_selected.indexes().first().row());
-    _world->rooms()->setActiveRoom(selected_room);
+    Room *selected_room = rooms->at(new_selected.indexes().first().row());
+    rooms->setActiveRoom(selected_room);
 }

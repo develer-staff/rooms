@@ -1,8 +1,6 @@
 #ifndef ROOM_H
 #define ROOM_H
 
-#include <QObject>
-#include <QRect>
 #include <QPixmap>
 #include "area.h"
 
@@ -11,9 +9,10 @@ class Room : public QObject
     Q_OBJECT
 
 public:
-    Room(const QString &name, QObject *parent = 0);
+    Room(const QString &name);
 
     Area *addArea(const QPoint &pos, const QSize &size);
+    QList<Area*> areas() const;
 
     void setActiveArea(Area *area);
     Area *activeArea() const;
@@ -25,8 +24,6 @@ public:
 
     QString name() const;
     void setName(const QString &name);
-
-    QList<Area*> areas() const;
 
     bool areaExists(const QString &name);
 

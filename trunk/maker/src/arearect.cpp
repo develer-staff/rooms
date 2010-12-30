@@ -1,7 +1,6 @@
 #include "arearect.h"
 
-AreaRect::AreaRect(Area *area, QGraphicsScene *scene, QGraphicsItem *parent) :
-    QGraphicsRectItem(parent, scene)
+AreaRect::AreaRect(Area *area)
 {
     _area = area;
 

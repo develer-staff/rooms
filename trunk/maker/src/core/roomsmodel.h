@@ -8,23 +8,26 @@ class RoomsModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    explicit RoomsModel(QObject *parent = 0);
+    explicit RoomsModel();
+
     Room *at(int index) const;
+
     int count() const;
+
     int rowCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
 
     Room *appendRoom();
     bool roomExists(const QString &name);
 
-    Room *activeRoom() const;
     void setActiveRoom(Room *room);
-
-private slots:
-    void onDataChanged();
+    Room *activeRoom() const;
 
 signals:
     void activeRoomChanged();
+
+private slots:
+    void onDataChanged();
 
 private:
     QList<Room *> rooms;

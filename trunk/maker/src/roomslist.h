@@ -9,21 +9,22 @@ class RoomsList : public QListView
     Q_OBJECT
 
 public:
-    explicit RoomsList(QWidget *parent = 0);
+    explicit RoomsList();
     void setWorld(World *world);
+
+signals:
+    void selected(QModelIndex index);
 
 private slots:
     void addRoom();
     void showContextMenu(const QPoint &point);
-
-signals:
-    void selected(QModelIndex index);
 
 protected:
     void selectionChanged(const QItemSelection &new_selected, const QItemSelection &old_selected);
 
 private:
     World *_world;
+    RoomsModel *rooms;
 
 };
 
