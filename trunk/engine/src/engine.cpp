@@ -39,7 +39,7 @@ Log *Engine::getLogger()
     return &logger;
 }
 
-void Engine::click (const int x, const int y)
+void Engine::clickArea(const int x, const int y)
 {
     logger.write("Mouse click received", Log::NOTE);
     Event *event = events_mgr->event(rooms_mgr->eventAt(x, y));
@@ -148,7 +148,7 @@ std::vector<string> Engine::getImgNames() const
 
 std::vector<Item *> Engine::getInventory() const
 {
-    return rooms_mgr->room("0")->items();
+    return rooms_mgr->room(ROOM_INV)->items();
 }
 
 void Engine::createImgsFromXml(XmlVect imgs)

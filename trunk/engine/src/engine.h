@@ -57,7 +57,7 @@ class Engine
         Engine();
         ~Engine();
     public:
-        void click (const int x, const int y);
+        void clickArea(const int x, const int y);
         void clickDialog(const string link);
         bool loadWorldFromStr(const string content);
         bool loadWorldFromFile(const string filename);

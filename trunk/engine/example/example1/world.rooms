@@ -8,7 +8,8 @@
   </images>
 
   <rooms>
-    <room id="0" bg="" />
+    <room id="!NOWHERE" bg="" />
+    <room id="!INVENTORY" bg="" />
     <room id="Locanda" bg="./data/locanda.png">
       <areas>
         <area id="area_porta_locanda" x="250" y="480" width="150" height="150">
@@ -34,7 +35,7 @@
   <events>
     <event id="apri_porta_locanda">
         <requirements>
-            <item_req id="La chiave della locandiera" value="0"/>
+            <item_req id="La chiave della locandiera" value="!INVENTORY"/>
             <var_req id="my_var" value="1"/>
         </requirements>
         <actions_if>
@@ -51,7 +52,7 @@
         <actions_if>
             <action id="ITEM_MOVE">
                 <param value="La chiave della locandiera" />
-                <param value="0" />
+                <param value="!INVENTORY" />
             </action>
             <action id="VAR_SET">
                 <param value="my_var" />

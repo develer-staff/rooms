@@ -141,6 +141,28 @@ public:
         CPPUNIT_ASSERT(!xml::xmlCheckDoc(&doc, Engine::VERSION));
     }
 
+    void testGoodDialogs()
+    {
+        TiXmlDocument doc;
+        doc.Parse("<?xml version='1.0' ?>"
+                   "<world version='ROOMS_VANILLA' name='name' width='800' height='600' start='room'>"
+                   "<dialogs><dialog id='dialog' start='0'><step id='0' text='text'><link id='-1' text='exit'</step></dialogs>"
+                   "<images /> <events /> <items />"
+                   "</world>\n", 0, TIXML_ENCODING_UTF8);
+        CPPUNIT_ASSERT(xml::xmlCheckDoc(&doc, Engine::VERSION));
+    }
+
+    void testWrongDialogs()
+    {
+        TiXmlDocument doc;
+        doc.Parse("<?xml version='1.0' ?>"
+                   "<world version='ROOMS_VANILLA' name='name' width='800' height='600' start='room'>"
+                   "<dialogs><dialog start='0'><step id='0' text='text'><link id='-1' text='exit'</step></dialogs>"
+                   "<images /> <events /> <items />"
+                   "</world>\n", 0, TIXML_ENCODING_UTF8);
+        CPPUNIT_ASSERT(!xml::xmlCheckDoc(&doc, Engine::VERSION));
+    }
+
     static CppUnit::Test *suite()
     {
         CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "XmlTests" );
@@ -166,6 +188,10 @@ public:
                                        &XmlTests::testGoodAreas));
         suiteOfTests->addTest(new CppUnit::TestCaller<XmlTests>("testWrongAreas",
                                        &XmlTests::testWrongAreas));
+        suiteOfTests->addTest(new CppUnit::TestCaller<XmlTests>("testGoodDialogs",
+                                       &XmlTests::testGoodDialogs));
+        suiteOfTests->addTest(new CppUnit::TestCaller<XmlTests>("testWrongDialogs",
+                                       &XmlTests::testWrongDialogs));
         return suiteOfTests;
     }
 };

@@ -12,7 +12,8 @@
   </images>
 
   <rooms>
-    <room id="0" bg="" />
+    <room id="!INVENTORY" bg="" />
+    <room id="!NOWHERE" bg="" />
     <room id="Locanda" bg="./data/locanda.png">
       <areas>
         <area id="area_porta_locanda" x="200" y="350" width="100" height="150">
@@ -69,7 +70,7 @@
   <events>
     <event id="eve_goto_locanda">
         <requirements>
-            <item_req id="Chiave Locanda" value="0"/>
+            <item_req id="Chiave Locanda" value="!INVENTORY"/>
         </requirements>
         <actions_if>
             <action id="ROOM_GOTO">
@@ -97,7 +98,7 @@
     </event>
     <event id="eve_goto_star">
         <requirements>
-            <item_req id="Chiave Stella" value="0" />
+            <item_req id="Chiave Stella" value="!INVENTORY" />
         </requirements>
         <actions_if>
             <action id="ROOM_GOTO">
@@ -131,7 +132,7 @@
         <actions_if>
             <action id="ITEM_MOVE">
                 <param value="Chiave Locanda" />
-                <param value="0" />
+                <param value="!INVENTORY" />
             </action>
         </actions_if>
     </event>
@@ -141,7 +142,7 @@
         <actions_if>
             <action id="ITEM_MOVE">
                 <param value="Chiave Stella" />
-                <param value="0" />
+                <param value="!INVENTORY" />
             </action>
         </actions_if>
     </event>

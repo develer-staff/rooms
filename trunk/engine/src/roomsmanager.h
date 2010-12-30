@@ -1,6 +1,9 @@
 #ifndef ROOMMANAGER_H
 #define ROOMMANAGER_H
 
+#define ROOM_INV "!INVENTORY"
+#define ROOM_NOWHERE "!NOWHERE"
+
 #include <string> //string
 #include <map> //std::map
 #include <vector> //std::vector
