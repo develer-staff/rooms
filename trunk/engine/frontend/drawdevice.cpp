@@ -25,6 +25,19 @@ void DrawDevice::initialize()
     dialog_text.setParent(this);
     dialog_list.hide();
     dialog_text.hide();
+    dialog_list.setStyleSheet("QListWidget {border-width: 4px;"
+                              "border-style: solid;"
+                              "border-radius: 10px;"
+                              "border-color: white;}"
+                              "QListWidget::item:hover {"
+                              "background: rgba(0, 50, 255, 20%)}");
+    dialog_text.setStyleSheet("QLabel {border-width: 4px;"
+                              "border-style: solid;"
+                              "border-radius: 10px;"
+                              "border-color: white;"
+                              "background: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
+                              "stop:0 white, stop:0.4 rgba(10, 20, 30, 40), stop:1 "
+                              "rgba(0, 200, 230, 200));}");
     dialog_list.setGeometry(10, 410, width() - 20, 180);
     dialog_text.setGeometry(20, 350, width() - 40, 50);
     std::vector<string> images = engine->getImgNames();
