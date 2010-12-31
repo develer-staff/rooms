@@ -4,6 +4,7 @@
 #include "../src/engine.h"
 
 #include <string>
+#include <utility> // std::pair
 #include <cppunit/TestAssert.h> //CPPUNIT_ASSERT
 #include <cppunit/TestFixture.h>
 #include <cppunit/TestCaller.h>
@@ -30,12 +31,18 @@ public:
     void setUp();
     void tearDown();
     void testLoadWorld();
+    void testReqsOk();
+    void testReqsNo();
 
     static CppUnit::Test *suite()
     {
         CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "WorldTests" );
         suiteOfTests->addTest(new CppUnit::TestCaller<WorldTests>("testLoadWorld",
                                        &WorldTests::testLoadWorld));
+        suiteOfTests->addTest(new CppUnit::TestCaller<WorldTests>("testReqsOk",
+                                       &WorldTests::testReqsOk));
+        suiteOfTests->addTest(new CppUnit::TestCaller<WorldTests>("testReqsNo",
+                                       &WorldTests::testReqsNo));
         return suiteOfTests;
     }
 };
