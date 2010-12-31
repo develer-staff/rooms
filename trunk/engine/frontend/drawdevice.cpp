@@ -23,10 +23,13 @@ void DrawDevice::initialize()
     setFocusPolicy(Qt::StrongFocus);
     dialog_list.setParent(this);
     dialog_text.setParent(this);
+    inventory_list.setParent(this);
     dialog_list.setFocusPolicy(Qt::NoFocus);
     dialog_text.setFocusPolicy(Qt::NoFocus);
+    inventory_list.setFocusPolicy(Qt::NoFocus);
     dialog_list.hide();
     dialog_text.hide();
+    inventory_list.hide();
     dialog_list.setStyleSheet("QListWidget {border-width: 4px;"
                               "border-style: solid;"
                               "border-radius: 10px;"
@@ -40,8 +43,18 @@ void DrawDevice::initialize()
                               "background: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
                               "stop:0 white, stop:0.4 rgba(10, 20, 30, 40), stop:1 "
                               "rgba(0, 200, 230, 200));}");
+    inventory_list.setStyleSheet("QListWidget {border-width: 4px;"
+                              "border-style: solid;"
+                              "border-radius: 10px;"
+                              "border-color: white;"
+                              "background: rgba(200, 220, 255, 95%)}"
+                              "QListWidget::item:hover {"
+                              "background: rgba(190, 220, 250, 85%)}"
+                              "QListWidget::item {"
+                              "background: rgba(190, 216, 242, 80%)}");
     dialog_list.setGeometry(10, 410, width() - 20, 180);
     dialog_text.setGeometry(20, 350, width() - 40, 50);
+    inventory_list.setGeometry(QRect(25, 25, width() - 50, height()- 50));
     std::vector<string> images = engine->getImgNames();
     for (std::vector<string>::iterator i = images.begin();
          i != images.end(); ++i)
@@ -85,22 +98,7 @@ void DrawDevice::paintEvent(QPaintEvent *event)
             painter.drawText(20, height() - 20, item_text.c_str());
             break;
         }
-        case Engine::INVENTORY:
-        {
-            std::vector<Item *> items = engine->getInventory();
-            int x = 10;
-            painter.fillRect(0, 0, width(), height(), QColor(0, 0, 0, 128));
-            for (std::vector<Item *>::iterator i = items.begin();
-                 i != items.end(); ++i)
-            {
-                QPixmap *img = images[(*i)->image()];
-                QRect irect(x, 10, 50, 50);
-                painter.drawPixmap(irect, *img);
-                x += 50;
-            }
-            break;
-        }
-        case Engine::DIALOG:
+        default:
         {
             painter.fillRect(0, 0, width(), height(), QColor(0, 0, 0, 200));
             break;
@@ -181,7 +179,26 @@ void DrawDevice::update()
         dialog_list.show();
         dialog_text.show();
     }
+
+    if (engine->state() == Engine::INVENTORY)
+    {
+        setCursor(Qt::ArrowCursor);
+        std::vector<Item *> items = engine->getInventory();
+        inventory_list.clear();
+        for (std::vector<Item *>::iterator i = items.begin();
+             i != items.end(); ++i)
+        {
+            QPixmap *img = images[(*i)->image()];
+            QListWidgetItem *itm = new QListWidgetItem(tr((*i)->id.c_str()));
+            itm->setIcon(QIcon(*img));
+            inventory_list.addItem(itm);
+        }
+        inventory_list.show();
+    }
     else
+        inventory_list.hide();
+
+    if (engine->state() == Engine::GAME)
     {
         dialog_text.hide();
         dialog_list.hide();

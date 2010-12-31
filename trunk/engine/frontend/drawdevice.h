@@ -31,6 +31,7 @@ class DrawDevice: public QWidget
         string item_text;
         QListWidget dialog_list;
         QLabel dialog_text;
+        QListWidget inventory_list;
         Engine::State before_inv_state;
     public:
         DrawDevice(Engine *eng, QWidget *parent=0);
