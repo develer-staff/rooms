@@ -23,6 +23,8 @@ void DrawDevice::initialize()
     setFocusPolicy(Qt::StrongFocus);
     dialog_list.setParent(this);
     dialog_text.setParent(this);
+    dialog_list.setFocusPolicy(Qt::NoFocus);
+    dialog_text.setFocusPolicy(Qt::NoFocus);
     dialog_list.hide();
     dialog_text.hide();
     dialog_list.setStyleSheet("QListWidget {border-width: 4px;"
