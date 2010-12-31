@@ -62,7 +62,7 @@ void DrawDevice::initialize()
                               "QListWidget::item {"
                               "background: rgba(190, 216, 242, 80%)}");
     dialog_list.setGeometry(10, 410, width() - 20, 180);
-    hint_text.setGeometry(10, height() - 60, width() - 40, 50);
+    hint_text.setGeometry(20, height() - 60, width() - 40, 50);
     dialog_text.setGeometry(20, 350, width() - 40, 50);
     inventory_list.setGeometry(QRect(25, 25, width() - 50, height()- 50));
     std::vector<string> images = engine->getImgNames();
