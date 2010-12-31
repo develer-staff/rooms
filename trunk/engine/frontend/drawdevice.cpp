@@ -21,21 +21,30 @@ void DrawDevice::initialize()
 {
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
+    hint_text.setParent(this);
     dialog_list.setParent(this);
     dialog_text.setParent(this);
     inventory_list.setParent(this);
     dialog_list.setFocusPolicy(Qt::NoFocus);
     dialog_text.setFocusPolicy(Qt::NoFocus);
     inventory_list.setFocusPolicy(Qt::NoFocus);
+    hint_text.setFocusPolicy(Qt::NoFocus);
+    hint_text.hide();
     dialog_list.hide();
     dialog_text.hide();
     inventory_list.hide();
+    hint_text.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     dialog_list.setStyleSheet("QListWidget {border-width: 4px;"
                               "border-style: solid;"
                               "border-radius: 10px;"
                               "border-color: white;}"
                               "QListWidget::item:hover {"
                               "background: rgba(0, 50, 255, 20%)}");
+    hint_text.setStyleSheet("QLabel {border-width: 4px;"
+                              "border-style: solid;"
+                              "border-radius: 10px;"
+                              "border-color: black;"
+                              "background: rgba(220, 235, 255, 80%);}");
     dialog_text.setStyleSheet("QLabel {border-width: 4px;"
                               "border-style: solid;"
                               "border-radius: 10px;"
@@ -53,6 +62,7 @@ void DrawDevice::initialize()
                               "QListWidget::item {"
                               "background: rgba(190, 216, 242, 80%)}");
     dialog_list.setGeometry(10, 410, width() - 20, 180);
+    hint_text.setGeometry(10, height() - 60, width() - 40, 50);
     dialog_text.setGeometry(20, 350, width() - 40, 50);
     inventory_list.setGeometry(QRect(25, 25, width() - 50, height()- 50));
     std::vector<string> images = engine->getImgNames();
@@ -95,7 +105,6 @@ void DrawDevice::paintEvent(QPaintEvent *event)
     {
         case Engine::GAME:
         {
-            painter.drawText(20, height() - 20, item_text.c_str());
             break;
         }
         default:
@@ -149,9 +158,12 @@ void DrawDevice::mouseMoveEvent(QMouseEvent *event)
         Area *area = engine->getRoomsManager()->currentRoom()->areaAt(event->x(),
                                                                       event->y());
         if (item != 0)
-            item_text = item->id;
+        {
+            hint_text.setText(item->id.c_str());
+            hint_text.show();
+        }
         else
-            item_text = "";
+            hint_text.hide();
 
         if (item != 0)
             setCursor(Qt::OpenHandCursor);

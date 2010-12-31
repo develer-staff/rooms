@@ -28,10 +28,10 @@ class DrawDevice: public QWidget
     private:
         Engine *engine;
         std::map <string, QPixmap *> images;
-        string item_text;
         QListWidget dialog_list;
-        QLabel dialog_text;
         QListWidget inventory_list;
+        QLabel dialog_text;
+        QLabel hint_text;
         Engine::State before_inv_state;
     public:
         DrawDevice(Engine *eng, QWidget *parent=0);
