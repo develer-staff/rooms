@@ -44,7 +44,7 @@ void SettingsWidget::updateAreaSettings(Area *area)
     area_name->setText(area->name());
     actions_list->clear();
     for (int i = 0; i < area->actions().count(); i++)
-        actions_list->addItem(area->actions().at(i)->toHumanReadable());
+        newAction(area->actions().at(i));
 }
 
 void SettingsWidget::validateRoomName(const QString &text)
@@ -91,12 +91,36 @@ void SettingsWidget::setAreaName()
     area_name->setPalette(QPalette(QPalette::Base, Qt::white));
 }
 
-void SettingsWidget::newAction()
+void SettingsWidget::newAction(Action *action)
 {
-    Action *action = activeArea()->addAction();
-    action->setType(action_combobox->currentIndex());
-    action->setRoom(room_combobox->currentText());
-    actions_list->addItem(action->toHumanReadable());
+    if (action == 0)
+    {
+        action = activeArea()->addAction();
+        action->setType(action_combobox->currentIndex());
+        action->setRoom(room_combobox->currentText());
+    }
+    QListWidgetItem *item = new QListWidgetItem(action->toHumanReadable());
+    actions_list->setLayoutDirection(Qt::RightToLeft);
+    actions_list->addItem(item);
+    QPushButton *x_button = new QPushButton(QIcon(":/img/x_button.png"), "");
+    x_button->setFixedSize(16, 16);
+    x_button->setFlat(true);
+    actions_list->setItemWidget(item, x_button);
+    connect(x_button, SIGNAL(clicked()), this, SLOT(removeAction()));
+}
+
+void SettingsWidget::removeAction()
+{
+    for (int i = 0; i < actions_list->count(); i++)
+    {
+        if (actions_list->itemWidget(actions_list->item(i)) == sender())
+        {
+            QListWidgetItem *item = actions_list->takeItem(i);
+            activeArea()->removeAction(item->text());
+            delete item;
+            break;
+        }
+    }
 }
 
 Room *SettingsWidget::activeRoom() const

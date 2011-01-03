@@ -39,6 +39,18 @@ Action *Area::addAction()
     return action;
 }
 
+void Area::removeAction(const QString &text)
+{
+    for (int i = 0; i < _actions.count(); i++)
+    {
+        if (_actions.at(i)->toHumanReadable() == text)
+        {
+            _actions.removeAt(i);
+            break;
+        }
+    }
+}
+
 QList<Action *> Area::actions() const
 {
     return _actions;

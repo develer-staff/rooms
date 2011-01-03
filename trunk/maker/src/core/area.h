@@ -20,6 +20,8 @@ public:
     void setActions(const QList<Action*> &actions);
     QList<Action *> actions() const;
 
+    void removeAction(const QString &text);
+
 private:
     QList<Action *> _actions;
     QString _name;

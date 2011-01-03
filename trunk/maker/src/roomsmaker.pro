@@ -39,3 +39,5 @@ HEADERS += mainwindow.h \
 
 FORMS += mainwindow.ui \
     wizard.ui
+
+RESOURCES += res.qrc
