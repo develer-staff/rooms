@@ -24,10 +24,10 @@ void RoomView::setWorld(World *world)
     setFixedSize(_world->size());
 }
 
-void RoomView::addArea()
+void RoomView::addArea(const QPoint &pos, const QSize &size)
 {
     updateRoomView(activeRoom());
-    Area *area = activeRoom()->addArea(QPoint(0, 0), QSize(64, 64));
+    Area *area = activeRoom()->addArea(pos, size);
     AreaRect *area_rect = new AreaRect(area);
     scenes[activeRoom()]->addItem(area_rect);
 }
@@ -36,8 +36,6 @@ void RoomView::showContextMenu(const QPoint &point)
 {
     QMenu *menu = new QMenu;
     menu->addAction(tr("Set background"), this, SLOT(setBackground()));
-    menu->addSeparator();
-    menu->addAction(tr("Add an area"), this, SLOT(addArea()));
     menu->exec(mapToGlobal(point));
     delete menu;
 }
@@ -93,11 +91,38 @@ void RoomView::mousePressEvent(QMouseEvent *event)
     QGraphicsView::mousePressEvent(event);
     QGraphicsItem *item = itemAt(event->pos());
     if (item == 0 || item->zValue() == 0)
+    {
+        last_pos = event->pos();
         emit selected(activeRoom());
+    }
     else
     {
+        last_pos = QPoint();
         Area *area = ((AreaRect *)item)->area();
         activeRoom()->setActiveArea(area);
         emit selected(area);
     }
+}
+
+void RoomView::mouseMoveEvent(QMouseEvent *event)
+{
+    QGraphicsView::mouseMoveEvent(event);
+    //TODO: drawing temp rectangle
+}
+
+void RoomView::mouseReleaseEvent(QMouseEvent *event)
+{
+    QGraphicsView::mouseReleaseEvent(event);
+    if (!last_pos.isNull() && last_pos != event->pos())
+    {
+        QPoint top_left;
+        top_left.setX((last_pos.x() < event->pos().x()) ? last_pos.x() : event->pos().x());
+        top_left.setY((last_pos.y() < event->pos().y()) ? last_pos.y() : event->pos().y());
+        QPoint bottom_right;
+        bottom_right.setX((last_pos.x() > event->pos().x()) ? last_pos.x() : event->pos().x());
+        bottom_right.setY((last_pos.y() > event->pos().y()) ? last_pos.y() : event->pos().y());
+        addArea(top_left, QSize(bottom_right.x() - top_left.x(),
+                                bottom_right.y() - top_left.y()));
+    }
+    last_pos = QPoint();
 }
