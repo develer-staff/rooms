@@ -13,6 +13,40 @@ void WorldTests::tearDown()
     delete mock;
 }
 
+void WorldTests::testReqsOk()
+{
+    std::string xml = "<?xml version='1.0' ?>"
+                      "<world version='ROOMS_VANILLA' name='testLoadWorld' width='800' height='600' start='room'>"
+                      "<rooms><room id='room' bg='bg'><areas /></room></rooms>"
+                      "<items><item id='key' room='room' x='10' y='10' width='50' height='50' image='../example/example2/data/chiave.png'><do_event value='event' /></item></items>"
+                      "<vars><var id='var' value='1' /></vars>"
+                      "</world>\n";
+    mock->loadWorldFromStr(xml);
+    std::vector <std::pair <std::string, std::string> > items;
+    items.push_back(std::make_pair("key", "room"));
+    CPPUNIT_ASSERT(room_man->checkItemPlace(items) == true);
+    std::vector <std::pair <std::string, int> > vars;
+    vars.push_back(std::make_pair("var", 1));
+    CPPUNIT_ASSERT(event_man->checkVarReqs(vars) == true);
+}
+
+void WorldTests::testReqsNo()
+{
+    std::string xml = "<?xml version='1.0' ?>"
+                      "<world version='ROOMS_VANILLA' name='testLoadWorld' width='800' height='600' start='room'>"
+                      "<rooms><room id='room' bg='bg'><areas /></room></rooms>"
+                      "<items><item id='key' room='room' x='10' y='10' width='50' height='50' image='../example/example2/data/chiave.png'><do_event value='event' /></item></items>"
+                      "<vars><var id='var' value='1' /></vars>"
+                      "</world>\n";
+    mock->loadWorldFromStr(xml);
+    std::vector <std::pair <std::string, std::string> > items;
+    items.push_back(std::make_pair("key", "wrong_room"));
+    CPPUNIT_ASSERT(room_man->checkItemPlace(items) == false);
+    std::vector <std::pair <std::string, int> > vars;
+    vars.push_back(std::make_pair("var", 0));
+    CPPUNIT_ASSERT(event_man->checkVarReqs(vars) == false);
+}
+
 void WorldTests::testLoadWorld()
 {
     std::string xml = "<?xml version='1.0' ?>"

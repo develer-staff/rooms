@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     QApplication qt_app(argc, argv);
     QMainWindow qt_wnd;
     RoomsManager *man = eng->getRoomsManager();
-    qt_wnd.resize(man->width(), man->height());
+    qt_wnd.setFixedSize(man->width(), man->height());
     qt_wnd.setWindowTitle(man->name().c_str());
     DrawDevice qt_draw_device(eng, &qt_wnd);
     qt_draw_device.initialize();
