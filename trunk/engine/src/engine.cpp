@@ -6,18 +6,11 @@ const string Engine::VERSION = "ROOMS_VANILLA";
 
 Engine::Engine()
 {
-    try
-    {
-        logger.write("\n* --------------\n* Engine version: " + VERSION +
-                     "\n* --------------", Log::NOTE);
-        rooms_mgr = new RoomsManager();
-        events_mgr = new EventsManager();
-        _state = INITIALIZING;
-    }
-    catch (...)
-    {
-        logger.write("ERROR: cannot create a valid engine!", Log::ERROR);
-    }
+    logger.write("\n* --------------\n* Engine version: " + VERSION +
+                 "\n* --------------", Log::NOTE);
+    rooms_mgr = new RoomsManager();
+    events_mgr = new EventsManager();
+    _state = INITIALIZING;
 }
 
 Engine::~Engine()
@@ -106,11 +99,13 @@ bool Engine::loadWorldFromFile(const string filename)
 
 bool Engine::loadWorldFromStr(const string content)
 {
-    try
-    {
         TiXmlDocument document;
         document.Parse(content.c_str());
-        if (!xml::xmlCheckDoc(&document, Engine::VERSION)) throw "ERROR: wrong xml document!";
+        if (!xml::xmlCheckDoc(&document, Engine::VERSION))
+        {
+            logger.write("ERROR: wrong xml document!", Log::ERROR);
+            return false;
+        }
         TiXmlElement *root = document.RootElement();
         //Load World attributes
         logger.write(root->Attribute("name"), Log::NOTE);
@@ -143,12 +138,6 @@ bool Engine::loadWorldFromStr(const string content)
         apiRoomGoto(start_room);
         _state = GAME;
         return true;
-    }
-    catch (const char *msg)
-    {
-        logger.write(msg, Log::ERROR);
-        return false;
-    }
 }
 
 std::vector<string> Engine::getImgNames() const
