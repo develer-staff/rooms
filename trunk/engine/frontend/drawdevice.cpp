@@ -61,10 +61,6 @@ void DrawDevice::initialize()
                               "background: rgba(190, 220, 250, 85%)}"
                               "QListWidget::item {"
                               "background: rgba(190, 216, 242, 80%)}");
-    dialog_list.setGeometry(10, 410, width() - 20, 180);
-    hint_text.setGeometry(20, height() - 60, width() - 40, 50);
-    dialog_text.setGeometry(20, 350, width() - 40, 50);
-    inventory_list.setGeometry(QRect(25, 25, width() - 50, height()- 50));
     std::vector<string> images = engine->getImgNames();
     for (std::vector<string>::iterator i = images.begin();
          i != images.end(); ++i)
@@ -180,6 +176,12 @@ void DrawDevice::mouseMoveEvent(QMouseEvent *event)
 
 void DrawDevice::resizeEvent(QResizeEvent *event)
 {
+    int x_border = width() * 0.01;
+    int y_border = height() * 0.01;
+    dialog_list.setGeometry(x_border, height() * 0.5, width() - x_border * 2, height() * 0.3);
+    hint_text.setGeometry(x_border, height() * 0.9, width() - x_border * 2, height() * 0.083);
+    dialog_text.setGeometry(x_border, height() * 0.58, width() - x_border * 2, height() * 0.083);
+    inventory_list.setGeometry(QRect(x_border, y_border, width() - x_border * 2, height()- y_border * 2));
     engine->getRoomsManager()->size(event->size().width(), event->size().height());
 }
 
