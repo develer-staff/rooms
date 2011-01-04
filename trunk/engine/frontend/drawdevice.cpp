@@ -119,7 +119,8 @@ void DrawDevice::mousePressEvent(QMouseEvent * event)
 {
     if (engine->state() == Engine::GAME)
     {
-        engine->clickArea(event->x(), event->y());
+        std::pair<float, float> coord = engine->absToRelCoord(event->x(), event->y());
+        engine->clickArea(coord.first, coord.second);
         update();
     }
 }
@@ -153,10 +154,11 @@ void DrawDevice::mouseMoveEvent(QMouseEvent *event)
 {
     if (engine->state() == Engine::GAME)
     {
-        Item *item = engine->getRoomsManager()->currentRoom()->itemAt(event->x(),
-                                                                      event->y());
-        Area *area = engine->getRoomsManager()->currentRoom()->areaAt(event->x(),
-                                                                      event->y());
+        std::pair<float, float> coord = engine->absToRelCoord(event->x(), event->y());
+        Item *item = engine->getRoomsManager()->currentRoom()->itemAt(coord.first,
+                                                                      coord.second);
+        Area *area = engine->getRoomsManager()->currentRoom()->areaAt(coord.first,
+                                                                      coord.second);
         if (item != 0)
         {
             hint_text.setText(item->id.c_str());
@@ -174,6 +176,11 @@ void DrawDevice::mouseMoveEvent(QMouseEvent *event)
 
         update();
     }
+}
+
+void DrawDevice::resizeEvent(QResizeEvent *event)
+{
+    engine->getRoomsManager()->size(event->size().width(), event->size().height());
 }
 
 void DrawDevice::update()
@@ -231,9 +238,10 @@ void DrawDevice::drawRoom(QPainter &painter)
     for (std::vector<Item *>::iterator i = items.begin();
          i != items.end(); ++i)
     {
-        QPixmap *img = images[(*i)->image()];
-        QRect irect((*i)->x(), (*i)->y(), (*i)->w(), (*i)->h());
-        painter.drawPixmap(irect, *img);
+        std::pair<int, int> point = engine->relToAbsCoord((*i)->x(), (*i)->y());
+        std::pair<int, int> size = engine->relToAbsCoord((*i)->w(), (*i)->h());;
+        painter.drawPixmap(QRect(point.first, point.second,
+                                 size.first, size.second), *images[(*i)->image()]);
     }
 }
 

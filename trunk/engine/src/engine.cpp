@@ -39,7 +39,17 @@ Log *Engine::getLogger()
     return &logger;
 }
 
-void Engine::clickArea(const int x, const int y)
+std::pair<float, float> Engine::absToRelCoord(const int x, const int y)
+{
+    return std::make_pair(static_cast<float>(x) / rooms_mgr->width(), static_cast<float>(y) / rooms_mgr->height());
+}
+
+std::pair<int, int> Engine::relToAbsCoord(const float x, const float y)
+{
+    return std::make_pair(x * rooms_mgr->width(), y * rooms_mgr->height());
+}
+
+void Engine::clickArea(const float x, const float y)
 {
     logger.write("Mouse click received", Log::NOTE);
     Event *event = events_mgr->event(rooms_mgr->eventAt(x, y));
@@ -202,10 +212,10 @@ void Engine::createRoomsFromXml(XmlVect rooms)
         {
             rooms_mgr->addArea((*j)->Attribute("id"),
                                (*i)->Attribute("id"),
-                               xml::xmlReadInt((*j), "x"),
-                               xml::xmlReadInt((*j), "y"),
-                               xml::xmlReadInt((*j), "width"),
-                               xml::xmlReadInt((*j), "height"),
+                               xml::xmlReadFloat((*j), "x"),
+                               xml::xmlReadFloat((*j), "y"),
+                               xml::xmlReadFloat((*j), "width"),
+                               xml::xmlReadFloat((*j), "height"),
                                (*j)->FirstChildElement("do_event")->Attribute("value"));
         }
     }
@@ -217,10 +227,10 @@ void Engine::createItemsFromXml(XmlVect items)
     {
         rooms_mgr->addItem((*i)->Attribute("id"),
                             (*i)->Attribute("room"),
-                            xml::xmlReadInt((*i), "x"),
-                            xml::xmlReadInt((*i), "y"),
-                            xml::xmlReadInt((*i), "width"),
-                            xml::xmlReadInt((*i), "height"),
+                            xml::xmlReadFloat((*i), "x"),
+                            xml::xmlReadFloat((*i), "y"),
+                            xml::xmlReadFloat((*i), "width"),
+                            xml::xmlReadFloat((*i), "height"),
                             (*i)->FirstChildElement("do_event")->Attribute("value"),
                             (*i)->Attribute("image"));
     }

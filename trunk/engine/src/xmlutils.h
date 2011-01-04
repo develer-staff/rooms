@@ -25,6 +25,7 @@ namespace xml
     bool xmlCheckDialogs(TiXmlElement *elem);
     bool xmlCheckDialogSteps(TiXmlElement *elem);
     int xmlReadInt(TiXmlElement *elem, std::string attribute);
+    float xmlReadFloat(TiXmlElement *elem, std::string attribute);
 }
 
 #endif // XMLMANAGER_H

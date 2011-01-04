@@ -57,7 +57,7 @@ class Engine
         Engine();
         ~Engine();
     public:
-        void clickArea(const int x, const int y);
+        void clickArea(const float x, const float y);
         void clickDialog(const string link);
         bool loadWorldFromStr(const string content);
         bool loadWorldFromFile(const string filename);
@@ -71,6 +71,8 @@ class Engine
         string getDialogText();
         std::map<string, string> getDialogChoices();
         Log *getLogger();
+        std::pair<float, float> absToRelCoord(const int x, const int y);
+        std::pair<int, int> relToAbsCoord(const float x, const float y);
     private:
         void execActions(const std::vector <Action *> actions);
         void createImgsFromXml(XmlVect imgs);

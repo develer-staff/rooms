@@ -69,8 +69,8 @@ Room * RoomsManager::addRoom(const string name, const string bg)
     return r;
 }
 
-Area * RoomsManager::addArea(const string name, const string room, const int x, const int y,
-                             const int w, const int h, const string event)
+Area * RoomsManager::addArea(const string name, const string room, const float x, const float y,
+                             const float w, const float h, const string event)
 {
     Area *a = this->room(room)->addArea(name);
     a->size(x, y, w, h);
@@ -78,8 +78,8 @@ Area * RoomsManager::addArea(const string name, const string room, const int x, 
     return a;
 }
 
-Item * RoomsManager::addItem(const string name, const string room, const int x, const int y,
-                             const int w, const int h, const string event, const string image)
+Item * RoomsManager::addItem(const string name, const string room, const float x, const float y,
+                             const float w, const float h, const string event, const string image)
 {
     Item *i = new Item(name);
     items[name] = i;
@@ -135,7 +135,7 @@ Room *RoomsManager::currentRoom()
     return current_room;
 }
 
-string RoomsManager::eventAt(const int x, const int y)
+string RoomsManager::eventAt(const float x, const float y)
 {
     return current_room->eventAt(x, y);
 }

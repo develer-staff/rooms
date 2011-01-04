@@ -33,11 +33,11 @@ class Room
         Area *area(const string name);
         Item *item(const string name);
         std::vector <Item *> items() const;
-        string eventAt(const int x, const int y) const;
-        Item *itemAt(const int x, const int y);
-        Area *areaAt(const int x, const int y);
+        string eventAt(const float x, const float y) const;
+        Item *itemAt(const float x, const float y);
+        Area *areaAt(const float x, const float y);
     protected:
-        bool pointInsideArea(const int x, const int y, const Area *area) const;
+        bool pointInsideArea(const float x, const float y, const Area *area) const;
 };
 
 #endif // ROOM_H

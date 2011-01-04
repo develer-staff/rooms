@@ -7,6 +7,7 @@
 #include <map> //std::map
 #include <string> //std::string
 #include <fstream> //ifstream in fileExists()
+#include <utility> //std::pair
 
 using std::string;
 
@@ -47,6 +48,7 @@ class DrawDevice: public QWidget
         void mousePressEvent(QMouseEvent * event);
         void mouseMoveEvent(QMouseEvent *event);
         void keyPressEvent(QKeyEvent *event);
+        void resizeEvent(QResizeEvent *event);
         void update();
     protected:
         void drawRoom(QPainter &painter);

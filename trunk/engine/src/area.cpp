@@ -10,7 +10,7 @@ Area::~Area()
 
 }
 
-void Area::size(const int x, const int y, const int width, const int height)
+void Area::size(const float x, const float y, const float width, const float height)
 {
     _x = x;
     _y = y;
@@ -18,22 +18,22 @@ void Area::size(const int x, const int y, const int width, const int height)
     _height = height;
 }
 
-int Area::x() const
+float Area::x() const
 {
     return _x;
 }
 
-int Area::y() const
+float Area::y() const
 {
     return _y;
 }
 
-int Area::h() const
+float Area::h() const
 {
     return _height;
 }
 
-int Area::w() const
+float Area::w() const
 {
     return _width;
 }

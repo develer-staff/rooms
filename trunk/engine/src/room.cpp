@@ -70,7 +70,7 @@ std::vector<Item *> Room::items() const
     return r;
 }
 
-string Room::eventAt(const int x, const int y) const
+string Room::eventAt(const float x, const float y) const
 {
     for (std::map <string, Item *>::const_iterator i = _items.begin(); i != _items.end(); ++i)
     {
@@ -85,7 +85,7 @@ string Room::eventAt(const int x, const int y) const
     return "";
 }
 
-Item *Room::itemAt(const int x, const int y)
+Item *Room::itemAt(const float x, const float y)
 {
     for (std::map <string, Item *>::iterator i = _items.begin(); i != _items.end(); ++i)
         if (pointInsideArea(x, y, dynamic_cast<Area *>(i->second)))
@@ -93,7 +93,7 @@ Item *Room::itemAt(const int x, const int y)
     return 0;
 }
 
-Area *Room::areaAt(const int x, const int y)
+Area *Room::areaAt(const float x, const float y)
 {
     for (std::map <string, Area *>::iterator i = areas.begin(); i != areas.end(); ++i)
         if (pointInsideArea(x, y, i->second))
@@ -101,7 +101,7 @@ Area *Room::areaAt(const int x, const int y)
     return 0;
 }
 
-bool Room::pointInsideArea(const int x, const int y, const Area *area) const
+bool Room::pointInsideArea(const float x, const float y, const Area *area) const
 {
     return (x >= area->x() && x <= area->x() + area->w() && y >= area->y() &&
             y <= area->y() + area->h());

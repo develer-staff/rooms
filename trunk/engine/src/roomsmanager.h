@@ -38,10 +38,10 @@ class RoomsManager
         ~RoomsManager();
     public:
         Room *addRoom(const string name, const string bg);
-        Area *addArea(const string name, const string room, const int x, const int y,
-                      const int w, const int h, const string event);
-        Item *addItem(const string name, const string room, const int x, const int y,
-                      const int w, const int h, const string event, const string image);
+        Area *addArea(const string name, const string room, const float x, const float y,
+                      const float w, const float h, const string event);
+        Item *addItem(const string name, const string room, const float x, const float y,
+                      const float w, const float h, const string event, const string image);
         Room *room(const string name);
         Area *area(const string name);
         Item *item(const string name);
@@ -52,7 +52,7 @@ class RoomsManager
         int width() const;
         void setCurrentRoom(const string name);
         Room *currentRoom();
-        string eventAt(const int x, const int y);
+        string eventAt(const float x, const float y);
         void moveItem(const string name, const string dest);
         bool checkItemPlace(const std::vector <std::pair <string, string> > reqs);
 };

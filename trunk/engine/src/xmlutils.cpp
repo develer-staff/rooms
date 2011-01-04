@@ -7,6 +7,13 @@ int xml::xmlReadInt(TiXmlElement *elem, std::string attribute)
     return tmp;
 }
 
+float xml::xmlReadFloat(TiXmlElement *elem, std::string attribute)
+{
+    float tmp = 0.0;
+    elem->QueryFloatAttribute(attribute.c_str(), &tmp);
+    return tmp;
+}
+
 bool xml::xmlCheckDoc(TiXmlDocument *doc, const std::string &eng_ver)
 {
     if (doc)
@@ -196,17 +203,17 @@ bool xml::xmlCheckRooms(TiXmlElement *elem)
 bool xml::xmlCheckAreas(TiXmlElement *elem)
 {
     std::set<std::string> ids;
-    int tmp;
+    float tmp = 0.0;
     if (elem)
         for (TiXmlElement *i = elem->FirstChildElement("area"); i != 0;
              i = i->NextSiblingElement("area"))
         {
             if (i->Attribute("id") == 0 ||
                 ids.count(i->Attribute("id")) > 0 ||
-                i->QueryIntAttribute("x", &tmp) != TIXML_SUCCESS ||
-                i->QueryIntAttribute("y", &tmp) != TIXML_SUCCESS ||
-                i->QueryIntAttribute("width", &tmp) != TIXML_SUCCESS ||
-                i->QueryIntAttribute("height", &tmp) != TIXML_SUCCESS ||
+                i->QueryFloatAttribute("x", &tmp) != TIXML_SUCCESS ||
+                i->QueryFloatAttribute("y", &tmp) != TIXML_SUCCESS ||
+                i->QueryFloatAttribute("width", &tmp) != TIXML_SUCCESS ||
+                i->QueryFloatAttribute("height", &tmp) != TIXML_SUCCESS ||
                 !xmlCheckDoEvents(i))
                 return false;
             else
@@ -218,17 +225,17 @@ bool xml::xmlCheckAreas(TiXmlElement *elem)
 bool xml::xmlCheckItems(TiXmlElement *elem)
 {
     std::set<std::string> ids;
-    int tmp;
+    float tmp = 0.0;
     if (elem)
         for (TiXmlElement *i = elem->FirstChildElement("item"); i != 0;
              i = i->NextSiblingElement("item"))
         {
             if (i->Attribute("id") == 0 ||
                 ids.count(i->Attribute("id")) > 0 ||
-                i->QueryIntAttribute("x", &tmp) != TIXML_SUCCESS ||
-                i->QueryIntAttribute("y", &tmp) != TIXML_SUCCESS ||
-                i->QueryIntAttribute("width", &tmp) != TIXML_SUCCESS ||
-                i->QueryIntAttribute("height", &tmp) != TIXML_SUCCESS ||
+                i->QueryFloatAttribute("x", &tmp) != TIXML_SUCCESS ||
+                i->QueryFloatAttribute("y", &tmp) != TIXML_SUCCESS ||
+                i->QueryFloatAttribute("width", &tmp) != TIXML_SUCCESS ||
+                i->QueryFloatAttribute("height", &tmp) != TIXML_SUCCESS ||
                 i->Attribute("image") == 0 ||
                 i->Attribute("room") == 0 ||
                 !xmlCheckDoEvents(i))
