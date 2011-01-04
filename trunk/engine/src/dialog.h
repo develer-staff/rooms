@@ -24,8 +24,8 @@ class Dialog
 {
     public:
         const string id;
-        const string begin_step;
     private:
+        const string begin_step;
         DialogStep *current_step;
         std::map <string, DialogStep> steps;
     public:
