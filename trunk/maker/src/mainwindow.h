@@ -26,9 +26,11 @@ private slots:
     void newProject();
     void openProject();
     void saveProject();
+    void saveAsProject();
 
 private:
     void setupUi();
+    QString current_project;
     QString createXml() const;
     World *createWorld(const QDomDocument &doc);
     QWidget *widget;

@@ -29,9 +29,37 @@ MainWindow::~MainWindow()
 
 void MainWindow::saveProject()
 {
-    QString project_filename = QFileDialog::getSaveFileName(this, "Save project", QDir::homePath());
-    QDir::setCurrent(project_filename.section("/", 0, -2));
-    QFile file(project_filename);
+    QDir::setCurrent(current_project.section("/", 0, -2));
+    QFile file(current_project);
+    if (!file.open(QIODevice::WriteOnly))
+        return;
+
+    file.write(createXml().toAscii());
+    file.close();
+
+    QDir data_dir(QDir::currentPath() + "/" + world->name() + "_data");
+    data_dir.mkpath(data_dir.absolutePath());
+
+    QPixmap void_bg(world->size());
+    void_bg.fill();
+
+    for (int i = 0; i < rooms->count(); i++)
+    {
+        Room *room = rooms->at(i);
+        QString bg_filename(data_dir.absolutePath() + "/" +
+                            room->name() + "_bg.png");
+        if (room->background().isNull())
+            void_bg.save(bg_filename);
+        else
+            room->background().save(bg_filename);
+    }
+}
+
+void MainWindow::saveAsProject()
+{
+    current_project = QFileDialog::getSaveFileName(this, "Save project", QDir::homePath());
+    QDir::setCurrent(current_project.section("/", 0, -2));
+    QFile file(current_project);
     if (!file.open(QIODevice::WriteOnly))
         return;
 
@@ -59,11 +87,11 @@ void MainWindow::saveProject()
 void MainWindow::openProject()
 {
     QDomDocument doc("RoomsProjectFile");
-    QString project_filename = QFileDialog::getOpenFileName(this, "Open project",
+    current_project = QFileDialog::getOpenFileName(this, "Open project",
                                                             QDir::homePath(),
                                                             "Rooms project (*.rooms);;All files (*)");
-    QDir::setCurrent(project_filename.section("/", 0, -2));
-    QFile file(project_filename);
+    QDir::setCurrent(current_project.section("/", 0, -2));
+    QFile file(current_project);
     if (!file.open(QIODevice::ReadOnly))
         return;
     if (!doc.setContent(&file))
@@ -277,6 +305,7 @@ void MainWindow::setupUi()
     ui->centralWidget->setDisabled(true);
 
     connect(ui->action_Save, SIGNAL(triggered()), this, SLOT(saveProject()));
+    connect(ui->action_saveAs, SIGNAL(triggered()), this, SLOT(saveAsProject()));
     connect(ui->action_Open, SIGNAL(triggered()), this, SLOT(openProject()));
     connect(ui->action_New, SIGNAL(triggered()), wizard, SLOT(show()));
     connect(ui->action_Quit, SIGNAL(triggered()), this, SLOT(close()));

@@ -28,7 +28,8 @@ private slots:
     void validateAreaName(const QString &text);
     void setRoomName();
     void setAreaName();
-    void newAction();
+    void newAction(Action *action = 0);
+    void removeAction();
 
 protected:
     Room *activeRoom() const;
