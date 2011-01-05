@@ -114,10 +114,13 @@ void DrawDevice::mousePressEvent(QMouseEvent * event)
 {
     if (engine->state() == Engine::GAME)
     {
+        dialog_text.hide();
+        dialog_list.hide();
         std::pair<float, float> coord = engine->absToRelCoord(event->x(), event->y());
         engine->clickArea(coord.first, coord.second);
         update();
     }
+    updateDialog();
 }
 
 void DrawDevice::keyPressEvent(QKeyEvent * event)
@@ -134,6 +137,7 @@ void DrawDevice::keyPressEvent(QKeyEvent * event)
             else
                 engine->setState(before_inv_state);
             setCursor(Qt::ArrowCursor);
+            updateInventory();
             update();
             break;
         }
@@ -184,7 +188,7 @@ void DrawDevice::resizeEvent(QResizeEvent *event)
     engine->getRoomsManager()->size(event->size().width(), event->size().height());
 }
 
-void DrawDevice::update()
+void DrawDevice::updateDialog()
 {
     if (engine->state() == Engine::DIALOG)
     {
@@ -199,7 +203,10 @@ void DrawDevice::update()
         dialog_list.show();
         dialog_text.show();
     }
+}
 
+void DrawDevice::updateInventory()
+{
     if (engine->state() == Engine::INVENTORY)
     {
         setCursor(Qt::ArrowCursor);
@@ -217,14 +224,6 @@ void DrawDevice::update()
     }
     else
         inventory_list.hide();
-
-    if (engine->state() == Engine::GAME)
-    {
-        dialog_text.hide();
-        dialog_list.hide();
-    }
-
-    QWidget::update();
 }
 
 void DrawDevice::drawRoom(QPainter &painter)

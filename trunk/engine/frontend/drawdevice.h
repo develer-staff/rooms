@@ -49,9 +49,10 @@ class DrawDevice: public QWidget
         void mouseMoveEvent(QMouseEvent *event);
         void keyPressEvent(QKeyEvent *event);
         void resizeEvent(QResizeEvent *event);
-        void update();
     protected:
         void drawRoom(QPainter &painter);
+        void updateDialog();
+        void updateInventory();
 };
 
 #endif // DRAWDEVICE_H
