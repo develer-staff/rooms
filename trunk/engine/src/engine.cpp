@@ -59,12 +59,14 @@ void Engine::clickArea(const float x, const float y)
 void Engine::clickDialog(const string link)
 {
     logger.write("Dialog choice received: " + link, Log::NOTE);
-    if (link == "-1")
+    std::map<string, string> choices = getDialogChoices();
+    string id_step = choices[link];
+    if (id_step == "-1")
     {
         setState(GAME);
         return;
     }
-    execActions(dialog->jump(link));
+    execActions(dialog->jump(id_step));
 }
 
 Engine::State Engine::state() const

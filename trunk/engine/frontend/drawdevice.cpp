@@ -88,8 +88,7 @@ void DrawDevice::quit(int status)
 
 void DrawDevice::dialogChosed(QListWidgetItem *item)
 {
-    std::map<string, string> choices = engine->getDialogChoices();
-    engine->clickDialog(choices[item->text().toStdString()]);
+    engine->clickDialog(item->text().toStdString());
     update();
 }
 
