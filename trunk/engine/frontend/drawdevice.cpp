@@ -34,33 +34,6 @@ void DrawDevice::initialize()
     dialog_text.hide();
     inventory_list.hide();
     hint_text.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    dialog_list.setStyleSheet("QListWidget {border-width: 4px;"
-                              "border-style: solid;"
-                              "border-radius: 10px;"
-                              "border-color: white;}"
-                              "QListWidget::item:hover {"
-                              "background: rgba(0, 50, 255, 20%)}");
-    hint_text.setStyleSheet("QLabel {border-width: 4px;"
-                              "border-style: solid;"
-                              "border-radius: 10px;"
-                              "border-color: black;"
-                              "background: rgba(220, 235, 255, 80%);}");
-    dialog_text.setStyleSheet("QLabel {border-width: 4px;"
-                              "border-style: solid;"
-                              "border-radius: 10px;"
-                              "border-color: white;"
-                              "background: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
-                              "stop:0 white, stop:0.4 rgba(10, 20, 30, 40), stop:1 "
-                              "rgba(0, 200, 230, 200));}");
-    inventory_list.setStyleSheet("QListWidget {border-width: 4px;"
-                              "border-style: solid;"
-                              "border-radius: 10px;"
-                              "border-color: white;"
-                              "background: rgba(200, 220, 255, 95%)}"
-                              "QListWidget::item:hover {"
-                              "background: rgba(190, 220, 250, 85%)}"
-                              "QListWidget::item {"
-                              "background: rgba(190, 216, 242, 80%)}");
     std::vector<string> images = engine->getImgNames();
     for (std::vector<string>::iterator i = images.begin();
          i != images.end(); ++i)

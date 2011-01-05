@@ -13,6 +13,13 @@ int main(int argc, char *argv[])
         return 1;
     }
     QApplication qt_app(argc, argv);
+    QFile file("style.qss");
+    if (file.exists())
+    {
+        file.open(QFile::ReadOnly);
+        QString styleSheet = QLatin1String(file.readAll());
+        qt_app.setStyleSheet(styleSheet);
+    }
     QMainWindow qt_wnd;
     RoomsManager *man = eng->getRoomsManager();
     qt_wnd.setBaseSize(man->width(), man->height());
