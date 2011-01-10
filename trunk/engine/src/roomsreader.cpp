@@ -258,12 +258,11 @@ bool RoomsReader::parseItem(TiXmlElement *elem)
 bool RoomsReader::parseRoom(TiXmlElement *elem)
 {
     if (!(parseAttr(elem, "id", ATTR_STR) &&
-          parseAttr(elem, "bg", ATTR_STR) &&
-          parseAttr(elem, "width", ATTR_INT) &&
-          parseAttr(elem, "height", ATTR_INT)))
+          parseAttr(elem, "bg", ATTR_STR)))
         return false;
     if (!(checkUniqueId(unique_ids_rooms, elem->Attribute("id")) &&
-        checkParent(elem, "rooms")))
+          checkUniqueId(unique_ids_images, elem->Attribute("bg")) &&
+          checkParent(elem, "rooms")))
         return false;
     return true;
 }
@@ -282,9 +281,8 @@ bool RoomsReader::parseWorld(TiXmlElement *elem)
     if (!(parseAttr(elem, "version", ATTR_STR) &&
           parseAttr(elem, "name", ATTR_STR) &&
           parseAttr(elem, "start", ATTR_STR) &&
-          parseAttr(elem, "bg", ATTR_STR)))
-        return false;
-    if (checkUniqueId(unique_ids_images, elem->Attribute("bg")))
+          parseAttr(elem, "width", ATTR_INT) &&
+          parseAttr(elem, "height", ATTR_INT)))
         return false;
     return true;
 }
