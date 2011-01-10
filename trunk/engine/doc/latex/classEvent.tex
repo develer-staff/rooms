@@ -1,0 +1,68 @@
+\hypertarget{classEvent}{
+\section{Event Class Reference}
+\label{classEvent}\index{Event@{Event}}
+}
+
+
+The \hyperlink{classEvent}{Event} class handles events informations, such as requirements and actions.  
+
+
+
+
+{\ttfamily \#include $<$event.h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classEvent_a4c24a24cb3b0108631632114e6c19e65}{
+\hyperlink{classEvent_a4c24a24cb3b0108631632114e6c19e65}{Event} (const string name)}
+\label{classEvent_a4c24a24cb3b0108631632114e6c19e65}
+
+\begin{DoxyCompactList}\small\item\em Creates an event with given id. \item\end{DoxyCompactList}\item 
+\hypertarget{classEvent_a9a0b948b36af48f4b1ba6684260e716e}{
+\hyperlink{classAction}{Action} $\ast$ \hyperlink{classEvent_a9a0b948b36af48f4b1ba6684260e716e}{addAction} (const string name)}
+\label{classEvent_a9a0b948b36af48f4b1ba6684260e716e}
+
+\begin{DoxyCompactList}\small\item\em Adds a new action to the event. \item\end{DoxyCompactList}\item 
+\hypertarget{classEvent_a699266ed7e70492008096568e69417e0}{
+std::vector$<$ \hyperlink{classAction}{Action} $\ast$ $>$ \hyperlink{classEvent_a699266ed7e70492008096568e69417e0}{actions} () const }
+\label{classEvent_a699266ed7e70492008096568e69417e0}
+
+\begin{DoxyCompactList}\small\item\em Gets the action list. \item\end{DoxyCompactList}\item 
+\hypertarget{classEvent_a0cc0a16f73ac192068fd51831c2b77be}{
+void \hyperlink{classEvent_a0cc0a16f73ac192068fd51831c2b77be}{addItemReq} (const string name, const string room)}
+\label{classEvent_a0cc0a16f73ac192068fd51831c2b77be}
+
+\begin{DoxyCompactList}\small\item\em Adds an item requirement to the event. \item\end{DoxyCompactList}\item 
+\hypertarget{classEvent_a9c23b1394b22ba045447d8cf0ae53a82}{
+void \hyperlink{classEvent_a9c23b1394b22ba045447d8cf0ae53a82}{addVarReq} (const string name, const int value)}
+\label{classEvent_a9c23b1394b22ba045447d8cf0ae53a82}
+
+\begin{DoxyCompactList}\small\item\em Adds a var requirement to the event. \item\end{DoxyCompactList}\item 
+\hypertarget{classEvent_ad6b224463b52873c983caa580073ebc7}{
+std::vector$<$ std::pair$<$ string, string $>$ $>$ \hyperlink{classEvent_ad6b224463b52873c983caa580073ebc7}{itemReqs} () const }
+\label{classEvent_ad6b224463b52873c983caa580073ebc7}
+
+\begin{DoxyCompactList}\small\item\em Gets the item requirements list. \item\end{DoxyCompactList}\item 
+\hypertarget{classEvent_ad0d65d3da1a760ff239ad3977c16d9b6}{
+std::vector$<$ std::pair$<$ string, int $>$ $>$ \hyperlink{classEvent_ad0d65d3da1a760ff239ad3977c16d9b6}{varReqs} () const }
+\label{classEvent_ad0d65d3da1a760ff239ad3977c16d9b6}
+
+\begin{DoxyCompactList}\small\item\em Gets the var requirements list. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classEvent_a8566f6b1af844306a135e4bc2d2cad62}{
+const std::string \hyperlink{classEvent_a8566f6b1af844306a135e4bc2d2cad62}{id}}
+\label{classEvent_a8566f6b1af844306a135e4bc2d2cad62}
+
+\begin{DoxyCompactList}\small\item\em \hyperlink{classEvent}{Event} id. It must be unique. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The \hyperlink{classEvent}{Event} class handles events informations, such as requirements and actions. An event is an action list linked to a list of requirements. An event happens only if requirements are satisfied. 
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gendoikari/Projects/rooms/trunk/engine/src/\hyperlink{event_8h}{event.h}\item 
+/home/gendoikari/Projects/rooms/trunk/engine/src/event.cpp\end{DoxyCompactItemize}

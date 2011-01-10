@@ -1,0 +1,235 @@
+\hypertarget{classEngine}{
+\section{Engine Class Reference}
+\label{classEngine}\index{Engine@{Engine}}
+}
+
+
+\hyperlink{classEngine}{Engine} Main class.  
+
+
+
+
+{\ttfamily \#include $<$engine.h$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum {\bfseries State} \{ \par
+{\bfseries INITIALIZING} =  0, 
+{\bfseries MENU}, 
+{\bfseries GAME}, 
+{\bfseries DIALOG}, 
+\par
+{\bfseries INVENTORY}, 
+{\bfseries ENDING}
+ \}
+\item 
+\hypertarget{classEngine_a57d25a7a5c786a404ffd8e50389c6397}{
+typedef std::vector$<$ TiXmlElement $\ast$ $>$ {\bfseries XmlVect}}
+\label{classEngine_a57d25a7a5c786a404ffd8e50389c6397}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classEngine_a936b01c9f34d9823777579437fc74b07}{clickArea} (const float x, const float y)
+\begin{DoxyCompactList}\small\item\em Comunicates to engine that an area could be activated. \item\end{DoxyCompactList}\item 
+void \hyperlink{classEngine_a0293884bc7150e040adf89a0ef9214b3}{clickDialog} (const string link)
+\begin{DoxyCompactList}\small\item\em Comunicates to engine that a dialogue choice has been clicked. \item\end{DoxyCompactList}\item 
+bool \hyperlink{classEngine_af730651bd09d0395d6938ee2b48e5301}{loadWorldFromStr} (const string content)
+\begin{DoxyCompactList}\small\item\em Load world data from string. \item\end{DoxyCompactList}\item 
+bool \hyperlink{classEngine_adf036b1c5af70e621bed4b09074897d1}{loadWorldFromFile} (const string filename)
+\begin{DoxyCompactList}\small\item\em Load world data from file. \item\end{DoxyCompactList}\item 
+\hypertarget{classEngine_a95d1912da54b5100c82fbf7fe2f0ddf2}{
+void {\bfseries loadGame} (const string filename)}
+\label{classEngine_a95d1912da54b5100c82fbf7fe2f0ddf2}
+
+\item 
+\hypertarget{classEngine_a297b7233ad04707bf90d7cbc2cbfb117}{
+\hyperlink{classRoomsManager}{RoomsManager} $\ast$ \hyperlink{classEngine_a297b7233ad04707bf90d7cbc2cbfb117}{getRoomsManager} () const }
+\label{classEngine_a297b7233ad04707bf90d7cbc2cbfb117}
+
+\begin{DoxyCompactList}\small\item\em Gets \hyperlink{classRoomsManager}{RoomsManager}. \item\end{DoxyCompactList}\item 
+\hypertarget{classEngine_a32274087fb61b8ec5daeccf068c2909f}{
+\hyperlink{classEventsManager}{EventsManager} $\ast$ \hyperlink{classEngine_a32274087fb61b8ec5daeccf068c2909f}{getEventsManager} () const }
+\label{classEngine_a32274087fb61b8ec5daeccf068c2909f}
+
+\begin{DoxyCompactList}\small\item\em Gets \hyperlink{classEventsManager}{EventsManager}. \item\end{DoxyCompactList}\item 
+\hypertarget{classEngine_ab024896c389c5433596082338eb70c72}{
+Engine::State \hyperlink{classEngine_ab024896c389c5433596082338eb70c72}{state} () const }
+\label{classEngine_ab024896c389c5433596082338eb70c72}
+
+\begin{DoxyCompactList}\small\item\em Gets the game state. \item\end{DoxyCompactList}\item 
+\hypertarget{classEngine_adc12afb2a30ebbe6bbf897f3a21fbb5e}{
+void \hyperlink{classEngine_adc12afb2a30ebbe6bbf897f3a21fbb5e}{setState} (const Engine::State state\_\-name)}
+\label{classEngine_adc12afb2a30ebbe6bbf897f3a21fbb5e}
+
+\begin{DoxyCompactList}\small\item\em Sets the game state. \item\end{DoxyCompactList}\item 
+\hypertarget{classEngine_a051a184de2e7651b841d3a0c19408552}{
+std::vector$<$ string $>$ \hyperlink{classEngine_a051a184de2e7651b841d3a0c19408552}{getImgNames} () const }
+\label{classEngine_a051a184de2e7651b841d3a0c19408552}
+
+\begin{DoxyCompactList}\small\item\em Gets all the paths of images used in the game. \item\end{DoxyCompactList}\item 
+\hypertarget{classEngine_a85f2f1ff9b032e6fe779cbc35068376b}{
+std::vector$<$ \hyperlink{classItem}{Item} $\ast$ $>$ \hyperlink{classEngine_a85f2f1ff9b032e6fe779cbc35068376b}{getInventory} () const }
+\label{classEngine_a85f2f1ff9b032e6fe779cbc35068376b}
+
+\begin{DoxyCompactList}\small\item\em Gets all items in inventory. \item\end{DoxyCompactList}\item 
+\hypertarget{classEngine_aef8bb330eaf4da38e0e2937e79b6e46f}{
+string \hyperlink{classEngine_aef8bb330eaf4da38e0e2937e79b6e46f}{getDialogText} ()}
+\label{classEngine_aef8bb330eaf4da38e0e2937e79b6e46f}
+
+\begin{DoxyCompactList}\small\item\em Gets the text of the current dialog. \item\end{DoxyCompactList}\item 
+\hypertarget{classEngine_aa9b1c41224f5489c7bdc34c3d64ecb98}{
+std::map$<$ string, string $>$ \hyperlink{classEngine_aa9b1c41224f5489c7bdc34c3d64ecb98}{getDialogChoices} ()}
+\label{classEngine_aa9b1c41224f5489c7bdc34c3d64ecb98}
+
+\begin{DoxyCompactList}\small\item\em Gets all dialog choices that satisfy requirements. \item\end{DoxyCompactList}\item 
+\hypertarget{classEngine_aad7e63c8e6f99b7a8383f6259905957c}{
+\hyperlink{classLog}{Log} $\ast$ \hyperlink{classEngine_aad7e63c8e6f99b7a8383f6259905957c}{getLogger} ()}
+\label{classEngine_aad7e63c8e6f99b7a8383f6259905957c}
+
+\begin{DoxyCompactList}\small\item\em Gets the logger. \item\end{DoxyCompactList}\item 
+std::pair$<$ float, float $>$ \hyperlink{classEngine_a3b5e52d55ab6d60b98843e275d77c506}{absToRelCoord} (const int x, const int y)
+\begin{DoxyCompactList}\small\item\em Converts from absolute coordinates to game relative coordinates. \item\end{DoxyCompactList}\item 
+std::pair$<$ int, int $>$ \hyperlink{classEngine_ae841f1b67f20d9f996b867b5f13df42b}{relToAbsCoord} (const float x, const float y)
+\begin{DoxyCompactList}\small\item\em Converts from relative coordinates to absolute coordinates. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classEngine_ab18b172f434c24caf414b2668f341841}{
+static const string {\bfseries VERSION} = \char`\"{}ROOMS\_\-VANILLA\char`\"{}}
+\label{classEngine_ab18b172f434c24caf414b2668f341841}
+
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classEngine_a0bded9510d1cdd0bae88d3738510b719}{
+class {\bfseries MockEngine}}
+\label{classEngine_a0bded9510d1cdd0bae88d3738510b719}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{classEngine}{Engine} Main class. Provides information about game structure and manages game objects through object managers like the \hyperlink{classRoomsManager}{RoomsManager}. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classEngine_a3b5e52d55ab6d60b98843e275d77c506}{
+\index{Engine@{Engine}!absToRelCoord@{absToRelCoord}}
+\index{absToRelCoord@{absToRelCoord}!Engine@{Engine}}
+\subsubsection[{absToRelCoord}]{\setlength{\rightskip}{0pt plus 5cm}std::pair$<$ float, float $>$ Engine::absToRelCoord (
+\begin{DoxyParamCaption}
+\item[{const int}]{ x, }
+\item[{const int}]{ y}
+\end{DoxyParamCaption}
+)}}
+\label{classEngine_a3b5e52d55ab6d60b98843e275d77c506}
+
+
+Converts from absolute coordinates to game relative coordinates. 
+
+All areas and items in the game use relative coordinates (0.0 -\/ 1.0). 
+\begin{DoxyParams}{Parameters}
+\item[{\em x}]X in pixel \item[{\em y}]Y in pixel \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pair of normalized coordinates. 
+\end{DoxyReturn}
+\hypertarget{classEngine_a936b01c9f34d9823777579437fc74b07}{
+\index{Engine@{Engine}!clickArea@{clickArea}}
+\index{clickArea@{clickArea}!Engine@{Engine}}
+\subsubsection[{clickArea}]{\setlength{\rightskip}{0pt plus 5cm}void Engine::clickArea (
+\begin{DoxyParamCaption}
+\item[{const float}]{ x, }
+\item[{const float}]{ y}
+\end{DoxyParamCaption}
+)}}
+\label{classEngine_a936b01c9f34d9823777579437fc74b07}
+
+
+Comunicates to engine that an area could be activated. 
+
+If there is an area under the click, engine checks the event and executes actions. 
+\begin{DoxyParams}{Parameters}
+\item[{\em x}]X in relative coordinates. \item[{\em y}]Y in relative coordinates. \end{DoxyParams}
+\hypertarget{classEngine_a0293884bc7150e040adf89a0ef9214b3}{
+\index{Engine@{Engine}!clickDialog@{clickDialog}}
+\index{clickDialog@{clickDialog}!Engine@{Engine}}
+\subsubsection[{clickDialog}]{\setlength{\rightskip}{0pt plus 5cm}void Engine::clickDialog (
+\begin{DoxyParamCaption}
+\item[{const string}]{ link}
+\end{DoxyParamCaption}
+)}}
+\label{classEngine_a0293884bc7150e040adf89a0ef9214b3}
+
+
+Comunicates to engine that a dialogue choice has been clicked. 
+
+\hyperlink{classEngine}{Engine} updates the dialogue and world data. 
+\begin{DoxyParams}{Parameters}
+\item[{\em link}]It's the message chosen. \end{DoxyParams}
+\hypertarget{classEngine_adf036b1c5af70e621bed4b09074897d1}{
+\index{Engine@{Engine}!loadWorldFromFile@{loadWorldFromFile}}
+\index{loadWorldFromFile@{loadWorldFromFile}!Engine@{Engine}}
+\subsubsection[{loadWorldFromFile}]{\setlength{\rightskip}{0pt plus 5cm}bool Engine::loadWorldFromFile (
+\begin{DoxyParamCaption}
+\item[{const string}]{ filename}
+\end{DoxyParamCaption}
+)}}
+\label{classEngine_adf036b1c5af70e621bed4b09074897d1}
+
+
+Load world data from file. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em filename}]Path to a world data file. \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if succeded in loading and parsing, false otherwise. 
+\end{DoxyReturn}
+\hypertarget{classEngine_af730651bd09d0395d6938ee2b48e5301}{
+\index{Engine@{Engine}!loadWorldFromStr@{loadWorldFromStr}}
+\index{loadWorldFromStr@{loadWorldFromStr}!Engine@{Engine}}
+\subsubsection[{loadWorldFromStr}]{\setlength{\rightskip}{0pt plus 5cm}bool Engine::loadWorldFromStr (
+\begin{DoxyParamCaption}
+\item[{const string}]{ content}
+\end{DoxyParamCaption}
+)}}
+\label{classEngine_af730651bd09d0395d6938ee2b48e5301}
+
+
+Load world data from string. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em content}]World data string. \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if succeded in loading and parsing, false otherwise. 
+\end{DoxyReturn}
+\hypertarget{classEngine_ae841f1b67f20d9f996b867b5f13df42b}{
+\index{Engine@{Engine}!relToAbsCoord@{relToAbsCoord}}
+\index{relToAbsCoord@{relToAbsCoord}!Engine@{Engine}}
+\subsubsection[{relToAbsCoord}]{\setlength{\rightskip}{0pt plus 5cm}std::pair$<$ int, int $>$ Engine::relToAbsCoord (
+\begin{DoxyParamCaption}
+\item[{const float}]{ x, }
+\item[{const float}]{ y}
+\end{DoxyParamCaption}
+)}}
+\label{classEngine_ae841f1b67f20d9f996b867b5f13df42b}
+
+
+Converts from relative coordinates to absolute coordinates. 
+
+All areas and items in the game use relative coordinates (0.0 -\/ 1.0). 
+\begin{DoxyParams}{Parameters}
+\item[{\em x}]Normalized X \item[{\em y}]Normalized Y \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pair of absolute coordinates. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gendoikari/Projects/rooms/trunk/engine/src/\hyperlink{engine_8h}{engine.h}\item 
+/home/gendoikari/Projects/rooms/trunk/engine/src/engine.cpp\end{DoxyCompactItemize}

@@ -1,0 +1,115 @@
+\hypertarget{classRoomsManager}{
+\section{RoomsManager Class Reference}
+\label{classRoomsManager}\index{RoomsManager@{RoomsManager}}
+}
+
+
+The \hyperlink{classRoomsManager}{RoomsManager} class handles rooms.  
+
+
+
+
+{\ttfamily \#include $<$roomsmanager.h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classRoomsManager_a7c35b5ec2dabfe1438097992e5f1a9f8}{
+\hyperlink{classRoom}{Room} $\ast$ \hyperlink{classRoomsManager_a7c35b5ec2dabfe1438097992e5f1a9f8}{addRoom} (const string name, const string bg)}
+\label{classRoomsManager_a7c35b5ec2dabfe1438097992e5f1a9f8}
+
+\begin{DoxyCompactList}\small\item\em Creates a \hyperlink{classRoom}{Room} with a given id and a given background. \item\end{DoxyCompactList}\item 
+\hypertarget{classRoomsManager_ab3f71b7397fab7ce99cf1f6b53e58df4}{
+void \hyperlink{classRoomsManager_ab3f71b7397fab7ce99cf1f6b53e58df4}{addRoom} (\hyperlink{classRoom}{Room} $\ast$room)}
+\label{classRoomsManager_ab3f71b7397fab7ce99cf1f6b53e58df4}
+
+\begin{DoxyCompactList}\small\item\em Adds a created \hyperlink{classRoom}{Room} to the internal rooms list. \item\end{DoxyCompactList}\item 
+\hypertarget{classRoomsManager_a1a077e2c4ebf6319352242221c38f26a}{
+\hyperlink{classArea}{Area} $\ast$ \hyperlink{classRoomsManager_a1a077e2c4ebf6319352242221c38f26a}{addArea} (const string name, const string room, const float x, const float y, const float w, const float h, const string event)}
+\label{classRoomsManager_a1a077e2c4ebf6319352242221c38f26a}
+
+\begin{DoxyCompactList}\small\item\em Creates an \hyperlink{classArea}{Area} and initializes it with given values. \item\end{DoxyCompactList}\item 
+\hypertarget{classRoomsManager_ab40803ff0befab1d64964b478ce06c99}{
+\hyperlink{classItem}{Item} $\ast$ \hyperlink{classRoomsManager_ab40803ff0befab1d64964b478ce06c99}{addItem} (const string name, const string room, const float x, const float y, const float w, const float h, const string event, const string image)}
+\label{classRoomsManager_ab40803ff0befab1d64964b478ce06c99}
+
+\begin{DoxyCompactList}\small\item\em Creates an \hyperlink{classItem}{Item} and initializes it with given values. \item\end{DoxyCompactList}\item 
+\hypertarget{classRoomsManager_aba9a17973e250faa43453c5e2c7dd9cb}{
+void \hyperlink{classRoomsManager_aba9a17973e250faa43453c5e2c7dd9cb}{addItem} (\hyperlink{classItem}{Item} $\ast$item)}
+\label{classRoomsManager_aba9a17973e250faa43453c5e2c7dd9cb}
+
+\begin{DoxyCompactList}\small\item\em Adds a created \hyperlink{classItem}{Item} to the internal item list. \item\end{DoxyCompactList}\item 
+\hypertarget{classRoomsManager_a2b5576d4b35766cc73cdccc43b905a08}{
+\hyperlink{classRoom}{Room} $\ast$ \hyperlink{classRoomsManager_a2b5576d4b35766cc73cdccc43b905a08}{room} (const string name)}
+\label{classRoomsManager_a2b5576d4b35766cc73cdccc43b905a08}
+
+\begin{DoxyCompactList}\small\item\em Returns a room with given id. \item\end{DoxyCompactList}\item 
+\hypertarget{classRoomsManager_a34bccc09a45e0f8206b25c5a5825acb1}{
+\hyperlink{classArea}{Area} $\ast$ \hyperlink{classRoomsManager_a34bccc09a45e0f8206b25c5a5825acb1}{area} (const string name)}
+\label{classRoomsManager_a34bccc09a45e0f8206b25c5a5825acb1}
+
+\begin{DoxyCompactList}\small\item\em Returns an area with given id. \item\end{DoxyCompactList}\item 
+\hypertarget{classRoomsManager_a2cf3744ae9e3873c21b711a996cfe562}{
+\hyperlink{classItem}{Item} $\ast$ \hyperlink{classRoomsManager_a2cf3744ae9e3873c21b711a996cfe562}{item} (const string name)}
+\label{classRoomsManager_a2cf3744ae9e3873c21b711a996cfe562}
+
+\begin{DoxyCompactList}\small\item\em Returns an item with given id. \item\end{DoxyCompactList}\item 
+\hypertarget{classRoomsManager_ae96cd535e95787c60c1a002a60c1ffb3}{
+void \hyperlink{classRoomsManager_ae96cd535e95787c60c1a002a60c1ffb3}{name} (const string name)}
+\label{classRoomsManager_ae96cd535e95787c60c1a002a60c1ffb3}
+
+\begin{DoxyCompactList}\small\item\em Sets world/game name. \item\end{DoxyCompactList}\item 
+\hypertarget{classRoomsManager_afd9627aa92142f7ca8f35bf281e974cd}{
+string \hyperlink{classRoomsManager_afd9627aa92142f7ca8f35bf281e974cd}{name} () const }
+\label{classRoomsManager_afd9627aa92142f7ca8f35bf281e974cd}
+
+\begin{DoxyCompactList}\small\item\em Gets the world/game name. \item\end{DoxyCompactList}\item 
+\hypertarget{classRoomsManager_ac0c7e2dc24ee0b3c26b723a4558a0466}{
+void \hyperlink{classRoomsManager_ac0c7e2dc24ee0b3c26b723a4558a0466}{size} (const int width, const int height)}
+\label{classRoomsManager_ac0c7e2dc24ee0b3c26b723a4558a0466}
+
+\begin{DoxyCompactList}\small\item\em Sets the game rooms size. \item\end{DoxyCompactList}\item 
+\hypertarget{classRoomsManager_a50b9020cdb0bca96e666c5612f6c63cb}{
+int \hyperlink{classRoomsManager_a50b9020cdb0bca96e666c5612f6c63cb}{height} () const }
+\label{classRoomsManager_a50b9020cdb0bca96e666c5612f6c63cb}
+
+\begin{DoxyCompactList}\small\item\em Gets rooms absolute height. \item\end{DoxyCompactList}\item 
+\hypertarget{classRoomsManager_a900f1a06d3b4bd0e91dfe52376788e6a}{
+int \hyperlink{classRoomsManager_a900f1a06d3b4bd0e91dfe52376788e6a}{width} () const }
+\label{classRoomsManager_a900f1a06d3b4bd0e91dfe52376788e6a}
+
+\begin{DoxyCompactList}\small\item\em Gets rooms absolute width. \item\end{DoxyCompactList}\item 
+\hypertarget{classRoomsManager_aa363a81ebb172c5d5518e8f4685fcd5f}{
+void \hyperlink{classRoomsManager_aa363a81ebb172c5d5518e8f4685fcd5f}{setCurrentRoom} (const string name)}
+\label{classRoomsManager_aa363a81ebb172c5d5518e8f4685fcd5f}
+
+\begin{DoxyCompactList}\small\item\em Sets where player is at the moment. \item\end{DoxyCompactList}\item 
+\hypertarget{classRoomsManager_adbfbdfb3632762bb5e02c0370e07b36a}{
+\hyperlink{classRoom}{Room} $\ast$ \hyperlink{classRoomsManager_adbfbdfb3632762bb5e02c0370e07b36a}{currentRoom} ()}
+\label{classRoomsManager_adbfbdfb3632762bb5e02c0370e07b36a}
+
+\begin{DoxyCompactList}\small\item\em Gets the current room. \item\end{DoxyCompactList}\item 
+\hypertarget{classRoomsManager_ab7f16759f75297b158badfa62daaf10e}{
+string \hyperlink{classRoomsManager_ab7f16759f75297b158badfa62daaf10e}{eventAt} (const float x, const float y)}
+\label{classRoomsManager_ab7f16759f75297b158badfa62daaf10e}
+
+\begin{DoxyCompactList}\small\item\em Gets the event id under a point, if it exists. It returns \char`\"{}\char`\"{} otherwise. \item\end{DoxyCompactList}\item 
+\hypertarget{classRoomsManager_a5fa5a95b6658d68a34c9ca6338154e4a}{
+void \hyperlink{classRoomsManager_a5fa5a95b6658d68a34c9ca6338154e4a}{moveItem} (const string name, const string dest)}
+\label{classRoomsManager_a5fa5a95b6658d68a34c9ca6338154e4a}
+
+\begin{DoxyCompactList}\small\item\em Moves the given item to the given room. It updates both source room and destination room. \item\end{DoxyCompactList}\item 
+\hypertarget{classRoomsManager_a4a97e200c538e9ff7ae3c8facea7586a}{
+bool \hyperlink{classRoomsManager_a4a97e200c538e9ff7ae3c8facea7586a}{checkItemPlace} (const std::vector$<$ std::pair$<$ string, string $>$ $>$ reqs)}
+\label{classRoomsManager_a4a97e200c538e9ff7ae3c8facea7586a}
+
+\begin{DoxyCompactList}\small\item\em Checks if a list of item requirements is satisfied. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The \hyperlink{classRoomsManager}{RoomsManager} class handles rooms. Creates and destroys rooms. 
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gendoikari/Projects/rooms/trunk/engine/src/\hyperlink{roomsmanager_8h}{roomsmanager.h}\item 
+/home/gendoikari/Projects/rooms/trunk/engine/src/roomsmanager.cpp\end{DoxyCompactItemize}

@@ -1,0 +1,83 @@
+\hypertarget{classRoomsReader}{
+\section{RoomsReader Class Reference}
+\label{classRoomsReader}\index{RoomsReader@{RoomsReader}}
+}
+
+
+The \hyperlink{classRoomsReader}{RoomsReader} class takes care of world file.  
+
+
+
+
+{\ttfamily \#include $<$roomsreader.h$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum {\bfseries AttributeType} \{ {\bfseries ATTR\_\-INT}, 
+{\bfseries ATTR\_\-STR}, 
+{\bfseries ATTR\_\-FLOAT}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{classRoomsReader_a0892c266a6b01ae3036f7125ae530e42}{loadFromFile} (string filename)
+\begin{DoxyCompactList}\small\item\em Load world file from a valid path. \item\end{DoxyCompactList}\item 
+bool \hyperlink{classRoomsReader_a3030677529a9123b5db175ffea3c7595}{loadFromStr} (string content)
+\begin{DoxyCompactList}\small\item\em Load world file from a valid string. \item\end{DoxyCompactList}\item 
+\hypertarget{classRoomsReader_aab7aad6e816ea5e5f94a8100921546a1}{
+\hyperlink{classRRNode}{RRNode} $\ast$ \hyperlink{classRoomsReader_aab7aad6e816ea5e5f94a8100921546a1}{getCrawler} ()}
+\label{classRoomsReader_aab7aad6e816ea5e5f94a8100921546a1}
+
+\begin{DoxyCompactList}\small\item\em Obtain crawler pointer, to navigate inside world file. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The \hyperlink{classRoomsReader}{RoomsReader} class takes care of world file. The class loads xml world file, parses it and permits navigation through xml nodes. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classRoomsReader_a0892c266a6b01ae3036f7125ae530e42}{
+\index{RoomsReader@{RoomsReader}!loadFromFile@{loadFromFile}}
+\index{loadFromFile@{loadFromFile}!RoomsReader@{RoomsReader}}
+\subsubsection[{loadFromFile}]{\setlength{\rightskip}{0pt plus 5cm}bool RoomsReader::loadFromFile (
+\begin{DoxyParamCaption}
+\item[{string}]{ filename}
+\end{DoxyParamCaption}
+)}}
+\label{classRoomsReader_a0892c266a6b01ae3036f7125ae530e42}
+
+
+Load world file from a valid path. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em filename}]File path. \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if file is correctly loaded and parsed. False otherwise. 
+\end{DoxyReturn}
+\hypertarget{classRoomsReader_a3030677529a9123b5db175ffea3c7595}{
+\index{RoomsReader@{RoomsReader}!loadFromStr@{loadFromStr}}
+\index{loadFromStr@{loadFromStr}!RoomsReader@{RoomsReader}}
+\subsubsection[{loadFromStr}]{\setlength{\rightskip}{0pt plus 5cm}bool RoomsReader::loadFromStr (
+\begin{DoxyParamCaption}
+\item[{string}]{ content}
+\end{DoxyParamCaption}
+)}}
+\label{classRoomsReader_a3030677529a9123b5db175ffea3c7595}
+
+
+Load world file from a valid string. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em content}]String containing world data structure. \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if file is correctly loaded and parsed. False otherwise. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gendoikari/Projects/rooms/trunk/engine/src/\hyperlink{roomsreader_8h}{roomsreader.h}\item 
+/home/gendoikari/Projects/rooms/trunk/engine/src/roomsreader.cpp\end{DoxyCompactItemize}

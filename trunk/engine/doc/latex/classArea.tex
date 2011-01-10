@@ -1,0 +1,107 @@
+\hypertarget{classArea}{
+\section{Area Class Reference}
+\label{classArea}\index{Area@{Area}}
+}
+
+
+The \hyperlink{classArea}{Area} class is a rectangular hot-\/spot.  
+
+
+
+
+{\ttfamily \#include $<$area.h$>$}
+
+Inheritance diagram for Area:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classArea}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classArea_a39ed8e167060ddbed945fdb0b922fe75}{
+\hyperlink{classArea_a39ed8e167060ddbed945fdb0b922fe75}{Area} (const std::string name)}
+\label{classArea_a39ed8e167060ddbed945fdb0b922fe75}
+
+\begin{DoxyCompactList}\small\item\em Creates an area with an id. \item\end{DoxyCompactList}\item 
+\hypertarget{classArea_ae55e508f8abe6e0ad469d93ca53bef74}{
+void \hyperlink{classArea_ae55e508f8abe6e0ad469d93ca53bef74}{size} (const float x, const float y, const float width, const float height)}
+\label{classArea_ae55e508f8abe6e0ad469d93ca53bef74}
+
+\begin{DoxyCompactList}\small\item\em Set area size through normalized coordinates. \item\end{DoxyCompactList}\item 
+\hypertarget{classArea_a1ce9f43662004343d6db243ce8dbfd16}{
+float \hyperlink{classArea_a1ce9f43662004343d6db243ce8dbfd16}{x} () const }
+\label{classArea_a1ce9f43662004343d6db243ce8dbfd16}
+
+\begin{DoxyCompactList}\small\item\em Get normalized x. \item\end{DoxyCompactList}\item 
+\hypertarget{classArea_aff58afe8ecd2aae6135d0d56bdf842a2}{
+float \hyperlink{classArea_aff58afe8ecd2aae6135d0d56bdf842a2}{y} () const }
+\label{classArea_aff58afe8ecd2aae6135d0d56bdf842a2}
+
+\begin{DoxyCompactList}\small\item\em Get normalized y. \item\end{DoxyCompactList}\item 
+\hypertarget{classArea_a0e5a99a595cc786377f2f9a0e3b2e832}{
+float \hyperlink{classArea_a0e5a99a595cc786377f2f9a0e3b2e832}{w} () const }
+\label{classArea_a0e5a99a595cc786377f2f9a0e3b2e832}
+
+\begin{DoxyCompactList}\small\item\em Get normalized width. \item\end{DoxyCompactList}\item 
+\hypertarget{classArea_a5ded4f19da17d60d790bc43ba5506555}{
+float \hyperlink{classArea_a5ded4f19da17d60d790bc43ba5506555}{h} () const }
+\label{classArea_a5ded4f19da17d60d790bc43ba5506555}
+
+\begin{DoxyCompactList}\small\item\em Get normalized height. \item\end{DoxyCompactList}\item 
+\hypertarget{classArea_a0b441aa80aa564748f6bc3a48dc75239}{
+std::string \hyperlink{classArea_a0b441aa80aa564748f6bc3a48dc75239}{event} () const }
+\label{classArea_a0b441aa80aa564748f6bc3a48dc75239}
+
+\begin{DoxyCompactList}\small\item\em Get event id. \item\end{DoxyCompactList}\item 
+\hypertarget{classArea_a02457442589e06ff7f64c83a0609047c}{
+void \hyperlink{classArea_a02457442589e06ff7f64c83a0609047c}{setEvent} (const std::string event)}
+\label{classArea_a02457442589e06ff7f64c83a0609047c}
+
+\begin{DoxyCompactList}\small\item\em Set event id. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classArea_a88cf97626c8a7478211eda2255f87a0b}{
+const std::string \hyperlink{classArea_a88cf97626c8a7478211eda2255f87a0b}{id}}
+\label{classArea_a88cf97626c8a7478211eda2255f87a0b}
+
+\begin{DoxyCompactList}\small\item\em \hyperlink{classArea}{Area} id. It must be unique. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classArea_a28a39abd1c5f8fe0b622575177cb97d8}{
+float {\bfseries \_\-x}}
+\label{classArea_a28a39abd1c5f8fe0b622575177cb97d8}
+
+\item 
+\hypertarget{classArea_a7f4a06384b48a53b47f6dea0b0e661c0}{
+float {\bfseries \_\-y}}
+\label{classArea_a7f4a06384b48a53b47f6dea0b0e661c0}
+
+\item 
+\hypertarget{classArea_afad994d8fc84b6ece47a6d78093e4dfa}{
+float {\bfseries \_\-width}}
+\label{classArea_afad994d8fc84b6ece47a6d78093e4dfa}
+
+\item 
+\hypertarget{classArea_a0b056adf6b5c50330bb006f0130aaf36}{
+float {\bfseries \_\-height}}
+\label{classArea_a0b056adf6b5c50330bb006f0130aaf36}
+
+\item 
+\hypertarget{classArea_aec66da74448aaa22a1860badc1947c64}{
+std::string {\bfseries \_\-event}}
+\label{classArea_aec66da74448aaa22a1860badc1947c64}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The \hyperlink{classArea}{Area} class is a rectangular hot-\/spot. An area has a rectangular shape and an event. When area is clicked, the event may happen. 
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gendoikari/Projects/rooms/trunk/engine/src/\hyperlink{area_8h}{area.h}\item 
+/home/gendoikari/Projects/rooms/trunk/engine/src/area.cpp\end{DoxyCompactItemize}

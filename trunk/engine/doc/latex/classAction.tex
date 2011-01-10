@@ -1,0 +1,53 @@
+\hypertarget{classAction}{
+\section{Action Class Reference}
+\label{classAction}\index{Action@{Action}}
+}
+
+
+The \hyperlink{classAction}{Action} class is used to handle event actions.  
+
+
+
+
+{\ttfamily \#include $<$action.h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classAction_a30a8c6d718ce3d774733726acc6fedef}{
+\hyperlink{classAction_a30a8c6d718ce3d774733726acc6fedef}{Action} (const std::string name)}
+\label{classAction_a30a8c6d718ce3d774733726acc6fedef}
+
+\begin{DoxyCompactList}\small\item\em Creates an action of the given type. \item\end{DoxyCompactList}\item 
+\hypertarget{classAction_ad4aea9499372a6d77fed4eaa4078832c}{
+void \hyperlink{classAction_ad4aea9499372a6d77fed4eaa4078832c}{pushParam} (const std::string value)}
+\label{classAction_ad4aea9499372a6d77fed4eaa4078832c}
+
+\begin{DoxyCompactList}\small\item\em Pushes a parameter in the stack. \item\end{DoxyCompactList}\item 
+\hypertarget{classAction_acfec989e31adf81aac23ed3553a6bb1d}{
+std::string \hyperlink{classAction_acfec989e31adf81aac23ed3553a6bb1d}{popStrParam} ()}
+\label{classAction_acfec989e31adf81aac23ed3553a6bb1d}
+
+\begin{DoxyCompactList}\small\item\em Pops a string parameter from stack. \item\end{DoxyCompactList}\item 
+\hypertarget{classAction_aa00c16bc5c78b003a749032650242e41}{
+int \hyperlink{classAction_aa00c16bc5c78b003a749032650242e41}{popIntParam} ()}
+\label{classAction_aa00c16bc5c78b003a749032650242e41}
+
+\begin{DoxyCompactList}\small\item\em Pops an int parameter from stack. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classAction_af88a21fc6ca41418d1ba07c7a9ee190a}{
+const std::string \hyperlink{classAction_af88a21fc6ca41418d1ba07c7a9ee190a}{id}}
+\label{classAction_af88a21fc6ca41418d1ba07c7a9ee190a}
+
+\begin{DoxyCompactList}\small\item\em It's the action type. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The \hyperlink{classAction}{Action} class is used to handle event actions. An action has a type and a stack of parameters. \hyperlink{classEngine}{Engine} will use these parameters to obtain action informations. 
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gendoikari/Projects/rooms/trunk/engine/src/\hyperlink{action_8h}{action.h}\item 
+/home/gendoikari/Projects/rooms/trunk/engine/src/action.cpp\end{DoxyCompactItemize}

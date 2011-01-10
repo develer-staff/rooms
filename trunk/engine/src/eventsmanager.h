@@ -1,3 +1,14 @@
+/**
+ * \file
+ * <!--
+ * Copyright 2010,2011 Daniele Maccioni
+ * All rights reserved.
+ * -->
+ *
+ * \version $Id: eventsmanager.h $
+ * \author Daniele Maccioni <gendoikari@develer.com>
+ */
+
 #ifndef EVENTSMANAGER_H
 #define EVENTSMANAGER_H
 
@@ -11,8 +22,9 @@ class Action;
 
 using std::string;
 
-/*! \brief Events interface.
- *         Creates and destroys events.
+/** \brief The EventsManager class handles events.
+ *
+ * Creates and destroys events.
  */
 class EventsManager
 {
@@ -24,12 +36,19 @@ class EventsManager
         EventsManager();
         ~EventsManager();
     public:
+        /// Creates an Event and returns it.
         Event *addEvent(const string name);
+        /// Adds a created Event to the internal events list.
         void addEvent(Event *event);
+        /// Returns an event from id.
         Event *event(const string name);
+        /// Gets the actions related to an event.
         std::vector <Action *> actionsForEvent(const string name);
+        /// Sets/creates a variable with a value.
         void setVar(const string name, const int value);
+        /// Gets a variable value.
         int var(const string name) const;
+        /// Checks if a list of var requirements is satisfied.
         bool checkVarReqs(const std::vector <std::pair <string, int> > reqs) const;
 };
 

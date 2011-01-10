@@ -32,24 +32,82 @@ using std::string;
  * \brief The RRNode class is used to navigate through xml tree.
  *
  * The class navigates through xml nodes and gets attributes from them.
+ * Example:
+ * \code
+ * RRNode *node(validXmlElement);
+ * node->gotoElement("my_element");
+ * for (node->gotoChild("my_child"); !node->isNull(); node->gotoNext())
+ *      //do something
+ * \endcode
  */
 class RRNode
 {
     public:
+        /**
+         * \brief Creates a RRNode wrapping a TiXmlElement *.
+         *
+         * Methods attrStr and attrFloat work in the same way.
+         * \param root  It will be the root element for this node.
+         */
         RRNode(TiXmlElement *root);
         ~RRNode();
+        /**
+         * \brief Place RRNode at initial element.
+         *
+         * \return It returns the node itself, like gotoChild, gotoParent, gotoNext and gotoElement.
+         */
         RRNode *gotoRoot();
+        /**
+         * \brief The class moves inside cursor to point the child with given name.
+         *
+         * \param name  Child name.
+         * \return It returns the node itself.
+         */
         RRNode *gotoChild(string name);
+        /**
+         * \brief The class moves inside cursor to point the parent.
+         *
+         * \return It returns the node itself.
+         */
         RRNode *gotoParent();
+        /**
+         * \brief The class moves inside cursor to point next sibling with same name.
+         *
+         * \return It returns the node itself.
+         */
         RRNode *gotoNext();
+        /**
+         * \brief The class searches in whole xml tree the element with given name.
+         *
+         * \return It returns the node itself.
+         */
         RRNode *gotoElement(string name);
+        /// Checks if node is a null node.
         bool isNull();
+        /**
+         * \brief Gets int data from an xml node attribute.
+         *
+         * Methods attrStr and attrFloat work in the same way.
+         * \param name  Attribute name.
+         * \return      Int value.
+         */
         int attrInt(string name);
+        /// Gets string data from an xml node attribute.
         string attrStr(string name);
+        /// Gets float data from an xml node attribute.
         float attrFloat(string name);
+        /**
+         * \brief Uses current node to create an Event.
+         *
+         * This method creates and initializes an Event from node attributes information. Methods fetchRoom, fetchItem and fetchDialog work in the same way.
+         * \return      An Event, fully initialized.
+         */
         Event *fetchEvent();
+        /// Uses current node to create a Room.
         Room *fetchRoom();
+        /// Uses current node to create an Item.
         Item *fetchItem();
+        /// Uses current node to create a Dialog.
         Dialog *fetchDialog();
     private:
         TiXmlElement *root;
@@ -77,8 +135,23 @@ class RoomsReader
         };
         RoomsReader();
         ~RoomsReader();
+        /**
+         * \brief Load world file from a valid path.
+         *
+         * \param filename  File path.
+         * \return          True if file is correctly loaded and parsed.
+         *                  False otherwise.
+         */
         bool loadFromFile(string filename);
+        /**
+         * \brief Load world file from a valid string.
+         *
+         * \param content   String containing world data structure.
+         * \return          True if file is correctly loaded and parsed.
+         *                  False otherwise.
+         */
         bool loadFromStr(string content);
+        /// Obtain crawler pointer, to navigate inside world file.
         RRNode *getCrawler();
     private:
         typedef bool (RoomsReader::*ParseMethod) (TiXmlElement *);

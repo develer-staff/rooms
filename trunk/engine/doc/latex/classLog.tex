@@ -1,0 +1,44 @@
+\hypertarget{classLog}{
+\section{Log Class Reference}
+\label{classLog}\index{Log@{Log}}
+}
+
+
+Simple log class.  
+
+
+
+
+{\ttfamily \#include $<$log.h$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classLog_afb5d4c945d835d194a295461d752531e}{Level} \{ {\bfseries NONE}, 
+{\bfseries ERROR}, 
+{\bfseries WARNING}, 
+{\bfseries NOTE}
+ \}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classLog}{Log} level, from NONE (log nothing), to NOTE (log everything). \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classLog_a1a4d42345af99eaad57f38dbe826bbd8}{
+\hyperlink{classLog_a1a4d42345af99eaad57f38dbe826bbd8}{Log} (std::string filename=\char`\"{}rooms.log\char`\"{}, Log::Level log\_\-type=NOTE)}
+\label{classLog_a1a4d42345af99eaad57f38dbe826bbd8}
+
+\begin{DoxyCompactList}\small\item\em Creates log object with log filename and log level. \item\end{DoxyCompactList}\item 
+\hypertarget{classLog_a1229f97545eb3361fd9e6bbdd1d61494}{
+void \hyperlink{classLog_a1229f97545eb3361fd9e6bbdd1d61494}{write} (std::string text, \hyperlink{classLog_afb5d4c945d835d194a295461d752531e}{Log::Level} log\_\-type)}
+\label{classLog_a1229f97545eb3361fd9e6bbdd1d61494}
+
+\begin{DoxyCompactList}\small\item\em Write a string in the log file. If log\_\-type is bigger than log level, message is ignored. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Simple log class. This class handles a simple log file. 
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gendoikari/Projects/rooms/trunk/engine/src/\hyperlink{log_8h}{log.h}\item 
+/home/gendoikari/Projects/rooms/trunk/engine/src/log.cpp\end{DoxyCompactItemize}
