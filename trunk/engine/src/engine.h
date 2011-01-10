@@ -11,6 +11,17 @@
  * \mainpage Rooms Engine
  *
  * Rooms Engine is a point-and-click andventure engine.
+ * Usage simple example:
+ * \code
+ * Engine *eng = new Engine;
+ * eng->loadWorldFromFile(my_valid_world_file);
+ * //frontend event loop
+ * switch(eng->state())
+ *   case Engine::GAME:
+ *     std::pair<float, float> coord = eng->absToRelCoord(mouse->x(), mouse->y());
+ *     eng->clickArea(coord.first, coord.second);
+ *     break;
+ * \endcode
  */
 
 
