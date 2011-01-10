@@ -250,9 +250,8 @@ bool RoomsReader::parseItem(TiXmlElement *elem)
           parseAttr(elem, "height", ATTR_FLOAT)))
         return false;
     if (!(checkUniqueId(unique_ids_items, elem->Attribute("id")) &&
-        checkParent(elem, "items")))
-        return false;
-    if (checkUniqueId(unique_ids_images, elem->Attribute("image")))
+        checkParent(elem, "items") &&
+        !checkUniqueId(unique_ids_images, elem->Attribute("image"))))
         return false;
     return true;
 }
@@ -263,7 +262,6 @@ bool RoomsReader::parseRoom(TiXmlElement *elem)
           parseAttr(elem, "bg", ATTR_STR)))
         return false;
     if (!(checkUniqueId(unique_ids_rooms, elem->Attribute("id")) &&
-          checkUniqueId(unique_ids_images, elem->Attribute("bg")) &&
           checkParent(elem, "rooms")))
         return false;
     return true;
@@ -274,8 +272,7 @@ bool RoomsReader::parseAction(TiXmlElement *elem)
     if (!(parseAttr(elem, "id", ATTR_STR) &&
           checkParent(elem, "event")))
         return false;
-    else
-        return true;
+    return true;
 }
 
 bool RoomsReader::parseWorld(TiXmlElement *elem)
@@ -301,8 +298,9 @@ bool RoomsReader::parseEvent(TiXmlElement *elem)
 
 bool RoomsReader::parseVar(TiXmlElement *elem)
 {
-    if (!(parseAttr(elem, "value", ATTR_STR) &&
-        checkParent(elem, "action")))
+    if (!(parseAttr(elem, "id", ATTR_STR) &&
+          parseAttr(elem, "value", ATTR_STR) &&
+          checkParent(elem, "vars")))
         return false;
     return true;
 }
@@ -320,7 +318,8 @@ bool RoomsReader::parseImages(TiXmlElement *elem)
 
 bool RoomsReader::parseItemReq(TiXmlElement *elem)
 {
-    if (!parseAttr(elem, "id", ATTR_STR))
+    if (!(parseAttr(elem, "id", ATTR_STR) &&
+          parseAttr(elem, "value", ATTR_STR)))
         return false;
     if (!(!checkUniqueId(unique_ids_items, elem->Attribute("id")) &&
         (checkParent(elem, "event") || checkParent(elem, "step"))))
@@ -330,21 +329,17 @@ bool RoomsReader::parseItemReq(TiXmlElement *elem)
 
 bool RoomsReader::parseVarReq(TiXmlElement *elem)
 {
-    if (!parseAttr(elem, "id", ATTR_STR))
+    if (!(parseAttr(elem, "id", ATTR_STR) &&
+          parseAttr(elem, "value", ATTR_INT)))
         return false;
-    if (!(!checkUniqueId(unique_ids_vars, elem->Attribute("id")) &&
-        (checkParent(elem, "event") || checkParent(elem, "step"))))
+    if (!(checkParent(elem, "event") || checkParent(elem, "step")))
         return false;
     return true;
 }
 
 bool RoomsReader::parseParam(TiXmlElement *elem)
 {
-    if (!(parseAttr(elem, "id", ATTR_STR) &&
-          parseAttr(elem, "value", ATTR_INT)))
-        return false;
-    if (!(checkUniqueId(unique_ids_vars, elem->Attribute("id")) &&
-        checkParent(elem, "vars")))
+    if (!parseAttr(elem, "value", ATTR_STR))
         return false;
     return true;
 }
