@@ -217,9 +217,11 @@ bool RoomsReader::parseElement(TiXmlElement *elem)
     if (elem == 0)
         return true;
     bool value = true;
-    ParseMethod method = parse_map.find(elem->Value())->second;
-    if (method)
+    if (parse_map.find(elem->Value()) != parse_map.end())
+    {
+        ParseMethod method = parse_map.find(elem->Value())->second;
         value = (this->*method)(elem);
+    }
     return (value && parseElement(elem->FirstChildElement()) && parseElement(elem->NextSiblingElement()));
 }
 
