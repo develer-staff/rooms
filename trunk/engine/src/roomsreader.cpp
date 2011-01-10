@@ -287,7 +287,7 @@ bool RoomsReader::parseRoom(TiXmlElement *elem)
 bool RoomsReader::parseAction(TiXmlElement *elem)
 {
     if (!(parseAttr(elem, "id", ATTR_STR) &&
-          checkParent(elem, "event")))
+         (checkParent(elem, "event") || checkParent(elem, "step"))))
         return false;
     return true;
 }
