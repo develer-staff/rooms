@@ -13,8 +13,8 @@
   </images>
 
   <items>
-    <item id="Locandiera" room="Locanda" x="400" y="300" width="200" height="270" image="./data/locandiera.png" event="start_dialog_locandiera" />
-    <item id="Chiave Locanda" room="Locanda" x="0.0125" y="0.83" width="0.0625" height="0.083" image="./data/chiave.png" event="chiave_get" />
+    <item id="Locandiera" room="Locanda" x="0.5" y="0.5" width="0.25" height="0.45" image="./data/locandiera.png" event="start_dialog_locandiera" />
+    <item id="Chiave Locanda" room="!NOWHERE" x="0.0125" y="0.83" width="0.0625" height="0.083" image="./data/chiave.png" event="chiave_get" />
     <item id="Chiave Stella" room="Cantina" x="0.0625" y="0.66" width="0.0625" height="0.083" image="./data/chiave_star.png" event="chiave_star_get" />
   </items>
 
