@@ -3,6 +3,7 @@
 RRNode::RRNode(TiXmlElement *root)
 {
     this->root = root;
+    parent = 0;
     gotoRoot();
 }
 
@@ -14,26 +15,37 @@ RRNode::~RRNode()
 RRNode *RRNode::gotoElement(string name)
 {
     cursor = findElement(root, name);
+    if (!isNull())
+        parent = cursor->Parent()->ToElement();
+    else
+        parent = 0;
     return this;
 }
 
 RRNode *RRNode::gotoRoot()
 {
     cursor = root;
+    parent = 0;
     return this;
 }
 
 RRNode *RRNode::gotoChild(string name)
 {
     if(!isNull())
+    {
+        parent = cursor;
         cursor = cursor->FirstChildElement(name.c_str());
+    }
     return this;
 }
 
 RRNode *RRNode::gotoParent()
 {
+    cursor = parent;
     if(!isNull())
-        cursor = cursor->Parent()->ToElement();
+    {
+        parent = cursor->Parent()->ToElement();
+    }
     return this;
 }
 

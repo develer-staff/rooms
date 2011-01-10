@@ -54,6 +54,7 @@ class RRNode
     private:
         TiXmlElement *root;
         TiXmlElement *cursor;
+        TiXmlElement *parent;
         TiXmlElement *findElement(TiXmlElement *elem, string name);
 };
 
