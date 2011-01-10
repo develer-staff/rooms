@@ -53,7 +53,6 @@ class Engine
             INVENTORY,
             ENDING
         };
-        typedef std::vector<TiXmlElement *> XmlVect;
     private:
         Engine::State _state;
         RoomsManager *rooms_mgr;
