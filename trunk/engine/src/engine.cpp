@@ -101,45 +101,47 @@ bool Engine::loadWorldFromFile(const string filename)
 
 bool Engine::loadWorldFromStr(const string content)
 {
-        TiXmlDocument document;
-        document.Parse(content.c_str());
-        if (!xml::xmlCheckDoc(&document, Engine::VERSION))
-        {
-            logger.write("ERROR: wrong xml document!", Log::ERROR);
-            return false;
-        }
-        TiXmlElement *root = document.RootElement();
-        //Load World attributes
-        logger.write(root->Attribute("name"), Log::NOTE);
-        rooms_mgr->size(xml::xmlReadInt(root, "width"),
-                        xml::xmlReadInt(root, "height"));
-        rooms_mgr->name(root->Attribute("name"));
-        //TODO: manage different screen resolutions
-        //Loading from xml
-        XmlVect images =
-            xml::xmlGetAllChilds(root->FirstChildElement("images"), "img");
-        XmlVect rooms =
-            xml::xmlGetAllChilds(root->FirstChildElement("rooms"), "room");
-        XmlVect events =
-            xml::xmlGetAllChilds(root->FirstChildElement("events"), "event");
-        XmlVect items =
-            xml::xmlGetAllChilds(root->FirstChildElement("items"), "item");
-        XmlVect vars =
-            xml::xmlGetAllChilds(root->FirstChildElement("vars"), "var");
-        XmlVect diags =
-            xml::xmlGetAllChilds(root->FirstChildElement("dialogs"), "dialog");
-        //Populating model
-        createImgsFromXml(images);
-        createEventsFromXml(events);
-        createRoomsFromXml(rooms);
-        createItemsFromXml(items);
-        createVarsFromXml(vars);
-        createDialogsFromXml(diags);
-        //TODO: load rest of world file
-        string start_room = root->Attribute("start");
-        apiRoomGoto(start_room);
-        _state = GAME;
-        return true;
+    RoomsReader reader;
+    if (!reader.loadFromStr(content))
+    {
+        logger.write("ERROR: wrong xml document!", Log::ERROR);
+        return false;
+    }
+    RRNode *node = reader.getCrawler();
+    node->gotoElement("world");
+    string start_room = node->attrStr("start");
+    //Load World attributes
+    logger.write(node->attrStr("name"), Log::NOTE);
+    rooms_mgr->size(node->attrInt("width"), node->attrInt("height"));
+    rooms_mgr->name(node->attrStr("name"));
+    //Loading from xml
+    for (node->gotoElement("images")->gotoChild("img"); node->isNull(); node->gotoNext())
+        images.push_back(node->attrStr("file"));
+    node->gotoRoot();
+
+    for (node->gotoElement("events")->gotoChild("event"); node->isNull(); node->gotoNext())
+        events_mgr->addEvent(node->fetchEvent());
+    node->gotoRoot();
+
+    for (node->gotoElement("rooms")->gotoChild("room"); node->isNull(); node->gotoNext())
+        rooms_mgr->addRoom(node->fetchRoom());
+    node->gotoRoot();
+
+    for (node->gotoElement("items")->gotoChild("item"); node->isNull(); node->gotoNext())
+        rooms_mgr->addItem(node->fetchItem());
+    node->gotoRoot();
+
+    for (node->gotoElement("vars")->gotoChild("var"); node->isNull(); node->gotoNext())
+        events_mgr->setVar(node->attrStr("id"), node->attrInt("value"));
+    node->gotoRoot();
+
+    for (node->gotoElement("dialogs")->gotoChild("dialog"); node->isNull(); node->gotoNext())
+        dialogs[node->attrStr("id")] = node->fetchDialog();
+    node->gotoRoot();
+
+    apiRoomGoto(start_room);
+    setState(GAME);
+    return true;
 }
 
 std::vector<string> Engine::getImgNames() const
@@ -150,101 +152,6 @@ std::vector<string> Engine::getImgNames() const
 std::vector<Item *> Engine::getInventory() const
 {
     return rooms_mgr->room(ROOM_INV)->items();
-}
-
-void Engine::createImgsFromXml(XmlVect imgs)
-{
-    for (XmlVect::iterator i = imgs.begin();
-         i != imgs.end(); ++i)
-        images.push_back((*i)->Attribute("file"));
-}
-
-void Engine::createVarsFromXml(XmlVect vars)
-{
-    for (XmlVect::iterator i = vars.begin();
-         i != vars.end(); ++i)
-        events_mgr->setVar((*i)->Attribute("id"), xml::xmlReadInt((*i), "value"));
-}
-
-void Engine::fillEventFromXml(TiXmlElement *elem, Event *event)
-{
-    //create items parameters
-    XmlVect ireqs = xml::xmlGetAllChilds(elem->FirstChildElement("requirements"), "item_req");
-    for (XmlVect::iterator j = ireqs.begin(); j != ireqs.end(); ++j)
-        event->addItemReq((*j)->Attribute("id"), (*j)->Attribute("value"));
-    //create var parameters
-    XmlVect vreqs = xml::xmlGetAllChilds(elem->FirstChildElement("requirements"), "var_req");
-    for (XmlVect::iterator j = vreqs.begin(); j != vreqs.end(); ++j)
-        event->addVarReq((*j)->Attribute("id"), xml::xmlReadInt((*j), "value"));
-    //create actions
-    XmlVect actions = xml::xmlGetAllChilds(elem->FirstChildElement("actions_if"), "action");
-    for (XmlVect::iterator j = actions.begin(); j != actions.end(); ++j)
-    {
-        Action *act = event->addAction((*j)->Attribute("id"));
-        XmlVect params = xml::xmlGetAllChilds(*j, "param");
-        for (XmlVect::iterator z = params.begin(); z != params.end(); ++z)
-            act->pushParam((*z)->Attribute("value"));
-    }
-}
-
-void Engine::createEventsFromXml(XmlVect events)
-{
-    for (XmlVect::iterator i = events.begin(); i != events.end(); ++i)
-        fillEventFromXml(*i, events_mgr->addEvent((*i)->Attribute("id")));
-}
-
-void Engine::createRoomsFromXml(XmlVect rooms)
-{
-    for (XmlVect::iterator i = rooms.begin(); i != rooms.end(); ++i)
-    {
-        rooms_mgr->addRoom((*i)->Attribute("id"), (*i)->Attribute("bg"));
-        XmlVect areas = xml::xmlGetAllChilds((*i)->FirstChildElement("areas"), "area");
-        for (XmlVect::iterator j = areas.begin(); j != areas.end(); ++j)
-        {
-            rooms_mgr->addArea((*j)->Attribute("id"),
-                               (*i)->Attribute("id"),
-                               xml::xmlReadFloat((*j), "x"),
-                               xml::xmlReadFloat((*j), "y"),
-                               xml::xmlReadFloat((*j), "width"),
-                               xml::xmlReadFloat((*j), "height"),
-                               (*j)->FirstChildElement("do_event")->Attribute("value"));
-        }
-    }
-}
-
-void Engine::createItemsFromXml(XmlVect items)
-{
-    for (XmlVect::iterator i = items.begin(); i != items.end(); ++i)
-    {
-        rooms_mgr->addItem((*i)->Attribute("id"),
-                            (*i)->Attribute("room"),
-                            xml::xmlReadFloat((*i), "x"),
-                            xml::xmlReadFloat((*i), "y"),
-                            xml::xmlReadFloat((*i), "width"),
-                            xml::xmlReadFloat((*i), "height"),
-                            (*i)->FirstChildElement("do_event")->Attribute("value"),
-                            (*i)->Attribute("image"));
-    }
-}
-
-void Engine::createDialogsFromXml(XmlVect diags)
-{
-    for (XmlVect::iterator i = diags.begin(); i != diags.end(); ++i)
-    {
-        Dialog *d = new Dialog((*i)->Attribute("id"), (*i)->Attribute("start"));
-        dialogs[d->id] = d;
-        XmlVect steps = xml::xmlGetAllChilds((*i), "step");
-        for (XmlVect::iterator j = steps.begin(); j != steps.end(); ++j)
-        {
-            DialogStep *step = d->addStep((*j)->Attribute("id"), (*j)->Attribute("text"));
-            fillEventFromXml(*j, step->event);
-            XmlVect links = xml::xmlGetAllChilds((*j), "link");
-            for (XmlVect::iterator z = links.begin(); z != links.end(); ++z)
-            {
-                d->addLink(step->id, (*z)->Attribute("id"), (*z)->Attribute("text"));
-            }
-        }
-    }
 }
 
 RoomsManager *Engine::getRoomsManager() const

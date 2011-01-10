@@ -65,8 +65,13 @@ Room * RoomsManager::addRoom(const string name, const string bg)
 {
     Room *r = new Room(name);
     r->bg(bg);
-    rooms[name] = r;
+    addRoom(r);
     return r;
+}
+
+void RoomsManager::addRoom(Room *room)
+{
+    rooms[room->id] = room;
 }
 
 Area * RoomsManager::addArea(const string name, const string room, const float x, const float y,
@@ -82,13 +87,18 @@ Item * RoomsManager::addItem(const string name, const string room, const float x
                              const float w, const float h, const string event, const string image)
 {
     Item *i = new Item(name);
-    items[name] = i;
     i->size(x, y, w, h);
     i->setEvent(event);
     i->move(room);
-    rooms[room]->addItem(name, i);
     i->setImage(image);
+    addItem(i);
     return i;
+}
+
+void RoomsManager::addItem(Item *item)
+{
+    items[item->id] = item;
+    rooms[item->parent()]->addItem(item->id, item);
 }
 
 void RoomsManager::moveItem(const string name, const string dest)

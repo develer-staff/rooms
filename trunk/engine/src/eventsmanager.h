@@ -25,6 +25,7 @@ class EventsManager
         ~EventsManager();
     public:
         Event *addEvent(const string name);
+        void addEvent(Event *event);
         Event *event(const string name);
         std::vector <Action *> actionsForEvent(const string name);
         void setVar(const string name, const int value);

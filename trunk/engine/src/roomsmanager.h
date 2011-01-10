@@ -38,10 +38,12 @@ class RoomsManager
         ~RoomsManager();
     public:
         Room *addRoom(const string name, const string bg);
+        void addRoom(Room *room);
         Area *addArea(const string name, const string room, const float x, const float y,
                       const float w, const float h, const string event);
         Item *addItem(const string name, const string room, const float x, const float y,
                       const float w, const float h, const string event, const string image);
+        void addItem(Item *item);
         Room *room(const string name);
         Area *area(const string name);
         Item *item(const string name);

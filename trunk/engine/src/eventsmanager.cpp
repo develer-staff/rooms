@@ -20,8 +20,13 @@ EventsManager::~EventsManager()
 Event *EventsManager::addEvent(const string name)
 {
     Event *e = new Event(name);
-    events[name] = e;
+    addEvent(e);
     return e;
+}
+
+void EventsManager::addEvent(Event *event)
+{
+    events[event->id] = event;
 }
 
 Event *EventsManager::event(const string name)

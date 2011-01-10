@@ -21,7 +21,7 @@ HEADERS += frontend/drawdevice.h \
            src/room.h \
            src/roomsmanager.h \
            src/dialog.h \
-           src/xmlutils.h \
+           src/roomsreader.h \
            lib/tinyxml/tinystr.h \
            lib/tinyxml/tinyxml.h
 SOURCES += frontend/drawdevice.cpp \
@@ -36,7 +36,7 @@ SOURCES += frontend/drawdevice.cpp \
            src/room.cpp \
            src/roomsmanager.cpp \
            src/dialog.cpp \
-           src/xmlutils.cpp \
+           src/roomsreader.cpp \
            lib/tinyxml/tinystr.cpp \
            lib/tinyxml/tinyxml.cpp \
            lib/tinyxml/tinyxmlerror.cpp \

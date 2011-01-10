@@ -1,7 +1,9 @@
 #ifndef DIALOG_H
 #define DIALOG_H
 
-#include "engine.h"
+#include "action.h"
+#include "event.h"
+#include "log.h"
 
 #include <string> //std::string
 #include <map> //std::map
@@ -9,7 +11,7 @@
 
 using std::string;
 
-class Engine;
+extern Log logger;
 
 struct DialogStep
 {

@@ -10,7 +10,7 @@
 #include "event.h"
 #include "action.h"
 #include "area.h"
-#include "xmlutils.h"
+#include "roomsreader.h"
 
 #include <string> //std::string
 #include <utility> //std::pair
@@ -19,15 +19,6 @@
 
 using std::string;
 
-class Log;
-class RoomsManager;
-class EventsManager;
-class Dialog;
-class Event;
-class Action;
-class Area;
-class Room;
-class Item;
 
 /*! \brief Main class.
  *         It's driven by frontend and it manages game state.
@@ -75,13 +66,6 @@ class Engine
         std::pair<int, int> relToAbsCoord(const float x, const float y);
     private:
         void execActions(const std::vector <Action *> actions);
-        void createImgsFromXml(XmlVect imgs);
-        void fillEventFromXml(TiXmlElement *elem, Event *event);
-        void createEventsFromXml(XmlVect events);
-        void createRoomsFromXml(XmlVect rooms);
-        void createItemsFromXml(XmlVect items);
-        void createVarsFromXml(XmlVect vars);
-        void createDialogsFromXml(XmlVect diags);
         //RISC API
         void apiRoomGoto(const string id);
         void apiVarSet(const string id, const int value);
