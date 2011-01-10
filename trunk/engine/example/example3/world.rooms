@@ -12,173 +12,109 @@
     <img file="./data/locandiera.png" />
   </images>
 
-  <dialogs>
-    <dialog id="dialog_locandiera" start="0">
-      <step id="0" text="Cosa vuoi da me?">
-        <requirements />
-        <actions_if />
-        <link id="1" text="Forse hai qualcosa che mi serve..." />
-        <link id="-1" text="Addio bella pulzella!" />
-      </step>
-      <step id="1" text="Non ti darò mai la mia chiave!">
-        <requirements>
-            <item_req id="Chiave Locanda" value="!NOWHERE" />
-        </requirements>
-        <actions_if>
-        </actions_if>
-        <link id="2" text="Dammi la chiave, bella locandiera!" />
-      </step>
-      <step id="2" text="Sei così gentile che ti darò subito la mia chiave!">
-        <requirements>
-        </requirements>
-        <actions_if>
-            <action id="ITEM_MOVE">
-                <param value="Chiave Locanda" />
-                <param value="!INVENTORY" />
-            </action>
-        </actions_if>
-        <link id="-1" text="Grazie bella locandiera!" />
-      </step>
-    </dialog>
-  </dialogs>
-
-  <rooms>
-    <room id="!INVENTORY" bg="" />
-    <room id="!NOWHERE" bg="" />
-    <room id="Locanda" bg="./data/locanda.png">
-      <areas>
-        <area id="area_porta_locanda" x="200" y="350" width="100" height="150">
-          <do_event value="eve_goto_locanda" />
-        </area>
-      </areas>
-    </room>
-    <room id="Stanza Centrale" bg="./data/stanza_centrale.png">
-      <areas>
-        <area id="area_vai_cantina" x="300" y="350" width="200" height="200">
-          <do_event value="eve_goto_cantina" />
-        </area>
-        <area id="area_vai_star" x="50" y="150" width="100" height="300">
-          <do_event value="eve_goto_star" />
-        </area>
-        <area id="area_vai_end" x="650" y="150" width="100" height="300">
-          <do_event value="eve_goto_end" />
-        </area>
-      </areas>
-    </room>
-    <room id="Cantina" bg="./data/cantina.png">
-      <areas>
-        <area id="area_vai_centrale1" x="10" y="500" width="780" height="100">
-          <do_event value="eve_goto_centrale" />
-        </area>
-      </areas>
-    </room>
-    <room id="Stanza Stella" bg="./data/stanza_star.png">
-      <areas>
-        <area id="area_vai_centrale2" x="10" y="500" width="780" height="100">
-          <do_event value="eve_goto_centrale" />
-        </area>
-        <area id="area_switch1" x="350" y="350" width="75" height="75">
-          <do_event value="eve_switch1_on" />
-        </area>
-      </areas>
-    </room>
-    <room id="End" bg="./data/end.png" />
-  </rooms>
-
   <items>
-    <item id="Locandiera" room="Locanda" x="400" y="300" width="200" height="270" image="./data/locandiera.png">
-        <do_event value="start_dialog_locandiera" />
-    </item>
-    <item id="Chiave Locanda" room="!NOWHERE" x="10" y="500" width="50" height="50" image="./data/chiave.png">
-        <do_event value="chiave_get" />
-    </item>
-    <item id="Chiave Stella" room="Cantina" x="50" y="400" width="60" height="50" image="./data/chiave_star.png">
-        <do_event value="chiave_star_get" />
-    </item>
+    <item id="Locandiera" room="Locanda" x="400" y="300" width="200" height="270" image="./data/locandiera.png" event="start_dialog_locandiera" />
+    <item id="Chiave Locanda" room="Locanda" x="0.0125" y="0.83" width="0.0625" height="0.083" image="./data/chiave.png" event="chiave_get" />
+    <item id="Chiave Stella" room="Cantina" x="0.0625" y="0.66" width="0.0625" height="0.083" image="./data/chiave_star.png" event="chiave_star_get" />
   </items>
 
   <vars>
     <var id="switch1" value="0" />
   </vars>
 
+  <dialogs>
+    <dialog id="dialog_locandiera" start="0">
+      <step id="0" text="Cosa vuoi da me?">
+        <link id="1" text="Forse hai qualcosa che mi serve..." />
+        <link id="-1" text="Addio bella pulzella!" />
+      </step>
+      <step id="1" text="Non ti darò mai la mia chiave!">
+        <item_req id="Chiave Locanda" value="!NOWHERE" />
+        <link id="2" text="Dammi la chiave, bella locandiera!" />
+      </step>
+      <step id="2" text="Sei così gentile che ti darò subito la mia chiave!">
+        <action id="ITEM_MOVE">
+            <param value="Chiave Locanda" />
+            <param value="!INVENTORY" />
+        </action>
+        <link id="-1" text="Grazie bella locandiera!" />
+      </step>
+    </dialog>
+  </dialogs>
+
   <events>
     <event id="eve_goto_locanda">
-        <requirements>
-            <item_req id="Chiave Locanda" value="!INVENTORY"/>
-        </requirements>
-        <actions_if>
-            <action id="ROOM_GOTO">
-                <param value="Stanza Centrale" />
-            </action>
-        </actions_if>
+        <item_req id="Chiave Locanda" value="!INVENTORY"/>
+        <action id="ROOM_GOTO">
+            <param value="Stanza Centrale" />
+        </action>
     </event>
     <event id="eve_goto_centrale">
-        <requirements>
-        </requirements>
-        <actions_if>
-            <action id="ROOM_GOTO">
-                <param value="Stanza Centrale" />
-            </action>
-        </actions_if>
+        <action id="ROOM_GOTO">
+            <param value="Stanza Centrale" />
+        </action>
     </event>
     <event id="eve_goto_cantina">
-        <requirements>
-        </requirements>
-        <actions_if>
-            <action id="ROOM_GOTO">
-                <param value="Cantina" />
-            </action>
-        </actions_if>
+        <action id="ROOM_GOTO">
+            <param value="Cantina" />
+        </action>
     </event>
     <event id="eve_goto_star">
-        <requirements>
-            <item_req id="Chiave Stella" value="!INVENTORY" />
-        </requirements>
-        <actions_if>
-            <action id="ROOM_GOTO">
-                <param value="Stanza Stella" />
-            </action>
-        </actions_if>
+        <item_req id="Chiave Stella" value="!INVENTORY" />
+        <action id="ROOM_GOTO">
+            <param value="Stanza Stella" />
+        </action>
     </event>
     <event id="eve_goto_end">
-        <requirements>
-            <var_req id="switch1" value="1"/>
-        </requirements>
-        <actions_if>
-            <action id="ROOM_GOTO">
-                <param value="End" />
-            </action>
-        </actions_if>
+        <var_req id="switch1" value="1"/>
+        <action id="ROOM_GOTO">
+            <param value="End" />
+        </action>
     </event>
     <event id="eve_switch1_on">
-        <requirements>
-        </requirements>
-        <actions_if>
-            <action id="VAR_SET">
-                <param value="switch1" />
-                <param value="1" />
-            </action>
-        </actions_if>
+        <action id="VAR_SET">
+            <param value="switch1" />
+            <param value="1" />
+        </action>
     </event>
-    <event id="start_dialog_locandiera">
-        <requirements>
-        </requirements>
-        <actions_if>
-            <action id="DIALOG_START">
-                <param value="dialog_locandiera" />
-            </action>
-        </actions_if>
+    <event id="chiave_get">
+        <action id="ITEM_MOVE">
+            <param value="Chiave Locanda" />
+            <param value="!INVENTORY" />
+        </action>
     </event>
     <event id="chiave_star_get">
-        <requirements>
-        </requirements>
-        <actions_if>
-            <action id="ITEM_MOVE">
-                <param value="Chiave Stella" />
-                <param value="!INVENTORY" />
-            </action>
-        </actions_if>
+        <action id="ITEM_MOVE">
+            <param value="Chiave Stella" />
+            <param value="!INVENTORY" />
+        </action>
+    </event>
+    <event id="start_dialog_locandiera">
+        <action id="DIALOG_START">
+            <param value="dialog_locandiera" />
+        </action>
     </event>
   </events>
+
+  <rooms>
+    <room id="!INVENTORY" bg="" />
+    <room id="!NOWHERE" bg="" />
+    <room id="Locanda" bg="./data/locanda.png">
+        <area id="area_porta_locanda" x="0.25" y="0.58" width="0.125" height="0.25" event="eve_goto_locanda" />
+    </room>
+    <room id="Stanza Centrale" bg="./data/stanza_centrale.png">
+        <area id="area_vai_cantina" x="0.375" y="0.58" width="0.25" height="0.33" event="eve_goto_cantina" />
+        <area id="area_vai_star" x="0.062" y="0.25" width="0.125" height="0.5" event="eve_goto_star" />
+        <area id="area_vai_end" x="0.8" y="0.2" width="0.125" height="0.5" event="eve_goto_end" />
+    </room>
+    <room id="Cantina" bg="./data/cantina.png">
+        <area id="area_vai_centrale1" x="0.0125" y="0.83" width="0.97" height="0.16" event="eve_goto_centrale" />
+    </room>
+    <room id="Stanza Stella" bg="./data/stanza_star.png">
+        <area id="area_vai_centrale2" x="0.0125" y="0.83" width="0.97" height="0.16" event="eve_goto_centrale" />
+        <area id="area_switch1" x="0.43" y="0.58" width="0.93" height="0.125" event="eve_switch1_on" />
+    </room>
+    <room id="End" bg="./data/end.png" />
+  </rooms>
 
 </world>

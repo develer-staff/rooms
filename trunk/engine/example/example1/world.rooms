@@ -7,25 +7,8 @@
     <img file="./data/chiave.png" />
   </images>
 
-  <rooms>
-    <room id="!NOWHERE" bg="" />
-    <room id="!INVENTORY" bg="" />
-    <room id="Locanda" bg="./data/locanda.png">
-      <areas>
-        <area id="area_porta_locanda" x="250" y="480" width="150" height="150">
-          <do_event value="apri_porta_locanda" />
-        </area>
-      </areas>
-    </room>
-    <room id="Cucina" bg="./data/cucina.png">
-      <areas />
-    </room>
-  </rooms>
-
   <items>
-    <item id="La chiave della locandiera" room="Locanda" x="10" y="700" width="50" height="50" image="./data/chiave.png">
-        <do_event value="chiave_get" />
-    </item>
+    <item id="La chiave della locandiera" room="Locanda" x="10" y="700" width="50" height="50" image="./data/chiave.png" event="chiave_get" />
   </items>
 
   <vars>
@@ -34,34 +17,31 @@
 
   <events>
     <event id="apri_porta_locanda">
-        <requirements>
-            <item_req id="La chiave della locandiera" value="!INVENTORY"/>
-            <var_req id="my_var" value="1"/>
-        </requirements>
-        <actions_if>
-            <action id="ROOM_GOTO">
-                <param value="Cucina" />
-            </action>
-        </actions_if>
-        <actions_else>
-        </actions_else>
+        <item_req id="La chiave della locandiera" value="!INVENTORY"/>
+        <var_req id="my_var" value="1"/>
+        <action id="ROOM_GOTO">
+            <param value="Cucina" />
+        </action>
     </event>
     <event id="chiave_get">
-        <requirements>
-        </requirements>
-        <actions_if>
-            <action id="ITEM_MOVE">
-                <param value="La chiave della locandiera" />
-                <param value="!INVENTORY" />
-            </action>
-            <action id="VAR_SET">
-                <param value="my_var" />
-                <param value="1" />
-            </action>
-        </actions_if>
-        <actions_else>
-        </actions_else>
+        <action id="ITEM_MOVE">
+            <param value="La chiave della locandiera" />
+            <param value="!INVENTORY" />
+        </action>
+        <action id="VAR_SET">
+            <param value="my_var" />
+            <param value="1" />
+        </action>
     </event>
   </events>
+
+  <rooms>
+    <room id="!NOWHERE" bg="" />
+    <room id="!INVENTORY" bg="" />
+    <room id="Locanda" bg="./data/locanda.png">
+        <area id="area_porta_locanda" x="250" y="480" width="150" height="150" event="apri_porta_locanda" />
+    </room>
+    <room id="Cucina" bg="./data/cucina.png" />
+  </rooms>
 
 </world>
