@@ -14,6 +14,7 @@ RRNode::~RRNode()
 RRNode *RRNode::gotoElement(string name)
 {
     cursor = findElement(root, name);
+    return this;
 }
 
 RRNode *RRNode::gotoRoot()
@@ -24,25 +25,29 @@ RRNode *RRNode::gotoRoot()
 
 RRNode *RRNode::gotoChild(string name)
 {
-    cursor = cursor->FirstChildElement(name.c_str());
+    if(!isNull())
+        cursor = cursor->FirstChildElement(name.c_str());
     return this;
 }
 
 RRNode *RRNode::gotoParent()
 {
-    cursor = cursor->Parent()->ToElement();
+    if(!isNull())
+        cursor = cursor->Parent()->ToElement();
     return this;
 }
 
 RRNode *RRNode::gotoNext()
 {
-    cursor = cursor->NextSiblingElement(cursor->Value());
+    if(!isNull())
+        cursor = cursor->NextSiblingElement(cursor->Value());
     return this;
 }
 
 bool RRNode::isNull()
 {
-    return cursor;
+    bool result = cursor;
+    return !result;
 }
 
 int RRNode::attrInt(string name)
@@ -77,7 +82,7 @@ Event *RRNode::fetchEvent()
     for (gotoChild("action"); !isNull(); gotoNext())
     {
         Action *act = event->addAction(attrStr("id"));
-        for (gotoChild("param"); isNull(); gotoNext())
+        for (gotoChild("param"); !isNull(); gotoNext())
             act->pushParam(attrStr("value"));
         gotoParent();
     }

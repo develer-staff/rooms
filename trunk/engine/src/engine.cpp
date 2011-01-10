@@ -115,27 +115,28 @@ bool Engine::loadWorldFromStr(const string content)
     rooms_mgr->size(node->attrInt("width"), node->attrInt("height"));
     rooms_mgr->name(node->attrStr("name"));
     //Loading from xml
-    for (node->gotoElement("images")->gotoChild("img"); node->isNull(); node->gotoNext())
+    for (node->gotoElement("images")->gotoChild("img"); !node->isNull(); node->gotoNext())
         images.push_back(node->attrStr("file"));
     node->gotoRoot();
 
-    for (node->gotoElement("events")->gotoChild("event"); node->isNull(); node->gotoNext())
+    for (node->gotoElement("events")->gotoChild("event"); !node->isNull(); node->gotoNext())
         events_mgr->addEvent(node->fetchEvent());
     node->gotoRoot();
 
-    for (node->gotoElement("rooms")->gotoChild("room"); node->isNull(); node->gotoNext())
+    for (node->gotoElement("rooms")->gotoChild("room"); !node->isNull(); node->gotoNext())
         rooms_mgr->addRoom(node->fetchRoom());
     node->gotoRoot();
 
-    for (node->gotoElement("items")->gotoChild("item"); node->isNull(); node->gotoNext())
+    for (node->gotoElement("items")->gotoChild("item"); !node->isNull(); node->gotoNext())
         rooms_mgr->addItem(node->fetchItem());
+        node->isNull();
     node->gotoRoot();
 
-    for (node->gotoElement("vars")->gotoChild("var"); node->isNull(); node->gotoNext())
+    for (node->gotoElement("vars")->gotoChild("var"); !node->isNull(); node->gotoNext())
         events_mgr->setVar(node->attrStr("id"), node->attrInt("value"));
     node->gotoRoot();
 
-    for (node->gotoElement("dialogs")->gotoChild("dialog"); node->isNull(); node->gotoNext())
+    for (node->gotoElement("dialogs")->gotoChild("dialog"); !node->isNull(); node->gotoNext())
         dialogs[node->attrStr("id")] = node->fetchDialog();
     node->gotoRoot();
 
