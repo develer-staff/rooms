@@ -154,9 +154,9 @@ void DrawDevice::resizeEvent(QResizeEvent *event)
 {
     int x_border = width() * 0.01;
     int y_border = height() * 0.01;
-    dialog_list.setGeometry(x_border, height() * 0.5, width() - x_border * 2, height() * 0.3);
+    dialog_list.setGeometry(x_border, height() * 0.58, width() - x_border * 2, height() * 0.42 - y_border);
     hint_text.setGeometry(x_border, height() * 0.9, width() - x_border * 2, height() * 0.083);
-    dialog_text.setGeometry(x_border, height() * 0.58, width() - x_border * 2, height() * 0.083);
+    dialog_text.setGeometry(x_border, height() * 0.48, width() - x_border * 2, height() * 0.083);
     inventory_list.setGeometry(QRect(x_border, y_border, width() - x_border * 2, height()- y_border * 2));
     engine->getRoomsManager()->size(event->size().width(), event->size().height());
 }
