@@ -62,7 +62,7 @@ void DrawDevice::quit(int status)
 void DrawDevice::dialogChosed(QListWidgetItem *item)
 {
     engine->clickDialog(item->text().toStdString());
-    update();
+    updateDialog();
 }
 
 void DrawDevice::paintEvent(QPaintEvent *event)
@@ -87,13 +87,12 @@ void DrawDevice::mousePressEvent(QMouseEvent * event)
 {
     if (engine->state() == Engine::GAME)
     {
-        dialog_text.hide();
-        dialog_list.hide();
         std::pair<float, float> coord = engine->absToRelCoord(event->x(), event->y());
         engine->clickArea(coord.first, coord.second);
         update();
+        if (engine->state() == Engine::DIALOG)
+            updateDialog();
     }
-    updateDialog();
 }
 
 void DrawDevice::keyPressEvent(QKeyEvent * event)
@@ -175,6 +174,11 @@ void DrawDevice::updateDialog()
             dialog_list.addItem(QString::fromUtf8(i->first.c_str()));
         dialog_list.show();
         dialog_text.show();
+    }
+    else
+    {
+        dialog_list.hide();
+        dialog_text.hide();
     }
 }
 
