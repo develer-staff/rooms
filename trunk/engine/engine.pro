@@ -8,6 +8,7 @@ DEPENDPATH += . frontend src lib/tinyxml
 INCLUDEPATH += . frontend src lib/tinyxml
 OBJECTS_DIR = ./build
 MOC_DIR = ./build
+LIBS += -L. -lrooms
 
 # Input
 HEADERS += frontend/drawdevice.h \
@@ -26,18 +27,3 @@ HEADERS += frontend/drawdevice.h \
            lib/tinyxml/tinyxml.h
 SOURCES += frontend/drawdevice.cpp \
            frontend/main.cpp \
-           src/action.cpp \
-           src/area.cpp \
-           src/engine.cpp \
-           src/event.cpp \
-           src/eventsmanager.cpp \
-           src/item.cpp \
-           src/log.cpp \
-           src/room.cpp \
-           src/roomsmanager.cpp \
-           src/dialog.cpp \
-           src/roomsreader.cpp \
-           lib/tinyxml/tinystr.cpp \
-           lib/tinyxml/tinyxml.cpp \
-           lib/tinyxml/tinyxmlerror.cpp \
-           lib/tinyxml/tinyxmlparser.cpp
