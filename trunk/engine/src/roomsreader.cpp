@@ -264,6 +264,7 @@ bool RoomsReader::loadFromStr(const string content)
             string new_content = upgrade(content);
             return loadFromStr(new_content);
         }
+        return false;
     }
     crawler = new RRNode(doc->RootElement());
     return true;
