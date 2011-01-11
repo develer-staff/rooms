@@ -84,8 +84,10 @@ bool Engine::loadWorldFromFile(const string filename)
 {
     logger.write("Loading world from: " + filename, Log::NOTE);
     std::ifstream xml(filename.c_str(), std::ios::binary);
+    if (!xml.good()) return false;
     xml.seekg (0, std::ios::end);
     long length = xml.tellg();
+    if (length == 0) return false;
     char *buffer = new char [length];
     xml.seekg (0, std::ios::beg);
     xml.read(buffer, length);
