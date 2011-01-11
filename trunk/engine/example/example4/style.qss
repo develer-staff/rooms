@@ -1,0 +1,14 @@
+QListWidget {
+    border-width: 4px;
+    border-style: solid;
+    border-radius: 10px;
+    border-color: white;}
+QListWidget::item:hover {
+    background: rgba(0, 50, 255, 20%)}
+
+QLabel {border-width: 4px;
+    border-style: solid;
+    border-radius: 10px;
+    border-color: black;
+    background: rgba(220, 235, 255, 80%);}
+

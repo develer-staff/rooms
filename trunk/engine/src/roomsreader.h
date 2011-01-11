@@ -12,6 +12,8 @@
 #ifndef ROOMSREADER_H
 #define ROOMSREADER_H
 
+#define VERSION 2
+
 #include "../lib/tinyxml/tinyxml.h"
 #include "event.h"
 #include "room.h"
@@ -24,6 +26,7 @@
 #include <vector> //std::vector
 #include <set> //std::set
 #include <fstream> //std::ifstream
+#include <sstream> //std::ostringstream
 
 using std::string;
 
@@ -96,6 +99,8 @@ class RRNode
         string attrStr(string name);
         /// Gets float data from an xml node attribute.
         float attrFloat(string name);
+        /// Puts a value in the given attribute.
+        void setAttr(string name, string value);
         /**
          * \brief Uses current node to create an Event.
          *
@@ -151,12 +156,15 @@ class RoomsReader
          *                  False otherwise.
          */
         bool loadFromStr(string content);
+        /// Gets an old file content and upgrades it to new version.
+        string upgrade(string old_content);
         /// Obtain crawler pointer, to navigate inside world file.
         RRNode *getCrawler();
     private:
         typedef bool (RoomsReader::*ParseMethod) (TiXmlElement *);
+        typedef string (*UpgradeFunc) (string);
         std::map<string, ParseMethod> parse_map;
-        TiXmlDocument doc;
+        TiXmlDocument *doc;
         RRNode *crawler;
         std::set<string> unique_ids_rooms;
         std::set<string> unique_ids_items;
@@ -165,6 +173,7 @@ class RoomsReader
         std::set<string> unique_ids_vars;
         std::set<string> unique_ids_images;
         std::set<string> unique_ids_dialogs;
+        int file_version; // initialized with parse(), modified in upgrade()
         bool parse();
         bool parseElement(TiXmlElement *elem);
         bool parseWorld(TiXmlElement *elem);
@@ -183,6 +192,8 @@ class RoomsReader
         bool parseAttr(TiXmlElement *elem, string name, AttributeType type);
         bool checkUniqueId(std::set<string> &ids, const string id);
         bool checkParent(TiXmlElement *elem, string parent_name);
+        // Upgrade functions
+        static UpgradeFunc upgrade_funcs[];
 };
 
 #endif // ROOMSREADER_H

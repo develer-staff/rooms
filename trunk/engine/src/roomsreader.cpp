@@ -81,6 +81,11 @@ string RRNode::attrStr(string name)
     return cursor->Attribute(name.c_str());
 }
 
+void RRNode::setAttr(string name, string value)
+{
+    cursor->SetAttribute(name.c_str(), value.c_str());
+}
+
 Event *RRNode::fetchEvent()
 {
     if (isNull()) return 0;
@@ -159,9 +164,51 @@ TiXmlElement *RRNode::findElement(TiXmlElement *elem, string name)
     return 0;
 }
 
+
+string floatToStr(const float f)
+{
+    std::ostringstream os;
+    os << f;
+    return os.str();
+}
+
+string upgradeFrom1To2(string content)
+{
+    TiXmlDocument doc;
+    doc.Parse(content.c_str());
+    RRNode node(doc.RootElement());
+    node.gotoElement("world");
+    int w = node.attrInt("width");
+    int h = node.attrInt("height");
+    node.setAttr("version", "2");
+    for (node.gotoElement("items")->gotoChild("item"); !node.isNull(); node.gotoNext())
+    {
+        node.setAttr("x", floatToStr(node.attrFloat("x") / w));
+        node.setAttr("y", floatToStr(node.attrFloat("y") / h));
+        node.setAttr("width", floatToStr(node.attrFloat("width") / w));
+        node.setAttr("height", floatToStr(node.attrFloat("height") / h));
+    }
+
+    for (node.gotoElement("rooms")->gotoChild("room"); !node.isNull(); node.gotoNext())
+    {
+        for (node.gotoChild("area"); !node.isNull(); node.gotoNext())
+        {
+            node.setAttr("x", floatToStr(node.attrFloat("x") / w));
+            node.setAttr("y", floatToStr(node.attrFloat("y") / h));
+            node.setAttr("width", floatToStr(node.attrFloat("width") / w));
+            node.setAttr("height", floatToStr(node.attrFloat("height") / h));
+        }
+        node.gotoParent();
+    }
+    TiXmlPrinter printer;
+    doc.Accept(&printer);
+    return printer.CStr();
+}
+
 RoomsReader::RoomsReader()
 {
     crawler = 0;
+    doc = 0;
     parse_map["world"] = &RoomsReader::parseWorld;
     parse_map["room"] = &RoomsReader::parseRoom;
     parse_map["area"] = &RoomsReader::parseArea;
@@ -181,7 +228,11 @@ RoomsReader::~RoomsReader()
 {
     if(crawler)
         delete crawler;
+    if (doc)
+        delete doc;
 }
+
+RoomsReader::UpgradeFunc RoomsReader::upgrade_funcs[] = {upgradeFrom1To2};
 
 bool RoomsReader::loadFromFile(const string filename)
 {
@@ -199,15 +250,35 @@ bool RoomsReader::loadFromFile(const string filename)
 
 bool RoomsReader::loadFromStr(const string content)
 {
-    doc.Parse(content.c_str());
-    if (!parse()) return false;
-    crawler = new RRNode(doc.RootElement());
+    doc = new TiXmlDocument;
+    doc->Parse(content.c_str());
+    if (!parse())
+    {
+        delete doc;
+        doc = 0;
+        if (file_version < VERSION)
+        {
+            logger.write("Old version detected: " + floatToStr(file_version) + ". Upgrading...", Log::WARNING);
+            string new_content = upgrade(content);
+            return loadFromStr(new_content);
+        }
+    }
+    crawler = new RRNode(doc->RootElement());
     return true;
+}
+
+string RoomsReader::upgrade(string content)
+{
+    for (int i = file_version; i < VERSION; ++i)
+    {
+        content = upgrade_funcs[i - 1](content);
+    }
+    return content;
 }
 
 bool RoomsReader::parse()
 {
-    return parseElement(doc.RootElement());
+    return parseElement(doc->RootElement());
 }
 
 RRNode *RoomsReader::getCrawler()
@@ -294,11 +365,14 @@ bool RoomsReader::parseAction(TiXmlElement *elem)
 
 bool RoomsReader::parseWorld(TiXmlElement *elem)
 {
-    if (!(parseAttr(elem, "version", ATTR_STR) &&
+    if (!(parseAttr(elem, "version", ATTR_INT) &&
           parseAttr(elem, "name", ATTR_STR) &&
           parseAttr(elem, "start", ATTR_STR) &&
           parseAttr(elem, "width", ATTR_INT) &&
           parseAttr(elem, "height", ATTR_INT)))
+        return false;
+    elem->QueryIntAttribute("version", &file_version);
+    if (file_version != VERSION)
         return false;
     return true;
 }

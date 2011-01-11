@@ -2,12 +2,8 @@
 
 Log logger;
 
-const string Engine::VERSION = "ROOMS_VANILLA";
-
 Engine::Engine()
 {
-    logger.write("\n* --------------\n* Engine version: " + VERSION +
-                 "\n* --------------", Log::NOTE);
     rooms_mgr = new RoomsManager();
     events_mgr = new EventsManager();
     _state = INITIALIZING;

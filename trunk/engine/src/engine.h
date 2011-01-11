@@ -54,7 +54,6 @@ using std::string;
 class Engine
 {
     public:
-        static const string VERSION;
         enum State
         {
             INITIALIZING = 0,
