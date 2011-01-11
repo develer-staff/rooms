@@ -6,3 +6,4 @@ moc_*
 Makefile
 html
 latex
+lib*.a
