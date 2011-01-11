@@ -48,7 +48,7 @@ public:
                    "<rooms /> <events /> <items />"
                    "</world>\n";
         RoomsReader reader;
-        CPPUNIT_ASSERT(reader.loadFromStr(xml));
+        CPPUNIT_ASSERT(!reader.loadFromStr(xml));
     }
 
     void testGoodRooms()
@@ -70,7 +70,7 @@ public:
                    "<images /> <events /> <items />"
                    "</world>\n";
         RoomsReader reader;
-        CPPUNIT_ASSERT(reader.loadFromStr(xml));
+        CPPUNIT_ASSERT(!reader.loadFromStr(xml));
     }
 
     void testGoodEvents()
@@ -92,7 +92,7 @@ public:
                    "<images /> <rooms /> <items />"
                    "</world>\n";
         RoomsReader reader;
-        CPPUNIT_ASSERT(reader.loadFromStr(xml));
+        CPPUNIT_ASSERT(!reader.loadFromStr(xml));
     }
 
     void testGoodVars()
@@ -114,15 +114,15 @@ public:
                    "<images /> <rooms /> <items />"
                    "</world>\n";
         RoomsReader reader;
-        CPPUNIT_ASSERT(reader.loadFromStr(xml));
+        CPPUNIT_ASSERT(!reader.loadFromStr(xml));
     }
 
     void testGoodAreas()
     {
         std::string xml = "<?xml version='1.0' ?>"
                    "<world version='2' name='name' width='800' height='600' start='room'>"
-                   "<rooms><room id='id' bg='bg'><areas><area id='id' x='10' y='10' width='10' height='10'>"
-                   "<do_event value='event' /></area></areas></rooms>"
+                   "<rooms><room id='id' bg='bg'><area id='id' x='10' y='10' width='10' height='10'>"
+                   "<do_event value='event' /></area></rooms>"
                    "<images /> <events /> <items />"
                    "</world>\n";
         RoomsReader reader;
@@ -138,7 +138,7 @@ public:
                    "<images /> <events /> <items />"
                    "</world>\n";
         RoomsReader reader;
-        CPPUNIT_ASSERT(reader.loadFromStr(xml));
+        CPPUNIT_ASSERT(!reader.loadFromStr(xml));
     }
 
     void testGoodDialogs()
@@ -160,7 +160,7 @@ public:
                    "<images /> <events /> <items />"
                    "</world>\n";
         RoomsReader reader;
-        CPPUNIT_ASSERT(reader.loadFromStr(xml));
+        CPPUNIT_ASSERT(!reader.loadFromStr(xml));
     }
 
     static CppUnit::Test *suite()
