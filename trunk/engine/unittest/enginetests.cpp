@@ -16,46 +16,48 @@ void WorldTests::tearDown()
 void WorldTests::testReqsOk()
 {
     std::string xml = "<?xml version='1.0' ?>"
-                      "<world version='ROOMS_VANILLA' name='testLoadWorld' width='800' height='600' start='room'>"
-                      "<rooms><room id='room' bg='bg'><areas /></room></rooms>"
-                      "<items><item id='key' room='room' x='10' y='10' width='50' height='50' image='../example/example2/data/chiave.png'><do_event value='event' /></item></items>"
-                      "<vars><var id='var' value='1' /></vars>"
+                      "<world version='2' name='testLoadWorld' width='800' height='600' start='room'>"
+                      "<images><img file='../example/example2/data/chiave.png' /></images>"
+                      "<rooms><room id='room' bg='bg'></room></rooms>"
+                      "<items><item id='key' room='room' x='10' y='10' width='50' height='50' image='../example/example2/data/chiave.png' event='event' /></items>"
+                      "<vars><var id='var' value='12' /></vars>"
                       "</world>\n";
-    mock->loadWorldFromStr(xml);
+    CPPUNIT_ASSERT(mock->loadWorldFromStr(xml));
     std::vector <std::pair <std::string, std::string> > items;
     items.push_back(std::make_pair("key", "room"));
     CPPUNIT_ASSERT(room_man->checkItemPlace(items) == true);
     std::vector <std::pair <std::string, int> > vars;
-    vars.push_back(std::make_pair("var", 1));
+    vars.push_back(std::make_pair("var", 12));
     CPPUNIT_ASSERT(event_man->checkVarReqs(vars) == true);
 }
 
 void WorldTests::testReqsNo()
 {
     std::string xml = "<?xml version='1.0' ?>"
-                      "<world version='ROOMS_VANILLA' name='testLoadWorld' width='800' height='600' start='room'>"
-                      "<rooms><room id='room' bg='bg'><areas /></room></rooms>"
-                      "<items><item id='key' room='room' x='10' y='10' width='50' height='50' image='../example/example2/data/chiave.png'><do_event value='event' /></item></items>"
-                      "<vars><var id='var' value='1' /></vars>"
+                      "<world version='2' name='testLoadWorld' width='800' height='600' start='room'>"
+                      "<images><img file='../example/example2/data/chiave.png' /></images>"
+                      "<rooms><room id='room' bg='bg'></room></rooms>"
+                      "<items><item id='key' room='room' x='10' y='10' width='50' height='50' image='../example/example2/data/chiave.png' event='event' /></items>"
+                      "<vars><var id='var' value='20' /></vars>"
                       "</world>\n";
-    mock->loadWorldFromStr(xml);
+    CPPUNIT_ASSERT(mock->loadWorldFromStr(xml));
     std::vector <std::pair <std::string, std::string> > items;
     items.push_back(std::make_pair("key", "wrong_room"));
     CPPUNIT_ASSERT(room_man->checkItemPlace(items) == false);
     std::vector <std::pair <std::string, int> > vars;
-    vars.push_back(std::make_pair("var", 0));
+    vars.push_back(std::make_pair("var", 35));
     CPPUNIT_ASSERT(event_man->checkVarReqs(vars) == false);
 }
 
 void WorldTests::testLoadWorld()
 {
     std::string xml = "<?xml version='1.0' ?>"
-                      "<world version='ROOMS_VANILLA' name='testLoadWorld' width='800' height='600' start='room'>"
-                      "<rooms><room id='room' bg='bg'><areas><area id='id' x= '10' y='10' width='10' height='10'>"
-                      "<do_event value='event' /></area></areas></room></rooms>"
+                      "<world version='2' name='testLoadWorld' width='800' height='600' start='room'>"
                       "<images><img file='../example/example2/data/chiave.png'/></images>"
-                      "<items><item id='key' room='room' x='10' y='10' width='50' height='50' image='../example/example2/data/chiave.png'><do_event value='event' /></item></items>"
-                      "<events><event id='event'><requirements></requirements><actions_if><action id='ROOM_GOTO'/><param value='room' /></actions_if></event></events>"
+                      "<items><item id='key' room='room' x='10' y='10' width='50' height='50' image='../example/example2/data/chiave.png' event='event' /></items>"
+                      "<vars /><dialogs />"
+                      "<events><event id='event'><action id='ROOM_GOTO'><param value='room' /></action></event></events>"
+                      "<rooms><room id='room' bg='bg'><area id='id' x= '10' y='10' width='10' height='10' event='event'/></room></rooms>"
                       "</world>\n";
     CPPUNIT_ASSERT(mock->loadWorldFromStr(xml));
     CPPUNIT_ASSERT(room_man->room("room") != 0);
@@ -103,7 +105,7 @@ void ApiTests::testItemMove()
 void ApiTests::testDialogStart()
 {
     std::string xml = "<?xml version='1.0' ?>"
-                      "<world version='ROOMS_VANILLA' name='testLoadWorld' width='800' height='600' start='room'>"
+                      "<world version='2' name='testLoadWorld' width='800' height='600' start='room'>"
                       "<rooms><room id='room' bg='bg' /></rooms>"
                       "<images><img file='../example/example2/data/chiave.png'/></images>"
                       "<dialogs><dialog id='dialog'start='firststep'><step id='firststep' text='text'></step></dialog></dialogs>"
