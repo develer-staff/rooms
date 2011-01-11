@@ -21,146 +21,146 @@ public:
 
     void testGoodDoc()
     {
-        TiXmlDocument doc;
-        doc.Parse("<?xml version='1.0' ?>"
-                   "<world version='ROOMS_VANILLA' name='name' width='800' height='600' start='room'>"
+        std::string xml = "<?xml version='1.0' ?>"
+                   "<world version='2' name='name' width='800' height='600' start='room'>"
                    "<images /> <rooms /> <events /> <items />"
-                   "</world>\n", 0, TIXML_ENCODING_UTF8);
-        CPPUNIT_ASSERT(xml::xmlCheckDoc(&doc, Engine::VERSION));
+                   "</world>\n";
+        RoomsReader reader;
+        CPPUNIT_ASSERT(reader.loadFromStr(xml));
     }
 
     void testGoodImages()
     {
-        TiXmlDocument doc;
-        doc.Parse("<?xml version='1.0' ?>"
-                   "<world version='ROOMS_VANILLA' name='name' width='800' height='600' start='room'>"
+        std::string xml = "<?xml version='1.0' ?>"
+                   "<world version='2' name='name' width='800' height='600' start='room'>"
                    "<images><img file='file' /></images>"
                    "<rooms /> <events /> <items />"
-                   "</world>\n", 0, TIXML_ENCODING_UTF8);
-        CPPUNIT_ASSERT(xml::xmlCheckDoc(&doc, Engine::VERSION));
+                   "</world>\n";
+        RoomsReader reader;
+        CPPUNIT_ASSERT(reader.loadFromStr(xml));
     }
 
     void testWrongImages()
     {
-        TiXmlDocument doc;
-        doc.Parse("<?xml version='1.0' ?>"
-                   "<world version='ROOMS_VANILLA' name='name' width='800' height='600' start='room'>"
+        std::string xml = "<?xml version='1.0' ?>"
+                   "<world version='2' name='name' width='800' height='600' start='room'>"
                    "<images><img /></images>"
                    "<rooms /> <events /> <items />"
-                   "</world>\n", 0, TIXML_ENCODING_UTF8);
-        CPPUNIT_ASSERT(!xml::xmlCheckDoc(&doc, Engine::VERSION));
+                   "</world>\n";
+        RoomsReader reader;
+        CPPUNIT_ASSERT(reader.loadFromStr(xml));
     }
 
     void testGoodRooms()
     {
-        TiXmlDocument doc;
-        doc.Parse("<?xml version='1.0' ?>"
-                   "<world version='ROOMS_VANILLA' name='name' width='800' height='600' start='room'>"
+        std::string xml = "<?xml version='1.0' ?>"
+                   "<world version='2' name='name' width='800' height='600' start='room'>"
                    "<rooms><room id='id' bg='bg' /></rooms>"
                    "<images /> <events /> <items />"
-                   "</world>\n", 0, TIXML_ENCODING_UTF8);
-        CPPUNIT_ASSERT(xml::xmlCheckDoc(&doc, Engine::VERSION));
+                   "</world>\n";
+        RoomsReader reader;
+        CPPUNIT_ASSERT(reader.loadFromStr(xml));
     }
 
     void testWrongRooms()
     {
-        TiXmlDocument doc;
-        doc.Parse("<?xml version='1.0' ?>"
-                   "<world version='ROOMS_VANILLA' name='name' width='800' height='600' start='room'>"
+        std::string xml = "<?xml version='1.0' ?>"
+                   "<world version='2' name='name' width='800' height='600' start='room'>"
                    "<rooms><room id='id' /></rooms>"
                    "<images /> <events /> <items />"
-                   "</world>\n", 0, TIXML_ENCODING_UTF8);
-        CPPUNIT_ASSERT(!xml::xmlCheckDoc(&doc, Engine::VERSION));
+                   "</world>\n";
+        RoomsReader reader;
+        CPPUNIT_ASSERT(reader.loadFromStr(xml));
     }
 
     void testGoodEvents()
     {
-        TiXmlDocument doc;
-        doc.Parse("<?xml version='1.0' ?>"
-                   "<world version='ROOMS_VANILLA' name='name' width='800' height='600' start='room'>"
+        std::string xml = "<?xml version='1.0' ?>"
+                   "<world version='2' name='name' width='800' height='600' start='room'>"
                    "<events><event id='id'></events>"
                    "<images /> <rooms /> <items />"
-                   "</world>\n", 0, TIXML_ENCODING_UTF8);
-        CPPUNIT_ASSERT(xml::xmlCheckDoc(&doc, Engine::VERSION));
+                   "</world>\n";
+        RoomsReader reader;
+        CPPUNIT_ASSERT(reader.loadFromStr(xml));
     }
 
     void testWrongEvents()
     {
-        TiXmlDocument doc;
-        doc.Parse("<?xml version='1.0' ?>"
-                   "<world version='ROOMS_VANILLA' name='name' width='800' height='600' start='room'>"
+        std::string xml = "<?xml version='1.0' ?>"
+                   "<world version='2' name='name' width='800' height='600' start='room'>"
                    "<events><event /></events>"
                    "<images /> <rooms /> <items />"
-                   "</world>\n", 0, TIXML_ENCODING_UTF8);
-        CPPUNIT_ASSERT(!xml::xmlCheckDoc(&doc, Engine::VERSION));
+                   "</world>\n";
+        RoomsReader reader;
+        CPPUNIT_ASSERT(reader.loadFromStr(xml));
     }
 
     void testGoodVars()
     {
-        TiXmlDocument doc;
-        doc.Parse("<?xml version='1.0' ?>"
-                   "<world version='ROOMS_VANILLA' name='name' width='800' height='600' start='room'>"
+        std::string xml = "<?xml version='1.0' ?>"
+                   "<world version='2' name='name' width='800' height='600' start='room'>"
                    "<vars><var id='id' value='10'></vars>"
                    "<images /> <rooms /> <items />"
-                   "</world>\n", 0, TIXML_ENCODING_UTF8);
-        CPPUNIT_ASSERT(xml::xmlCheckDoc(&doc, Engine::VERSION));
+                   "</world>\n";
+        RoomsReader reader;
+        CPPUNIT_ASSERT(reader.loadFromStr(xml));
     }
 
     void testWrongVars()
     {
-        TiXmlDocument doc;
-        doc.Parse("<?xml version='1.0' ?>"
-                   "<world version='ROOMS_VANILLA' name='name' width='800' height='600' start='room'>"
+        std::string xml = "<?xml version='1.0' ?>"
+                   "<world version='2' name='name' width='800' height='600' start='room'>"
                    "<vars><var id='id' value='AB'></vars>"
                    "<images /> <rooms /> <items />"
-                   "</world>\n", 0, TIXML_ENCODING_UTF8);
-        CPPUNIT_ASSERT(!xml::xmlCheckDoc(&doc, Engine::VERSION));
+                   "</world>\n";
+        RoomsReader reader;
+        CPPUNIT_ASSERT(reader.loadFromStr(xml));
     }
 
     void testGoodAreas()
     {
-        TiXmlDocument doc;
-        doc.Parse("<?xml version='1.0' ?>"
-                   "<world version='ROOMS_VANILLA' name='name' width='800' height='600' start='room'>"
+        std::string xml = "<?xml version='1.0' ?>"
+                   "<world version='2' name='name' width='800' height='600' start='room'>"
                    "<rooms><room id='id' bg='bg'><areas><area id='id' x='10' y='10' width='10' height='10'>"
                    "<do_event value='event' /></area></areas></rooms>"
                    "<images /> <events /> <items />"
-                   "</world>\n", 0, TIXML_ENCODING_UTF8);
-        CPPUNIT_ASSERT(xml::xmlCheckDoc(&doc, Engine::VERSION));
+                   "</world>\n";
+        RoomsReader reader;
+        CPPUNIT_ASSERT(reader.loadFromStr(xml));
     }
 
     void testWrongAreas()
     {
-        TiXmlDocument doc;
-        doc.Parse("<?xml version='1.0' ?>"
-                   "<world version='ROOMS_VANILLA' name='name' width='800' height='600' start='room'>"
+        std::string xml = "<?xml version='1.0' ?>"
+                   "<world version='2' name='name' width='800' height='600' start='room'>"
                    "<rooms><room id='id' bg='bg'><areas><area id='id' y='10' width='10' height='10'>"
                    "<do_event value='event' /></area></areas></rooms>"
                    "<images /> <events /> <items />"
-                   "</world>\n", 0, TIXML_ENCODING_UTF8);
-        CPPUNIT_ASSERT(!xml::xmlCheckDoc(&doc, Engine::VERSION));
+                   "</world>\n";
+        RoomsReader reader;
+        CPPUNIT_ASSERT(reader.loadFromStr(xml));
     }
 
     void testGoodDialogs()
     {
-        TiXmlDocument doc;
-        doc.Parse("<?xml version='1.0' ?>"
-                   "<world version='ROOMS_VANILLA' name='name' width='800' height='600' start='room'>"
+        std::string xml = "<?xml version='1.0' ?>"
+                   "<world version='2' name='name' width='800' height='600' start='room'>"
                    "<dialogs><dialog id='dialog' start='0'><step id='0' text='text'><link id='-1' text='exit'</step></dialogs>"
                    "<images /> <events /> <items />"
-                   "</world>\n", 0, TIXML_ENCODING_UTF8);
-        CPPUNIT_ASSERT(xml::xmlCheckDoc(&doc, Engine::VERSION));
+                   "</world>\n";
+        RoomsReader reader;
+        CPPUNIT_ASSERT(reader.loadFromStr(xml));
     }
 
     void testWrongDialogs()
     {
-        TiXmlDocument doc;
-        doc.Parse("<?xml version='1.0' ?>"
-                   "<world version='ROOMS_VANILLA' name='name' width='800' height='600' start='room'>"
+        std::string xml = "<?xml version='1.0' ?>"
+                   "<world version='2' name='name' width='800' height='600' start='room'>"
                    "<dialogs><dialog start='0'><step id='0' text='text'><link id='-1' text='exit'</step></dialogs>"
                    "<images /> <events /> <items />"
-                   "</world>\n", 0, TIXML_ENCODING_UTF8);
-        CPPUNIT_ASSERT(!xml::xmlCheckDoc(&doc, Engine::VERSION));
+                   "</world>\n";
+        RoomsReader reader;
+        CPPUNIT_ASSERT(reader.loadFromStr(xml));
     }
 
     static CppUnit::Test *suite()
