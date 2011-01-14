@@ -156,7 +156,12 @@ class RoomsReader
          *                  False otherwise.
          */
         bool loadFromStr(string content);
-        /// Gets an old file content and upgrades it to new version.
+        /**
+         * \brief Gets an old file content and upgrades it to new version.
+         *
+         * \param content   String containing old world data structure.
+         * \return          World data upgraded.
+         */
         string upgrade(string old_content);
         /// Obtain crawler pointer, to navigate inside world file.
         RRNode *getCrawler();
