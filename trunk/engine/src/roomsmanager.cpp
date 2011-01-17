@@ -135,6 +135,11 @@ Item * RoomsManager::item(const string name)
     return utils::getElement(name, items);
 }
 
+std::map <string, Item *> RoomsManager::getItems()
+{
+    return items;
+}
+
 void RoomsManager::setCurrentRoom(const string name)
 {
     current_room = room(name);

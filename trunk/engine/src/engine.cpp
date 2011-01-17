@@ -75,9 +75,56 @@ void Engine::setState(const Engine::State state_name)
     _state = state_name;
 }
 
+void Engine::saveGame(const string filename)
+{
+    logger.write("Saving to file: " + filename, Log::NOTE);
+    RoomsReader reader;
+    reader.loadEmptyDoc();
+    RRNode *node = reader.getCrawler();
+    node->gotoElement("world");
+    node->setAttr("versione", floatToStr(RoomsReader::VERSION));
+    node->setAttr("name", rooms_mgr->name());
+    node->setAttr("width", floatToStr(rooms_mgr->width()));
+    node->setAttr("height", floatToStr(rooms_mgr->height()));
+    node->setAttr("start", rooms_mgr->currentRoom()->id);
+    node->appendElement("vars");
+    std::map<string, int> vars = events_mgr->getVars();
+    for (std::map<string, int>::iterator i = vars.begin();
+         i != vars.end(); ++i)
+    {
+        node->appendElement("var");
+        node->setAttr("id", i->first);
+        node->setAttr("value", floatToStr(i->second));
+        node->gotoParent();
+    }
+    node->gotoElement("world");
+    node->appendElement("items");
+    std::map<string, Item *> items = rooms_mgr->getItems();
+    for (std::map<string, Item *>::iterator i = items.begin();
+         i != items.end(); ++i)
+    {
+        node->appendElement("item");
+        node->setAttr("id", i->first);
+        node->setAttr("room", i->second->parent());
+        node->gotoParent();
+    }
+    reader.saveDoc(filename);
+}
+
 void Engine::loadGame(const string filename)
 {
+    logger.write("Loading file: " + filename, Log::NOTE);
+    RoomsReader reader;
+    reader.loadFromFile(filename);
+    RRNode *node = reader.getCrawler();
+    for (node->gotoElement("items")->gotoChild("item"); !node->isNull(); node->gotoNext())
+        rooms_mgr->moveItem(node->attrStr("id"), node->attrStr("room"));
+    node->gotoRoot();
 
+    for (node->gotoElement("vars")->gotoChild("var"); !node->isNull(); node->gotoNext())
+        events_mgr->setVar(node->attrStr("id"), node->attrInt("value"));
+    node->gotoRoot();
+    apiRoomGoto(node->gotoElement("world")->attrStr("start"));
 }
 
 bool Engine::loadWorldFromFile(const string filename)

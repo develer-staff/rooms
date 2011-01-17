@@ -12,8 +12,6 @@
 #ifndef ROOMSREADER_H
 #define ROOMSREADER_H
 
-#define VERSION 2
-
 #include "../lib/tinyxml/tinyxml.h"
 #include "event.h"
 #include "room.h"
@@ -85,6 +83,14 @@ class RRNode
          * \return It returns the node itself.
          */
         RRNode *gotoElement(string name);
+        /**
+         * \brief A new element with given name is appended to the current node.
+         *
+         * A new element is appended and the cursor tracks it.
+         *
+         * \return It returns the node itself, updated with new element.
+         */
+        RRNode *appendElement(string name);
         /// Checks if node is a null node.
         bool isNull();
         /**
@@ -132,6 +138,7 @@ class RRNode
 class RoomsReader
 {
     public:
+        static const int VERSION;
         enum AttributeType
         {
             ATTR_INT,
@@ -163,8 +170,12 @@ class RoomsReader
          * \return          World data upgraded.
          */
         string upgrade(string old_content);
+        /// Creates an empty document
+        void loadEmptyDoc();
         /// Obtain crawler pointer, to navigate inside world file.
         RRNode *getCrawler();
+        /// Saves current document to file
+        void saveDoc(string filename);
     private:
         typedef bool (RoomsReader::*ParseMethod) (TiXmlElement *);
         typedef string (*UpgradeFunc) (string);
@@ -200,5 +211,7 @@ class RoomsReader
         // Upgrade functions
         static UpgradeFunc upgrade_funcs[];
 };
+
+string floatToStr(float);
 
 #endif // ROOMSREADER_H

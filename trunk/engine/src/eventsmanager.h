@@ -50,6 +50,8 @@ class EventsManager
         int var(const string name) const;
         /// Checks if a list of var requirements is satisfied.
         bool checkVarReqs(const std::vector <std::pair <string, int> > reqs) const;
+        /// Gets var list
+        std::map<string, int> getVars();
 };
 
 #endif // EVENTSMANAGER_H

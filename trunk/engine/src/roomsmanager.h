@@ -67,6 +67,8 @@ class RoomsManager
         Area *area(const string name);
         /// Returns an item with given id.
         Item *item(const string name);
+        /// Returns items list
+        std::map <string, Item *> getItems();
         /// Sets world/game name.
         void name(const string name);
         /// Gets the world/game name.

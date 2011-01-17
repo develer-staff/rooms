@@ -103,6 +103,9 @@ class Engine
          * \return True if succeded in loading and parsing, false otherwise.
          */
         bool loadWorldFromFile(const string filename);
+        /// Saves game state in the given file
+        void saveGame(const string filename);
+        /// Loads the game state from the given file
         void loadGame(const string filename);
         /// Gets RoomsManager.
         RoomsManager *getRoomsManager() const;

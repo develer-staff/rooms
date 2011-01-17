@@ -56,6 +56,18 @@ RRNode *RRNode::gotoNext()
     return this;
 }
 
+RRNode *RRNode::appendElement(string name)
+{
+    if(!isNull())
+    {
+        TiXmlElement *new_elem = new TiXmlElement(name.c_str());
+        cursor->LinkEndChild(new_elem);
+        parent = cursor;
+        cursor = new_elem;
+    }
+    return this;
+}
+
 bool RRNode::isNull()
 {
     bool result = cursor;
@@ -205,10 +217,12 @@ string upgradeFrom1To2(string content)
     return printer.CStr();
 }
 
+const int RoomsReader::VERSION = 2;
+
 RoomsReader::RoomsReader()
 {
     crawler = 0;
-    doc = 0;
+    doc = new TiXmlDocument;
     parse_map["world"] = &RoomsReader::parseWorld;
     parse_map["room"] = &RoomsReader::parseRoom;
     parse_map["area"] = &RoomsReader::parseArea;
@@ -252,7 +266,6 @@ bool RoomsReader::loadFromFile(const string filename)
 
 bool RoomsReader::loadFromStr(const string content)
 {
-    doc = new TiXmlDocument;
     doc->Parse(content.c_str());
     if (!parse())
     {
@@ -268,6 +281,21 @@ bool RoomsReader::loadFromStr(const string content)
     }
     crawler = new RRNode(doc->RootElement());
     return true;
+}
+
+void RoomsReader::loadEmptyDoc()
+{
+    TiXmlDeclaration *decl = new TiXmlDeclaration("1.0", "", "");
+    TiXmlElement *element = new TiXmlElement("world");
+    doc->LinkEndChild(decl);
+    doc->LinkEndChild(element);
+    crawler = new RRNode(doc->RootElement());
+}
+
+void RoomsReader::saveDoc(string filename)
+{
+    if (!doc->SaveFile(filename.c_str()))
+        logger.write("Cannot save to " + filename, Log::ERROR);
 }
 
 string RoomsReader::upgrade(string content)
