@@ -302,8 +302,10 @@ string RoomsReader::upgrade(string content)
 {
     for (int i = file_version; i < VERSION; ++i)
     {
+        logger.write("Updating from v." + floatToStr(i) + " to v." + floatToStr(i + 1), Log::NOTE);
         content = upgrade_funcs[i - 1](content);
     }
+    logger.write("Upgrade successful!", Log::WARNING);
     return content;
 }
 
