@@ -29,11 +29,6 @@ class DrawDevice: public QWidget
     private:
         Engine *engine;
         std::map <string, QPixmap *> images;
-        QListWidget dialog_list;
-        QListWidget inventory_list;
-        QLabel dialog_text;
-        QLabel hint_text;
-        Engine::State before_inv_state;
     public:
         DrawDevice(Engine *eng, QWidget *parent=0);
         ~DrawDevice();
@@ -41,18 +36,15 @@ class DrawDevice: public QWidget
         void initialize();
         bool loadImage(string filename);
         void quit(int status);
+        void drawImage(QPainter &painter, string name, GuiRect rect);
+        void drawText(QPainter &painter, string text, GuiRect rect);
+        void drawRoom(QPainter &painter);
     public slots:
-        void dialogChosed(QListWidgetItem *item);
         //QT EVENTS
         void paintEvent(QPaintEvent *event);
         void mousePressEvent(QMouseEvent * event);
         void mouseMoveEvent(QMouseEvent *event);
-        void keyPressEvent(QKeyEvent *event);
         void resizeEvent(QResizeEvent *event);
-    protected:
-        void drawRoom(QPainter &painter);
-        void updateDialog();
-        void updateInventory();
 };
 
 #endif // DRAWDEVICE_H

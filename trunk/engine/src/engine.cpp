@@ -6,7 +6,17 @@ Engine::Engine()
 {
     rooms_mgr = new RoomsManager();
     events_mgr = new EventsManager();
+    gui_mgr = new GuiManager();
     _state = INITIALIZING;
+    inventory = new GuiScrolledHBar("inventory", "", "", GuiRect(0.08, 0, 0.84, 0.107),
+                                    GuiRect(0.08, 0, 0.08, 0.107), GuiRect(0, 0, 0.08, 0.107),
+                                    "./data/right_btn.png", "./data/right_btn.png");
+    dialog_list = new GuiScrolledHBar("dialog", "", "", GuiRect(0.08, 0.89, 0.84, 0.107),
+                                      GuiRect(0.08, 0.89, 0.65, 0.107), GuiRect(0, 0, 0.08, 0.107),
+                                      "./data/right_btn.png", "./data/right_btn.png");
+    gui_mgr->addGuiObj(inventory);
+    gui_mgr->addGuiObj(dialog_list);
+    dialog_list->visible = false;
 }
 
 Engine::~Engine()
@@ -21,6 +31,7 @@ Engine::~Engine()
     dialogs.clear();
     delete rooms_mgr;
     delete events_mgr;
+    delete gui_mgr;
 }
 
 Log *Engine::getLogger()
@@ -36,6 +47,39 @@ std::pair<float, float> Engine::absToRelCoord(const int x, const int y)
 std::pair<int, int> Engine::relToAbsCoord(const float x, const float y)
 {
     return std::make_pair(x * rooms_mgr->width(), y * rooms_mgr->height());
+}
+
+void Engine::relToAbsRect(GuiRect &rect)
+{
+    rect.x *= rooms_mgr->width();
+    rect.w *= rooms_mgr->width();
+    rect.y *= rooms_mgr->height();
+    rect.h *= rooms_mgr->height();
+}
+
+void Engine::click(const float x, const float y)
+{
+    switch (state())
+    {
+        case GAME:
+        {
+            if (gui_mgr->click(x, y) == "")
+                clickArea(x, y);
+            break;
+        }
+        case DIALOG:
+        {
+            string choice = gui_mgr->click(x, y);
+            if (choice != "")
+            {
+                clickDialog(choice);
+                updateDialog();
+            }
+            break;
+        }
+        default:
+            gui_mgr->click(x, y);
+    }
 }
 
 void Engine::clickArea(const float x, const float y)
@@ -207,6 +251,11 @@ EventsManager *Engine::getEventsManager() const
     return events_mgr;
 }
 
+GuiManager *Engine::getGuiManager() const
+{
+    return gui_mgr;
+}
+
 string Engine::getDialogText()
 {
     return dialog->text();
@@ -257,6 +306,24 @@ void Engine::execActions(std::vector <Action *> actions)
     }
 }
 
+void Engine::updateDialog()
+{
+    dialog_list->visible = false;
+    dialog_list->clear();
+    if (state() == DIALOG)
+    {
+        dialog_list->setCaption(getDialogText());
+        std::map<string, string> choices = getDialogChoices();
+        for (std::map<string, string>::iterator i = choices.begin();
+            i != choices.end(); ++i)
+        {
+            dialog_list->addButton(i->first, i->first, "");
+            logger.write(i->first, Log::NOTE);
+        }
+        dialog_list->visible = true;
+    }
+}
+
 void Engine::apiRoomGoto(const string id)
 {
     logger.write("ROOM_GOTO: " + id, Log::NOTE);
@@ -272,7 +339,13 @@ void Engine::apiVarSet(const string id, const int value)
 void Engine::apiItemMove(const string id, const string dest)
 {
     logger.write("ITEM_MOVE: " + id + ", dest: " + dest, Log::NOTE);
+    Item * item = rooms_mgr->item(id);
+    string source = item->parent();
     rooms_mgr->moveItem(id, dest);
+    if (source == "!INVENTORY")
+        inventory->remButton(id);
+    if (dest == "!INVENTORY")
+        inventory->addButton(id, "", item->image());
 }
 
 void Engine::apiDialogStart(const string id)
@@ -281,6 +354,7 @@ void Engine::apiDialogStart(const string id)
     dialog = dialogs[id];
     dialog->reset();
     setState(DIALOG);
+    updateDialog();
     execActions(dialog->actions());
 }
 

@@ -18,6 +18,7 @@ HEADERS += action.h \
            roomsmanager.h \
            dialog.h \
            roomsreader.h \
+           gui.h \
            tinystr.h \
            tinyxml.h
 SOURCES += action.cpp \
@@ -31,6 +32,7 @@ SOURCES += action.cpp \
            roomsmanager.cpp \
            dialog.cpp \
            roomsreader.cpp \
+           gui.cpp \
            tinystr.cpp \
            tinyxml.cpp \
            tinyxmlerror.cpp \

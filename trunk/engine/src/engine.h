@@ -38,6 +38,7 @@
 #include "action.h"
 #include "area.h"
 #include "roomsreader.h"
+#include "gui.h"
 
 #include <string> //std::string
 #include <utility> //std::pair
@@ -67,13 +68,24 @@ class Engine
         Engine::State _state;
         RoomsManager *rooms_mgr;
         EventsManager *events_mgr;
+        GuiManager *gui_mgr;
         std::vector<string> images;
         std::map<string, Dialog *> dialogs;
         Dialog *dialog;
+        GuiScrolledHBar *inventory;
+        GuiScrolledHBar *dialog_list;
     public:
         Engine();
         ~Engine();
     public:
+        /**
+         * \brief Comunicates to engine that a click event happened and let engine completely manage it.
+         *
+         * Engine takes total control of the event, processing gui, dialogs, items and areas.
+         * \param x     X in relative coordinates.
+         * \param y     Y in relative coordinates.
+         */
+        void click(const float x, const float y);
         /**
          * \brief Comunicates to engine that an area could be activated.
          *
@@ -111,6 +123,8 @@ class Engine
         RoomsManager *getRoomsManager() const;
         /// Gets EventsManager.
         EventsManager *getEventsManager() const;
+        /// Gets GuiManager.
+        GuiManager *getGuiManager() const;
         /// Gets the game state.
         Engine::State state() const;
         /// Sets the game state.
@@ -143,8 +157,15 @@ class Engine
          * \return A pair of absolute coordinates.
          */
         std::pair<int, int> relToAbsCoord(const float x, const float y);
+        /**
+         * \brief Converts from relative coordinates rect to absolute coordinates rect.
+         *
+         * All areas and items in the game use relative coordinates (0.0 - 1.0).
+         */
+        void relToAbsRect(GuiRect &rect);
     private:
         void execActions(const std::vector <Action *> actions);
+        void updateDialog();
         //RISC API
         void apiRoomGoto(const string id);
         void apiVarSet(const string id, const int value);
