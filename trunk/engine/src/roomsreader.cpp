@@ -222,7 +222,7 @@ const int RoomsReader::VERSION = 2;
 RoomsReader::RoomsReader()
 {
     crawler = 0;
-    doc = new TiXmlDocument;
+    doc = 0;
     parse_map["world"] = &RoomsReader::parseWorld;
     parse_map["room"] = &RoomsReader::parseRoom;
     parse_map["area"] = &RoomsReader::parseArea;
@@ -266,6 +266,7 @@ bool RoomsReader::loadFromFile(const string filename)
 
 bool RoomsReader::loadFromStr(const string content)
 {
+    doc = new TiXmlDocument;
     doc->Parse(content.c_str());
     if (!parse())
     {
@@ -285,6 +286,9 @@ bool RoomsReader::loadFromStr(const string content)
 
 void RoomsReader::loadEmptyDoc()
 {
+    if (doc != 0)
+        delete doc;
+    doc = new TiXmlDocument;
     TiXmlDeclaration *decl = new TiXmlDeclaration("1.0", "", "");
     TiXmlElement *element = new TiXmlElement("world");
     doc->LinkEndChild(decl);
