@@ -22,6 +22,7 @@ HEADERS += ../src/action.h \
            ../src/room.h \
            ../src/roomsmanager.h \
            ../src/roomsreader.h \
+           ../src/gui.h \
            ../lib/tinyxml/tinystr.h \
            ../lib/tinyxml/tinyxml.h
 
@@ -38,6 +39,7 @@ SOURCES += main.cpp \
            ../src/room.cpp \
            ../src/roomsmanager.cpp \
            ../src/roomsreader.cpp \
+           ../src/gui.cpp \
            ../lib/tinyxml/tinystr.cpp \
            ../lib/tinyxml/tinyxml.cpp \
            ../lib/tinyxml/tinyxmlerror.cpp \
