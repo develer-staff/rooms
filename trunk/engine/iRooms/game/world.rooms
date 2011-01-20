@@ -115,7 +115,7 @@
         <area id="area_vai_centrale2" x="0.0125" y="0.83" width="0.97" height="0.16" event="eve_goto_centrale" />
         <area id="area_switch1" x="0.43" y="0.58" width="0.93" height="0.125" event="eve_switch1_on" />
     </room>
-    <room id="End" bg="./data/end.png" />
+    <room id="End" bg="end.png" />
   </rooms>
 
 </world>

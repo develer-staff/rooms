@@ -42,6 +42,8 @@
 		29312C3612E7347D00FF7981 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29312C2612E7347D00FF7981 /* tinyxmlparser.cpp */; };
 		29312C5812E73BB800FF7981 /* libRoomsEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29312A7312E7321900FF7981 /* libRoomsEngine.a */; };
 		29312C9712E7400900FF7981 /* libcocos2d libraries.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 506EE05E10304ED200A389B3 /* libcocos2d libraries.a */; };
+		29CCB45D12E87EBC00AE4B41 /* data in Resources */ = {isa = PBXBuildFile; fileRef = 29CCB45C12E87EBC00AE4B41 /* data */; };
+		29CCB45F12E87EC900AE4B41 /* world.rooms in Resources */ = {isa = PBXBuildFile; fileRef = 29CCB45E12E87EC900AE4B41 /* world.rooms */; };
 		504DFBCE10AF12E9006D82FE /* CLScoreServerPost.h in Headers */ = {isa = PBXBuildFile; fileRef = 504DFBC810AF12E9006D82FE /* CLScoreServerPost.h */; };
 		504DFBCF10AF12E9006D82FE /* CLScoreServerPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 504DFBC910AF12E9006D82FE /* CLScoreServerPost.m */; };
 		504DFBD010AF12E9006D82FE /* CLScoreServerRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 504DFBCA10AF12E9006D82FE /* CLScoreServerRequest.h */; };
@@ -437,6 +439,9 @@
 		29312C2E12E7347D00FF7981 /* utf8test.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = utf8test.xml; sourceTree = "<group>"; };
 		29312C2F12E7347D00FF7981 /* utf8testverify.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = utf8testverify.xml; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
+		29CCB44D12E87E9B00AE4B41 /* game */ = {isa = PBXFileReference; lastKnownFileType = folder; path = game; sourceTree = "<group>"; };
+		29CCB45C12E87EBC00AE4B41 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = data; path = game/data; sourceTree = "<group>"; };
+		29CCB45E12E87EC900AE4B41 /* world.rooms */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = world.rooms; path = game/world.rooms; sourceTree = "<group>"; };
 		504DFBC810AF12E9006D82FE /* CLScoreServerPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLScoreServerPost.h; sourceTree = "<group>"; };
 		504DFBC910AF12E9006D82FE /* CLScoreServerPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLScoreServerPost.m; sourceTree = "<group>"; };
 		504DFBCA10AF12E9006D82FE /* CLScoreServerRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLScoreServerRequest.h; sourceTree = "<group>"; };
@@ -896,6 +901,9 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				29CCB45E12E87EC900AE4B41 /* world.rooms */,
+				29CCB45C12E87EBC00AE4B41 /* data */,
+				29CCB44D12E87E9B00AE4B41 /* game */,
 				29312BBF12E7347D00FF7981 /* lib */,
 				29312A7712E7324200FF7981 /* src */,
 				504DFC6810AF1739006D82FE /* LICENSE.cocos2d */,
@@ -1512,6 +1520,8 @@
 				E02BB507126CA50F006E46A2 /* Icon-Small-50.png in Resources */,
 				E02BB508126CA50F006E46A2 /* Icon-72.png in Resources */,
 				E02BB763126CC1E0006E46A2 /* iTunesArtwork in Resources */,
+				29CCB45D12E87EBC00AE4B41 /* data in Resources */,
+				29CCB45F12E87EC900AE4B41 /* world.rooms in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

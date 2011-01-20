@@ -42,8 +42,6 @@
 {
 	// Init the window
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	// Init the engine
-	engine = new Engine;
 
 	// Try to use CADisplayLink director
 	// if it fails (SDK < 3.1) use the default director
@@ -144,8 +142,6 @@
 	[viewController release];
 	
 	[window release];
-	
-	delete engine;
 	
 	[director end];	
 }

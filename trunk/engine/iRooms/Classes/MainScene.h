@@ -9,10 +9,13 @@
 
 // When you import this file, you import all the cocos2d classes
 #import "cocos2d.h"
+#import "engine.h"
 
 // HelloWorld Layer
 @interface MainScene : CCLayer
 {
+	Engine *engine;
+	CGSize win_size;
 }
 
 // returns a Scene that contains the HelloWorld as the only child

@@ -7,14 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "engine.h"
 
 @class RootViewController;
 
 @interface iRoomsAppDelegate : NSObject <UIApplicationDelegate> {
 	UIWindow			*window;
 	RootViewController	*viewController;
-	Engine *engine;
 }
 
 @property (nonatomic, retain) UIWindow *window;
