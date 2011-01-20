@@ -163,6 +163,26 @@ public:
         CPPUNIT_ASSERT(!reader.loadFromStr(xml));
     }
 
+    void testUpgrade1to2()
+    {
+        std::string xml = "<?xml version='1.0' ?>"
+                   "<world version='1' name='name' width='800' height='600' start='room'>"
+                   "<rooms><room id='id' bg='bg'><area id='id' x='100' y='60' width='50' height='90'>"
+                   "<images /> <events /> <items />"
+                   "</world>\n";
+        RoomsReader reader;
+        CPPUNIT_ASSERT(reader.loadFromStr(xml));
+        RRNode *node = reader.getCrawler();
+        node->gotoElement("area");
+        CPPUNIT_ASSERT(!node->isNull());
+        CPPUNIT_ASSERT(node->attrFloat("x") == 0.125f);
+
+        CPPUNIT_ASSERT(node->attrFloat("y") == 0.1f);
+        CPPUNIT_ASSERT(node->attrFloat("width") == 0.0625f);
+        CPPUNIT_ASSERT(node->attrFloat("height") == 0.15f);
+    }
+
+
     static CppUnit::Test *suite()
     {
         CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "XmlTests" );
@@ -192,6 +212,8 @@ public:
                                        &XmlTests::testGoodDialogs));
         suiteOfTests->addTest(new CppUnit::TestCaller<XmlTests>("testWrongDialogs",
                                        &XmlTests::testWrongDialogs));
+        suiteOfTests->addTest(new CppUnit::TestCaller<XmlTests>("testUpgrade1to2",
+                                       &XmlTests::testUpgrade1to2));
         return suiteOfTests;
     }
 };
