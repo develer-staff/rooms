@@ -268,18 +268,6 @@ bool RoomsReader::loadFromStr(const string content)
 {
     doc = new TiXmlDocument;
     doc->Parse(content.c_str());
-    if (!parse())
-    {
-        delete doc;
-        doc = 0;
-        if (file_version < VERSION)
-        {
-            logger.write("Old version detected: " + floatToStr(file_version) + ". Upgrading...", Log::WARNING);
-            string new_content = upgrade(content);
-            return loadFromStr(new_content);
-        }
-        return false;
-    }
     crawler = new RRNode(doc->RootElement());
     return true;
 }
@@ -315,7 +303,21 @@ string RoomsReader::upgrade(string content)
 
 bool RoomsReader::parse()
 {
-    return parseElement(doc->RootElement());
+    if (!parseElement(doc->RootElement()))
+    {
+        string content = doc->RootElement()->GetText();
+        delete doc;
+        doc = 0;
+        if (file_version < VERSION)
+        {
+            logger.write("Old version detected: " + floatToStr(file_version) + ". Upgrading...", Log::WARNING);
+            string new_content = upgrade(content);
+            loadFromStr(new_content);
+            return parse();
+        }
+        return false;
+    }
+    return true;
 }
 
 RRNode *RoomsReader::getCrawler()

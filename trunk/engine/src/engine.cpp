@@ -188,7 +188,7 @@ bool Engine::loadWorldFromFile(const string filename)
 bool Engine::loadWorldFromStr(const string content)
 {
     RoomsReader reader;
-    if (!reader.loadFromStr(content))
+    if (!reader.loadFromStr(content) || !reader.parse())
     {
         logger.write("ERROR: wrong xml document!", Log::ERROR);
         return false;

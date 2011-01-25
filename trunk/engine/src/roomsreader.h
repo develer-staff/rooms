@@ -170,6 +170,8 @@ class RoomsReader
          * \return          World data upgraded.
          */
         string upgrade(string old_content);
+        /// Parses the file and returns true if it's a correct world file.
+        bool parse();
         /// Creates an empty document
         void loadEmptyDoc();
         /// Obtain crawler pointer, to navigate inside world file.
@@ -190,7 +192,6 @@ class RoomsReader
         std::set<string> unique_ids_images;
         std::set<string> unique_ids_dialogs;
         int file_version; // initialized with parse(), modified in upgrade()
-        bool parse();
         bool parseElement(TiXmlElement *elem);
         bool parseWorld(TiXmlElement *elem);
         bool parseRoom(TiXmlElement *elem);
