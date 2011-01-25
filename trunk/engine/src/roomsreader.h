@@ -192,6 +192,7 @@ class RoomsReader
         std::set<string> unique_ids_images;
         std::set<string> unique_ids_dialogs;
         int file_version; // initialized with parse(), modified in upgrade()
+        string file_content; // string filled with file content
         bool parseElement(TiXmlElement *elem);
         bool parseWorld(TiXmlElement *elem);
         bool parseRoom(TiXmlElement *elem);
