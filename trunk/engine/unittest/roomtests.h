@@ -18,7 +18,7 @@ public:
     {
         room1 = new Room("room");
         item1 = new Item("item");
-        item1->size(10, 0, 10, 10);
+        item1->setSize(10, 0, 10, 10);
     }
 
     void tearDown()
@@ -68,7 +68,7 @@ public:
     void testAreaAt()
     {
         Area *area = room1->addArea("area");
-        area->size(0, 0, 10, 10);
+        area->setSize(0, 0, 10, 10);
         CPPUNIT_ASSERT(room1->areaAt(5, 5) == area);
         CPPUNIT_ASSERT(room1->areaAt(-1, -1) == 0);
     }

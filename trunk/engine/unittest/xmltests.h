@@ -26,7 +26,7 @@ public:
                    "<images /> <rooms /> <events /> <items />"
                    "</world>\n";
         RoomsReader reader;
-        CPPUNIT_ASSERT(reader.loadFromStr(xml));
+        CPPUNIT_ASSERT(reader.loadFromStr(xml) && reader.parse());
     }
 
     void testGoodImages()
@@ -37,7 +37,7 @@ public:
                    "<rooms /> <events /> <items />"
                    "</world>\n";
         RoomsReader reader;
-        CPPUNIT_ASSERT(reader.loadFromStr(xml));
+        CPPUNIT_ASSERT(reader.loadFromStr(xml) && reader.parse());
     }
 
     void testWrongImages()
@@ -48,7 +48,8 @@ public:
                    "<rooms /> <events /> <items />"
                    "</world>\n";
         RoomsReader reader;
-        CPPUNIT_ASSERT(!reader.loadFromStr(xml));
+        reader.loadFromStr(xml);
+        CPPUNIT_ASSERT(!reader.parse());
     }
 
     void testGoodRooms()
@@ -59,7 +60,7 @@ public:
                    "<images /> <events /> <items />"
                    "</world>\n";
         RoomsReader reader;
-        CPPUNIT_ASSERT(reader.loadFromStr(xml));
+        CPPUNIT_ASSERT(reader.loadFromStr(xml) && reader.parse());
     }
 
     void testWrongRooms()
@@ -70,7 +71,8 @@ public:
                    "<images /> <events /> <items />"
                    "</world>\n";
         RoomsReader reader;
-        CPPUNIT_ASSERT(!reader.loadFromStr(xml));
+        reader.loadFromStr(xml);
+        CPPUNIT_ASSERT(!reader.parse());
     }
 
     void testGoodEvents()
@@ -81,7 +83,7 @@ public:
                    "<images /> <rooms /> <items />"
                    "</world>\n";
         RoomsReader reader;
-        CPPUNIT_ASSERT(reader.loadFromStr(xml));
+        CPPUNIT_ASSERT(reader.loadFromStr(xml) && reader.parse());
     }
 
     void testWrongEvents()
@@ -92,7 +94,8 @@ public:
                    "<images /> <rooms /> <items />"
                    "</world>\n";
         RoomsReader reader;
-        CPPUNIT_ASSERT(!reader.loadFromStr(xml));
+        reader.loadFromStr(xml);
+        CPPUNIT_ASSERT(!reader.parse());
     }
 
     void testGoodVars()
@@ -103,7 +106,7 @@ public:
                    "<images /> <rooms /> <items />"
                    "</world>\n";
         RoomsReader reader;
-        CPPUNIT_ASSERT(reader.loadFromStr(xml));
+        CPPUNIT_ASSERT(reader.loadFromStr(xml) && reader.parse());
     }
 
     void testWrongVars()
@@ -114,7 +117,8 @@ public:
                    "<images /> <rooms /> <items />"
                    "</world>\n";
         RoomsReader reader;
-        CPPUNIT_ASSERT(!reader.loadFromStr(xml));
+        reader.loadFromStr(xml);
+        CPPUNIT_ASSERT(!reader.parse());
     }
 
     void testGoodAreas()
@@ -126,7 +130,7 @@ public:
                    "<images /> <events /> <items />"
                    "</world>\n";
         RoomsReader reader;
-        CPPUNIT_ASSERT(reader.loadFromStr(xml));
+        CPPUNIT_ASSERT(reader.loadFromStr(xml) && reader.parse());
     }
 
     void testWrongAreas()
@@ -138,7 +142,8 @@ public:
                    "<images /> <events /> <items />"
                    "</world>\n";
         RoomsReader reader;
-        CPPUNIT_ASSERT(!reader.loadFromStr(xml));
+        reader.loadFromStr(xml);
+        CPPUNIT_ASSERT(!reader.parse());
     }
 
     void testGoodDialogs()
@@ -149,7 +154,7 @@ public:
                    "<images /> <events /> <items />"
                    "</world>\n";
         RoomsReader reader;
-        CPPUNIT_ASSERT(reader.loadFromStr(xml));
+        CPPUNIT_ASSERT(reader.loadFromStr(xml) && reader.parse());
     }
 
     void testWrongDialogs()
@@ -160,7 +165,8 @@ public:
                    "<images /> <events /> <items />"
                    "</world>\n";
         RoomsReader reader;
-        CPPUNIT_ASSERT(!reader.loadFromStr(xml));
+        reader.loadFromStr(xml);
+        CPPUNIT_ASSERT(!reader.parse());
     }
 
     void testUpgrade1to2()
@@ -171,7 +177,8 @@ public:
                    "<images /> <events /> <items />"
                    "</world>\n";
         RoomsReader reader;
-        CPPUNIT_ASSERT(reader.loadFromStr(xml));
+        reader.loadFromStr(xml);
+        CPPUNIT_ASSERT(reader.parse());
         RRNode *node = reader.getCrawler();
         node->gotoElement("area");
         CPPUNIT_ASSERT(!node->isNull());
