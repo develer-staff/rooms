@@ -7,3 +7,6 @@ Makefile
 html
 latex
 lib*.a
+nbproject
+.dep.inc
+*.mk
