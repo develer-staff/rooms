@@ -4,7 +4,7 @@
 extern Log logger;
 
 GuiButton::GuiButton(string name, GuiRect rect_, string text_, string image_):
-    id(name), rect(rect_), text(text_), image(image_), visible(true)
+    id(name), visible(true), rect(rect_), text(text_), image(image_)
 {
 }
 
@@ -33,7 +33,7 @@ GuiRect GuiButton::getRect()
     return rect;
 }
 
-string GuiButton::activate(float x, float y)
+string GuiButton::activate(float, float)
 {
     return id;
 }
@@ -161,7 +161,7 @@ GuiScrollButton::GuiScrollButton(string name, GuiRect rect_, string text_, strin
 {
 }
 
-string GuiScrollButton::activate(float x, float y)
+string GuiScrollButton::activate(float, float)
 {
     list->scroll(direction);
     return ""; // GuiScrollButton event are all inside GuiManager, and they're invisible outside
