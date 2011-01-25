@@ -36,7 +36,7 @@ class Area
         virtual ~Area();
     public:
         /// Set area size through normalized coordinates.
-        void size(const float x, const float y, const float width, const float height);
+        void setSize(const float x, const float y, const float width, const float height);
         /// Get normalized x.
         float x() const;
         /// Get normalized y.

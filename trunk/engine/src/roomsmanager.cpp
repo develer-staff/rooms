@@ -35,17 +35,17 @@ RoomsManager::~RoomsManager()
     utils::freeElements(items);
 }
 
-void RoomsManager::name(const string name)
+void RoomsManager::setWorldName(const string name)
 {
     _name = name;
 }
 
-string RoomsManager::name() const
+string RoomsManager::worldName() const
 {
     return _name;
 }
 
-void RoomsManager::size(const int width, const int height)
+void RoomsManager::setRoomSize(const int width, const int height)
 {
     height > 10 ? _height = height : _height = 10;
     width > 10 ? _width = width : _width = 10;
@@ -78,7 +78,7 @@ Area * RoomsManager::addArea(const string name, const string room, const float x
                              const float w, const float h, const string event)
 {
     Area *a = this->room(room)->addArea(name);
-    a->size(x, y, w, h);
+    a->setSize(x, y, w, h);
     a->setEvent(event);
     return a;
 }
@@ -87,7 +87,7 @@ Item * RoomsManager::addItem(const string name, const string room, const float x
                              const float w, const float h, const string event, const string image)
 {
     Item *i = new Item(name);
-    i->size(x, y, w, h);
+    i->setSize(x, y, w, h);
     i->setEvent(event);
     i->move(room);
     i->setImage(image);

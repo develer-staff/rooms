@@ -70,11 +70,11 @@ class RoomsManager
         /// Returns items list
         std::map <string, Item *> getItems();
         /// Sets world/game name.
-        void name(const string name);
+        void setWorldName(const string name);
         /// Gets the world/game name.
-        string name() const;
+        string worldName() const;
         /// Sets the game rooms size.
-        void size(const int width, const int height);
+        void setRoomSize(const int width, const int height);
         /// Gets rooms absolute height.
         int height() const;
         /// Gets rooms absolute width.

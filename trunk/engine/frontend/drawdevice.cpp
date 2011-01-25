@@ -80,7 +80,7 @@ void DrawDevice::mouseMoveEvent(QMouseEvent *event)
 
 void DrawDevice::resizeEvent(QResizeEvent *event)
 {
-    engine->getRoomsManager()->size(event->size().width(), event->size().height());
+    engine->getRoomsManager()->setRoomSize(event->size().width(), event->size().height());
 }
 
 void DrawDevice::drawImage(QPainter &painter, string name, GuiRect rect)

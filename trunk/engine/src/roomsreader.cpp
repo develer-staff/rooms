@@ -127,7 +127,7 @@ Room *RRNode::fetchRoom()
     for (gotoChild("area"); !isNull(); gotoNext())
     {
         Area *area = room->addArea(attrStr("id"));
-        area->size(attrFloat("x"), attrFloat("y"), attrFloat("width"), attrFloat("height"));
+        area->setSize(attrFloat("x"), attrFloat("y"), attrFloat("width"), attrFloat("height"));
         area->setEvent(attrStr("event"));
     }
     gotoParent();
@@ -138,7 +138,7 @@ Item *RRNode::fetchItem()
 {
     if (isNull()) return 0;
     Item *item = new Item(attrStr("id"));
-    item->size(attrFloat("x"), attrFloat("y"), attrFloat("width"), attrFloat("height"));
+    item->setSize(attrFloat("x"), attrFloat("y"), attrFloat("width"), attrFloat("height"));
     item->setEvent(attrStr("event"));
     item->setImage(attrStr("image"));
     item->move(attrStr("room"));

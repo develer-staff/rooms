@@ -198,8 +198,8 @@ bool Engine::loadWorldFromStr(const string content)
     string start_room = node->attrStr("start");
     //Load World attributes
     logger.write(node->attrStr("name"), Log::NOTE);
-    rooms_mgr->size(node->attrInt("width"), node->attrInt("height"));
-    rooms_mgr->name(node->attrStr("name"));
+    rooms_mgr->setRoomSize(node->attrInt("width"), node->attrInt("height"));
+    rooms_mgr->setWorldName(node->attrStr("name"));
     //Loading from xml
     for (node->gotoElement("images")->gotoChild("img"); !node->isNull(); node->gotoNext())
         images.push_back(node->attrStr("file"));

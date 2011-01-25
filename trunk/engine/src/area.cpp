@@ -10,7 +10,7 @@ Area::~Area()
 
 }
 
-void Area::size(const float x, const float y, const float width, const float height)
+void Area::setSize(const float x, const float y, const float width, const float height)
 {
     _x = x;
     _y = y;
