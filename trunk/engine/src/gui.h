@@ -83,13 +83,18 @@ class GuiButton
         void operator=(const GuiButton &);
 };
 
-/** \brief This class handles a GuiButton horizontal list.
+/** \brief This class handles a GuiButton horizontal and vertical list.
  *
- * It supports horizontal scroll, and addiction and button removal.
+ * It supports horizontal and vertical scroll, and addiction and button removal.
  */
-class GuiHList: public GuiButton
+class GuiList: public GuiButton
 {
     public:
+        enum GuiListType
+        {
+            H_GUILIST,
+            V_GUILIST
+        };
         /** \brief Class creator.
          *
          * \param name      It's the id.
@@ -98,9 +103,9 @@ class GuiHList: public GuiButton
          * \param rect_     It's the shape.
          * \param item_rect_     It's the shape of each iteam inside the control.
          */
-        GuiHList(string name, string text_, string image_,  GuiRect rect_, GuiRect item_rect_);
-        ~GuiHList();
-        /// Scrolls items in a direction +1 (right) or -1 (left).
+        GuiList(string name, string text_, string image_,  GuiRect rect_, GuiRect item_rect_, GuiListType type);
+        ~GuiList();
+        /// Scrolls items in a direction +1 (right/down) or -1 (left/up).
         void scroll(int direction);
         /// Creates a button, inserts it in the list and adjusts its shape.
         void addButton(string name, string text_, string image_);
@@ -120,6 +125,7 @@ class GuiHList: public GuiButton
         void updateItemsRect();
         int begin, end;
         int cols, count;
+        GuiListType type;
 };
 
 /** \brief This class handles a GuiButton that scrolls an horizontal list.
@@ -137,11 +143,11 @@ class GuiScrollButton: public GuiButton
          * \param list_     It's the list linked to this button.
          * \param direction_     It's the scroll direction (+1 or -1).
          */
-        GuiScrollButton(string name, GuiRect rect_, string text_, string image_, GuiHList *list_, int direction_);
+        GuiScrollButton(string name, GuiRect rect_, string text_, string image_, GuiList *list_, int direction_);
         /// Activates the buttom performing the scroll.
         string activate(float x, float y);
     protected:
-        GuiHList *list;
+        GuiList *list;
         int direction;
 };
 
@@ -149,7 +155,7 @@ class GuiScrollButton: public GuiButton
  *
  * Near the GuiHList are placed two scroll buttons, handled as a single component.
  */
-class GuiScrolledHBar: public GuiHList
+class GuiScrolledHBar: public GuiList
 {
     public:
         /** \brief Class creator.

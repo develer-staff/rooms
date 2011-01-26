@@ -49,34 +49,37 @@ GuiDataVect GuiButton::getVisibleData()
     return vect;
 }
 
-GuiHList::GuiHList(string name, string text_, string image_,  GuiRect rect_,  GuiRect item_rect_):
-    GuiButton(name, rect_, text_, image_), item_rect(item_rect_)
+GuiList::GuiList(string name, string text_, string image_, GuiRect rect_, GuiRect item_rect_, GuiListType type):
+    GuiButton(name, rect_, text_, image_), item_rect(item_rect_), type(type)
 {
-    cols = rect.w / item_rect.w;
+    if (type == H_GUILIST)
+        cols = rect.w / item_rect.w;
+    else
+        cols = rect.h / item_rect.h;
     count = 0;
     begin = 0;
     end = cols;
     updateItemsRect();
 }
 
-GuiHList::~GuiHList()
+GuiList::~GuiList()
 {
     clear();
 }
 
-int GuiHList::size()
+int GuiList::size()
 {
     return count;
 }
 
-void GuiHList::addButton(string name, string text_, string image_)
+void GuiList::addButton(string name, string text_, string image_)
 {
     items.push_back(new GuiButton(name, item_rect, text_, image_));
     ++count;
     updateItemsRect();
 }
 
-void GuiHList::remButton(string name)
+void GuiList::remButton(string name)
 {
     for (std::vector<GuiButton *>::iterator i = items.begin();
         i != items.end(); ++i)
@@ -92,7 +95,7 @@ void GuiHList::remButton(string name)
     }
 }
 
-void GuiHList::clear()
+void GuiList::clear()
 {
     for (std::vector<GuiButton *>::iterator i = items.begin();
         i != items.end(); ++i)
@@ -103,7 +106,7 @@ void GuiHList::clear()
     items.clear();
 }
 
-void GuiHList::scroll(int direction)
+void GuiList::scroll(int direction)
 {
     begin += direction;
     end += direction;
@@ -121,20 +124,28 @@ void GuiHList::scroll(int direction)
     updateItemsRect();
 }
 
-void GuiHList::updateItemsRect()
+void GuiList::updateItemsRect()
 {
     for (int i = begin; i < end && i < items.size(); ++i)
     {
         GuiButton *item = items.at(i);
         GuiRect r = item->getRect();
-        r.x = rect.x + r.w * (i - begin);
-        r.y = rect.y;
+        if (type == H_GUILIST)
+        {
+            r.x = rect.x + r.w * (i - begin);
+            r.y = rect.y;
+        }
+        else
+        {
+            r.x = rect.x;
+            r.y = rect.y + r.h * (i - begin);
+        }
         item->setRect(r);
     }
 
 }
 
-GuiDataVect GuiHList::getVisibleData()
+GuiDataVect GuiList::getVisibleData()
 {
     GuiDataVect vect;
     if (size() == 0)
@@ -146,7 +157,7 @@ GuiDataVect GuiHList::getVisibleData()
     return vect;
 }
 
-string GuiHList::activate(float x, float y)
+string GuiList::activate(float x, float y)
 {
     for (int i = begin; i < end && i < items.size(); ++i)
     {
@@ -156,7 +167,7 @@ string GuiHList::activate(float x, float y)
     return "";
 }
 
-GuiScrollButton::GuiScrollButton(string name, GuiRect rect_, string text_, string image_, GuiHList *list_, int direction_):
+GuiScrollButton::GuiScrollButton(string name, GuiRect rect_, string text_, string image_, GuiList *list_, int direction_):
     GuiButton(name, rect_, text_, image_), list(list_), direction(direction_)
 {
 }
@@ -168,7 +179,7 @@ string GuiScrollButton::activate(float, float)
 }
 
 GuiScrolledHBar::GuiScrolledHBar(string name, string text_, string image_, GuiRect rect_, GuiRect item_rect_, GuiRect button_size, string img_right, string img_left):
-    GuiHList(name, text_, image_, GuiRect(rect_.x + button_size.w, rect_.y, rect_.w - 2 * button_size.w, rect_.h), item_rect_)
+    GuiList(name, text_, image_, GuiRect(rect_.x + button_size.w, rect_.y, rect_.w - 2 * button_size.w, rect_.h), item_rect_, GuiList::H_GUILIST)
 {
     GuiRect r = button_size;
     r.x = rect.x + rect.w;
@@ -194,7 +205,7 @@ void GuiScrolledHBar::setCaption(string text_)
 GuiDataVect GuiScrolledHBar::getVisibleData()
 {
     GuiDataVect vect;
-    GuiDataVect list_data = GuiHList::getVisibleData();
+    GuiDataVect list_data = GuiList::getVisibleData();
     vect.insert(vect.end(), list_data.begin(), list_data.end());
     vect.push_back(forward->getVisibleData().front());
     vect.push_back(backward->getVisibleData().front());
@@ -208,12 +219,12 @@ string GuiScrolledHBar::activate(float x, float y)
         return forward->activate(x, y);
     if (backward->isInside(x, y))
         return backward->activate(x, y);
-    return GuiHList::activate(x, y);
+    return GuiList::activate(x, y);
 }
 
 bool GuiScrolledHBar::isInside(float x, float y)
 {
-    return (GuiHList::isInside(x, y) || forward->isInside(x, y) || backward->isInside(x, y));
+    return (GuiList::isInside(x, y) || forward->isInside(x, y) || backward->isInside(x, y));
 }
 
 GuiManager::GuiManager()
