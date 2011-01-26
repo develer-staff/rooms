@@ -33,6 +33,7 @@ class Room
         const string id;
     private:
         string _bg;
+        string _bgm;
         std::map<string, Area *> areas;
         std::map<string, Item *> _items;
     public:
@@ -42,8 +43,12 @@ class Room
     public:
         /// Gets background image id.
         string bg() const;
+        /// Gets room background music.
+        string bgm() const;
         /// Sets background image id.
         void bg(const string name);
+        /// Sets room background music.
+        void setBgm(const string name);
         /// Creates an area in the room, and returns it.
         Area *addArea(const string name);
         /// Adds an item reference to the room, and returns it.

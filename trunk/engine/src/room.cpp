@@ -20,9 +20,20 @@ string Room::bg() const
 {
     return _bg;
 }
+
 void Room::bg(const string name)
 {
     _bg = name;
+}
+
+string Room::bgm() const
+{
+    return _bgm;
+}
+
+void Room::setBgm(const string name)
+{
+    _bgm = name;
 }
 
 Area *Room::addArea(const string name)
