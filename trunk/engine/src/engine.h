@@ -72,8 +72,8 @@ class Engine
         std::vector<string> images;
         std::map<string, Dialog *> dialogs;
         Dialog *dialog;
-        GuiScrolledHBar *inventory;
-        GuiScrolledHBar *dialog_list;
+        GuiScrolledBar *inventory;
+        GuiScrolledBar *dialog_list;
     public:
         Engine();
         ~Engine();

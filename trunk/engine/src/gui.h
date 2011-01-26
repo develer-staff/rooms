@@ -155,7 +155,7 @@ class GuiScrollButton: public GuiButton
  *
  * Near the GuiHList are placed two scroll buttons, handled as a single component.
  */
-class GuiScrolledHBar: public GuiList
+class GuiScrolledBar: public GuiList
 {
     public:
         /** \brief Class creator.
@@ -169,10 +169,10 @@ class GuiScrolledHBar: public GuiList
          * \param img_right     Right button's image.
          * \param img_left     Left button's image.
          */
-        GuiScrolledHBar(string name, string text_, string image_, GuiRect rect_,
+        GuiScrolledBar(string name, string text_, string image_, GuiRect rect_,
                         GuiRect item_rect_, GuiRect button_size, string img_right,
-                        string img_left);
-        ~GuiScrolledHBar();
+                        string img_left, GuiList::GuiListType type);
+        ~GuiScrolledBar();
         /// Returns the drawable representation of the object.
         GuiDataVect getVisibleData();
         /// Activates a scroll button or an item.

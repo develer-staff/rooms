@@ -178,8 +178,10 @@ string GuiScrollButton::activate(float, float)
     return ""; // GuiScrollButton event are all inside GuiManager, and they're invisible outside
 }
 
-GuiScrolledHBar::GuiScrolledHBar(string name, string text_, string image_, GuiRect rect_, GuiRect item_rect_, GuiRect button_size, string img_right, string img_left):
-    GuiList(name, text_, image_, GuiRect(rect_.x + button_size.w, rect_.y, rect_.w - 2 * button_size.w, rect_.h), item_rect_, GuiList::H_GUILIST)
+GuiScrolledBar::GuiScrolledBar(string name, string text_, string image_, GuiRect rect_,
+                               GuiRect item_rect_, GuiRect button_size,
+                               string img_right, string img_left, GuiList::GuiListType type):
+    GuiList(name, text_, image_, GuiRect(rect_.x + button_size.w, rect_.y, rect_.w - 2 * button_size.w, rect_.h), item_rect_, type)
 {
     GuiRect r = button_size;
     r.x = rect.x + rect.w;
@@ -190,19 +192,19 @@ GuiScrolledHBar::GuiScrolledHBar(string name, string text_, string image_, GuiRe
     label = new GuiButton("", GuiRect(rect.x, rect.y - 0.01, rect.w, 0.01), "", "");
 }
 
-GuiScrolledHBar::~GuiScrolledHBar()
+GuiScrolledBar::~GuiScrolledBar()
 {
     delete forward;
     delete backward;
     delete label;
 }
 
-void GuiScrolledHBar::setCaption(string text_)
+void GuiScrolledBar::setCaption(string text_)
 {
     label->setCaption(text_);
 }
 
-GuiDataVect GuiScrolledHBar::getVisibleData()
+GuiDataVect GuiScrolledBar::getVisibleData()
 {
     GuiDataVect vect;
     GuiDataVect list_data = GuiList::getVisibleData();
@@ -213,7 +215,7 @@ GuiDataVect GuiScrolledHBar::getVisibleData()
     return vect;
 }
 
-string GuiScrolledHBar::activate(float x, float y)
+string GuiScrolledBar::activate(float x, float y)
 {
     if (forward->isInside(x, y))
         return forward->activate(x, y);
@@ -222,7 +224,7 @@ string GuiScrolledHBar::activate(float x, float y)
     return GuiList::activate(x, y);
 }
 
-bool GuiScrolledHBar::isInside(float x, float y)
+bool GuiScrolledBar::isInside(float x, float y)
 {
     return (GuiList::isInside(x, y) || forward->isInside(x, y) || backward->isInside(x, y));
 }
