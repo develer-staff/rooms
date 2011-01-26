@@ -275,8 +275,6 @@ bool RoomsReader::loadFromStr(const string content)
 
 void RoomsReader::loadEmptyDoc()
 {
-    if (doc != 0)
-        delete doc;
     doc = new TiXmlDocument;
     TiXmlDeclaration *decl = new TiXmlDeclaration("1.0", "", "");
     TiXmlElement *element = new TiXmlElement("world");
