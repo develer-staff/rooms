@@ -29,6 +29,9 @@
       <step id="0" text="Cosa vuoi da me?">
         <link id="1" text="Forse hai qualcosa che mi serve..." />
         <link id="-1" text="Addio bella pulzella!" />
+        <link id="-1" text="Arrivederci bella pulzella!" />
+        <link id="-1" text="STFU bella pulzella!" />
+        <link id="-1" text="Bai bai bella pulzella!" />
       </step>
       <step id="1" text="Non ti darò mai la mia chiave!">
         <item_req id="Chiave Locanda" value="!NOWHERE" />
