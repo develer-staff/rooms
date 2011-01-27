@@ -277,6 +277,13 @@ std::map<string, string> Engine::getDialogChoices()
     return choices;
 }
 
+std::vector<string> Engine::getSFX()
+{
+    std::vector<string> sfx_ = sfx;
+    sfx.clear();
+    return sfx_;
+}
+
 void Engine::execActions(std::vector <Action *> actions)
 {
     std::vector <Action *>::iterator i;
@@ -302,6 +309,10 @@ void Engine::execActions(std::vector <Action *> actions)
         {
             string diag_id = act.popStrParam();
             apiDialogStart(diag_id);
+        } else if (act.id == "SFX_PLAY")
+        {
+            string sfx_id = act.popStrParam();
+            apiSFXPlay(sfx_id);
         }
     }
 }
@@ -356,5 +367,10 @@ void Engine::apiDialogStart(const string id)
     setState(DIALOG);
     updateDialog();
     execActions(dialog->actions());
+}
+
+void Engine::apiSFXPlay(const string id)
+{
+    sfx.push_back(id);
 }
 

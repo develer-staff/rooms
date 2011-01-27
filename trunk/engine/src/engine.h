@@ -70,6 +70,7 @@ class Engine
         EventsManager *events_mgr;
         GuiManager *gui_mgr;
         std::vector<string> images;
+        std::vector<string> sfx;
         std::map<string, Dialog *> dialogs;
         Dialog *dialog;
         GuiScrolledBar *inventory;
@@ -137,6 +138,8 @@ class Engine
         string getDialogText();
         /// Gets all dialog choices that satisfy requirements.
         std::map<string, string> getDialogChoices();
+        /// Gets all sounds effects names that have to be played now. Clears sfx list after being called.
+        std::vector<string> getSFX();
         /// Gets the logger.
         Log *getLogger();
         /**
@@ -171,7 +174,7 @@ class Engine
         void apiVarSet(const string id, const int value);
         void apiItemMove(const string id, const string dest);
         void apiDialogStart(const string id);
-
+        void apiSFXPlay(const string id);
         friend class MockEngine;
 };
 
