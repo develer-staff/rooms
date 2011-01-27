@@ -98,24 +98,24 @@
   </events>
 
   <rooms>
-    <room id="!INVENTORY" bg="" />
-    <room id="!NOWHERE" bg="" />
-    <room id="Locanda" bg="./data/locanda.png">
+    <room id="!INVENTORY" bg="" bgm=""/>
+    <room id="!NOWHERE" bg="" bgm=""/>
+    <room id="Locanda" bg="./data/locanda.png" bgm="">
         <area id="area_porta_locanda" x="0.25" y="0.58" width="0.125" height="0.25" event="eve_goto_locanda" />
     </room>
-    <room id="Stanza Centrale" bg="./data/stanza_centrale.png">
+    <room id="Stanza Centrale" bg="./data/stanza_centrale.png" bgm="">
         <area id="area_vai_cantina" x="0.375" y="0.58" width="0.25" height="0.33" event="eve_goto_cantina" />
         <area id="area_vai_star" x="0.062" y="0.25" width="0.125" height="0.5" event="eve_goto_star" />
         <area id="area_vai_end" x="0.8" y="0.2" width="0.125" height="0.5" event="eve_goto_end" />
     </room>
-    <room id="Cantina" bg="./data/cantina.png">
+    <room id="Cantina" bg="./data/cantina.png" bgm="">
         <area id="area_vai_centrale1" x="0.0125" y="0.83" width="0.97" height="0.16" event="eve_goto_centrale" />
     </room>
-    <room id="Stanza Stella" bg="./data/stanza_star.png">
+    <room id="Stanza Stella" bg="./data/stanza_star.png" bgm="">
         <area id="area_vai_centrale2" x="0.0125" y="0.83" width="0.97" height="0.16" event="eve_goto_centrale" />
         <area id="area_switch1" x="0.43" y="0.58" width="0.93" height="0.125" event="eve_switch1_on" />
     </room>
-    <room id="End" bg="end.png" />
+    <room id="End" bg="end.png" bgm=""/>
   </rooms>
 
 </world>

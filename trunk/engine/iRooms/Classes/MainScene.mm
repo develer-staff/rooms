@@ -99,7 +99,7 @@
 		engine->loadWorldFromFile([fullpath UTF8String]);
 		// ask director the the window size
 		win_size = [[CCDirector sharedDirector] winSize];
-		engine->getRoomsManager()->size(win_size.width, win_size.height);
+		engine->getRoomsManager()->setRoomSize(win_size.width, win_size.height);
 		
 		self.isTouchEnabled = YES;
 		
