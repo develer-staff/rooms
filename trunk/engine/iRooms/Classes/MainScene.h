@@ -16,6 +16,7 @@
 {
 	Engine *engine;
 	CGSize win_size;
+	std::string last_bgm;
 }
 
 // returns a Scene that contains the HelloWorld as the only child

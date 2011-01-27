@@ -8,6 +8,7 @@
 
 // Import the interfaces
 #import "MainScene.h"
+#import "SimpleAudioEngine.h"
 
 @implementation MainScene
 
@@ -83,7 +84,24 @@
         if (data.text != "")
             [self drawText: data.text rect:data.rect];
     }
+	[self updateMusic];
 	
+}
+
+-(void)updateMusic
+{
+	std::string bgm = engine->getRoomsManager()->currentRoom()->bgm();
+	if (bgm != last_bgm && bgm != "")
+	{
+		NSString *sound_name = [NSString stringWithCString:bgm.c_str()];
+		NSString *fullpath = [[NSBundle mainBundle] pathForResource:sound_name ofType:@""];
+		
+		[[SimpleAudioEngine sharedEngine] playBackgroundMusic:fullpath loop:true];
+		[[SimpleAudioEngine sharedEngine] setBackgroundMusicVolume: 0.5f];
+		last_bgm = bgm;
+	}
+	if (bgm == "") [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
+		
 }
 
 // on "init" you need to initialize your instance
@@ -100,6 +118,8 @@
 		// ask director the the window size
 		win_size = [[CCDirector sharedDirector] winSize];
 		engine->getRoomsManager()->setRoomSize(win_size.width, win_size.height);
+		
+		[SimpleAudioEngine sharedEngine];
 		
 		self.isTouchEnabled = YES;
 		
