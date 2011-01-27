@@ -29,6 +29,8 @@ class DrawDevice: public QWidget
     private:
         Engine *engine;
         std::map <string, QPixmap *> images;
+        QString last_bgm;
+        QSound *bgm;
     public:
         DrawDevice(Engine *eng, QWidget *parent=0);
         ~DrawDevice();
@@ -39,6 +41,7 @@ class DrawDevice: public QWidget
         void drawImage(QPainter &painter, string name, GuiRect rect);
         void drawText(QPainter &painter, string text, GuiRect rect);
         void drawRoom(QPainter &painter);
+        void updateMusic();
     public slots:
         //QT EVENTS
         void paintEvent(QPaintEvent *event);

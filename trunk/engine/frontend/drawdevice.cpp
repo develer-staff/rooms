@@ -5,6 +5,7 @@ DrawDevice::DrawDevice(Engine *eng, QWidget *parent): QWidget(parent)
 {
     engine = eng;
     setGeometry(parent->geometry());
+    bgm = 0;
 }
 
 DrawDevice::~DrawDevice()
@@ -15,6 +16,7 @@ DrawDevice::~DrawDevice()
         delete i->second;
     }
     images.clear();
+    if(bgm) delete bgm;
 }
 
 void DrawDevice::initialize()
@@ -123,5 +125,19 @@ void DrawDevice::drawRoom(QPainter &painter)
         if (data.text != "")
             drawText(painter, data.text, data.rect);
     }
+    updateMusic();
+}
+
+void DrawDevice::updateMusic()
+{
+    if (!QSound::isAvailable()) return;
+    QString bgm_to_play(engine->getRoomsManager()->currentRoom()->bgm().c_str());
+    if (bgm_to_play != "" && bgm_to_play != last_bgm)
+    {
+        if(bgm) delete bgm;
+        bgm = new QSound(bgm_to_play);
+        last_bgm = bgm_to_play;
+    }
+    if (bgm_to_play == "" && bgm) delete bgm;
 }
 
