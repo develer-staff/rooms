@@ -100,7 +100,7 @@
   <rooms>
     <room id="!INVENTORY" bg="" bgm=""/>
     <room id="!NOWHERE" bg="" bgm=""/>
-    <room id="Locanda" bg="./data/locanda.png" bgm="">
+    <room id="Locanda" bg="./data/locanda.png" bgm="./data/audio.mp3">
         <area id="area_porta_locanda" x="0.25" y="0.58" width="0.125" height="0.25" event="eve_goto_locanda" />
     </room>
     <room id="Stanza Centrale" bg="./data/stanza_centrale.png" bgm="">
