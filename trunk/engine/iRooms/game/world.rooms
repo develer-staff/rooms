@@ -77,6 +77,9 @@
             <param value="switch1" />
             <param value="1" />
         </action>
+        <action id="SFX_PLAY">
+            <param value="./data/audio.mp3" />
+        </action>
     </event>
     <event id="chiave_get">
         <action id="ITEM_MOVE">
