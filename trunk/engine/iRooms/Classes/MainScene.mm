@@ -90,6 +90,7 @@
 
 -(void)updateMusic
 {
+	// BGM
 	std::string bgm = engine->getRoomsManager()->currentRoom()->bgm();
 	if (bgm != last_bgm && bgm != "")
 	{
@@ -101,6 +102,15 @@
 		last_bgm = bgm;
 	}
 	if (bgm == "") [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
+	
+	// SFX
+	std::vector<std::string>sfx = engine->getSFX();
+	for (std::vector<std::string>::iterator i = sfx.begin(); i != sfx.end(); ++i)
+	{
+		NSString *sound_name = [NSString stringWithCString:(*i).c_str()];
+		NSString *fullpath = [[NSBundle mainBundle] pathForResource:sound_name ofType:@""];
+		[[SimpleAudioEngine sharedEngine] playEffect: fullpath];
+	}
 		
 }
 

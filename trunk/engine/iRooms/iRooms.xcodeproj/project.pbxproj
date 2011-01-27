@@ -303,7 +303,6 @@
 		1F3B9A2B0EF2145700286867 /* iRoomsAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = iRoomsAppDelegate.mm; sourceTree = "<group>"; };
 		1F3B9A2C0EF2145700286867 /* iRoomsAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iRoomsAppDelegate.h; path = Classes/iRoomsAppDelegate.h; sourceTree = SOURCE_ROOT; };
 		1F3B9A820EF2151B00286867 /* iRooms_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iRooms_Prefix.pch; sourceTree = SOURCE_ROOT; };
-		29144EEB12F1ACA400C78E8C /* audio.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = audio.caf; path = game/data/audio.caf; sourceTree = "<group>"; };
 		29312A7312E7321900FF7981 /* libRoomsEngine.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRoomsEngine.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		29312A7812E7324200FF7981 /* action.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = action.cpp; sourceTree = "<group>"; };
 		29312A7912E7324200FF7981 /* action.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = action.h; sourceTree = "<group>"; };
@@ -903,7 +902,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				29144EEB12F1ACA400C78E8C /* audio.caf */,
 				2937958612F196A800BC34F9 /* audio.mp3 */,
 				29CCB45E12E87EC900AE4B41 /* world.rooms */,
 				29CCB45C12E87EBC00AE4B41 /* data */,
