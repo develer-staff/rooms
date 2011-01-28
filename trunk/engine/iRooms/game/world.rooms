@@ -78,7 +78,7 @@
             <param value="1" />
         </action>
         <action id="SFX_PLAY">
-            <param value="./data/audio.mp3" />
+            <param value="./data/click.wav" />
         </action>
     </event>
     <event id="chiave_get">
