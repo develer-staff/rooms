@@ -347,7 +347,7 @@ GuiDataVect Engine::getVisibleData()
 	GuiData bg;
 	bg.alpha = 255;
 	bg.image = rooms_mgr->currentRoom()->bg();
-	bg.text = 0;
+	bg.text = "";
 	bg.rect = GuiRect(0, 0, 1.0, 1.0);
 	vect.push_back(bg);
 	vect.insert(vect.end(), gui_data.begin(), gui_data.end());
