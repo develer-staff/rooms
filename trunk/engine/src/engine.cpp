@@ -342,16 +342,30 @@ void Engine::updateDialog()
 
 GuiDataVect Engine::getVisibleData()
 {
-	GuiDataVect vect;
+	GuiDataVect visible_data;
 	GuiDataVect gui_data = gui_mgr->getVisibleData();
+	// Background visible data
 	GuiData bg;
 	bg.alpha = 255;
 	bg.image = rooms_mgr->currentRoom()->bg();
 	bg.text = "";
 	bg.rect = GuiRect(0, 0, 1.0, 1.0);
-	vect.push_back(bg);
-	vect.insert(vect.end(), gui_data.begin(), gui_data.end());
-	return vect;
+	visible_data.push_back(bg);
+	// Items visible data
+	std::vector <Item *> items = rooms_mgr->currentRoom()->items();
+	for (std::vector<Item *>::iterator i = items.begin();
+			i != items.end(); ++i)
+	{
+		GuiData item;
+		item.alpha = 255;
+		item.text = "";
+		item.image = (*i)->image();
+		item.rect = GuiRect((*i)->x(), (*i)->y(), (*i)->w(), (*i)->h());
+		visible_data.push_back(item);
+	}
+	// Gui visible data
+	visible_data.insert(visible_data.end(), gui_data.begin(), gui_data.end());
+	return visible_data;
 }
 
 void Engine::apiRoomGoto(const string id)
