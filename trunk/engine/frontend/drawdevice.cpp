@@ -58,6 +58,7 @@ void DrawDevice::mousePressEvent(QMouseEvent * event)
     std::pair<float, float> coord = engine->absToRelCoord(event->x(), event->y());
     engine->click(coord.first, coord.second);
     update();
+    updateMusic();
 }
 
 void DrawDevice::mouseMoveEvent(QMouseEvent *event)
@@ -125,7 +126,6 @@ void DrawDevice::drawRoom(QPainter &painter)
         if (data.text != "")
             drawText(painter, data.text, data.rect);
     }
-    updateMusic();
 }
 
 void DrawDevice::updateMusic()
