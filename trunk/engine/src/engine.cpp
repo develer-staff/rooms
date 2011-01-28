@@ -7,7 +7,7 @@ Engine::Engine()
 	rooms_mgr = new RoomsManager();
 	events_mgr = new EventsManager();
 	gui_mgr = new GuiManager();
-	_state = INITIALIZING;
+	setState(INITIALIZING);
 	inventory = new GuiScrolledBar("inventory", "", "", GuiRect(0.08, 0, 0.84, 0.107),
 								   GuiRect(0.08, 0, 0.08, 0.107), GuiRect(0, 0, 0.08, 0.107),
 								   "./data/right_btn.png", "./data/left_btn.png", GuiList::H_GUILIST);
