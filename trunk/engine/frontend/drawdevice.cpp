@@ -101,21 +101,7 @@ void DrawDevice::drawText(QPainter &painter, string text, GuiRect rect)
 
 void DrawDevice::drawRoom(QPainter &painter)
 {
-	//Draw room
-	Room *room = engine->getRoomsManager()->currentRoom();
-	drawImage(painter, room->bg(), GuiRect(0, 0, width(), height()));
-	std::vector <Item *> items = room->items();
-	//Draw items
-	for (std::vector<Item *>::iterator i = items.begin();
-			i != items.end(); ++i)
-	{
-		std::pair<int, int> point = engine->relToAbsCoord((*i)->x(), (*i)->y());
-		std::pair<int, int> size = engine->relToAbsCoord((*i)->w(), (*i)->h());
-		;
-		drawImage(painter, (*i)->image(), GuiRect(point.first, point.second, size.first, size.second));
-	}
-	//Draw gui
-	GuiDataVect dv = engine->getGuiManager()->getVisibleData();
+	GuiDataVect dv = engine->getVisibleData();
 	for (GuiDataVect::iterator i = dv.begin(); i != dv.end(); ++i)
 	{
 		GuiData data = (*i);
