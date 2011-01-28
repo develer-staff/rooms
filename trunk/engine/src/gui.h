@@ -38,6 +38,7 @@ struct GuiData
     string text;
     GuiRect rect;
     string image;
+    int alpha;
 };
 
 /// A vector of GuiData structs.

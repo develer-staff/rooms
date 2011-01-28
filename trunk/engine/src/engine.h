@@ -62,7 +62,8 @@ public:
 		GAME,
 		DIALOG,
 		INVENTORY,
-		ENDING
+		ENDING,
+		TRANSITION
 	};
 private:
 	Engine::State _state;
@@ -166,6 +167,14 @@ public:
 	 * All areas and items in the game use relative coordinates (0.0 - 1.0).
 	 */
 	void relToAbsRect(GuiRect &rect);
+	/**
+	 * \brief Call this method to perform an update step to the engine.
+	 *
+	 * Non event-driven state (like TRANSITION) need this method to calculate changes.
+	 */
+	void update();
+	/// Returns the drawable representation of current room.
+	GuiDataVect getVisibleData();
 private:
 	void execActions(const std::vector <Action *> actions);
 	void updateDialog();

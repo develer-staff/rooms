@@ -9,11 +9,11 @@ Engine::Engine()
 	gui_mgr = new GuiManager();
 	setState(INITIALIZING);
 	inventory = new GuiScrolledBar("inventory", "", "", GuiRect(0.08, 0, 0.84, 0.107),
-								   GuiRect(0.08, 0, 0.08, 0.107), GuiRect(0, 0, 0.08, 0.107),
-								   "./data/right_btn.png", "./data/left_btn.png", GuiList::H_GUILIST);
+								GuiRect(0.08, 0, 0.08, 0.107), GuiRect(0, 0, 0.08, 0.107),
+								"./data/right_btn.png", "./data/left_btn.png", GuiList::H_GUILIST);
 	dialog_list = new GuiScrolledBar("dialog", "", "", GuiRect(0.08, 0.89, 0.84, 0.107),
-									 GuiRect(0.08, 0.89, 0.65, 0.05), GuiRect(0, 0, 0.08, 0.107),
-									 "./data/right_btn.png", "./data/left_btn.png", GuiList::V_GUILIST);
+									GuiRect(0.08, 0.89, 0.65, 0.05), GuiRect(0, 0, 0.08, 0.107),
+									"./data/right_btn.png", "./data/left_btn.png", GuiList::V_GUILIST);
 	gui_mgr->addGuiObj(inventory);
 	gui_mgr->addGuiObj(dialog_list);
 	dialog_list->visible = false;
@@ -338,6 +338,20 @@ void Engine::updateDialog()
 		}
 		dialog_list->visible = true;
 	}
+}
+
+GuiDataVect Engine::getVisibleData()
+{
+	GuiDataVect vect;
+	GuiDataVect gui_data = gui_mgr->getVisibleData();
+	GuiData bg;
+	bg.alpha = 255;
+	bg.image = rooms_mgr->currentRoom()->bg();
+	bg.text = 0;
+	bg.rect = GuiRect(0, 0, 1.0, 1.0);
+	vect.push_back(bg);
+	vect.insert(vect.end(), gui_data.begin(), gui_data.end());
+	return vect;
 }
 
 void Engine::apiRoomGoto(const string id)
