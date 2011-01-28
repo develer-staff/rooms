@@ -32,6 +32,14 @@ namespace utils
 	template <class T> T *getElement(string name, std::map<string, T *> container);
 }
 
+struct RoomsTransition
+{
+	Room *start;
+	Room *end;
+	int steps;
+	int index;
+};
+
 /** \brief The RoomsManager class handles rooms.
  *
  * Creates and destroys rooms.
@@ -55,10 +63,10 @@ public:
 	void addRoom(Room *room);
 	/// Creates an Area and initializes it with given values.
 	Area *addArea(const string name, const string room, const float x, const float y,
-				  const float w, const float h, const string event);
+				const float w, const float h, const string event);
 	/// Creates an Item and initializes it with given values.
 	Item *addItem(const string name, const string room, const float x, const float y,
-				  const float w, const float h, const string event, const string image);
+				const float w, const float h, const string event, const string image);
 	/// Adds a created Item to the internal item list.
 	void addItem(Item *item);
 	/// Returns a room with given id.

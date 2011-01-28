@@ -340,28 +340,66 @@ void Engine::updateDialog()
 	}
 }
 
-GuiDataVect Engine::getVisibleData()
+bool Engine::update()
 {
-	GuiDataVect visible_data;
-	GuiDataVect gui_data = gui_mgr->getVisibleData();
+	if (state() == TRANSITION)
+	{
+		// check transition's end
+		if (transition.index == transition.steps)
+		{
+			setState(GAME);
+			return true;
+		}
+		// calculate transition
+		++transition.index;
+		return true;
+	}
+	return false;
+}
+
+GuiDataVect Engine::flash(Room *room, int alpha)
+{
 	// Background visible data
+	GuiDataVect visible_data;
 	GuiData bg;
-	bg.alpha = 255;
-	bg.image = rooms_mgr->currentRoom()->bg();
+	bg.alpha = alpha;
+	bg.image = room->bg();
 	bg.text = "";
 	bg.rect = GuiRect(0, 0, 1.0, 1.0);
 	visible_data.push_back(bg);
 	// Items visible data
-	std::vector <Item *> items = rooms_mgr->currentRoom()->items();
+	std::vector <Item *> items = room->items();
 	for (std::vector<Item *>::iterator i = items.begin();
 			i != items.end(); ++i)
 	{
 		GuiData item;
-		item.alpha = 255;
+		item.alpha = alpha;
 		item.text = "";
 		item.image = (*i)->image();
 		item.rect = GuiRect((*i)->x(), (*i)->y(), (*i)->w(), (*i)->h());
 		visible_data.push_back(item);
+	}
+	return visible_data;
+}
+
+GuiDataVect Engine::getVisibleData()
+{
+	GuiDataVect visible_data;
+	GuiDataVect gui_data = gui_mgr->getVisibleData();
+	// Background visible data with transition stuff
+	if (state() != TRANSITION)
+	{
+		GuiDataVect room_data = flash(rooms_mgr->currentRoom());
+		visible_data.insert(visible_data.end(), room_data.begin(), room_data.end());
+	}
+	else
+	{
+		int alpha2 = transition.index * 255 / transition.steps;
+		int alpha1 = 255 - alpha2;
+		GuiDataVect room_data1 = flash(transition.start, alpha1);
+		GuiDataVect room_data2 = flash(transition.end, alpha2);
+		visible_data.insert(visible_data.end(), room_data1.begin(), room_data1.end());
+		visible_data.insert(visible_data.end(), room_data2.begin(), room_data2.end());
 	}
 	// Gui visible data
 	visible_data.insert(visible_data.end(), gui_data.begin(), gui_data.end());
@@ -371,7 +409,12 @@ GuiDataVect Engine::getVisibleData()
 void Engine::apiRoomGoto(const string id)
 {
 	logger.write("ROOM_GOTO: " + id, Log::NOTE);
+	transition.index = 1;
+	transition.steps = 25;
+	transition.start = rooms_mgr->currentRoom();
+	transition.end = rooms_mgr->room(id);
 	rooms_mgr->setCurrentRoom(id);
+	setState(TRANSITION);
 }
 
 void Engine::apiVarSet(const string id, const int value)

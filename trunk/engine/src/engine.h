@@ -171,13 +171,16 @@ public:
 	 * \brief Call this method to perform an update step to the engine.
 	 *
 	 * Non event-driven state (like TRANSITION) need this method to calculate changes.
+	 * \return True if something's changed, false otherwise.
 	 */
-	void update();
+	bool update();
 	/// Returns the drawable representation of current room.
 	GuiDataVect getVisibleData();
 private:
 	void execActions(const std::vector <Action *> actions);
 	void updateDialog();
+	GuiDataVect flash(Room *room, int alpha = 255);
+	RoomsTransition transition;
 	//RISC API
 	void apiRoomGoto(const string id);
 	void apiVarSet(const string id, const int value);
