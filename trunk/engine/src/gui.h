@@ -60,6 +60,10 @@ class GuiButton
         GuiButton(string name, GuiRect rect_, string text_, string image_);
         /// Unique name.
         const string id;
+        /// Sets visibility.
+        bool visible;
+        /// Sets alpha channel: 255 opaque, 0 invisible.
+        void setOpacity(int alpha);
         /// Checks if point is inside the button.
         virtual bool isInside(float x, float y);
         /// Sets button rectangle.
@@ -72,12 +76,11 @@ class GuiButton
         virtual string activate(float x = 0, float y = 0);
         /// Returns the drawable representation of the object.
         virtual GuiDataVect getVisibleData();
-        /// Sets visibility.
-        bool visible;
     protected:
         GuiRect rect;
         string text;
         string image;
+        int alpha;
     private:
         // non-copiable
         GuiButton(const GuiButton &);

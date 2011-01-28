@@ -4,7 +4,7 @@
 extern Log logger;
 
 GuiButton::GuiButton(string name, GuiRect rect_, string text_, string image_):
-    id(name), visible(true), rect(rect_), text(text_), image(image_)
+    id(name), visible(true), rect(rect_), text(text_), image(image_), alpha(255)
 {
 }
 
@@ -38,6 +38,11 @@ string GuiButton::activate(float, float)
     return id;
 }
 
+void GuiButton::setOpacity(int alpha)
+{
+    this->alpha = alpha;
+}
+
 GuiDataVect GuiButton::getVisibleData()
 {
     GuiData data;
@@ -45,6 +50,7 @@ GuiDataVect GuiButton::getVisibleData()
     data.text = text;
     data.image = image;
     data.rect = rect;
+    data.alpha = alpha;
     vect.push_back(data);
     return vect;
 }
