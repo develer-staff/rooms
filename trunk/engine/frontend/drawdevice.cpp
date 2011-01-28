@@ -85,11 +85,28 @@ void DrawDevice::resizeEvent(QResizeEvent *event)
 	engine->getRoomsManager()->setRoomSize(event->size().width(), event->size().height());
 }
 
-void DrawDevice::drawImage(QPainter &painter, string name, GuiRect rect)
+QPixmap optimizedSetOpacity(QPixmap img, int opacity)
 {
-	QPixmap *img = images[name];
+	QPixmap temp(img.size());
+	temp.fill(Qt::transparent);
+	QPainter p(&temp);
+	p.setCompositionMode(QPainter::CompositionMode_Source);
+	p.drawPixmap(0, 0, img);
+	QLinearGradient alpha_gradient(0, 0, img.width(), 0);
+	alpha_gradient.setColorAt(0, QColor(255, 255, 255, opacity));
+	alpha_gradient.setColorAt(1, QColor(255, 255, 255, opacity));
+	p.setCompositionMode(QPainter::CompositionMode_DestinationIn);
+	p.setBrush(alpha_gradient);
+	p.drawRect(0, 0, temp.width(), temp.height());
+	p.end();
+	return temp;
+}
+
+void DrawDevice::drawImage(QPainter &painter, string name, GuiRect rect, int opacity)
+{
+	QPixmap img = *images[name];
 	QRect r(rect.x, rect.y, rect.w, rect.h);
-	painter.drawPixmap(r, *img);
+	painter.drawPixmap(r, optimizedSetOpacity(img, opacity));
 }
 
 void DrawDevice::drawText(QPainter &painter, string text, GuiRect rect)
@@ -107,7 +124,7 @@ void DrawDevice::drawRoom(QPainter &painter)
 		GuiData data = (*i);
 		engine->relToAbsRect(data.rect);
 		if (data.image != "")
-			drawImage(painter, data.image, data.rect);
+			drawImage(painter, data.image, data.rect, data.alpha);
 		if (data.text != "")
 			drawText(painter, data.text, data.rect);
 	}

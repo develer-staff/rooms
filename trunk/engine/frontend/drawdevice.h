@@ -39,7 +39,7 @@ public:
 	void initialize();
 	bool loadImage(string filename);
 	void quit(int status);
-	void drawImage(QPainter &painter, string name, GuiRect rect);
+	void drawImage(QPainter &painter, string name, GuiRect rect, int opacity = 255);
 	void drawText(QPainter &painter, string text, GuiRect rect);
 	void drawRoom(QPainter &painter);
 	void updateMusic();
