@@ -32,6 +32,7 @@ private:
 	std::map <string, QPixmap *> images;
 	QString last_bgm;
 	QSound *bgm;
+	QTimer *timer;
 public:
 	DrawDevice(Engine *eng, QWidget *parent = 0);
 	~DrawDevice();
@@ -45,6 +46,7 @@ public:
 	void updateMusic();
 public slots:
 	//QT EVENTS
+	void updateEngine();
 	void paintEvent(QPaintEvent *event);
 	void mousePressEvent(QMouseEvent * event);
 	void mouseMoveEvent(QMouseEvent *event);

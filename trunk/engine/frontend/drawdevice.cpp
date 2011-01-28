@@ -5,6 +5,9 @@ DrawDevice::DrawDevice(Engine *eng, QWidget *parent) : QWidget(parent)
 	engine = eng;
 	setGeometry(parent->geometry());
 	bgm = 0;
+	timer = new QTimer(this);
+	connect(timer, SIGNAL(timeout()), this, SLOT(updateEngine()));
+	timer->start(1000/25);
 }
 
 DrawDevice::~DrawDevice()
@@ -16,6 +19,7 @@ DrawDevice::~DrawDevice()
 	}
 	images.clear();
 	if (bgm) delete bgm;
+	delete timer;
 }
 
 void DrawDevice::initialize()
@@ -83,6 +87,12 @@ void DrawDevice::mouseMoveEvent(QMouseEvent *event)
 void DrawDevice::resizeEvent(QResizeEvent *event)
 {
 	engine->getRoomsManager()->setRoomSize(event->size().width(), event->size().height());
+}
+
+void DrawDevice::updateEngine()
+{
+	if (engine->update())
+		repaint();
 }
 
 QPixmap optimizedSetOpacity(QPixmap img, int opacity)
