@@ -33,7 +33,7 @@
 	rect.y = fabs(rect.y - win_size.height);
 }
 
--(void)drawImageWithPath:(string)path rect:(GuiRect)rect
+-(void)drawImageWithPath:(string)path rect:(GuiRect)rect alpha:(int)alpha
 {	
 	CCSprite *img = [CCSprite spriteWithFile: [NSString stringWithUTF8String:path.c_str()]];
 	img.anchorPoint = ccp(0,1);
@@ -42,7 +42,8 @@
 	img.position = ccp(rect.x, rect.y);
 	img.scaleY = rect.h / img.contentSize.height;
 	img.scaleX = rect.w / img.contentSize.width;
-	[self addChild: img];	
+	img.opacity = alpha;
+	[self addChild: img];
 }
 
 -(void)drawText:(string)text rect:(GuiRect)rect
@@ -70,13 +71,20 @@
     {
         GuiData data = (*i);
         if (data.image != "")
-            [self drawImageWithPath: data.image rect:data.rect];
+            [self drawImageWithPath: data.image rect:data.rect alpha:data.alpha];
         if (data.text != "")
             [self drawText: data.text rect:data.rect];
-    }
-	[self updateMusic];
-	
+    }	
 }
+
+-(void) doFrame:(ccTime)dt
+{
+	engine->update();
+	[self drawRoom];
+	[self updateMusic];
+}
+	
+
 
 -(void)updateMusic
 {
@@ -123,7 +131,8 @@
 		
 		self.isTouchEnabled = YES;
 		
-		[self drawRoom];
+		// schedule a repeating callback on every frame
+		[self schedule:@selector(doFrame:)];
 	}
 	return self;
 }
@@ -142,9 +151,8 @@
 	
 	GuiRect point(location.x, location.y, 0, 0);
 	[self convertRectToCocos2d:point];
-    std::pair<float, float> coord = engine->absToRelCoord(point.x, point.y);
-    engine->click(coord.first, coord.second);
-	[self drawRoom];
+	std::pair<float, float> coord = engine->absToRelCoord(point.x, point.y);
+	engine->click(coord.first, coord.second);
 }
 
 // on "dealloc" you need to release all your retained objects
