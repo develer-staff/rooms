@@ -11,6 +11,7 @@
     <img file="./data/chiave_star.png" />
     <img file="./data/locandiera.png" />
     <img file="./data/right_btn.png" />
+    <img file="./data/left_btn.png" />
   </images>
 
   <items>
