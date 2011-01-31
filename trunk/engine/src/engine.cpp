@@ -344,14 +344,8 @@ bool Engine::update()
 {
 	if (state() == TRANSITION)
 	{
-		// check transition's end
-		if (transition.index == transition.steps)
-		{
+		if (!transition.update())
 			setState(GAME);
-			return true;
-		}
-		// calculate transition
-		++transition.index;
 		return true;
 	}
 	return false;
@@ -394,10 +388,8 @@ GuiDataVect Engine::getVisibleData()
 	}
 	else
 	{
-		int alpha2 = transition.index * 255 / transition.steps;
-		int alpha1 = 255 - alpha2;
-		GuiDataVect room_data1 = flash(transition.start, alpha1);
-		GuiDataVect room_data2 = flash(transition.end, alpha2);
+		GuiDataVect room_data1 = flash(transition.start, transition.alpha_room_start);
+		GuiDataVect room_data2 = flash(transition.end, transition.alpha_room_end);
 		visible_data.insert(visible_data.end(), room_data1.begin(), room_data1.end());
 		visible_data.insert(visible_data.end(), room_data2.begin(), room_data2.end());
 	}
@@ -409,10 +401,11 @@ GuiDataVect Engine::getVisibleData()
 void Engine::apiRoomGoto(const string id)
 {
 	logger.write("ROOM_GOTO: " + id, Log::NOTE);
-	transition.index = 1;
+	transition.index = 0;
 	transition.steps = 25;
 	transition.start = rooms_mgr->currentRoom();
 	transition.end = rooms_mgr->room(id);
+	transition.update();
 	rooms_mgr->setCurrentRoom(id);
 	setState(TRANSITION);
 }
