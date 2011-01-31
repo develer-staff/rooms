@@ -65,17 +65,7 @@
 -(void)drawRoom
 {
 	[self removeAllChildrenWithCleanup:true];
-	//Draw room
-	Room *room = engine->getRoomsManager()->currentRoom();
-	[self drawImageWithPath:room->bg() rect:GuiRect(0, 0, 1.0, 1.0)];
-    
-    std::vector <Item *> items = room->items();
-    //Draw items
-    for (std::vector<Item *>::iterator i = items.begin();
-         i != items.end(); ++i)
-        [self drawImageWithPath: (*i)->image() rect:GuiRect((*i)->x(), (*i)->y(), (*i)->w(), (*i)->h())];
-    //Draw gui
-    GuiDataVect dv = engine->getGuiManager()->getVisibleData();
+	GuiDataVect dv = engine->getVisibleData();
     for(GuiDataVect::iterator i = dv.begin(); i != dv.end(); ++i)
     {
         GuiData data = (*i);
