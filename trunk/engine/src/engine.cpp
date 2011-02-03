@@ -17,6 +17,10 @@ Engine::Engine()
 	gui_mgr->addGuiObj(inventory);
 	gui_mgr->addGuiObj(dialog_list);
 	dialog_list->visible = false;
+	// Python stuff
+	apiInit(this);
+	EngineMod eng_mod;
+	vm.import(eng_mod);
 }
 
 Engine::~Engine()

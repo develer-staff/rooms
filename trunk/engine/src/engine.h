@@ -40,6 +40,7 @@
 #include "roomsreader.h"
 #include "gui.h"
 #include "pythonvm.h"
+#include "pythonapi.h"
 
 #include <string> //std::string
 #include <utility> //std::pair
