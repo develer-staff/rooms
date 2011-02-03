@@ -38,9 +38,8 @@
         <link id="2" text="Dammi la chiave, bella locandiera!" />
       </step>
       <step id="2" text="Sei così gentile che ti darò subito la mia chiave!">
-        <action id="ITEM_MOVE">
-            <param value="Chiave Locanda" />
-            <param value="!INVENTORY" />
+        <action id="SCRIPT">
+            <param value="engine.itemMove('Chiave Locanda', '!INVENTORY')" />
         </action>
         <link id="-1" text="Grazie bella locandiera!" />
       </step>
@@ -50,33 +49,30 @@
   <events>
     <event id="eve_goto_locanda">
         <item_req id="Chiave Locanda" value="!INVENTORY"/>
-        <action id="ROOM_GOTO">
-            <param value="Stanza Centrale" />
-        </action>
         <action id="SCRIPT">
-            <param value="engine.log('HELLO WORLD!!')" />
+            <param value="engine.goto('Stanza Centrale')" />
         </action>
     </event>
     <event id="eve_goto_centrale">
-        <action id="ROOM_GOTO">
-            <param value="Stanza Centrale" />
+        <action id="SCRIPT">
+            <param value="engine.goto('Stanza Centrale')" />
         </action>
     </event>
     <event id="eve_goto_cantina">
-        <action id="ROOM_GOTO">
-            <param value="Cantina" />
+        <action id="SCRIPT">
+            <param value="engine.goto('Cantina')" />
         </action>
     </event>
     <event id="eve_goto_star">
         <item_req id="Chiave Stella" value="!INVENTORY" />
-        <action id="ROOM_GOTO">
-            <param value="Stanza Stella" />
+        <action id="SCRIPT">
+            <param value="engine.goto('Stanza Stella')" />
         </action>
     </event>
     <event id="eve_goto_end">
         <var_req id="switch1" value="1"/>
-        <action id="ROOM_GOTO">
-            <param value="End" />
+        <action id="SCRIPT">
+            <param value="engine.goto('End')" />
         </action>
     </event>
     <event id="eve_switch1_on">
@@ -86,15 +82,13 @@
         </action>
     </event>
     <event id="chiave_get">
-        <action id="ITEM_MOVE">
-            <param value="Chiave Locanda" />
-            <param value="!INVENTORY" />
+        <action id="SCRIPT">
+            <param value="engine.itemMove('Chiave Locanda', '!INVENTORY')" />
         </action>
     </event>
     <event id="chiave_star_get">
-        <action id="ITEM_MOVE">
-            <param value="Chiave Stella" />
-            <param value="!INVENTORY" />
+        <action id="SCRIPT">
+            <param value="engine.itemMove('Chiave Stella', '!INVENTORY')" />
         </action>
     </event>
     <event id="start_dialog_locandiera">
