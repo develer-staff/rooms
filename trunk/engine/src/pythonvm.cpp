@@ -1,10 +1,3 @@
-/* 
- * File:   pythonvm.cpp
- * Author: gendoikari
- * 
- * Created on 3 febbraio 2011, 10.34
- */
-
 #include "pythonvm.h"
 
 #include <python2.6/Python.h>
