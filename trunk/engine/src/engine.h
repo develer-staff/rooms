@@ -39,6 +39,7 @@
 #include "area.h"
 #include "roomsreader.h"
 #include "gui.h"
+#include "pythonvm.h"
 
 #include <string> //std::string
 #include <utility> //std::pair
@@ -76,6 +77,7 @@ private:
 	Dialog *dialog;
 	GuiScrolledBar *inventory;
 	GuiScrolledBar *dialog_list;
+	PythonVM vm;
 public:
 	Engine();
 	~Engine();
@@ -182,6 +184,7 @@ private:
 	GuiDataVect flash(Room *room, int alpha = 255);
 	RoomsTransition transition;
 	//RISC API
+	void apiExecScript(const string id);
 	void apiRoomGoto(const string id);
 	void apiVarSet(const string id, const int value);
 	void apiItemMove(const string id, const string dest);
