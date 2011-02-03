@@ -39,7 +39,10 @@
       </step>
       <step id="2" text="Sei così gentile che ti darò subito la mia chiave!">
         <action id="SCRIPT">
-            <param value="engine.itemMove('Chiave Locanda', '!INVENTORY')" />
+            <param value="
+if room.getName() == 'Locanda':
+	engine.itemMove('Chiave Locanda', '!INVENTORY')"
+            />
         </action>
         <link id="-1" text="Grazie bella locandiera!" />
       </step>
