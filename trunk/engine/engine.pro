@@ -36,6 +36,7 @@ SOURCES += action.cpp \
            roomsreader.cpp \
            gui.cpp \
            pythonvm.cpp \
+           pythonapi.cpp \
            tinystr.cpp \
            tinyxml.cpp \
            tinyxmlerror.cpp \

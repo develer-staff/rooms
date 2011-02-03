@@ -54,7 +54,7 @@
             <param value="Stanza Centrale" />
         </action>
         <action id="SCRIPT">
-            <param value="Questa stringa genererà un errore python!" />
+            <param value="engine.log('HELLO WORLD!!')" />
         </action>
     </event>
     <event id="eve_goto_centrale">
