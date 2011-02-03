@@ -5,6 +5,7 @@ INCLUDEPATH += . src lib/tinyxml
 OBJECTS_DIR = ./build
 MOC_DIR = ./build
 CONFIG += staticlib
+LIBS += -lpython2.6
 
 # Input
 HEADERS += action.h \
@@ -19,6 +20,7 @@ HEADERS += action.h \
            dialog.h \
            roomsreader.h \
            gui.h \
+           pythonvm.h \
            tinystr.h \
            tinyxml.h
 SOURCES += action.cpp \
@@ -33,6 +35,7 @@ SOURCES += action.cpp \
            dialog.cpp \
            roomsreader.cpp \
            gui.cpp \
+           pythonvm.cpp \
            tinystr.cpp \
            tinyxml.cpp \
            tinyxmlerror.cpp \
