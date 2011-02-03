@@ -20,7 +20,9 @@ Engine::Engine()
 	// Python stuff
 	apiInit(this);
 	EngineMod eng_mod;
+	RoomMod room_mod;
 	vm.import(eng_mod);
+	vm.import(room_mod);
 }
 
 Engine::~Engine()
