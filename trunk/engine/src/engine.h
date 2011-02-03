@@ -191,6 +191,10 @@ private:
 	void apiItemMove(const string id, const string dest);
 	void apiDialogStart(const string id);
 	void apiSFXPlay(const string id);
+	// Python api functions are engine's friends.
+	friend PyObject *apiPyGotoRoom(PyObject *, PyObject *args);
+	friend PyObject *apiPyMoveItem(PyObject *, PyObject *args);
+	// Unittests stuff
 	friend class MockEngine;
 };
 
