@@ -17,6 +17,12 @@ Engine::Engine()
 	gui_mgr->addGuiObj(inventory);
 	gui_mgr->addGuiObj(dialog_list);
 	dialog_list->visible = false;
+	// Python stuff
+	apiInit(this);
+	EngineMod eng_mod;
+	RoomMod room_mod;
+	vm.import(eng_mod);
+	vm.import(room_mod);
 }
 
 Engine::~Engine()
@@ -319,6 +325,11 @@ void Engine::execActions(std::vector <Action *> actions)
 			string sfx_id = act.popStrParam();
 			apiSFXPlay(sfx_id);
 		}
+		else if (act.id == "SCRIPT")
+		{
+			string sfx_id = act.popStrParam();
+			apiExecScript(sfx_id);
+		}
 	}
 }
 
@@ -441,5 +452,10 @@ void Engine::apiDialogStart(const string id)
 void Engine::apiSFXPlay(const string id)
 {
 	sfx.push_back(id);
+}
+
+void Engine::apiExecScript(const string id)
+{
+	vm.execute(id);
 }
 

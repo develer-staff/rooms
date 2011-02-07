@@ -9,7 +9,7 @@ INCLUDEPATH += . ../src ../lib/tinyxml
 LIBPATH += ../
 OBJECTS_DIR = ./build
 MOC_DIR = ./build
-LIBS += -L. -lrooms
+LIBS += -L. -lrooms -lpython2.6
 
 # Input
 HEADERS += drawdevice.h \
