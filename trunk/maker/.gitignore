@@ -1,6 +1,0 @@
-roomsmaker-build-desktop/*
-src/roomsmaker.pro.user
-ui_*.h
-*.o
-moc_*.cpp
-
