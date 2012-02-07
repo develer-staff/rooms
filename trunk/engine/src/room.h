@@ -61,14 +61,13 @@ class Room
         Item *item(const string name);
         /// Returns all items in the room.
         std::vector <Item *> items() const;
+
         /// It it exists, returns the event under the point.
         string eventAt(const float x, const float y) const;
         /// It it exists, returns the item under the point.
         Item *itemAt(const float x, const float y);
         /// It it exists, returns the area under the point.
         Area *areaAt(const float x, const float y);
-    protected:
-        bool pointInsideArea(const float x, const float y, const Area *area) const;
 };
 
 #endif // ROOM_H

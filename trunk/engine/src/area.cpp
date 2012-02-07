@@ -47,3 +47,12 @@ void Area::setEvent(const std::string event)
 {
     _event = event;
 }
+
+bool Area::inside(const float x, const float y) const
+{
+    float mx = this->x();
+    float my = this->y();
+    float mw = this->w();
+    float mh = this->h();
+    return (x >= mx && x <= mx + mw && y >= my && y <= my + mh);
+}

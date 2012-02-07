@@ -49,6 +49,8 @@ class Area
         std::string event() const;
         /// Set event id.
         void setEvent(const std::string event);
+        /// True if point (x, y) is inside Area, False otherwise
+        bool inside(const float x, const float y) const;
 };
 
 #endif // AREA_H

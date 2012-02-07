@@ -85,12 +85,14 @@ string Room::eventAt(const float x, const float y) const
 {
     for (std::map <string, Item *>::const_iterator i = _items.begin(); i != _items.end(); ++i)
     {
-        if (pointInsideArea(x, y, dynamic_cast<Area *>(i->second)))
+        Area *a = dynamic_cast<Area *>(i->second);
+        if (a->inside(x, y))
             return i->second->event();
     }
     for (std::map <string, Area *>::const_iterator i = areas.begin(); i != areas.end(); ++i)
     {
-        if (pointInsideArea(x, y, i->second))
+        Area *a = i->second;
+        if (a->inside(x, y))
             return i->second->event();
     }
     return "";
@@ -99,21 +101,21 @@ string Room::eventAt(const float x, const float y) const
 Item *Room::itemAt(const float x, const float y)
 {
     for (std::map <string, Item *>::iterator i = _items.begin(); i != _items.end(); ++i)
-        if (pointInsideArea(x, y, dynamic_cast<Area *>(i->second)))
+    {
+        Area *a = dynamic_cast<Area *>(i->second);
+        if (a->inside(x, y))
             return i->second;
+    }
     return 0;
 }
 
 Area *Room::areaAt(const float x, const float y)
 {
     for (std::map <string, Area *>::iterator i = areas.begin(); i != areas.end(); ++i)
-        if (pointInsideArea(x, y, i->second))
-            return i->second;
+    {
+        Area *a = i->second;
+        if (a->inside(x, y))
+            return a;
+    }
     return 0;
-}
-
-bool Room::pointInsideArea(const float x, const float y, const Area *area) const
-{
-    return (x >= area->x() && x <= area->x() + area->w() && y >= area->y() &&
-            y <= area->y() + area->h());
 }
