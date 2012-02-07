@@ -10,3 +10,4 @@ lib*.a
 nbproject
 .dep.inc
 *.mk
+*.pro.user
