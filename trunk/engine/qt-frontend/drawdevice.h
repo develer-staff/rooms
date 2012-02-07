@@ -47,7 +47,7 @@ public:
 public slots:
     //QT EVENTS
     void updateEngine();
-    void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *);
     void mousePressEvent(QMouseEvent * event);
     void mouseMoveEvent(QMouseEvent *event);
     void resizeEvent(QResizeEvent *event);
