@@ -50,7 +50,7 @@ void DrawDevice::quit(int status)
     qApp->exit(status);
 }
 
-void DrawDevice::paintEvent(QPaintEvent *event)
+void DrawDevice::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     drawRoom(painter);
