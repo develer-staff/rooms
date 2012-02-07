@@ -105,7 +105,7 @@ class GuiList: public GuiButton
          * \param text_     It's the caption.
          * \param image_    It's the image id.
          * \param rect_     It's the shape.
-         * \param item_rect_     It's the shape of each iteam inside the control.
+         * \param item_rect_     It's the shape of each item inside the control.
          */
         GuiList(string name, string text_, string image_,  GuiRect rect_, GuiRect item_rect_, GuiListType type);
         ~GuiList();
