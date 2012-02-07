@@ -218,7 +218,23 @@ string upgradeFrom1To2(string content)
     return printer.CStr();
 }
 
-const int RoomsReader::VERSION = 2;
+string upgradeFrom2To3(string content)
+{
+    TiXmlDocument doc;
+    doc.Parse(content.c_str());
+    RRNode node(doc.RootElement());
+    node.gotoElement("world");
+    node.setAttr("version", "3");
+
+    for (node.gotoElement("rooms")->gotoChild("room"); !node.isNull(); node.gotoNext())
+        node.setAttr("bgm", "");
+
+    TiXmlPrinter printer;
+    doc.Accept(&printer);
+    return printer.CStr();
+}
+
+const int RoomsReader::VERSION = 3;
 
 RoomsReader::RoomsReader()
 {
@@ -247,7 +263,8 @@ RoomsReader::~RoomsReader()
         delete doc;
 }
 
-RoomsReader::UpgradeFunc RoomsReader::upgrade_funcs[] = {upgradeFrom1To2};
+RoomsReader::UpgradeFunc RoomsReader::upgrade_funcs[] = {upgradeFrom1To2,
+                                                         upgradeFrom2To3};
 
 bool RoomsReader::loadFromFile(const string filename)
 {
