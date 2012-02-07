@@ -413,7 +413,7 @@ void Engine::apiRoomGoto(const string id)
 {
     logger.write("ROOM_GOTO: " + id, Log::NOTE);
     transition.index = 0;
-    transition.steps = 25;
+    transition.steps = 5;
     transition.start = rooms_mgr->currentRoom();
     transition.end = rooms_mgr->room(id);
     transition.update();
