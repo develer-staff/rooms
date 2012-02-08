@@ -22,7 +22,8 @@ HEADERS += action.h \
            gui.h \
            pythonvm.h \
            tinystr.h \
-           tinyxml.h
+           tinyxml.h \
+           versioning.h
 SOURCES += action.cpp \
            area.cpp \
            engine.cpp \
@@ -40,4 +41,5 @@ SOURCES += action.cpp \
            tinystr.cpp \
            tinyxml.cpp \
            tinyxmlerror.cpp \
-           tinyxmlparser.cpp
+           tinyxmlparser.cpp \
+           versioning.cpp

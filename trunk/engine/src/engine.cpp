@@ -132,7 +132,7 @@ void Engine::saveGame(const string filename)
     reader.loadEmptyDoc();
     RRNode *node = reader.getCrawler();
     node->gotoElement("world");
-    node->setAttr("version", floatToStr(RoomsReader::VERSION));
+    node->setAttr("version", floatToStr(Versioning::VERSION));
     node->setAttr("current_room", rooms_mgr->currentRoom()->id);
     node->appendElement("vars");
     std::map<string, int> vars = events_mgr->getVars();

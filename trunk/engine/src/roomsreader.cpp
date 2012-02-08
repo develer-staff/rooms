@@ -185,61 +185,11 @@ string floatToStr(const float f)
     return os.str();
 }
 
-string upgradeFrom1To2(string content)
-{
-    TiXmlDocument doc;
-    doc.Parse(content.c_str());
-    RRNode node(doc.RootElement());
-    node.gotoElement("world");
-    int w = node.attrInt("width");
-    int h = node.attrInt("height");
-    node.setAttr("version", "2");
-    for (node.gotoElement("items")->gotoChild("item"); !node.isNull(); node.gotoNext())
-    {
-        node.setAttr("x", floatToStr(node.attrFloat("x") / w));
-        node.setAttr("y", floatToStr(node.attrFloat("y") / h));
-        node.setAttr("width", floatToStr(node.attrFloat("width") / w));
-        node.setAttr("height", floatToStr(node.attrFloat("height") / h));
-    }
-
-    for (node.gotoElement("rooms")->gotoChild("room"); !node.isNull(); node.gotoNext())
-    {
-        for (node.gotoChild("area"); !node.isNull(); node.gotoNext())
-        {
-            node.setAttr("x", floatToStr(node.attrFloat("x") / w));
-            node.setAttr("y", floatToStr(node.attrFloat("y") / h));
-            node.setAttr("width", floatToStr(node.attrFloat("width") / w));
-            node.setAttr("height", floatToStr(node.attrFloat("height") / h));
-        }
-        node.gotoParent();
-    }
-    TiXmlPrinter printer;
-    doc.Accept(&printer);
-    return printer.CStr();
-}
-
-string upgradeFrom2To3(string content)
-{
-    TiXmlDocument doc;
-    doc.Parse(content.c_str());
-    RRNode node(doc.RootElement());
-    node.gotoElement("world");
-    node.setAttr("version", "3");
-
-    for (node.gotoElement("rooms")->gotoChild("room"); !node.isNull(); node.gotoNext())
-        node.setAttr("bgm", "");
-
-    TiXmlPrinter printer;
-    doc.Accept(&printer);
-    return printer.CStr();
-}
-
-const int RoomsReader::VERSION = 3;
-
 RoomsReader::RoomsReader()
 {
     crawler = 0;
     doc = 0;
+    file_version = 0;
     parse_map["world"] = &RoomsReader::parseWorld;
     parse_map["room"] = &RoomsReader::parseRoom;
     parse_map["area"] = &RoomsReader::parseArea;
@@ -262,9 +212,6 @@ RoomsReader::~RoomsReader()
     if (doc)
         delete doc;
 }
-
-RoomsReader::UpgradeFunc RoomsReader::upgrade_funcs[] = {upgradeFrom1To2,
-                                                         upgradeFrom2To3};
 
 bool RoomsReader::loadFromFile(const string filename)
 {
@@ -307,33 +254,39 @@ void RoomsReader::saveDoc(string filename)
         logger.write("Cannot save to " + filename, Log::ERROR);
 }
 
-string RoomsReader::upgrade(string content)
-{
-    for (int i = file_version; i < VERSION; ++i)
-    {
-        logger.write("Updating from v." + floatToStr(i) + " to v." + floatToStr(i + 1), Log::NOTE);
-        content = upgrade_funcs[i - 1](content);
-    }
-    logger.write("Upgrade successful!", Log::WARNING);
-    file_content = content;
-    return content;
-}
-
 bool RoomsReader::parse()
 {
-    if (!parseElement(doc->RootElement()))
+    bool pr;
+
+    // Figure out the project version
+    pr = parseWorld(doc->RootElement());
+
+    // The project version couldn't be retrieved, something wrong happened
+    if (!pr || file_version == 0)
+        return false;
+
+    // At this point, file_version is set as a side effect, so it's possible to
+    // know whether we need to upgrade the document to the latest Rooms version.
+
+    if (file_version < Versioning::VERSION)
     {
+        logger.write("Old version detected: " + floatToStr(file_version) + ". Upgrading...", Log::WARNING);
+        string new_content = Versioning::upgrade(file_version, file_content);
+
+        // Sets file_content as side effect
+        loadFromStr(new_content);
+    }
+
+    // Recursively parse the whole document
+    pr = parseElement(doc->RootElement());
+    if (!pr)
+    {
+        // There were some errors during parsing
         delete doc;
         doc = 0;
-        if (file_version < VERSION)
-        {
-            logger.write("Old version detected: " + floatToStr(file_version) + ". Upgrading...", Log::WARNING);
-            string new_content = upgrade(file_content);
-            loadFromStr(new_content);
-            return parse();
-        }
         return false;
     }
+
     return true;
 }
 
@@ -428,8 +381,6 @@ bool RoomsReader::parseWorld(TiXmlElement *elem)
           parseAttr(elem, "height", ATTR_INT)))
         return false;
     elem->QueryIntAttribute("version", &file_version);
-    if (file_version != VERSION)
-        return false;
     return true;
 }
 

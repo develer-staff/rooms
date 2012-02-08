@@ -39,6 +39,7 @@
 #include "area.h"
 #include "roomsreader.h"
 #include "gui.h"
+#include "versioning.h"
 #include "pythonvm.h"
 #include "pythonapi.h"
 

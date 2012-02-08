@@ -18,6 +18,7 @@
 #include "area.h"
 #include "item.h"
 #include "dialog.h"
+#include "versioning.h"
 
 #include <map> //std::map
 #include <string> //std::string
@@ -138,7 +139,6 @@ class RRNode
 class RoomsReader
 {
     public:
-        static const int VERSION;
         enum AttributeType
         {
             ATTR_INT,
@@ -163,13 +163,6 @@ class RoomsReader
          *                  False otherwise.
          */
         bool loadFromStr(string content);
-        /**
-         * \brief Gets an old file content and upgrades it to new version.
-         *
-         * \param content   String containing old world data structure.
-         * \return          World data upgraded.
-         */
-        string upgrade(string old_content);
         /// Parses the file and returns true if it's a correct world file.
         bool parse();
         /// Creates an empty document
@@ -180,7 +173,7 @@ class RoomsReader
         void saveDoc(string filename);
     private:
         typedef bool (RoomsReader::*ParseMethod) (TiXmlElement *);
-        typedef string (*UpgradeFunc) (string);
+
         std::map<string, ParseMethod> parse_map;
         TiXmlDocument *doc;
         RRNode *crawler;
@@ -210,8 +203,6 @@ class RoomsReader
         bool parseAttr(TiXmlElement *elem, string name, AttributeType type);
         bool checkUniqueId(std::set<string> &ids, const string id);
         bool checkParent(TiXmlElement *elem, string parent_name);
-        // Upgrade functions
-        static UpgradeFunc upgrade_funcs[];
 };
 
 string floatToStr(float);
