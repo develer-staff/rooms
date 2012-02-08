@@ -21,7 +21,7 @@ string Room::bg() const
     return _bg;
 }
 
-void Room::bg(const string name)
+void Room::setBg(const string name)
 {
     _bg = name;
 }

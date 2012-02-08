@@ -64,7 +64,7 @@ int RoomsManager::height() const
 Room * RoomsManager::addRoom(const string name, const string bg)
 {
     Room *r = new Room(name);
-    r->bg(bg);
+    r->setBg(bg);
     addRoom(r);
     return r;
 }

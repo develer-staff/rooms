@@ -46,7 +46,7 @@ class Room
         /// Gets room background music.
         string bgm() const;
         /// Sets background image id.
-        void bg(const string name);
+        void setBg(const string name);
         /// Sets room background music.
         void setBgm(const string name);
         /// Creates an area in the room, and returns it.

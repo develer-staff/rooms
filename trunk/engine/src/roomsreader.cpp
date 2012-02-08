@@ -123,7 +123,7 @@ Room *RRNode::fetchRoom()
 {
     if (isNull()) return 0;
     Room *room = new Room(attrStr("id"));
-    room->bg(attrStr("bg"));
+    room->setBg(attrStr("bg"));
     room->setBgm(attrStr("bgm"));
     for (gotoChild("area"); !isNull(); gotoNext())
     {
