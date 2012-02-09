@@ -61,11 +61,8 @@ public:
     enum State
     {
         INITIALIZING = 0,
-        MENU,
         GAME,
         DIALOG,
-        INVENTORY,
-        ENDING,
         TRANSITION
     };
 private:
