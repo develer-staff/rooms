@@ -13,3 +13,5 @@ nbproject
 *.pro.user
 .project
 .pydevproject
+*.pyc
+*.pyo
