@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from Param import Param
+from param import Param
 
 class Action(object):
 
