@@ -106,6 +106,14 @@ def loadVars(xml_file):
     return variable
 
 def openFileRooms(path_file):
+    """
+    funzione per il caricamento dei dati salvati da un file .rooms
+    prende in ingresso il path del file da controllare
+    ritorna un dizionario con tutte le informazioni su rooms, events, items,
+    images
+    la funzione puo' prendere anche un file .rooms che ha una versione
+    precedente all'ultima realizzata
+    """
     xml_file = upgradeVersion(path_file)
     informations = loadInformation(xml_file)
     images = loadImages(xml_file)
