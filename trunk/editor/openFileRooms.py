@@ -102,4 +102,5 @@ def openFileRooms(path_file):
     rooms = loadRooms(xml_file)
     events = loadEvents(xml_file)
     items = loadItems(xml_file)
-    return informations, rooms, events, items, images
+    return {'informations':informations, 'rooms':rooms,
+            'events':events, 'items':items, 'images':images}
