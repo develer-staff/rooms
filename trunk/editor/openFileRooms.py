@@ -8,6 +8,7 @@ from structData.param import Param
 from structData.item import Item
 from structData.event import Event
 from structData.room import Room
+from structData.var import Var
 
 from upgradeVersion import upgradeVersion
 
@@ -31,6 +32,7 @@ def loadRooms(xml_file):
 
 def loadEvents(xml_file):
     events = {}
+    events_order = []
     event = None
     var_name = ""
     var_start_set = {}
@@ -40,6 +42,7 @@ def loadEvents(xml_file):
     for line in xml_file.find("events").iter():
         if line.tag == "event":
             event = Event(line.attrib["id"])
+            events_order.append(line.attrib['id'])
             events[event.name] = event
         if line.tag == "item_req" or line.tag == "var_req":
             requirement = Requirement(line.attrib['id'], line.attrib['value'], line.tag)
@@ -62,7 +65,7 @@ def loadEvents(xml_file):
             else:
                 param = Param(line.attrib['value'], line.attrib['value'])
                 action.addParam(param)
-    return events
+    return events, events_order
 
 def loadItems(xml_file):
     items = {}
@@ -95,12 +98,19 @@ def loadImages(xml_file):
             images.append(line.attrib['file'])
     return images
 
+def loadVars(xml_file):
+    variable = []
+    for line in xml_file.find("vars").iter():
+        if line.tag == "var":
+            variable.append(Var(line.attrib['id'], line.attrib['value']))
+    return variable
+
 def openFileRooms(path_file):
     xml_file = upgradeVersion(path_file)
     informations = loadInformation(xml_file)
     images = loadImages(xml_file)
     rooms = loadRooms(xml_file)
-    events = loadEvents(xml_file)
+    events, events_order = loadEvents(xml_file)
     items = loadItems(xml_file)
     return {'informations':informations, 'rooms':rooms,
-            'events':events, 'items':items, 'images':images}
+            'events':events, 'events_order':events_order, 'items':items, 'images':images}
