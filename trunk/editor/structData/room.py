@@ -3,10 +3,10 @@ import area
 
 class Room(object):
 
-    def __init__(self, id, bg, height=0, width=0, bgm=""):
-        self.id = id
+    def __init__(self, name, bg, height=None, width=None, bgm=None):
+        self.name = name
         self.bg = bg
-        self.areas = list()
+        self.areas = []
         self.bgm = bgm
         self.width = width
         self.height = height

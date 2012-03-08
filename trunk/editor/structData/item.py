@@ -2,8 +2,8 @@
 
 class Item(object):
 
-    def __init__(self, id, x, y, height, width, room, image):
-        self.id = id
+    def __init__(self, name, x, y, height, width, room, image):
+        self.name = name
         self.x = x
         self.y = y
         self.height = height

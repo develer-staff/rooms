@@ -19,19 +19,19 @@ def createDictionary(start_dictionary):
 
 def saveArea(areas, room_tag):
     for area in areas:
-        ElementTree.SubElement(room_tag, 'area', {'id':area.id,
-                                                      'x':str(area.x),
-                                                      'y':str(area.y),
-                                                      'width':str(area.width),
-                                                      'height':str(area.height),
-                                                      'event':str(area.event_name)})
+        ElementTree.SubElement(room_tag, 'area', {'id':area.name,
+                                                  'x':str(area.x),
+                                                  'y':str(area.y),
+                                                  'width':str(area.width),
+                                                  'height':str(area.height),
+                                                  'event':str(area.event_name)})
 
 def saveRooms(top, rooms):
     rooms_tag = ElementTree.SubElement(top, 'rooms')
     for room_key in rooms.keys():
         room_tag = ElementTree.SubElement(rooms_tag,
                                               'room',
-                                              {'id': str(rooms[room_key].id),
+                                              {'id': str(rooms[room_key].name),
                                                'bg': str(rooms[room_key].bg),
                                                'bgm': str(rooms[room_key].bgm)})
         saveArea(rooms[room_key].areas, room_tag)
@@ -50,26 +50,26 @@ def saveParam(params, action_tag, action_id):
 
 def saveAction(actions, event_tag):
     for action in actions:
-        action_tag = ElementTree.SubElement(event_tag, 'action', {'id':action.id})
-        saveParam(action.params, action_tag, action.id)
+        action_tag = ElementTree.SubElement(event_tag, 'action', {'id':action.name})
+        saveParam(action.params, action_tag, action.name)
 
-def saveEventRequest(requests, event_tag):
-    for request in requests:
-        ElementTree.SubElement(event_tag, request.type, {'id': request.id,
-                                                         'value': str(request.value)})
+def saveEventRequirements(requirements, event_tag):
+    for requirement in requirements:
+        ElementTree.SubElement(event_tag, requirement.type, {'id': requirement.name,
+                                                         'value': str(requirement.value)})
 
 def saveEvents(top, events):
     events_tag = ElementTree.SubElement(top, 'events')
     for key in events.keys():
         event_tag = ElementTree.SubElement(events_tag, 'event', {'id':key})
-        saveEventRequest(events[key].requests, event_tag)
+        saveEventRequirements(events[key].requirements, event_tag)
         saveAction(events[key].actions, event_tag)
 
 def saveVars(top, events):
     vars_tag = None
     for event_key in events.keys():
         for action in events[event_key].actions:
-            if action.id == "VAR_SET":
+            if action.name == "VAR_SET":
                 if not vars_tag:
                     vars_tag = ElementTree.SubElement(top, 'vars')
                 for param in action.params:
@@ -79,7 +79,7 @@ def saveVars(top, events):
 def saveItems(top, items):
     items_tag = ElementTree.SubElement(top, 'items')
     for key in items.keys():
-        ElementTree.SubElement(items_tag, 'item', {'id': items[key].id,
+        ElementTree.SubElement(items_tag, 'item', {'id': items[key].name,
                                                    'x':items[key].x,
                                                    'y':items[key].y,
                                                    'height':items[key].height,
@@ -94,13 +94,13 @@ def saveImages(top, images):
             ElementTree.SubElement(images_tag, 'img', {'file': image})
 
 def saveFileRooms(path_file, rooms, events, items, informations, images):
-    
-    
+
+
     top = ElementTree.Element("world", createDictionary(informations))
     saveImages(top, images)
     saveItems(top, items)
     saveVars(top, events)
     saveEvents(top, events)
     saveRooms(top, rooms)
-    write_file = open(path_file[0], 'w')
+    write_file = open(path_file, 'w')
     write_file.write(prettify(top))

@@ -3,19 +3,16 @@
 from action import Action
 
 class Event(object):
-    def __init__(self, id):
-        self.id = id
-        self.requests = list()
-        self.actions = list()
-
-    def __setattr__(self, attr, value):
-        self.__dict__[attr] = value
+    def __init__(self, name):
+        self.name = name
+        self.requirements = []
+        self.actions = []
 
     def getRequest(self):
-        return self.requests
+        return self.requirements
 
-    def addRequest(self, request):
-        self.requests.append(request)
+    def addRequirement(self, requirements):
+        self.requirements.append(requirements)
 
     def addAction(self, action):
         self.actions.append(action)

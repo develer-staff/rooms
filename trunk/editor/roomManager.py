@@ -2,6 +2,7 @@
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+
 from structData.room import Room
 
 class RoomManager(QWidget):
@@ -16,13 +17,26 @@ class RoomManager(QWidget):
         self.vertical_scroll.setWidgetResizable(False)
         self.vertical_scroll.setMinimumSize(300, 1000)
         self.vertical_scroll.setAlignment(Qt.AlignVCenter)
-        rooms_list = QListWidget(self)
-        rooms_list.setIconSize(QSize(150, 150))
+        self.rooms_list = QListWidget(self)
+        self.rooms_list.setMinimumSize(300, 1000)
+        self.rooms_list.setIconSize(QSize(150, 150))
         for room in rooms:
-            print room[0]
             image = QImage(room[1])
             room_item = QListWidgetItem(QIcon(QPixmap.fromImage(image)), room[0])
-            rooms_list.addItem(room_item)
+            self.rooms_list.addItem(room_item)
         #vertical_scroll.setAlignment(Qt.Vertical)
-        self.vertical_scroll.setWidget(rooms_list)
+        #self.vertical_scroll.setWidget(rooms_list)
+        self.connect(self.rooms_list, SIGNAL("itemSelectionChanged()"),
+                     self.changeItemSelected)
+
+    def setRoomSelected(self, room_name):
+        item = self.rooms_list.findItems(room_name, Qt.MatchFixedString)
+        if item:
+            item[0].setSelected(True)
+
+    def changeItemSelected(self):
+        item = self.rooms_list.selectedItems()
+        if item:
+            print item[0].text()
+            self.emit(SIGNAL("changeRoomSelected"), item[0].text())
 

@@ -1,20 +1,25 @@
 #!/usr/bin/env python
 
+import sys
+from xml.etree import ElementTree
+from xml.dom import minidom
+
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 from roomEditor import RoomEditor
-import sys
-from structData.room import Room
 from roomManager import RoomManager
-from xml.etree import ElementTree
+
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
+
 from structData.area import Area
-from structData.request import Request
+from structData.requirement import Requirement
 from structData.action import Action
 from structData.param import Param
 from structData.item import Item
 from structData.event import Event
-from xml.dom import minidom
+
 from openFileRooms import openFileRooms
 from saveFileRooms import saveFileRooms
 
@@ -22,12 +27,12 @@ class Editor(QWidget):
 
     def __init__(self, parent=None):
         super(Editor, self).__init__(parent)
-        self.version = 0
-        self.width_rooms = 0
-        self.height_rooms = 0
-        self.selected_room_name = ""
-        self.adventure_name = ""
-        self.start_room = ""
+        self.version = None
+        self.width_rooms = None
+        self.height_rooms = None
+        self.selected_room_name = None
+        self.adventure_name = None
+        self.start_room = None
 
         horizontal = QHBoxLayout(self)
         file_open = QFileDialog()
@@ -37,21 +42,23 @@ class Editor(QWidget):
         rooms_list = list()
         for key in self.rooms.keys():
             rooms_list.append((key, self.rooms[key].bg))
-        room_editor = RoomEditor(self)
+        room_editor = RoomEditor(parent=self, room=self.rooms[self.selected_room_name])
         room_manager = RoomManager(self, rooms=rooms_list)
-
+        room_manager.setRoomSelected(self.selected_room_name)
         horizontal.addWidget(room_manager)
         horizontal.addWidget(room_editor)
 
-        self.connect(room_manager, SIGNAL("pressButton"), self.changeRoom)
-        self.changeRoom(self.selected_room_name)
+        #self.selected_room_name = self.connect(room_manager,
+         #                                      SIGNAL("changeRoomSelected(QString)"),
+          #                                     self.changeRoom)
+        #self.changeRoom(self.selected_room_name)
         file_open = QFileDialog()
         self.path_file = ""
-        #self.path_file = file_open.getSaveFileNameAndFilter(parent=self,
-                                                          #  filter = "*.rooms")
-        #if self.path_file:
-         #   saveFileRooms(self.path_file, self.rooms, self.events,
-          #                self.items, self.informations, self.images)
+        self.path_file = file_open.getSaveFileNameAndFilter(parent=self,
+                                                            filter="*.rooms")
+        if self.path_file:
+            saveFileRooms(self.path_file[0], self.rooms, self.events,
+                          self.items, self.informations, self.images)
 
     def searchEvent(self, id):
         for event in self.events:
@@ -59,14 +66,6 @@ class Editor(QWidget):
                 return event
         return None
 
-    def changeRoom(self, name):
-        self.emit(SIGNAL("roomChanged"), self.searchRoom(name))
-
-    def addRoom(self, new_room):
-        self.rooms.append(new_room)
-
-    def searchRoom(self, id):
-        return self.rooms[id]
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

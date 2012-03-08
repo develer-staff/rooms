@@ -2,8 +2,8 @@
 
 class Area(object):
 
-    def __init__(self, id, x, y, height, width, event_name, event=None):
-        self.id = id
+    def __init__(self, name, x, y, height, width, event_name, event=None):
+        self.name = name
         self.x = x
         self.y = y
         self.height = height

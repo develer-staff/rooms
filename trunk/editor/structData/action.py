@@ -3,9 +3,9 @@ from param import Param
 
 class Action(object):
 
-    def __init__(self, id):
-        self.id = id
-        self.params = list()
+    def __init__(self, name):
+        self.name = name
+        self.params = []
 
     def addParam(self, param):
         self.params.append(param)
