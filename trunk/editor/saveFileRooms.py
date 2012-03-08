@@ -58,9 +58,9 @@ def saveEventRequirements(requirements, event_tag):
         ElementTree.SubElement(event_tag, requirement.type, {'id': requirement.name,
                                                          'value': str(requirement.value)})
 
-def saveEvents(top, events):
+def saveEvents(top, events, events_order):
     events_tag = ElementTree.SubElement(top, 'events')
-    for key in events.keys():
+    for key in events_order:
         event_tag = ElementTree.SubElement(events_tag, 'event', {'id':key})
         saveEventRequirements(events[key].requirements, event_tag)
         saveAction(events[key].actions, event_tag)
@@ -100,7 +100,7 @@ def saveFileRooms(path_file, struct_information):
     saveImages(top, struct_information['images'])
     saveItems(top, struct_information['items'])
     saveVars(top, struct_information['events'])
-    saveEvents(top, struct_information['events'])
+    saveEvents(top, struct_information['events'], struct_information['events_order'])
     saveRooms(top, struct_information['rooms'])
     write_file = open(path_file, 'w')
     write_file.write(prettify(top))
