@@ -4,36 +4,6 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from structData.room import Room
 
-class RoomList(QWidget):
-
-    def __init__(self, parent=None, list_of_image=list()):
-
-        super(RoomList, self).__init__(parent)
-        self.list_of_image = list_of_image
-        for img in self.list_of_image:
-            self.addImage(img)
-
-    def addImage(self, (name, path_image)):
-        self.list_of_image.append((name, path_image))
-        self.update()
-
-    def paintEvent(self, event):
-        print "entro"
-        vertical = QVBoxLayout(self)
-        for image in self.list_of_image:
-            self.scroll_area = QScrollArea(self)
-            self.scroll_area.setMinimumSize(260, 260)
-            self.scroll_area.setSizePolicy(QSizePolicy.Fixed,
-                                           QSizePolicy.Fixed)
-            #self.scroll_area.setBackgroundRole(QPalette.Dark)
-            self.scroll_area.setAlignment(Qt.AlignCenter)
-            self.image_label = QLabel()
-            image = QImage(image[1]).scaled(250, 250)
-            self.image_label.setPixmap(QPixmap.fromImage(image))
-            self.scroll_area.setWidget(self.image_label)
-            vertical.addWidget(self.scroll_area, Qt.AlignCenter)
-
-
 class RoomManager(QWidget):
 
     def __init__(self, parent=None, rooms=list()):
@@ -46,7 +16,13 @@ class RoomManager(QWidget):
         self.vertical_scroll.setWidgetResizable(False)
         self.vertical_scroll.setMinimumSize(300, 1000)
         self.vertical_scroll.setAlignment(Qt.AlignVCenter)
-        self.room_list = RoomList(self, rooms)
+        rooms_list = QListWidget(self)
+        rooms_list.setIconSize(QSize(150, 150))
+        for room in rooms:
+            print room[0]
+            image = QImage(room[1])
+            room_item = QListWidgetItem(QIcon(QPixmap.fromImage(image)), room[0])
+            rooms_list.addItem(room_item)
         #vertical_scroll.setAlignment(Qt.Vertical)
-        self.vertical_scroll.setWidget(self.room_list)
+        self.vertical_scroll.setWidget(rooms_list)
 
