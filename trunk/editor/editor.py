@@ -27,24 +27,17 @@ class Editor(QWidget):
 
     def __init__(self, parent=None):
         super(Editor, self).__init__(parent)
-        self.version = None
-        self.width_rooms = None
-        self.height_rooms = None
-        self.selected_room_name = None
-        self.adventure_name = None
-        self.start_room = None
+        self.struct_data_dictionary = {}
 
         horizontal = QHBoxLayout(self)
         file_open = QFileDialog()
         self.path_file = file_open.getOpenFileName(filter="*.rooms")
-        self.informations, self.rooms, self.events, self.items, self.images = openFileRooms(self.path_file)
-        self.selected_room_name = "Locanda"
-        rooms_list = list()
-        for key in self.rooms.keys():
-            rooms_list.append((key, self.rooms[key].bg))
-        room_editor = RoomEditor(parent=self, room=self.rooms[self.selected_room_name])
-        room_manager = RoomManager(self, rooms=rooms_list)
-        room_manager.setRoomSelected(self.selected_room_name)
+        self.struct_data_dictionary = openFileRooms(self.path_file)
+        self.selected_room = self.struct_data_dictionary['rooms']\
+                                 [self.struct_data_dictionary['informations']['start']]
+        room_editor = RoomEditor(parent=self, room=self.selected_room)
+        room_manager = RoomManager(parent=self, rooms=self.struct_data_dictionary['rooms'])
+        room_manager.setRoomSelected(self.selected_room.name)
         horizontal.addWidget(room_manager)
         horizontal.addWidget(room_editor)
 
@@ -57,14 +50,7 @@ class Editor(QWidget):
         self.path_file = file_open.getSaveFileNameAndFilter(parent=self,
                                                             filter="*.rooms")
         if self.path_file:
-            saveFileRooms(self.path_file[0], self.rooms, self.events,
-                          self.items, self.informations, self.images)
-
-    def searchEvent(self, id):
-        for event in self.events:
-            if event.id == id:
-                return event
-        return None
+            saveFileRooms(self.path_file[0], self.struct_data_dictionary)
 
 
 if __name__ == "__main__":
