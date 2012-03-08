@@ -16,7 +16,10 @@ class RoomList(QWidget):
                                            QSizePolicy.Fixed)
             #self.scroll_area.setBackgroundRole(QPalette.Dark)
             self.scroll_area.setAlignment(Qt.AlignCenter)
+            if key == parent.selected_room_name:
+                self.scroll_area.setBackgroundRole(QPalette.Dark)
             self.image_label = QLabel()
+
             image = QImage(parent.rooms[key].bg).scaled(250, 250)
             self.image_label.setPixmap(QPixmap.fromImage(image))
             self.scroll_area.setWidget(self.image_label)
@@ -26,6 +29,7 @@ class RoomManager(QWidget):
 
     def __init__(self, parent=None):
         super(RoomManager, self).__init__(parent)
+        print "entro"
         self.setMinimumSize(300, 1000)
         self.setSizePolicy(QSizePolicy(QSizePolicy.Fixed,
                                        QSizePolicy.Fixed))
@@ -34,7 +38,7 @@ class RoomManager(QWidget):
         vertical_scroll.setWidgetResizable(False)
         vertical_scroll.setMinimumSize(300, 1000)
         vertical_scroll.setAlignment(Qt.AlignVCenter)
-        my_widget = RoomList(parent)
+        self.room_list = RoomList(parent)
         #vertical_scroll.setAlignment(Qt.Vertical)
-        vertical_scroll.setWidget(my_widget)
+        vertical_scroll.setWidget(self.room_list)
             #verticalLayout.addWidget(self.scroll_area)
