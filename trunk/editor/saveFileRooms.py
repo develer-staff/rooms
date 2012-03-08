@@ -93,14 +93,14 @@ def saveImages(top, images):
         for image in images:
             ElementTree.SubElement(images_tag, 'img', {'file': image})
 
-def saveFileRooms(path_file, rooms, events, items, informations, images):
+def saveFileRooms(path_file, struct_information):
 
 
-    top = ElementTree.Element("world", createDictionary(informations))
-    saveImages(top, images)
-    saveItems(top, items)
-    saveVars(top, events)
-    saveEvents(top, events)
-    saveRooms(top, rooms)
+    top = ElementTree.Element("world", createDictionary(struct_information['informations']))
+    saveImages(top, struct_information['images'])
+    saveItems(top, struct_information['items'])
+    saveVars(top, struct_information['events'])
+    saveEvents(top, struct_information['events'])
+    saveRooms(top, struct_information['rooms'])
     write_file = open(path_file, 'w')
     write_file.write(prettify(top))
