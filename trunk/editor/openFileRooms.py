@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 from xml.etree import ElementTree
-from area import Area
-from request import Request
-from action import Action
-from param import Param
-from item import Item
-from event import Event
-from room import Room
+from structData.area import Area
+from structData.request import Request
+from structData.action import Action
+from structData.param import Param
+from structData.item import Item
+from structData.event import Event
+from structData.room import Room
 from upgradeVersion import upgradeVersion
 
 def loadRoom(xml_file):

@@ -34,8 +34,11 @@ class Editor(QWidget):
         self.path_file = file_open.getOpenFileName(filter="*.rooms")
         self.informations, self.rooms, self.events, self.items, self.images = openFileRooms(self.path_file)
         self.selected_room_name = "Locanda"
+        rooms_list = list()
+        for key in self.rooms.keys():
+            rooms_list.append((key, self.rooms[key].bg))
         room_editor = RoomEditor(self)
-        room_manager = RoomManager(self)
+        room_manager = RoomManager(self, rooms=rooms_list)
 
         horizontal.addWidget(room_manager)
         horizontal.addWidget(room_editor)

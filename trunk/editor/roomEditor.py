@@ -3,7 +3,6 @@
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 import sys
-import room
 from xml.etree.ElementTree import ElementTree
 
 class RoomEditor(QWidget):

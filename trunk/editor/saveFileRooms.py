@@ -94,7 +94,8 @@ def saveImages(top, images):
             ElementTree.SubElement(images_tag, 'img', {'file': image})
 
 def saveFileRooms(path_file, rooms, events, items, informations, images):
-
+    
+    
     top = ElementTree.Element("world", createDictionary(informations))
     saveImages(top, images)
     saveItems(top, items)
