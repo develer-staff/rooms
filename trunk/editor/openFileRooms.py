@@ -7,7 +7,6 @@ try:
     from collections import OrderedDict
 except ImportError:
     from misc.dict import OrderedDict
-
 from structData.area import Area
 from structData.action import Action
 from structData.param import Param
