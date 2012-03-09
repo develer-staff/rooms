@@ -9,13 +9,15 @@ except ImportError:
     from misc.dict import OrderedDict
 
 from structData.area import Area
-from structData.requirement import Requirement
 from structData.action import Action
 from structData.param import Param
 from structData.item import Item
 from structData.event import Event
 from structData.room import Room
 from structData.var import Var
+from structData.image import Image
+from structData.varRequirement import VarRequirement
+from structData.itemRequirement import ItemRequirement
 
 from upgradeVersion import upgradeVersion
 
@@ -37,7 +39,7 @@ def loadRooms(xml_file):
                 else:
                     raise InputError("invalid tag %s in room" % child.tag)
                 room.areas.append(area)
-            rooms[room.name] = room
+            rooms[room.id] = room
         else:
             raise InputError("invalid tag %s in rooms" % line.tag)
     return rooms
@@ -48,15 +50,19 @@ def loadEvents(xml_file):
     for line in list(xml_file.find("events")):
         if line.tag == "event":
             event = Event(line.attrib["id"])
-            events[event.name] = event
+            events[event.id] = event
             for child in line:
-                if child.tag == "item_req" or child.tag == "var_req":
-                    requirement = Requirement(child.attrib['id'],
-                                              child.attrib['value'],
-                                              child.tag)
+                if child.tag == "item_req":
+                    print "item"
+                    requirement = ItemRequirement(child.attrib['id'],
+                                              child.attrib['value'])
+                    event.requirements.append(requirement)
+                elif child.tag == "var_req":
+                    requirement = VarRequirement(child.attrib['id'],
+                                              child.attrib['value'])
                     event.requirements.append(requirement)
                 elif child.tag == "action":
-                    action = Action(line.attrib['id'])
+                    action = Action(child.attrib['id'])
                     event.actions.append(action)
                     for second_child in child:
                         if second_child.tag == "param":
@@ -82,7 +88,7 @@ def loadItems(xml_file):
                             line.attrib["width"],
                             line.attrib["room"],
                             line.attrib["image"])
-            items[item.name] = item
+            items[item.id] = item
         else:
             raise InputError("invalid tag %s in events" % line.tag)
     return items
@@ -98,19 +104,20 @@ def loadInformation(xml_file):
     return informations
 
 def loadImages(xml_file):
-    images = []
+    images = {}
     for line in list(xml_file.find("images")):
         if line.tag == "img":
-            images.append(line.attrib['file'])
+            images[line.attrib['file']] = Image(line.attrib['file'])
         else:
             raise InputError("invalid tag %s in images" % line.tag)
     return images
 
 def loadVars(xml_file):
-    variable = []
+    variable = {}
     for line in list(xml_file.find("vars")):
         if line.tag == "var":
-            variable.append(Var(line.attrib['id'], line.attrib['value']))
+            variable[line.attrib['id']] = Var(line.attrib['id'],
+                                              line.attrib['value'])
         else:
             InputError("invalid tag %s in vars" % line.tag)
     return variable
@@ -124,13 +131,12 @@ def openFileRooms(path_file):
     la funzione puo' prendere anche un file .rooms che ha una versione
     precedente all'ultima realizzata
     """
+    struct_dict = OrderedDict()
     xml_file = upgradeVersion(path_file)
-    informations = loadInformation(xml_file)
-    images = loadImages(xml_file)
-    rooms = loadRooms(xml_file)
-    events = loadEvents(xml_file)
-    items = loadItems(xml_file)
-    variables = loadVars(xml_file)
-    return {'informations':informations, 'rooms':rooms,
-            'events':events, 'items':items,
-            'variables':variables, 'images':images}
+    struct_dict['informations'] = loadInformation(xml_file)
+    struct_dict['images'] = loadImages(xml_file)
+    struct_dict['items'] = loadItems(xml_file)
+    struct_dict['vars'] = loadVars(xml_file)
+    struct_dict['events'] = loadEvents(xml_file)
+    struct_dict['rooms'] = loadRooms(xml_file)
+    return struct_dict
