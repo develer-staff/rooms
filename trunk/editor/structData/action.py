@@ -8,4 +8,3 @@ class Action(object):
         self.name = name
         self.params = []
         self.variables = []
-
