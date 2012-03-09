@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from xml.etree import ElementTree
+from twisted.python.formmethod import InputError
 try:
     from collections import OrderedDict
 except ImportError:
@@ -17,21 +18,26 @@ from structData.var import Var
 from upgradeVersion import upgradeVersion
 
 def loadRooms(xml_file):
-    rooms = {}
+    rooms = OrderedDict()
     room = None
-    for line in xml_file.find("rooms").iter():
+    for line in list(xml_file.find("rooms")):
         if line.tag == "room":
             room = Room(line.attrib["id"], line.attrib["bg"],
                             line.attrib["bgm"])
+            for child in line:
+                if child.tag == "area":
+                    area = Area(line.attrib["id"],
+                            child.attrib["x"],
+                            child.attrib["y"],
+                            child.attrib["height"],
+                            child.attrib["width"],
+                            child.attrib["event"])
+                else:
+                    raise InputError, "invalid tag %s in room" % child.tag
+                room.areas.append(area)
             rooms[room.name] = room
-        elif line.tag == "area":
-            area = Area(line.attrib["id"],
-                            line.attrib["x"],
-                            line.attrib["y"],
-                            line.attrib["height"],
-                            line.attrib["width"],
-                            line.attrib["event"])
-            room.areas.append(area)
+        else:
+            raise InputError, "invalid tag %s in rooms" % line.tag
     return rooms
 
 def loadEvents(xml_file):
