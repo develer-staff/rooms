@@ -106,9 +106,11 @@ def loadImages(xml_file):
 
 def loadVars(xml_file):
     variable = []
-    for line in xml_file.find("vars").iter():
+    for line in list(xml_file.find("vars")):
         if line.tag == "var":
             variable.append(Var(line.attrib['id'], line.attrib['value']))
+        else:
+            InputError("invalid tag %s in vars" % line.tag)
     return variable
 
 def openFileRooms(path_file):
