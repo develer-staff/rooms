@@ -10,9 +10,3 @@ class Room(object):
         self.bgm = bgm
         self.width = width
         self.height = height
-
-    def addArea(self, area):
-        self.areas.append(area)
-
-    def getAreas(self):
-        return self.areas
