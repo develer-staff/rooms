@@ -8,9 +8,6 @@ class Event(object):
         self.requirements = []
         self.actions = []
 
-    def getRequest(self):
-        return self.requirements
-
     def addRequirement(self, requirements):
         self.requirements.append(requirements)
 
