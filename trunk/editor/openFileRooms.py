@@ -33,11 +33,11 @@ def loadRooms(xml_file):
                             child.attrib["width"],
                             child.attrib["event"])
                 else:
-                    raise InputError, "invalid tag %s in room" % child.tag
+                    raise InputError("invalid tag %s in room" % child.tag)
                 room.areas.append(area)
             rooms[room.name] = room
         else:
-            raise InputError, "invalid tag %s in rooms" % line.tag
+            raise InputError("invalid tag %s in rooms" % line.tag)
     return rooms
 
 def loadEvents(xml_file):
@@ -60,8 +60,8 @@ def loadEvents(xml_file):
     return events
 
 def loadItems(xml_file):
-    items = {}
-    for line in xml_file.find("items").iter():
+    items = OrderedDict()
+    for line in list(xml_file.find("items")):
         if line.tag == "item":
             item = Item(line.attrib['id'],
                             line.attrib["x"],
@@ -71,6 +71,8 @@ def loadItems(xml_file):
                             line.attrib["room"],
                             line.attrib["image"])
             items[item.name] = item
+        else:
+            raise InputError("invalid tag %s in events" % line.tag)
     return items
 
 def loadInformation(xml_file):
