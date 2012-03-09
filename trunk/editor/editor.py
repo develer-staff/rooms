@@ -10,9 +10,6 @@ from PyQt4.QtGui import *
 from roomEditor import RoomEditor
 from roomManager import RoomManager
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-
 from structData.area import Area
 from structData.requirement import Requirement
 from structData.action import Action

@@ -7,7 +7,7 @@ from structData.room import Room
 
 class RoomManager(QWidget):
 
-    def __init__(self, parent=None, rooms=list()):
+    def __init__(self, rooms, parent=None):
         super(RoomManager, self).__init__(parent)
         self.setMinimumSize(300, 1000)
         self.setSizePolicy(QSizePolicy(QSizePolicy.Fixed,
@@ -20,9 +20,9 @@ class RoomManager(QWidget):
         self.rooms_list = QListWidget(self)
         self.rooms_list.setMinimumSize(300, 1000)
         self.rooms_list.setIconSize(QSize(150, 150))
-        for room in rooms:
-            image = QImage(room[1])
-            room_item = QListWidgetItem(QIcon(QPixmap.fromImage(image)), room[0])
+        for key in rooms:
+            image = QImage(rooms[key].bg)
+            room_item = QListWidgetItem(QIcon(QPixmap.fromImage(image)), rooms[key].name)
             self.rooms_list.addItem(room_item)
         #vertical_scroll.setAlignment(Qt.Vertical)
         #self.vertical_scroll.setWidget(rooms_list)
