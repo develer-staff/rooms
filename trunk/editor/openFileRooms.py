@@ -16,6 +16,7 @@ from structData.event import Event
 from structData.room import Room
 from structData.var import Var
 from structData.image import Image
+from structData.information import Information
 from structData.varRequirement import VarRequirement
 from structData.itemRequirement import ItemRequirement
 
@@ -94,14 +95,17 @@ def loadItems(xml_file):
     return items
 
 def loadInformation(xml_file):
-    informations = {}
+    informations = None
     for node in xml_file.iter('world'):
-        informations['version'] = int(node.attrib['version'])
-        informations['width'] = int(node.attrib['width'])
-        informations['height'] = int(node.attrib['height'])
-        informations['start'] = node.attrib['start']
-        informations['name'] = node.attrib['name']
-    return informations
+        informations = Information(int(node.attrib['version']),
+                                 int(node.attrib['width']),
+                                 int(node.attrib['height']),
+                                 node.attrib['start'],
+                                 node.attrib['name'])
+    if informations:
+        return informations
+    else:
+        raise InputError("invalid file format")
 
 def loadImages(xml_file):
     images = {}
