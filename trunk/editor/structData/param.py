@@ -2,7 +2,5 @@
 
 class Param(object):
 
-    def __init__(self, name, value=None, start_value=None):
+    def __init__(self, name):
         self.name = name
-        self.start_value = start_value
-        self.value = value
