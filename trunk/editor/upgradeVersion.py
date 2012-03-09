@@ -30,6 +30,13 @@ def from2To3(xml_file):
     return xml_file
 
 def upgradeVersion(path_file):
+    """
+    funzione per portare un qualsiasi file .rooms all'ultima versione
+    corrente
+    prende in ingresso il path del file di cui fare l'upgrade
+    ritorna un xml.etree.Element del contenuto del file aggiornato all'ultima
+    versione disponibile
+    """
     upgrade_function = [from1To2, from2To3]
     xml_file = ElementTree.fromstring(open(path_file, 'rb').read())
     version = int(xml_file.get('version'))
