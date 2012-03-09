@@ -47,7 +47,7 @@ def loadEvents(xml_file):
         if line.tag == "item_req" or line.tag == "var_req":
             requirement = Requirement(line.attrib['id'], line.attrib['value'],
                                       line.tag)
-            event.addRequirement(requirement)
+            event.requirements.append(requirement)
         if line.tag == "action":
             action = Action(line.attrib['id'])
             event.addAction(action)
