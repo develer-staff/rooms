@@ -34,7 +34,7 @@ class Editor(QWidget):
                                  [self.struct_data_dictionary['informations']['start']]
         room_editor = RoomEditor(parent=self, room=self.selected_room)
         room_manager = RoomManager(parent=self, rooms=self.struct_data_dictionary['rooms'])
-        room_manager.setRoomSelected(self.selected_room.name)
+        room_manager.setRoomSelected(self.selected_room.id)
         horizontal.addWidget(room_manager)
         horizontal.addWidget(room_editor)
 
