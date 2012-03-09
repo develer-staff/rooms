@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from xml.etree import ElementTree
-from twisted.python.formmethod import InputError
 
 #to use OrderedDict in python < 2.7
 try:
