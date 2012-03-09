@@ -17,13 +17,6 @@ def prettify(content):
     reparsed = minidom.parseString(rough_string)
     return reparsed.toprettyxml(indent="  ")
 
-def createDictionary(start_dictionary):
-    new_dict = {}
-    for key in start_dictionary.keys():
-        new_dict[key] = str(start_dictionary[key])
-    return new_dict
-
-
 def saveData(top, tag, dictionary):
     tag_dict = {}
     dict_todo = []
@@ -39,13 +32,8 @@ def saveData(top, tag, dictionary):
 
 def saveFileRooms(path_file, struct_information):
 
-    top = ElementTree.Element("world", createDictionary(struct_information['informations']))
-    #saveImages(top, struct_information['images'])
-    #saveItems(top, struct_information['items'])
-    #saveVars(top, struct_information['variables'])
-    #saveEvents(top, struct_information['events'])
-    #saveRooms(top, struct_information['rooms'])
-    #room_tag = ElementTree.SubElement(top, 'rooms')
+    top = ElementTree.Element("world",
+                              struct_information['informations'].dictionary())
     for key_information in struct_information:
         #print key_information
         if key_information != "informations":
