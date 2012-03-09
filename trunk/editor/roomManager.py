@@ -22,7 +22,7 @@ class RoomManager(QWidget):
         self.rooms_list.setIconSize(QSize(150, 150))
         for key in rooms:
             image = QImage(rooms[key].bg)
-            room_item = QListWidgetItem(QIcon(QPixmap.fromImage(image)), rooms[key].name)
+            room_item = QListWidgetItem(QIcon(QPixmap.fromImage(image)), rooms[key].id)
             self.rooms_list.addItem(room_item)
         #vertical_scroll.setAlignment(Qt.Vertical)
         #self.vertical_scroll.setWidget(rooms_list)
