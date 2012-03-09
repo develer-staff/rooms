@@ -33,9 +33,8 @@ def saveData(top, tag, dictionary):
 def saveFileRooms(path_file, struct_information):
 
     top = ElementTree.Element("world",
-                              struct_information['informations'].dictionary())
+                        struct_information['informations'].dictionary())
     for key_information in struct_information:
-        #print key_information
         if key_information != "informations":
             father = ElementTree.SubElement(top, key_information)
             for key in struct_information[key_information]:
