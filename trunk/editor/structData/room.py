@@ -1,12 +1,12 @@
 #!/usr/bin/env python
-import area
+from origin import OriginData
 
-class Room(object):
+class Room(OriginData):
 
-    def __init__(self, name, bg, height=None, width=None, bgm=None):
-        self.name = name
+    tag_name = 'room'
+    def __init__(self, id, bg, bgm):
+        super(Room, self).__init__()
+        self.id = id
         self.bg = bg
         self.areas = []
         self.bgm = bgm
-        self.width = width
-        self.height = height

@@ -1,9 +1,11 @@
 #!/usr/bin/env python
-from param import Param
-from var import Var
 
-class Action(object):
+from origin import OriginData
 
-    def __init__(self, name):
-        self.name = name
+class Action(OriginData):
+    tag_name = 'action'
+
+    def __init__(self, id):
+        super(Action, self).__init__()
+        self.name = id
         self.params = []

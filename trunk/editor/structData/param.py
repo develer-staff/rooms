@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 
-class Param(object):
+from origin import OriginData
 
-    def __init__(self, name):
-        self.name = name
+class Param(OriginData):
+
+    tag_name = 'param'
+
+    def __init__(self, value):
+        super(Param, self).__init__()
+        self.value = value

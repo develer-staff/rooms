@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 
-from action import Action
+from origin import OriginData
 
-class Event(object):
-    def __init__(self, name):
-        self.name = name
+class Event(OriginData):
+    tag_name = 'event'
+    def __init__(self, id):
+        super(Event, self).__init__()
+        self.id = id
         self.requirements = []
         self.actions = []

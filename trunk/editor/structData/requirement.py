@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 
-class Requirement(object):
+from origin import OriginData
 
-    def __init__(self, name, value, type):
-        self.name = name
+class Requirement(OriginData):
+
+    def __init__(self, id, value):
+        super(Requirement, self).__init__()
+        self.id = id
         self.value = value
-        self.type = type

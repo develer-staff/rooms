@@ -1,9 +1,14 @@
 #!/usr/bin/env python
 
-class Item(object):
+from origin import OriginData
 
-    def __init__(self, name, x, y, height, width, room, image):
-        self.name = name
+class Item(OriginData):
+
+    tag_name = 'item'
+
+    def __init__(self, id, x, y, height, width, room, image):
+        super(Item, self).__init__()
+        self.id = id
         self.x = x
         self.y = y
         self.height = height
