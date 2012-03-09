@@ -97,9 +97,11 @@ def loadInformation(xml_file):
 
 def loadImages(xml_file):
     images = []
-    for line in xml_file.find("images").iter():
+    for line in list(xml_file.find("images")):
         if line.tag == "img":
             images.append(line.attrib['file'])
+        else:
+            raise InputError("invalid tag %s in images" % line.tag)
     return images
 
 def loadVars(xml_file):
