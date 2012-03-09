@@ -27,7 +27,7 @@ def loadRooms(xml_file):
                             line.attrib["height"],
                             line.attrib["width"],
                             line.attrib["event"])
-            room.addArea(area)
+            room.areas.append(area)
     return rooms
 
 def loadEvents(xml_file):
