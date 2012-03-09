@@ -61,7 +61,7 @@ def loadEvents(xml_file):
                     action.variables.append(variable)
             else:
                 param = Param(line.attrib['value'])
-                action.addParam(param)
+                action.params.append(param)
     return events, events_order
 
 def loadItems(xml_file):
