@@ -23,85 +23,35 @@ def createDictionary(start_dictionary):
         new_dict[key] = str(start_dictionary[key])
     return new_dict
 
-def saveArea(areas, room_tag):
-    for area in areas:
-        ElementTree.SubElement(room_tag, 'area', {'id':area.name,
-                                                  'x':str(area.x),
-                                                  'y':str(area.y),
-                                                  'width':str(area.width),
-                                                  'height':str(area.height),
-                                                  'event':str(area.event_name)})
 
-def saveRooms(top, rooms):
-    rooms_tag = ElementTree.SubElement(top, 'rooms')
-    for room_key in rooms.keys():
-        room_tag = ElementTree.SubElement(rooms_tag,
-                                              'room',
-                                              {'id': str(rooms[room_key].name),
-                                               'bg': str(rooms[room_key].bg),
-                                               'bgm': str(rooms[room_key].bgm)})
-        saveArea(rooms[room_key].areas, room_tag)
-
-def saveParam(params, action_tag):
-    for param in params:
-        ElementTree.SubElement(action_tag, 'param',
-                                           {'value': str(param.name)})
-
-def saveVar(variables, action_tag):
-    for variable in variables:
-        ElementTree.SubElement(action_tag, 'param',
-                               {'value': str(variable.name), })
-        ElementTree.SubElement(action_tag, 'param',
-                               {'value':str(variable.start_value)})
-
-def saveAction(actions, event_tag):
-    for action in actions:
-        action_tag = ElementTree.SubElement(event_tag, 'action', {'id':action.name})
-        saveParam(action.params, action_tag)
-
-def saveEventRequirements(requirements, event_tag):
-    for requirement in requirements:
-        ElementTree.SubElement(event_tag, requirement.type, {'id': requirement.name,
-                                                         'value': str(requirement.value)})
-
-def saveEvents(top, events):
-    events_tag = ElementTree.SubElement(top, 'events')
-    for key in events.keys():
-        event_tag = ElementTree.SubElement(events_tag, 'event', {'id':key})
-        saveEventRequirements(events[key].requirements, event_tag)
-        saveAction(events[key].actions, event_tag)
-
-def saveVars(top, variables):
-    vars_tag = ElementTree.SubElement(top, 'vars')
-    for variable in variables:
-        ElementTree.SubElement(vars_tag, 'var', {'id':variable.name,
-                                                 'value':str(variable.start_value)})
-
-
-def saveItems(top, items):
-    items_tag = ElementTree.SubElement(top, 'items')
-    for key in items.keys():
-        ElementTree.SubElement(items_tag, 'item', {'id': items[key].name,
-                                                   'x':items[key].x,
-                                                   'y':items[key].y,
-                                                   'height':items[key].height,
-                                                   'width':items[key].width,
-                                                   'room':items[key].room,
-                                                   'image':items[key].image})
-
-def saveImages(top, images):
-    if images:
-        images_tag = ElementTree.SubElement(top, 'images')
-        for image in images:
-            ElementTree.SubElement(images_tag, 'img', {'file': image})
+def saveData(top, tag, dictionary):
+    tag_dict = {}
+    dict_todo = []
+    for key, value in dictionary.items():
+        if not isinstance(value, list):
+            tag_dict[key] = value
+        else:
+            dict_todo.append(value)
+    father_tag = ElementTree.SubElement(top, tag, tag_dict)
+    for el in dict_todo:
+        for single_el in el:
+            saveData(father_tag, single_el.tag_name, single_el.dictionary())
 
 def saveFileRooms(path_file, struct_information):
 
     top = ElementTree.Element("world", createDictionary(struct_information['informations']))
-    saveImages(top, struct_information['images'])
-    saveItems(top, struct_information['items'])
-    saveVars(top, struct_information['variables'])
-    saveEvents(top, struct_information['events'])
-    saveRooms(top, struct_information['rooms'])
+    #saveImages(top, struct_information['images'])
+    #saveItems(top, struct_information['items'])
+    #saveVars(top, struct_information['variables'])
+    #saveEvents(top, struct_information['events'])
+    #saveRooms(top, struct_information['rooms'])
+    #room_tag = ElementTree.SubElement(top, 'rooms')
+    for key_information in struct_information:
+        #print key_information
+        if key_information != "informations":
+            father = ElementTree.SubElement(top, key_information)
+            for key in struct_information[key_information]:
+                saveData(father, struct_information[key_information][key].tag_name,
+                         struct_information[key_information][key].dictionary())
     write_file = open(path_file, 'w')
     write_file.write(prettify(top))
