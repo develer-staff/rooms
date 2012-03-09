@@ -7,8 +7,3 @@ class Event(object):
         self.name = name
         self.requirements = []
         self.actions = []
-
-
-
-    def getActions(self):
-        return self.actions
