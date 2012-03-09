@@ -43,20 +43,30 @@ def loadRooms(xml_file):
 def loadEvents(xml_file):
     events = OrderedDict()
     event = None
-    for line in xml_file.find("events").iter():
+    for line in list(xml_file.find("events")):
         if line.tag == "event":
             event = Event(line.attrib["id"])
             events[event.name] = event
-        if line.tag == "item_req" or line.tag == "var_req":
-            requirement = Requirement(line.attrib['id'], line.attrib['value'],
-                                      line.tag)
-            event.requirements.append(requirement)
-        if line.tag == "action":
-            action = Action(line.attrib['id'])
-            event.actions.append(action)
-        if line.tag == "param":
-            param = Param(line.attrib['value'])
-            action.params.append(param)
+            for child in line:
+                if child.tag == "item_req" or child.tag == "var_req":
+                    requirement = Requirement(child.attrib['id'],
+                                              child.attrib['value'],
+                                              child.tag)
+                    event.requirements.append(requirement)
+                elif child.tag == "action":
+                    action = Action(line.attrib['id'])
+                    event.actions.append(action)
+                    for second_child in child:
+                        if second_child.tag == "param":
+                            param = Param(second_child.attrib['value'])
+                            action.params.append(param)
+                        else:
+                            raise InputError("invalid tag %s in action"
+                                             % second_child.tag)
+                else:
+                    raise InputError("invalid tag %s in event" % child.tag)
+        else:
+            raise InputError("invalid tag %s in events" % line.tag)
     return events
 
 def loadItems(xml_file):
