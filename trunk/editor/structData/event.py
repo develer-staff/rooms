@@ -9,8 +9,6 @@ class Event(object):
         self.actions = []
 
 
-    def addAction(self, action):
-        self.actions.append(action)
 
     def getActions(self):
         return self.actions

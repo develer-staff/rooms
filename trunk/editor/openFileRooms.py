@@ -50,7 +50,7 @@ def loadEvents(xml_file):
             event.requirements.append(requirement)
         if line.tag == "action":
             action = Action(line.attrib['id'])
-            event.addAction(action)
+            event.actions.append(action)
         if line.tag == "param":
             if action.name == "VAR_SET":
                 if not var_name:
