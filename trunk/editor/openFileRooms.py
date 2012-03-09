@@ -97,11 +97,11 @@ def loadItems(xml_file):
 def loadInformation(xml_file):
     informations = None
     for node in xml_file.iter('world'):
-        informations = Information(int(node.attrib['version']),
-                                 int(node.attrib['width']),
-                                 int(node.attrib['height']),
-                                 node.attrib['start'],
-                                 node.attrib['name'])
+        informations = Information(node.attrib['version'],
+                                   node.attrib['name'],
+                                   node.attrib['width'],
+                                   node.attrib['height'],
+                                   node.attrib['start'])
     if informations:
         return informations
     else:
