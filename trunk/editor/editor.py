@@ -31,7 +31,7 @@ class Editor(QWidget):
         self.path_file = file_open.getOpenFileName(filter="*.rooms")
         self.struct_data_dictionary = openFileRooms(self.path_file)
         self.selected_room = self.struct_data_dictionary['rooms']\
-                                 [self.struct_data_dictionary['informations']['start']]
+                            [self.struct_data_dictionary['informations'].start]
         room_editor = RoomEditor(parent=self, room=self.selected_room)
         room_manager = RoomManager(parent=self, rooms=self.struct_data_dictionary['rooms'])
         room_manager.setRoomSelected(self.selected_room.id)
