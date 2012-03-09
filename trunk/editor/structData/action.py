@@ -9,6 +9,3 @@ class Action(object):
         self.params = []
         self.variables = []
 
-
-    def getParams(self):
-        return self.params
