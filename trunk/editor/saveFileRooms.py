@@ -3,6 +3,11 @@
 from xml.dom import minidom
 from xml.etree import ElementTree
 
+try:
+    from collections import OrderedDict
+except ImportError:
+    from misc.dict import OrderedDict
+
 def prettify(content):
     """
     Return a pretty-printed XML string for the Element.
@@ -52,30 +57,25 @@ def saveAction(actions, event_tag):
     for action in actions:
         action_tag = ElementTree.SubElement(event_tag, 'action', {'id':action.name})
         saveParam(action.params, action_tag)
-        saveVar(action.variables, action_tag)
 
 def saveEventRequirements(requirements, event_tag):
     for requirement in requirements:
         ElementTree.SubElement(event_tag, requirement.type, {'id': requirement.name,
                                                          'value': str(requirement.value)})
 
-def saveEvents(top, events, events_order):
+def saveEvents(top, events):
     events_tag = ElementTree.SubElement(top, 'events')
-    for key in events_order:
+    for key in events.keys():
         event_tag = ElementTree.SubElement(events_tag, 'event', {'id':key})
         saveEventRequirements(events[key].requirements, event_tag)
         saveAction(events[key].actions, event_tag)
 
-def saveVars(top, events):
-    vars_tag = None
-    for event_key in events.keys():
-        for action in events[event_key].actions:
-            if action.name == "VAR_SET":
-                if not vars_tag:
-                    vars_tag = ElementTree.SubElement(top, 'vars')
-                for param in action.params:
-                    ElementTree.SubElement(vars_tag, 'var', {'id':param.name,
-                                                             'value':str(param.start_value)})
+def saveVars(top, variables):
+    vars_tag = ElementTree.SubElement(top, 'vars')
+    for variable in variables:
+        ElementTree.SubElement(vars_tag, 'var', {'id':variable.name,
+                                                 'value':str(variable.start_value)})
+
 
 def saveItems(top, items):
     items_tag = ElementTree.SubElement(top, 'items')
@@ -96,12 +96,11 @@ def saveImages(top, images):
 
 def saveFileRooms(path_file, struct_information):
 
-
     top = ElementTree.Element("world", createDictionary(struct_information['informations']))
     saveImages(top, struct_information['images'])
     saveItems(top, struct_information['items'])
-    saveVars(top, struct_information['events'])
-    saveEvents(top, struct_information['events'], struct_information['events_order'])
+    saveVars(top, struct_information['variables'])
+    saveEvents(top, struct_information['events'])
     saveRooms(top, struct_information['rooms'])
     write_file = open(path_file, 'w')
     write_file.write(prettify(top))
