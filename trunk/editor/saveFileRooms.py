@@ -36,22 +36,23 @@ def saveRooms(top, rooms):
                                                'bgm': str(rooms[room_key].bgm)})
         saveArea(rooms[room_key].areas, room_tag)
 
-def saveParam(params, action_tag, action_id):
+def saveParam(params, action_tag):
     for param in params:
-        if action_id != "VAR_SET":
-            ElementTree.SubElement(action_tag, 'param',
-                                               {'value': str(param.value)})
-        else:
-            print param.start_value, param.value
-            ElementTree.SubElement(action_tag, 'param',
-                                   {'value': str(param.name), })
-            ElementTree.SubElement(action_tag, 'param',
-                                   {'value':str(param.value)})
+        ElementTree.SubElement(action_tag, 'param',
+                                           {'value': str(param.name)})
+
+def saveVar(variables, action_tag):
+    for variable in variables:
+        ElementTree.SubElement(action_tag, 'param',
+                               {'value': str(variable.name), })
+        ElementTree.SubElement(action_tag, 'param',
+                               {'value':str(variable.start_value)})
 
 def saveAction(actions, event_tag):
     for action in actions:
         action_tag = ElementTree.SubElement(event_tag, 'action', {'id':action.name})
-        saveParam(action.params, action_tag, action.name)
+        saveParam(action.params, action_tag)
+        saveVar(action.variables, action_tag)
 
 def saveEventRequirements(requirements, event_tag):
     for requirement in requirements:

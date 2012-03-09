@@ -45,7 +45,8 @@ def loadEvents(xml_file):
             events_order.append(line.attrib['id'])
             events[event.name] = event
         if line.tag == "item_req" or line.tag == "var_req":
-            requirement = Requirement(line.attrib['id'], line.attrib['value'], line.tag)
+            requirement = Requirement(line.attrib['id'], line.attrib['value'],
+                                      line.tag)
             event.addRequirement(requirement)
         if line.tag == "action":
             action = Action(line.attrib['id'])
@@ -54,16 +55,12 @@ def loadEvents(xml_file):
             if action.name == "VAR_SET":
                 if not var_name:
                     var_name = line.attrib['value']
-                    continue
                 else:
                     set_value = line.attrib['value']
-                param = Param(var_name, set_value)
-                if var_name in var_start_set.keys():
-                    param.start_value = var_start_set[var_name]
-                action.addParam(param)
-                var_name = ""
+                    variable = Var(var_name, set_value, var_start_set[var_name])
+                    action.variables.append(variable)
             else:
-                param = Param(line.attrib['value'], line.attrib['value'])
+                param = Param(line.attrib['value'])
                 action.addParam(param)
     return events, events_order
 
