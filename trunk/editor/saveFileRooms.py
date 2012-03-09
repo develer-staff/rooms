@@ -20,6 +20,9 @@ def prettify(content):
 def saveData(top, tag, dictionary):
     tag_dict = {}
     dict_todo = []
+    #cicla su tutti gli elementi del dizionario
+    #se trova delle liste le salva per poi richiamare se stessa
+    #su questi per poter memorizzare i dati
     for key, value in dictionary.items():
         if not isinstance(value, list):
             tag_dict[key] = value
@@ -31,7 +34,11 @@ def saveData(top, tag, dictionary):
             saveData(father_tag, single_el.tag_name, single_el.dictionary())
 
 def saveFileRooms(path_file, struct_information):
-
+    """
+    funzione che salva la struttura dati su un file .rooms
+    prende in ingresso il path del file e la struttura che contiene tutti i dati
+    da salvare
+    """
     top = ElementTree.Element("world",
                         struct_information['informations'].dictionary())
     for key_information in struct_information:
