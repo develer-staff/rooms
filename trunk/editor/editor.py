@@ -31,10 +31,8 @@ class Editor(QWidget):
         file_open = QFileDialog()
         self.path_file = file_open.getOpenFileName(filter="*.rooms")
         openFileRooms(self.path_file)
-        #self.selected_room = g_world.informations.start
         room_editor = RoomEditor(self)
         room_manager = RoomManager(self)
-        #room_manager.setRoomSelected(g_world.informations.start)
         new_room_button = QPushButton("New room")
         grid_layout.addWidget(new_room_button, 0, 0)
         grid_layout.addWidget(room_manager, 1, 0)
@@ -43,10 +41,6 @@ class Editor(QWidget):
                      SIGNAL("currentRoomChanged(const QString &)"),
                      room_editor.changeCurrentRoom)
         self.connect(new_room_button, SIGNAL("clicked()"), self.addNewRoom)
-        #self.selected_room_name = self.connect(room_manager,
-         #                                      SIGNAL("changeRoomSelected(QString)"),
-          #                                     self.changeRoom)
-        #self.changeRoom(self.selected_room_name)
 
     def addNewRoom(self):
         number_of_new_room = 0
