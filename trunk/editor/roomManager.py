@@ -3,11 +3,13 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
+
 from structData.room import Room
+from structData.world import g_world
 
 class RoomManager(QWidget):
 
-    def __init__(self, rooms, parent=None):
+    def __init__(self, parent=None):
         super(RoomManager, self).__init__(parent)
         self.setMinimumSize(300, 1000)
         self.setSizePolicy(QSizePolicy(QSizePolicy.Fixed,
@@ -20,9 +22,9 @@ class RoomManager(QWidget):
         self.rooms_list = QListWidget(self)
         self.rooms_list.setMinimumSize(300, 1000)
         self.rooms_list.setIconSize(QSize(150, 150))
-        for key in rooms:
-            image = QImage(rooms[key].bg)
-            room_item = QListWidgetItem(QIcon(QPixmap.fromImage(image)), rooms[key].id)
+        for key in g_world.rooms:
+            image = QImage(g_world.rooms[key].bg)
+            room_item = QListWidgetItem(QIcon(QPixmap.fromImage(image)), g_world.rooms[key].id)
             self.rooms_list.addItem(room_item)
         #vertical_scroll.setAlignment(Qt.Vertical)
         #self.vertical_scroll.setWidget(rooms_list)

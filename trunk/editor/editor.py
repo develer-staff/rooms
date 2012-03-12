@@ -16,6 +16,7 @@ from structData.action import Action
 from structData.param import Param
 from structData.item import Item
 from structData.event import Event
+from structData.world import g_world
 
 from openFileRooms import openFileRooms
 from saveFileRooms import saveFileRooms
@@ -29,12 +30,11 @@ class Editor(QWidget):
         horizontal = QHBoxLayout(self)
         file_open = QFileDialog()
         self.path_file = file_open.getOpenFileName(filter="*.rooms")
-        self.struct_data_dictionary = openFileRooms(self.path_file)
-        self.selected_room = self.struct_data_dictionary['rooms']\
-                            [self.struct_data_dictionary['informations'].start]
-        room_editor = RoomEditor(parent=self, room=self.selected_room)
-        room_manager = RoomManager(parent=self, rooms=self.struct_data_dictionary['rooms'])
-        room_manager.setRoomSelected(self.selected_room.id)
+        openFileRooms(self.path_file)
+        #self.selected_room = g_world.informations.start
+        room_editor = RoomEditor(self)
+        room_manager = RoomManager(parent=self)
+        room_manager.setRoomSelected(g_world.informations.start)
         horizontal.addWidget(room_manager)
         horizontal.addWidget(room_editor)
 
@@ -47,7 +47,7 @@ class Editor(QWidget):
         self.path_file = file_open.getSaveFileNameAndFilter(parent=self,
                                                             filter="*.rooms")
         if self.path_file:
-            saveFileRooms(self.path_file[0], self.struct_data_dictionary)
+            saveFileRooms(self.path_file[0])
 
 
 if __name__ == "__main__":

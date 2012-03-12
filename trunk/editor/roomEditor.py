@@ -5,12 +5,13 @@ from xml.etree.ElementTree import ElementTree
 
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
+from structData.world import g_world
 
 class RoomEditor(QWidget):
 
-    def __init__(self, room, parent=None):
+    def __init__(self, parent=None):
         super(RoomEditor, self).__init__(parent)
-        self.room = room
+        self.room = g_world.rooms[g_world.informations.start]
         self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding,
                                        QSizePolicy.Expanding))
         self.setMinimumSize(1000, 1000)
