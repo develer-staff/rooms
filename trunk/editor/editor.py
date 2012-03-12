@@ -16,6 +16,7 @@ from structData.action import Action
 from structData.param import Param
 from structData.item import Item
 from structData.event import Event
+from structData.room import Room
 from structData.world import g_world
 
 from openFileRooms import openFileRooms
@@ -25,8 +26,7 @@ class Editor(QWidget):
 
     def __init__(self, parent=None):
         super(Editor, self).__init__(parent)
-        self.struct_data_dictionary = {}
-
+        g_world.subscrive(self)
         grid_layout = QGridLayout(self)
         file_open = QFileDialog()
         self.path_file = file_open.getOpenFileName(filter="*.rooms")
@@ -42,6 +42,7 @@ class Editor(QWidget):
         self.connect(room_manager,
                      SIGNAL("currentRoomChanged(const QString &)"),
                      room_editor.changeCurrentRoom)
+        self.connect(new_room_button, SIGNAL("clicked()"), self.addNewRoom())
         #self.selected_room_name = self.connect(room_manager,
          #                                      SIGNAL("changeRoomSelected(QString)"),
           #                                     self.changeRoom)
@@ -53,7 +54,13 @@ class Editor(QWidget):
         if self.path_file:
             saveFileRooms(self.path_file[0])
 
+    def addNewRoom(self):
+        room = Room("new_room", "", "")
+        g_world.rooms[room.id] = room
+        g_world.notify()
 
+    def update(self):
+        pass
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     editor = Editor()
