@@ -17,6 +17,7 @@ from structData.image import Image
 from structData.information import Information
 from structData.varRequirement import VarRequirement
 from structData.itemRequirement import ItemRequirement
+from structData.world import g_world
 
 from upgradeVersion import upgradeVersion
 
@@ -36,11 +37,11 @@ def loadRooms(xml_file):
                             child.attrib["width"],
                             child.attrib["event"])
                 else:
-                    raise InputError("invalid tag %s in room" % child.tag)
+                    raise ValueError("invalid tag %s in room" % child.tag)
                 room.areas.append(area)
             rooms[room.id] = room
         else:
-            raise InputError("invalid tag %s in rooms" % line.tag)
+            raise ValueError("invalid tag %s in rooms" % line.tag)
     return rooms
 
 def loadEvents(xml_file):
@@ -68,12 +69,12 @@ def loadEvents(xml_file):
                             param = Param(second_child.attrib['value'])
                             action.params.append(param)
                         else:
-                            raise InputError("invalid tag %s in action"
+                            raise ValueError("invalid tag %s in action"
                                              % second_child.tag)
                 else:
-                    raise InputError("invalid tag %s in event" % child.tag)
+                    raise ValueError("invalid tag %s in event" % child.tag)
         else:
-            raise InputError("invalid tag %s in events" % line.tag)
+            raise ValueError("invalid tag %s in events" % line.tag)
     return events
 
 def loadItems(xml_file):
@@ -89,7 +90,7 @@ def loadItems(xml_file):
                             line.attrib["image"])
             items[item.id] = item
         else:
-            raise InputError("invalid tag %s in events" % line.tag)
+            raise ValueError("invalid tag %s in events" % line.tag)
     return items
 
 def loadInformation(xml_file):
@@ -103,7 +104,7 @@ def loadInformation(xml_file):
     if informations:
         return informations
     else:
-        raise InputError("invalid file format")
+        raise ValueError("invalid file format")
 
 def loadImages(xml_file):
     images = {}
@@ -111,7 +112,7 @@ def loadImages(xml_file):
         if line.tag == "img":
             images[line.attrib['file']] = Image(line.attrib['file'])
         else:
-            raise InputError("invalid tag %s in images" % line.tag)
+            raise ValueError("invalid tag %s in images" % line.tag)
     return images
 
 def loadVars(xml_file):
@@ -121,7 +122,7 @@ def loadVars(xml_file):
             variable[line.attrib['id']] = Var(line.attrib['id'],
                                               line.attrib['value'])
         else:
-            InputError("invalid tag %s in vars" % line.tag)
+            ValueError("invalid tag %s in vars" % line.tag)
     return variable
 
 def openFileRooms(path_file):
@@ -133,12 +134,10 @@ def openFileRooms(path_file):
     la funzione puo' prendere anche un file .rooms che ha una versione
     precedente all'ultima realizzata
     """
-    struct_dict = OrderedDict()
     xml_file = upgradeVersion(path_file)
-    struct_dict['informations'] = loadInformation(xml_file)
-    struct_dict['images'] = loadImages(xml_file)
-    struct_dict['items'] = loadItems(xml_file)
-    struct_dict['vars'] = loadVars(xml_file)
-    struct_dict['events'] = loadEvents(xml_file)
-    struct_dict['rooms'] = loadRooms(xml_file)
-    return struct_dict
+    g_world.informations = loadInformation(xml_file)
+    g_world.images = loadImages(xml_file)
+    g_world.items = loadItems(xml_file)
+    g_world.vars = loadVars(xml_file)
+    g_world.events = loadEvents(xml_file)
+    g_world.rooms = loadRooms(xml_file)
