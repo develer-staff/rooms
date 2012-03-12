@@ -7,5 +7,5 @@ class Action(OriginData):
 
     def __init__(self, id):
         super(Action, self).__init__()
-        self.name = id
+        self.id = id
         self.params = []
