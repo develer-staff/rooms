@@ -33,11 +33,13 @@ class Editor(QWidget):
         openFileRooms(self.path_file)
         #self.selected_room = g_world.informations.start
         room_editor = RoomEditor(self)
-        room_manager = RoomManager(parent=self)
-        room_manager.setRoomSelected(g_world.informations.start)
+        room_manager = RoomManager(self)
+        #room_manager.setRoomSelected(g_world.informations.start)
         horizontal.addWidget(room_manager)
         horizontal.addWidget(room_editor)
-
+        self.connect(room_manager,
+                     SIGNAL("currentRoomChanged(const QString &)"),
+                     room_editor.changeCurrentRoom)
         #self.selected_room_name = self.connect(room_manager,
          #                                      SIGNAL("changeRoomSelected(QString)"),
           #                                     self.changeRoom)
