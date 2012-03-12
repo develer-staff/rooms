@@ -61,14 +61,15 @@ class RoomManager(QWidget):
 
 
     def update(self):
-        room_item = None
-        for key, room in g_world.rooms.items():
-            if not self.rooms_list.findItems(key, Qt.MatchFixedString):
-                room_item = QListWidgetItem(QIcon(QPixmap.fromImage(QImage(room.bg))),
-                                            room.id)
-                self.rooms_list.addItem(room_item)
-        if room_item:
-            room_item.setSelected(True)
-            self.emit(SIGNAL("currentRoomChanged(const QString &)"),
-                      room_item.text())
-
+        list_lenght = self.rooms_list.count()
+        while list_lenght:
+            self.rooms_list.takeItem(0)
+            list_lenght -= 1
+        for key, value in g_world.rooms.items():
+            room_item = QListWidgetItem(QIcon(QPixmap.fromImage(QImage(value.bg))),
+                                        key)
+            self.rooms_list.addItem(room_item)
+            if room_item.text() == g_world.informations.start:
+                room_item.setBackgroundColor(Qt.yellow)
+        item = self.rooms_list.findItems(self.selected_room,
+                                  Qt.MatchFixedString)[0].setSelected(True)
