@@ -27,7 +27,7 @@ class Editor(QWidget):
         super(Editor, self).__init__(parent)
         self.struct_data_dictionary = {}
 
-        horizontal = QHBoxLayout(self)
+        grid_layout = QGridLayout(self)
         file_open = QFileDialog()
         self.path_file = file_open.getOpenFileName(filter="*.rooms")
         openFileRooms(self.path_file)
@@ -35,8 +35,10 @@ class Editor(QWidget):
         room_editor = RoomEditor(self)
         room_manager = RoomManager(self)
         #room_manager.setRoomSelected(g_world.informations.start)
-        horizontal.addWidget(room_manager)
-        horizontal.addWidget(room_editor)
+        new_room_button = QPushButton("New room")
+        grid_layout.addWidget(new_room_button, 0, 0)
+        grid_layout.addWidget(room_manager, 1, 0)
+        grid_layout.addWidget(room_editor, 0, 1, 2, 1)
         self.connect(room_manager,
                      SIGNAL("currentRoomChanged(const QString &)"),
                      room_editor.changeCurrentRoom)
