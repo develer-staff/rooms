@@ -26,7 +26,7 @@ class Editor(QWidget):
 
     def __init__(self, parent=None):
         super(Editor, self).__init__(parent)
-        g_world.subscrive(self)
+        g_world.subscribe(self)
         grid_layout = QGridLayout(self)
         file_open = QFileDialog()
         self.path_file = file_open.getOpenFileName(filter="*.rooms")
@@ -42,25 +42,35 @@ class Editor(QWidget):
         self.connect(room_manager,
                      SIGNAL("currentRoomChanged(const QString &)"),
                      room_editor.changeCurrentRoom)
-        self.connect(new_room_button, SIGNAL("clicked()"), self.addNewRoom())
+        self.connect(new_room_button, SIGNAL("clicked()"), self.addNewRoom)
         #self.selected_room_name = self.connect(room_manager,
          #                                      SIGNAL("changeRoomSelected(QString)"),
           #                                     self.changeRoom)
         #self.changeRoom(self.selected_room_name)
-        file_open = QFileDialog()
-        self.path_file = ""
-        self.path_file = file_open.getSaveFileNameAndFilter(parent=self,
-                                                            filter="*.rooms")
-        if self.path_file:
-            saveFileRooms(self.path_file[0])
 
     def addNewRoom(self):
-        room = Room("new_room", "", "")
+        number_of_new_room = 0
+        for key in g_world.rooms.keys():
+            if key.find("new_room") != -1:
+                number_of_new_room += 1
+        room = Room("new_room_%d" % (number_of_new_room + 1), "", "")
         g_world.rooms[room.id] = room
         g_world.notify()
 
     def update(self):
         pass
+
+    def closeEvent(self, event):
+        ret = QMessageBox.question(self, "Save", "Do you want save the file?",
+                                   QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+        if ret == QMessageBox.Yes:
+            self.path_file = QFileDialog().getSaveFileNameAndFilter(parent=self,
+                                                            filter="*.rooms")
+            if self.path_file:
+                saveFileRooms(self.path_file[0])
+        elif ret == QMessageBox.Cancel:
+            event.ignore()
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     editor = Editor()
