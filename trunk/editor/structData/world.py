@@ -1,15 +1,18 @@
 #!/usr/bin/env python
 
-from origin import OriginData
 try:
     from collections import OrderedDict
 except ImportError:
     from misc.dict import OrderedDict
 
+from origin import OriginData
+from subject import Subject
 
-class World(OriginData):
+class World(OriginData, Subject):
     tag_name = "world"
     def __init__(self):
+        super(OriginData, self).__init__()
+        super(Subject, self).__init__()
         self.informations = None
         self.images = {}
         self.items = OrderedDict()
