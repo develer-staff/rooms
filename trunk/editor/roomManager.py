@@ -11,6 +11,7 @@ class RoomManager(QWidget):
 
     def __init__(self, parent=None):
         super(RoomManager, self).__init__(parent)
+        g_world.subscribe(self)
         self.setMinimumSize(300, 1000)
         self.setSizePolicy(QSizePolicy(QSizePolicy.Fixed,
                                        QSizePolicy.Fixed))
@@ -23,14 +24,16 @@ class RoomManager(QWidget):
         self.rooms_list.setMinimumSize(300, 1000)
         self.rooms_list.setIconSize(QSize(150, 150))
         self.selected_room = g_world.informations.start
+        self.rooms_list.setAlternatingRowColors(True)
         for key, value in g_world.rooms.items():
             image = QImage(value.bg)
             room_item = QListWidgetItem(QIcon(QPixmap.fromImage(image)),
                                         value.id)
             self.rooms_list.addItem(room_item)
+            room_item.setForeground(Qt.black)
             if value.id == self.selected_room:
                 room_item.setSelected(True)
-
+                room_item.setBackgroundColor(Qt.yellow)
         #vertical_scroll.setAlignment(Qt.Vertical)
         #self.vertical_scroll.setWidget(rooms_list)
         self.connect(self.rooms_list,
@@ -41,3 +44,31 @@ class RoomManager(QWidget):
         item = self.rooms_list.findItems(room_name, Qt.MatchFixedString)
         if item:
             item[0].setSelected(True)
+
+    def contextMenuEvent(self, event):
+        selected_item = self.rooms_list.selectedItems()[0]
+        if self.selected_room != selected_item.text():
+            selected_item.setBackground(Qt.yellow)
+            self.rooms_list.findItems(self.selected_room,
+                                      Qt.MatchFixedString)[0].setBackground(Qt.white)
+        else:
+            list_color = [Qt.white, Qt.yellow]
+            color = list_color[(list_color.index(selected_item.background()) + 1) % 2]
+            selected_item.setBackground(color)
+        self.selected_room = selected_item.text()
+        g_world.informations.start = str(self.selected_room)
+        g_world.notify()
+
+
+    def update(self):
+        room_item = None
+        for key, room in g_world.rooms.items():
+            if not self.rooms_list.findItems(key, Qt.MatchFixedString):
+                room_item = QListWidgetItem(QIcon(QPixmap.fromImage(QImage(room.bg))),
+                                            room.id)
+                self.rooms_list.addItem(room_item)
+        if room_item:
+            room_item.setSelected(True)
+            self.emit(SIGNAL("currentRoomChanged(const QString &)"),
+                      room_item.text())
+
