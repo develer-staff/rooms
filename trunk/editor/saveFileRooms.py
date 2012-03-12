@@ -9,6 +9,8 @@ try:
 except ImportError:
     from misc.dict import OrderedDict
 
+from structData.world import g_world
+
 def prettify(content):
     """
     Return a pretty-printed XML string for the Element.
@@ -33,19 +35,19 @@ def saveData(top, tag, dictionary):
         for single_el in el:
             saveData(father_tag, single_el.tag_name, single_el.dictionary())
 
-def saveFileRooms(path_file, struct_information):
+def saveFileRooms(path_file):
     """
     funzione che salva la struttura dati su un file .rooms
     prende in ingresso il path del file e la struttura che contiene tutti i dati
     da salvare
     """
     top = ElementTree.Element("world",
-                              struct_information['informations'].dictionary())
-    for key_information in struct_information:
+                              g_world.informations.dictionary())
+    for key_information in g_world.dictionary():
         if key_information != "informations":
             father = ElementTree.SubElement(top, key_information)
-            for key in struct_information[key_information]:
-                saveData(father, struct_information[key_information][key].tag_name,
-                         struct_information[key_information][key].dictionary())
+            for key in g_world.__dict__[key_information]:
+                saveData(father, g_world.__dict__[key_information][key].tag_name,
+                         g_world.__dict__[key_information][key].dictionary())
     write_file = open(path_file, 'w')
     write_file.write(prettify(top))
