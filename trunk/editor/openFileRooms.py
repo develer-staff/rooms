@@ -135,6 +135,7 @@ def openFileRooms(path_file):
     """
     xml_file = upgradeVersion(path_file)
     g_world.informations = loadInformation(xml_file)
+    g_world.selected_room = g_world.informations.start
     g_world.images = loadImages(xml_file)
     g_world.items = loadItems(xml_file)
     g_world.vars = loadVars(xml_file)
