@@ -23,7 +23,7 @@ class RoomEditor(QWidget):
         self.scroll_area.setBackgroundRole(QPalette.Dark)
         self.scroll_area.setAlignment(Qt.AlignCenter)
         self.change_room_name = QLineEdit(self)
-        self.change_room_name.setText("Room name")
+        self.change_room_name.setText(g_world.informations.start)
         self.change_room_name.setAlignment(Qt.AlignCenter)
         self.change_room_name.move(self.scroll_area.height() / 2,
                                    self.scroll_area.width())
@@ -31,9 +31,10 @@ class RoomEditor(QWidget):
         self.label.setPixmap(image)
         self.scroll_area.setWidget(self.label)
 
-    def changeCurrentRoom(self, new_room_id):
-        self.room = str(new_room_id)
+    def changeCurrentRoom(self, room_id):
+        self.room = str(room_id)
         self.label.setPixmap(QPixmap(g_world.rooms[self.room].bg))
+        self.change_room_name.setText(room_id)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
