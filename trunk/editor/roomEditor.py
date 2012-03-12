@@ -11,7 +11,6 @@ class RoomEditor(QWidget):
 
     def __init__(self, parent=None):
         super(RoomEditor, self).__init__(parent)
-        self.room = g_world.rooms[g_world.informations.start]
         self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding,
                                        QSizePolicy.Expanding))
         self.setMinimumSize(1000, 1000)
@@ -23,13 +22,28 @@ class RoomEditor(QWidget):
         self.scroll_area.setBackgroundRole(QPalette.Dark)
         self.scroll_area.setAlignment(Qt.AlignCenter)
         self.change_room_name = QLineEdit(self)
-        self.change_room_name.setText(g_world.informations.start)
+        self.change_room_name.setText(g_world.selected_room)
         self.change_room_name.setAlignment(Qt.AlignCenter)
         self.change_room_name.move(self.scroll_area.height() / 2,
                                    self.scroll_area.width())
-        image = QPixmap(self.room.bg)
+        image = QPixmap(g_world.rooms[g_world.selected_room].bg)
         self.label.setPixmap(image)
         self.scroll_area.setWidget(self.label)
+        self.connect(self.change_room_name,
+                     SIGNAL("textEdited(const QString &)"),
+                     self.setRoomName)
+
+    def setRoomName(self, new_room_name):
+        print "entro"
+        old_room = g_world.selected_room
+        if g_world.informations.start == g_world.selected_room:
+            g_world.informations.start = str(new_room_name)
+        g_world.selected_room = str(new_room_name)
+        room = g_world.rooms[old_room]
+        room.id = str(new_room_name)
+        del g_world.rooms[old_room]
+        g_world.rooms[room.id] = room
+        g_world.notify()
 
     def changeCurrentRoom(self, room_id):
         self.room = str(room_id)
