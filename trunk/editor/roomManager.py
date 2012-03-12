@@ -23,7 +23,7 @@ class RoomManager(QWidget):
         self.rooms_list = QListWidget(self)
         self.rooms_list.setMinimumSize(300, 1000)
         self.rooms_list.setIconSize(QSize(150, 150))
-        self.selected_room = g_world.informations.start
+        g_world.selected_room = g_world.informations.start
         self.rooms_list.setAlternatingRowColors(True)
         for key, value in g_world.rooms.items():
             image = QImage(value.bg)
@@ -31,7 +31,7 @@ class RoomManager(QWidget):
                                         value.id)
             self.rooms_list.addItem(room_item)
             room_item.setForeground(Qt.black)
-            if value.id == self.selected_room:
+            if value.id == g_world.selected_room:
                 room_item.setSelected(True)
                 room_item.setBackgroundColor(Qt.yellow)
         #vertical_scroll.setAlignment(Qt.Vertical)
@@ -40,23 +40,18 @@ class RoomManager(QWidget):
                      SIGNAL("currentTextChanged(const QString &)"),
                      SIGNAL("currentRoomChanged(const QString &)"))
 
-    def setRoomSelected(self, room_name):
-        item = self.rooms_list.findItems(room_name, Qt.MatchFixedString)
-        if item:
-            item[0].setSelected(True)
-
     def contextMenuEvent(self, event):
         selected_item = self.rooms_list.selectedItems()[0]
-        if self.selected_room != selected_item.text():
+        if g_world.selected_room != selected_item.text():
             selected_item.setBackground(Qt.yellow)
-            self.rooms_list.findItems(self.selected_room,
+            self.rooms_list.findItems(g_world.selected_room,
                                       Qt.MatchFixedString)[0].setBackground(Qt.white)
         else:
             list_color = [Qt.white, Qt.yellow]
             color = list_color[(list_color.index(selected_item.background()) + 1) % 2]
             selected_item.setBackground(color)
-        self.selected_room = selected_item.text()
-        g_world.informations.start = str(self.selected_room)
+        g_world.selected_room = selected_item.text()
+        g_world.informations.start = str(g_world.selected_room)
         g_world.notify()
 
 
@@ -71,5 +66,5 @@ class RoomManager(QWidget):
             self.rooms_list.addItem(room_item)
             if room_item.text() == g_world.informations.start:
                 room_item.setBackgroundColor(Qt.yellow)
-        item = self.rooms_list.findItems(self.selected_room,
+        item = self.rooms_list.findItems(g_world.selected_room,
                                   Qt.MatchFixedString)[0].setSelected(True)
