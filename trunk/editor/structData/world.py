@@ -19,6 +19,7 @@ class World(OriginData, Subject):
         self.vars = {}
         self.events = OrderedDict()
         self.rooms = OrderedDict()
+        self.selected_room = None
 
 g_world = World()
 
