@@ -4,7 +4,7 @@ from origin import OriginData
 
 class Image(OriginData):
 
-    tag_name = 'image'
+    tag_name = 'img'
 
     def __init__(self, file_name):
         super(Image, self).__init__()
