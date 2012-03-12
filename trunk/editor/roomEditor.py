@@ -31,6 +31,10 @@ class RoomEditor(QWidget):
         self.label.setPixmap(image)
         self.scroll_area.setWidget(self.label)
 
+    def changeCurrentRoom(self, new_room_id):
+        self.room = str(new_room_id)
+        self.label.setPixmap(QPixmap(g_world.rooms[self.room].bg))
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     rm = RoomEditor()
