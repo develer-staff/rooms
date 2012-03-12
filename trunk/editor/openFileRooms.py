@@ -53,7 +53,6 @@ def loadEvents(xml_file):
             events[event.id] = event
             for child in line:
                 if child.tag == "item_req":
-                    print "item"
                     requirement = ItemRequirement(child.attrib['id'],
                                               child.attrib['value'])
                     event.requirements.append(requirement)
