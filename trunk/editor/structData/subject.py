@@ -6,7 +6,7 @@ class Subject(object):
     def __init__(self):
         self.observers = []
 
-    def subscrive(self, observer):
+    def subscribe(self, observer):
         self.observers.append(observer)
 
     def unsubscribe(self, observer):
