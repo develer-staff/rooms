@@ -7,20 +7,20 @@ from xml.dom import minidom
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-from roomEditor import RoomEditor
-from roomManager import RoomManager
+from roomeditor import RoomEditor
+from roommanager import RoomManager
 
-from structData.area import Area
-from structData.requirement import Requirement
-from structData.action import Action
-from structData.param import Param
-from structData.item import Item
-from structData.event import Event
-from structData.room import Room
-from structData.world import g_world
+from structdata.area import Area
+from structdata.requirement import Requirement
+from structdata.action import Action
+from structdata.param import Param
+from structdata.item import Item
+from structdata.event import Event
+from structdata.room import Room
+from structdata.world import g_world
 
-from openFileRooms import openFileRooms
-from saveFileRooms import saveFileRooms
+from openfilerooms import openFileRooms
+from savefilerooms import saveFileRooms
 
 class Editor(QWidget):
 
