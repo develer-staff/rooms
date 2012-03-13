@@ -33,6 +33,9 @@ class RoomEditor(QWidget):
                      SIGNAL("textEdited(const QString &)"),
                      self.setRoomName)
 
+    def closeEvent(self, event):
+        g_project.unsubscribe(self)
+
     def setRoomName(self, new_room_name):
         old_room = self.room_name
         if g_project.data['world'].start == old_room:
