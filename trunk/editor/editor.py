@@ -63,6 +63,7 @@ class Editor(QWidget):
                                                             filter="*.rooms")
             if self.path_file:
                 saveFileRooms(self.path_file[0])
+            g_project.unsubscribe(self)
         elif ret == QMessageBox.Cancel:
             event.ignore()
 
