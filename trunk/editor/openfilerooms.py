@@ -6,20 +6,21 @@ try:
     from collections import OrderedDict
 except ImportError:
     from misc.dict import OrderedDict
-from structData.area import Area
-from structData.action import Action
-from structData.param import Param
-from structData.item import Item
-from structData.event import Event
-from structData.room import Room
-from structData.var import Var
-from structData.image import Image
-from structData.information import Information
-from structData.varRequirement import VarRequirement
-from structData.itemRequirement import ItemRequirement
-from structData.world import g_world
 
-from upgradeVersion import upgradeVersion
+from structdata.area import Area
+from structdata.action import Action
+from structdata.param import Param
+from structdata.item import Item
+from structdata.event import Event
+from structdata.room import Room
+from structdata.var import Var
+from structdata.image import Image
+from structdata.information import Information
+from structdata.varRequirement import VarRequirement
+from structdata.itemRequirement import ItemRequirement
+from structdata.world import g_world
+
+from upgradeversion import upgradeVersion
 
 def loadRooms(xml_file):
     rooms = OrderedDict()
