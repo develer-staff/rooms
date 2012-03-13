@@ -3,16 +3,18 @@
 import unittest
 from xml.etree import ElementTree
 
-from openFileRooms import openFileRooms
-from saveFileRooms import saveFileRooms
+from openfilerooms import openFileRooms
+from savefilerooms import saveFileRooms
 
 class Test(unittest.TestCase):
 
     def test1(self):
-        openFileRooms('world.rooms')
-        saveFileRooms('a.rooms')
-        xml_file_world = ElementTree.fromstring(open('world.rooms', 'rb').read())
-        xml_file_a = ElementTree.fromstring(open('a.rooms', 'rb').read())
+        source = "world1.rooms"
+        dest = 'a.rooms'
+        openFileRooms(source)
+        saveFileRooms(dest)
+        xml_file_world = ElementTree.fromstring(open(source, 'rb').read())
+        xml_file_a = ElementTree.fromstring(open(dest, 'rb').read())
         diff = []
         for line in xml_file_world.iter():
             difference = self.findDiff(line, xml_file_a)
