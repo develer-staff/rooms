@@ -30,7 +30,7 @@ def loadRooms(xml_file):
                             line.attrib["bgm"])
             for child in line:
                 if child.tag == "area":
-                    area = Area(line.attrib["id"],
+                    area = Area(child.attrib["id"],
                             child.attrib["x"],
                             child.attrib["y"],
                             child.attrib["height"],
@@ -86,7 +86,8 @@ def loadItems(xml_file):
                             line.attrib["height"],
                             line.attrib["width"],
                             line.attrib["room"],
-                            line.attrib["image"])
+                            line.attrib["image"],
+                            line.attrib['event'])
             items[item.id] = item
         else:
             raise ValueError("invalid tag %s in events" % line.tag)
