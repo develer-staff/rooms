@@ -9,7 +9,7 @@ try:
 except ImportError:
     from misc.dict import OrderedDict
 
-from structdata.world import g_world
+from structdata.project import g_project
 
 def prettify(content):
     """
@@ -42,12 +42,12 @@ def saveFileRooms(path_file):
     da salvare
     """
     top = ElementTree.Element("world",
-                              g_world.informations.dictionary())
-    for key_information in g_world.dictionary():
-        if key_information != "informations":
-            father = ElementTree.SubElement(top, key_information)
-            for key in g_world.__dict__[key_information]:
-                saveData(father, g_world.__dict__[key_information][key].tag_name,
-                         g_world.__dict__[key_information][key].dictionary())
+                              g_project.data['world'].dictionary())
+    for data_key, data_value in g_project.data.items():
+        if data_key != "world":
+            father = ElementTree.SubElement(top, data_key)
+            for key, value in data_value:
+                saveData(father, value.tag_name,
+                         value.dictionary())
     write_file = open(path_file, 'w')
     write_file.write(prettify(top))
