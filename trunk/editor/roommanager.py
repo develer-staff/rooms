@@ -4,8 +4,8 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 
-from structData.room import Room
-from structData.world import g_world
+from structdata.room import Room
+from structdata.world import g_world
 
 class RoomManager(QWidget):
 
