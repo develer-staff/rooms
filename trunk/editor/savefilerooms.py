@@ -38,15 +38,14 @@ def saveData(top, tag, dictionary):
 def saveFileRooms(path_file):
     """
     funzione che salva la struttura dati su un file .rooms
-    prende in ingresso il path del file e la struttura che contiene tutti i dati
-    da salvare
+    prende in ingresso il path del file
     """
     top = ElementTree.Element("world",
                               g_project.data['world'].dictionary())
     for data_key, data_value in g_project.data.items():
         if data_key != "world":
             father = ElementTree.SubElement(top, data_key)
-            for key, value in data_value:
+            for key, value in data_value.items():
                 saveData(father, value.tag_name,
                          value.dictionary())
     write_file = open(path_file, 'w')
