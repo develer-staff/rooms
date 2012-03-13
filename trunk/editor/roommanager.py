@@ -49,6 +49,8 @@ class RoomManager(QWidget):
         g_project.data['world'].start = str(self.selected_room.id)
         g_project.notify()
 
+    def closeEvent(self, event):
+        g_project.unsubscribe(self)
 
     def update_data(self):
         list_lenght = self.rooms_list.count()
