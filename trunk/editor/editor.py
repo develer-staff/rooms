@@ -17,7 +17,7 @@ from structdata.param import Param
 from structdata.item import Item
 from structdata.event import Event
 from structdata.room import Room
-from structdata.world import g_world
+from structdata.project import g_project
 
 from openfilerooms import openFileRooms
 from savefilerooms import saveFileRooms
@@ -26,13 +26,14 @@ class Editor(QWidget):
 
     def __init__(self, parent=None):
         super(Editor, self).__init__(parent)
-        g_world.subscribe(self)
+        g_project.subscribe(self)
         grid_layout = QGridLayout(self)
         file_open = QFileDialog()
         self.path_file = file_open.getOpenFileName(filter="*.rooms")
         openFileRooms(self.path_file)
-        room_editor = RoomEditor(self)
-        room_manager = RoomManager(self)
+        self.room = g_project.data['rooms'][g_project.data['world'].start]
+        room_editor = RoomEditor(self.room, self)
+        room_manager = RoomManager(self.room, self)
         new_room_button = QPushButton("New room")
         grid_layout.addWidget(new_room_button, 0, 0)
         grid_layout.addWidget(room_manager, 1, 0)
@@ -44,14 +45,14 @@ class Editor(QWidget):
 
     def addNewRoom(self):
         number_of_new_room = 0
-        for key in g_world.rooms.keys():
+        for key in g_project.data['rooms'].keys():
             if key.find("new_room") != -1:
                 number_of_new_room += 1
         room = Room("new_room_%d" % (number_of_new_room + 1), "", "")
-        g_world.rooms[room.id] = room
-        g_world.notify()
+        g_project.data['rooms'][room.id] = room
+        g_project.notify()
 
-    def update(self):
+    def update_data(self):
         pass
 
     def closeEvent(self, event):
