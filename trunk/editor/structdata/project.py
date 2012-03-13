@@ -10,13 +10,13 @@ from subject import Subject
 class Project(Subject):
     def __init__(self):
         super(Project, self).__init__()
-        self.informations = None
-        self.images = {}
-        self.items = OrderedDict()
-        self.vars = {}
-        self.events = OrderedDict()
-        self.rooms = OrderedDict()
-        self.selected_room = None
+        self.data = OrderedDict()
+        self.data['world'] = None
+        self.data['images'] = {}
+        self.data['items'] = OrderedDict()
+        self.data['vars'] = {}
+        self.data['events'] = OrderedDict()
+        self.data['rooms'] = OrderedDict()
 
 g_project = Project()
 
