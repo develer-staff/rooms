@@ -44,7 +44,6 @@ class RoomEditor(QWidget):
         self.change_room_bg.setIcon(QIcon("PageTurn.jpg"))
         self.change_room_bg.setIconSize(QSize(30, 30))
         self.change_room_bg.setFixedSize(QSize(30, 30))
-        print self.change_room_bg.width()
         self.change_room_bg.move(self.label.mapToGlobal(self.label. \
                                                         rect().topRight()).x(),
                                  (self.scroll_area.height() -
@@ -55,7 +54,7 @@ class RoomEditor(QWidget):
         self.connect(self.change_room_bgm, SIGNAL("clicked()"),
                      self.setRoomBgm)
         self.connect(self.change_room_bg, SIGNAL("clicked()"),
-                     self.setRoombg)
+                     self.setRoomBg)
 
     def closeEvent(self, event):
         g_project.unsubscribe(self)
