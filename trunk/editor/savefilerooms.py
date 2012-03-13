@@ -9,7 +9,7 @@ try:
 except ImportError:
     from misc.dict import OrderedDict
 
-from structData.world import g_world
+from structdata.world import g_world
 
 def prettify(content):
     """
