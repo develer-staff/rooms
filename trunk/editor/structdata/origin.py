@@ -8,7 +8,6 @@ class OriginData(object):
             if key.startswith("_"):
                 continue
             else:
-                if key not in ["observers", "selected_room"]:
-                    attributes_dictionary[key] = value
+                attributes_dictionary[key] = value
 
         return attributes_dictionary
