@@ -26,8 +26,8 @@ class RoomManager(QWidget):
         self.rooms_list.setIconSize(QSize(150, 150))
         self.rooms_list.setAlternatingRowColors(True)
         for key, value in g_project.data['rooms'].items():
-            image = QImage(value.bg)
-            room_item = QListWidgetItem(QIcon(QPixmap.fromImage(image)),
+            room_item = QListWidgetItem(QIcon(QPixmap.\
+                                              fromImage(QImage(value.bg))),
                                         value.id)
             self.rooms_list.addItem(room_item)
             room_item.setForeground(Qt.black)
@@ -39,6 +39,14 @@ class RoomManager(QWidget):
         self.connect(self.rooms_list,
                      SIGNAL("currentTextChanged(const QString &)"),
                      SIGNAL("currentRoomChanged(const QString &)"))
+        self.connect(self.rooms_list,
+                     SIGNAL("currentTextChanged(const QString &)"),
+                     self.updateRoomSelected)
+
+
+    def updateRoomSelected(self, room_name):
+        if room_name:
+            self.selected_room = g_project.data['rooms'][str(room_name)]
 
     def contextMenuEvent(self, event):
         self.rooms_list.findItems(self.selected_room.id,
