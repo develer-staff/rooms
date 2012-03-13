@@ -5,7 +5,8 @@ from xml.etree.ElementTree import ElementTree
 
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
-from structData.world import g_world
+
+from structdata.world import g_world
 
 class RoomEditor(QWidget):
 
