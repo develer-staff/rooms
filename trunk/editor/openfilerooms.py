@@ -15,10 +15,10 @@ from structdata.event import Event
 from structdata.room import Room
 from structdata.var import Var
 from structdata.image import Image
-from structdata.information import Information
+from structdata.world import World
 from structdata.varRequirement import VarRequirement
 from structdata.itemRequirement import ItemRequirement
-from structdata.world import g_world
+from structdata.project import g_project
 
 from upgradeversion import upgradeVersion
 
@@ -97,7 +97,7 @@ def loadItems(xml_file):
 def loadInformation(xml_file):
     informations = None
     for node in xml_file.iter('world'):
-        informations = Information(node.attrib['version'],
+        informations = World(node.attrib['version'],
                                    node.attrib['name'],
                                    node.attrib['width'],
                                    node.attrib['height'],
@@ -136,10 +136,9 @@ def openFileRooms(path_file):
     precedente all'ultima realizzata
     """
     xml_file = upgradeVersion(path_file)
-    g_world.informations = loadInformation(xml_file)
-    g_world.selected_room = g_world.informations.start
-    g_world.images = loadImages(xml_file)
-    g_world.items = loadItems(xml_file)
-    g_world.vars = loadVars(xml_file)
-    g_world.events = loadEvents(xml_file)
-    g_world.rooms = loadRooms(xml_file)
+    g_project.data['world'] = loadInformation(xml_file)
+    g_project.data['images'] = loadImages(xml_file)
+    g_project.data['items'] = loadItems(xml_file)
+    g_project.data['vars'] = loadVars(xml_file)
+    g_project.data['events'] = loadEvents(xml_file)
+    g_project.data['rooms'] = loadRooms(xml_file)
