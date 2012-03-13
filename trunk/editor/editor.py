@@ -41,16 +41,7 @@ class Editor(QWidget):
         self.connect(room_manager,
                      SIGNAL("currentRoomChanged(const QString &)"),
                      room_editor.changeCurrentRoom)
-        self.connect(new_room_button, SIGNAL("clicked()"), self.addNewRoom)
-
-    def addNewRoom(self):
-        number_of_new_room = 0
-        for key in g_project.data['rooms'].keys():
-            if key.find("new_room") != -1:
-                number_of_new_room += 1
-        room = Room("new_room_%d" % (number_of_new_room + 1), "", "")
-        g_project.data['rooms'][room.id] = room
-        g_project.notify()
+        self.connect(new_room_button, SIGNAL("clicked()"), g_project.addNewRoom)
 
     def update_data(self):
         pass
