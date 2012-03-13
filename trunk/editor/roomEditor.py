@@ -9,7 +9,7 @@ from structData.world import g_world
 
 class RoomEditor(QWidget):
 
-    def __init__(self, parent=None):
+    def __init__(self, room=None, parent=None):
         super(RoomEditor, self).__init__(parent)
         self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding,
                                        QSizePolicy.Expanding))
@@ -34,7 +34,6 @@ class RoomEditor(QWidget):
                      self.setRoomName)
 
     def setRoomName(self, new_room_name):
-        print "entro"
         old_room = g_world.selected_room
         if g_world.informations.start == g_world.selected_room:
             g_world.informations.start = str(new_room_name)
