@@ -31,6 +31,7 @@ class RoomEditor(QWidget):
         self.change_room_name.move(self.scroll_area.width() / 2,
                                    self.scroll_area.height())
         self.change_room_bgm = QPushButton(self)
+        self.change_room_bg = QPushButton(self)
         self.setRoom(room)
         self.scroll_area.setWidget(self.label)
         self.change_room_bgm.setStyleSheet("background-color: rgba( 255, 255, 255, 0% );")
@@ -39,15 +40,33 @@ class RoomEditor(QWidget):
                                   self.label.height()) / 2)
         self.change_room_bgm.setIcon(QIcon("musical_note.png"))
         self.change_room_bgm.setIconSize(QSize(30, 30))
+        self.change_room_bg.setStyleSheet("background-color: rgba( 255, 255, 255, 0% );")
+        self.change_room_bg.setIcon(QIcon("PageTurn.jpg"))
+        self.change_room_bg.setIconSize(QSize(30, 30))
+        self.change_room_bg.setFixedSize(QSize(30, 30))
+        print self.change_room_bg.width()
+        self.change_room_bg.move(self.label.mapToGlobal(self.label. \
+                                                        rect().topRight()).x(),
+                                 (self.scroll_area.height() -
+                                  self.label.height()) / 2)
         self.connect(self.change_room_name,
                      SIGNAL("textEdited(const QString &)"),
                      self.setRoomName)
         self.connect(self.change_room_bgm, SIGNAL("clicked()"),
                      self.setRoomBgm)
+        self.connect(self.change_room_bg, SIGNAL("clicked()"),
+                     self.setRoombg)
 
     def closeEvent(self, event):
         g_project.unsubscribe(self)
 
+
+    def setRoomBg(self):
+        file_open = QFileDialog()
+        path_file = file_open.getOpenFileName()
+        if path_file:
+            g_project.data['rooms'][self.room_name].bg = str(path_file)
+            g_project.notify()
 
     def setRoomBgm(self):
         file_open = QFileDialog()
