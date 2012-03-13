@@ -4,14 +4,15 @@ class Subject(object):
 
 
     def __init__(self):
-        self.observers = []
+        self._observers = []
 
     def subscribe(self, observer):
-        self.observers.append(observer)
+        self._observers.append(observer)
 
     def unsubscribe(self, observer):
-        self.observers.remove(observer)
+        self._observers.remove(observer)
+
 
     def notify(self):
-        for observer in self.observers:
+        for observer in self._observers:
             observer.update_data()
