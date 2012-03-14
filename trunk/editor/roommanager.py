@@ -24,24 +24,22 @@ class RoomManager(QWidget):
         self.rooms_list = QListWidget(self)
         self.rooms_list.setMinimumSize(300, 900)
         self.rooms_list.setIconSize(QSize(150, 150))
-        self.rooms_list.setAlternatingRowColors(True)
-        for key, value in g_project.data['rooms'].items():
-            room_item = QListWidgetItem(QIcon(QPixmap.\
-                                              fromImage(QImage(value.bg))),
-                                        value.id)
-            self.rooms_list.addItem(room_item)
-            room_item.setForeground(Qt.black)
-            if value.id == self.selected_room.id:
-                room_item.setSelected(True)
-                room_item.setBackgroundColor(Qt.yellow)
-        #vertical_scroll.setAlignment(Qt.Vertical)
-        #self.vertical_scroll.setWidget(rooms_list)
-        self.connect(self.rooms_list,
-                     SIGNAL("currentTextChanged(const QString &)"),
-                     SIGNAL("currentRoomChanged(const QString &)"))
-        self.connect(self.rooms_list,
-                     SIGNAL("currentTextChanged(const QString &)"),
-                     self.updateRoomSelected)
+        if selected_room:
+            for key, value in g_project.data['rooms'].items():
+                room_item = QListWidgetItem(QIcon(QPixmap.\
+                                                  fromImage(QImage(value.bg))),
+                                            value.id)
+                self.rooms_list.addItem(room_item)
+                room_item.setForeground(Qt.black)
+                if value.id == self.selected_room.id:
+                    room_item.setSelected(True)
+                    room_item.setBackgroundColor(Qt.yellow)
+            self.connect(self.rooms_list,
+                         SIGNAL("currentTextChanged(const QString &)"),
+                         SIGNAL("currentRoomChanged(const QString &)"))
+            self.connect(self.rooms_list,
+                         SIGNAL("currentTextChanged(const QString &)"),
+                         self.updateRoomSelected)
 
 
     def updateRoomSelected(self, room_name):
