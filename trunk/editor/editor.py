@@ -38,7 +38,7 @@ class Editor(QWidget):
         new_room_button = QPushButton("New room")
         grid_layout.addWidget(new_room_button, 0, 0)
         grid_layout.addWidget(room_manager, 1, 0)
-        grid_layout.addWidget(room_editor, 0, 1, 2, 1)
+        grid_layout.addWidget(room_editor, 1, 1, 2, 1)
         self.connect(room_manager,
                      SIGNAL("currentRoomChanged(const QString &)"),
                      room_editor.changeCurrentRoom)
