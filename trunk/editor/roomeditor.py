@@ -18,6 +18,7 @@ class RoomEditor(QWidget):
         self.area_y_start = -1
         self.area_x_stop = -1
         self.area_y_stop = -1
+        self.released = False
         self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding,
                                        QSizePolicy.Expanding))
         self.setMinimumSize(1000, 900)
@@ -35,8 +36,10 @@ class RoomEditor(QWidget):
         self.change_room_name = QLineEdit(self)
         self.change_room_bgm = QPushButton(self)
         self.change_room_bg = QPushButton(self)
-
         self.setRoom(room)
+        self.setMouseTracking(True)
+        self.scroll_area.setMouseTracking(True)
+        self.label.setMouseTracking(True)
         self.change_room_name.setAlignment(Qt.AlignCenter)
         self.change_room_name.move(self.scroll_area.width() / 2,
                                    self.scroll_area.height())
@@ -122,6 +125,7 @@ class RoomEditor(QWidget):
             and 0 <= event.pos().y() - 10 <= self.label.height()):
             self.area_x_start = event.pos().x() - 10
             self.area_y_start = event.pos().y() - 10
+            self.released = False
 
     def mouseMoveEvent(self, event=None):
         if (event.buttons() and Qt.LeftButton) == Qt.LeftButton:
@@ -130,6 +134,26 @@ class RoomEditor(QWidget):
                 and 0 <= event.pos().y() - 10 <= self.label.height()):
                     self.area_x_stop = event.pos().x() - 10
                     self.area_y_stop = event.pos().y() - 10
+                    self.update()
+        else:
+            h = float(g_project.data['world'].height)
+            w = float(g_project.data['world'].width)
+            mouse_pos_x = float(event.pos().x() - 10)
+            mouse_pos_y = float(event.pos().y() - 10)
+            for area in g_project.data['rooms'][self.room_name].areas:
+                if (float(area.x) <= mouse_pos_x / w <= (float(area.x) +
+                                                              float(area.width))) and\
+                   (float(area.y) <= mouse_pos_y / h <= (float(area.y) +
+                                                         float(area.height))):
+                    self.area_x_start = float(area.x) * w
+                    self.area_x_stop = (float(area.x) + float(area.width)) * w
+                    self.area_y_start = float(area.y) * h
+                    self.area_y_stop = (float(area.y) + float(area.height)) * h
+                    self.released = False
+                    self.update()
+                    break
+                else:
+                    self.released = True
                     self.update()
 
     def mouseReleaseEvent(self, event):
@@ -150,19 +174,21 @@ class RoomEditor(QWidget):
                                                                 area_y,
                                                                 area_widht,
                                                                 area_height)
+                self.released = True
                 self.update()
                 g_project.notify()
 
     def paintEvent(self, event=None):
-        if self.area_x_start > -1 and self.area_x_stop > -1:
+        if (self.area_x_start > -1 and self.area_x_stop > -1):
             self.pixmap = QPixmap.fromImage(QImage(g_project.data['rooms'][self.room_name].bg))
-            painter = QPainter(self.pixmap)
-            painter.setPen(Qt.blue)
-            rect = QRect(QPoint(self.area_x_start,
-                                self.area_y_start),
-                         QPoint(self.area_x_stop ,
-                                self.area_y_stop))
-            painter.drawRect(rect)
+            if not self.released:
+                painter = QPainter(self.pixmap)
+                painter.setPen(Qt.blue)
+                rect = QRect(QPoint(self.area_x_start,
+                                    self.area_y_start),
+                             QPoint(self.area_x_stop ,
+                                    self.area_y_stop))
+                painter.drawRect(rect)
             self.label.setPixmap(self.pixmap)
 
 if __name__ == "__main__":
