@@ -31,8 +31,13 @@ class Editor(QWidget):
         grid_layout = QGridLayout(self)
         file_open = QFileDialog()
         self.path_file = file_open.getOpenFileName(filter="*.rooms")
-        openFileRooms(self.path_file)
-        self.room = g_project.data['rooms'][g_project.data['world'].start]
+        try:
+            openFileRooms(self.path_file)
+        except ValueError as val_err:
+            print val_err
+            self.room = None
+        else:
+            self.room = g_project.data['rooms'][g_project.data['world'].start]
         room_editor = RoomEditor(self.room, self)
         room_manager = RoomManager(self.room, self)
         new_room_button = QPushButton("New room")
@@ -55,9 +60,14 @@ class Editor(QWidget):
                 self.path_file = QFileDialog().getSaveFileNameAndFilter(parent=self,
                                                                 filter="*.rooms")
                 if self.path_file:
-                    saveFileRooms(self.path_file[0])
-                g_project.unsubscribe(self)
-                self.dirty = False
+                    try:
+                        saveFileRooms(self.path_file[0])
+                    except ValueError:
+                        print "Unable to save file"
+                        event.ignore()
+                    else:
+                        g_project.unsubscribe(self)
+                        self.dirty = False
             elif ret == QMessageBox.Cancel:
                 event.ignore()
 
