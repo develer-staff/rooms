@@ -9,6 +9,8 @@ from PyQt4.QtCore import *
 from structdata.project import g_project
 from structdata.area import Area
 
+from areaeditor import AreaEditor
+
 class RoomEditor(QWidget):
 
     def __init__(self, room=None, parent=None):
@@ -136,6 +138,7 @@ class RoomEditor(QWidget):
                     self.area_y_stop = event.pos().y() - 10
                     self.update()
         else:
+            print event.pos()
             h = float(g_project.data['world'].height)
             w = float(g_project.data['world'].width)
             mouse_pos_x = float(event.pos().x() - 10)
@@ -175,6 +178,11 @@ class RoomEditor(QWidget):
                                                                 area_widht,
                                                                 area_height)
                 self.released = True
+                area = AreaEditor(self.area_x_start, self.area_y_start,
+                                      (self.area_x_stop - self.area_x_start),
+                                      (self.area_y_stop - self.area_y_start),
+                                      self)
+                area.show()
                 self.update()
                 g_project.notify()
 
