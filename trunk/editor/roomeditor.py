@@ -118,11 +118,19 @@ class RoomEditor(QWidget):
             self.change_room_name.setText(room_id)
 
     def mousePressEvent(self, event):
-
         if (0 <= event.pos().x() - 10 <= self.label.width()
             and 0 <= event.pos().y() - 10 <= self.label.height()):
             self.area_x_start = event.pos().x() - 10
             self.area_y_start = event.pos().y() - 10
+
+    def mouseMoveEvent(self, event=None):
+        if (event.buttons() and Qt.LeftButton) == Qt.LeftButton:
+            if self.area_x_start > -1:
+                if(0 <= event.pos().x() - 10 <= self.label.width()
+                and 0 <= event.pos().y() - 10 <= self.label.height()):
+                    self.area_x_stop = event.pos().x() - 10
+                    self.area_y_stop = event.pos().y() - 10
+                    self.update()
 
     def mouseReleaseEvent(self, event):
         if self.area_x_start > -1:
@@ -147,15 +155,15 @@ class RoomEditor(QWidget):
 
     def paintEvent(self, event=None):
         if self.area_x_start > -1 and self.area_x_stop > -1:
-            pixmap = self.label.pixmap()
-            painter = QPainter(pixmap)
+            self.pixmap = QPixmap.fromImage(QImage(g_project.data['rooms'][self.room_name].bg))
+            painter = QPainter(self.pixmap)
             painter.setPen(Qt.blue)
-            rect = QRect(QPoint(self.area_x_start + 10,
-                                self.area_y_start + 10),
-                         QPoint(self.area_x_stop + 10,
-                                self.area_y_stop + 10))
+            rect = QRect(QPoint(self.area_x_start,
+                                self.area_y_start),
+                         QPoint(self.area_x_stop ,
+                                self.area_y_stop))
             painter.drawRect(rect)
-            self.label.setPixmap(pixmap)
+            self.label.setPixmap(self.pixmap)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
