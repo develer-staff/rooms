@@ -13,16 +13,16 @@ class RoomManager(QWidget):
         super(RoomManager, self).__init__(parent)
         self.selected_room = selected_room
         g_project.subscribe(self)
-        self.setMinimumSize(300, 1000)
+        self.setMinimumSize(300, 900)
         self.setSizePolicy(QSizePolicy(QSizePolicy.Fixed,
                                        QSizePolicy.Fixed))
         self.vertical_scroll = QScrollArea(self)
         self.vertical_scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.vertical_scroll.setWidgetResizable(False)
-        self.vertical_scroll.setMinimumSize(300, 1000)
+        self.vertical_scroll.setMinimumSize(300, 900)
         self.vertical_scroll.setAlignment(Qt.AlignVCenter)
         self.rooms_list = QListWidget(self)
-        self.rooms_list.setMinimumSize(300, 1000)
+        self.rooms_list.setMinimumSize(300, 900)
         self.rooms_list.setIconSize(QSize(150, 150))
         self.rooms_list.setAlternatingRowColors(True)
         for key, value in g_project.data['rooms'].items():
