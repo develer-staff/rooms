@@ -19,5 +19,5 @@ class Room(OriginData):
             if area.id.find("new_area") != -1:
                 number_of_new_area += 1
         area = Area("new_area_%d" % (number_of_new_area + 1), str(x), str(y),
-                    str(width), str(height), event)
+                    str(height), str(width), event)
         self.areas.append(area)
