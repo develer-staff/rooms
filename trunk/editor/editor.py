@@ -26,6 +26,7 @@ class Editor(QWidget):
 
     def __init__(self, parent=None):
         super(Editor, self).__init__(parent)
+        self.dirty = False
         g_project.subscribe(self)
         grid_layout = QGridLayout(self)
         file_open = QFileDialog()
@@ -44,19 +45,21 @@ class Editor(QWidget):
         self.connect(new_room_button, SIGNAL("clicked()"), g_project.addNewRoom)
 
     def update_data(self):
-        pass
+        self.dirty = True
 
     def closeEvent(self, event):
-        ret = QMessageBox.question(self, "Save", "Do you want save the file?",
-                                   QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
-        if ret == QMessageBox.Yes:
-            self.path_file = QFileDialog().getSaveFileNameAndFilter(parent=self,
-                                                            filter="*.rooms")
-            if self.path_file:
-                saveFileRooms(self.path_file[0])
-            g_project.unsubscribe(self)
-        elif ret == QMessageBox.Cancel:
-            event.ignore()
+        if self.dirty:
+            ret = QMessageBox.question(self, "Save", "Do you want save the file?",
+                                       QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+            if ret == QMessageBox.Yes:
+                self.path_file = QFileDialog().getSaveFileNameAndFilter(parent=self,
+                                                                filter="*.rooms")
+                if self.path_file:
+                    saveFileRooms(self.path_file[0])
+                g_project.unsubscribe(self)
+                self.dirty = False
+            elif ret == QMessageBox.Cancel:
+                event.ignore()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
