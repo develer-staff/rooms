@@ -9,6 +9,9 @@ from PyQt4.QtCore import *
 from structdata.project import g_project
 from structdata.area import Area
 
+from changebgbutton import ChangeBGButton
+from changebgmbutton import ChangeBGMButton
+
 from areaeditor import AreaEditor
 
 class RoomEditor(QWidget):
@@ -21,81 +24,40 @@ class RoomEditor(QWidget):
         self.area_x_stop = -1
         self.area_y_stop = -1
         self.released = False
-        self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding,
-                                       QSizePolicy.Expanding))
-        self.setMinimumSize(1000, 900)
-        self.label = QLabel()
-        #self.label.setMinimumSize(860, 860)
-        #self.label.setSizePolicy(QSizePolicy.Fixed,
-                                 #QSizePolicy.Fixed)
-        self.scroll_area = QScrollArea(self)
-        self.scroll_area.setMinimumSize(900, 900)
-        #self.scroll_area.setSizePolicy(QSizePolicy.Expanding,
-         #                              QSizePolicy.Expanding)
-        self.scroll_area.setBackgroundRole(QPalette.Dark)
-        self.scroll_area.setAlignment(Qt.AlignCenter)
-
+        self.room_bg = QLabel(self)
         self.change_room_name = QLineEdit(self)
-        self.change_room_bgm = QPushButton(self)
-        self.change_room_bg = QPushButton(self)
+        self.change_room_name.setAlignment(Qt.AlignCenter)
+        self.change_room_bgm = ChangeBGMButton()
+        self.change_room_bg = ChangeBGButton()
         self.setRoom(room)
         self.setMouseTracking(True)
-        self.scroll_area.setMouseTracking(True)
-        self.label.setMouseTracking(True)
-        self.change_room_name.setAlignment(Qt.AlignCenter)
-        self.change_room_name.move(self.scroll_area.width() / 2,
-                                   self.scroll_area.height())
-
-
-        self.scroll_area.setWidget(self.label)
-        self.change_room_bgm.setStyleSheet("background-color:"
-                                           "rgba( 255, 255, 255, 0% );")
-        self.change_room_bgm.move(self.label.mapFrom(parent,
-                                                     QPoint(self.label.rect().\
-                                                            topLeft().x(),
-                                                            self.label.rect().\
-                                                            topLeft().y())))
-        self.change_room_bgm.setIcon(QIcon("musical_note.png"))
-        self.change_room_bgm.setIconSize(QSize(30, 30))
-        self.change_room_bg.setStyleSheet("background-color:"
-                                          " rgba( 255, 255, 255, 0% );")
-        self.change_room_bg.setIcon(QIcon("PageTurn.jpg"))
-        self.change_room_bg.setIconSize(QSize(30, 30))
-        self.change_room_bg.setFixedSize(QSize(30, 30))
-        self.change_room_bg.move(self.label.mapFrom(parent,
-                                                    QPoint(self.label.rect().\
-                                                           topRight().x() - 15,
-                                                            self.label.rect().\
-                                                            topRight().y() + \
-                                                             10)))
+        self.room_bg.setMouseTracking(True)
+        horizontal_button_layout = QHBoxLayout()
+        horizontal_button_layout.addWidget(self.change_room_bgm)
+        horizontal_button_layout.addStretch()
+        horizontal_button_layout.addWidget(self.change_room_bg)
+        vertical_layout = QVBoxLayout(self)
+        vertical_layout.addLayout(horizontal_button_layout)
+        vertical_layout.addWidget(self.room_bg)
+        horizontal = QHBoxLayout()
+        horizontal.setAlignment(Qt.AlignCenter)
+        horizontal.addStretch()
+        horizontal.addWidget(self.change_room_name)
+        horizontal.addStretch()
+        vertical_layout.addLayout(horizontal)
+        vertical_layout.addStretch()
+        #self.setLayout(vertical_layout)
         self.connect(self.change_room_name,
-                     SIGNAL("textEdited(const QString &)"),
+                     SIGNAL("editingFinished()"),
                      self.setRoomName)
-        self.connect(self.change_room_bgm, SIGNAL("clicked()"),
-                     self.setRoomBgm)
-        self.connect(self.change_room_bg, SIGNAL("clicked()"),
-                     self.setRoomBg)
+
 
     def closeEvent(self, event):
         g_project.unsubscribe(self)
 
-
-    def setRoomBg(self):
-        file_open = QFileDialog()
-        path_file = file_open.getOpenFileName()
-        if path_file:
-            g_project.data['rooms'][self.room_name].bg = str(path_file)
-            g_project.notify()
-
-    def setRoomBgm(self):
-        file_open = QFileDialog()
-        path_file = file_open.getOpenFileName()
-        if path_file:
-            g_project.data['rooms'][self.room_name].bgm = str(path_file)
-            g_project.notify()
-
-    def setRoomName(self, new_room_name):
+    def setRoomName(self):
         old_room = self.room_name
+        new_room_name = self.change_room_name.text()
         if g_project.data['world'].start == old_room:
             g_project.data['world'].start = str(new_room_name)
         room = g_project.data['rooms'][old_room]
@@ -108,23 +70,21 @@ class RoomEditor(QWidget):
         if room:
             self.room_name = room.id
             image = QPixmap(room.bg)
-            self.label.setMinimumSize(image.width(), image.height())
-            self.label.setPixmap(image)
-            self.label.setMask(image.mask())
-            self.scroll_area.setMinimumSize(image.width() + 20,
-                                            image.height() + 20)
+            self.room_bg.setMinimumSize(image.width(), image.height())
+            self.room_bg.setPixmap(image)
+            self.room_bg.setMask(image.mask())
             self.change_room_name.setText(room.id)
 
     def changeCurrentRoom(self, room_id):
         self.room_name = str(room_id)
         if self.room_name:
-            self.label.setPixmap(QPixmap(g_project.data['rooms']\
+            self.room_bg.setPixmap(QPixmap(g_project.data['rooms']\
                                          [self.room_name].bg))
             self.change_room_name.setText(room_id)
 
     def mousePressEvent(self, event):
-        if (0 <= event.pos().x() - 10 <= self.label.width()
-            and 0 <= event.pos().y() - 10 <= self.label.height()):
+        if (0 <= event.pos().x() - 10 <= self.room_bg.width()
+            and 0 <= event.pos().y() - 10 <= self.room_bg.height()):
             self.area_x_start = event.pos().x() - 10
             self.area_y_start = event.pos().y() - 10
             self.released = False
@@ -132,13 +92,12 @@ class RoomEditor(QWidget):
     def mouseMoveEvent(self, event=None):
         if (event.buttons() and Qt.LeftButton) == Qt.LeftButton:
             if self.area_x_start > -1:
-                if(0 <= event.pos().x() - 10 <= self.label.width()
-                and 0 <= event.pos().y() - 10 <= self.label.height()):
+                if(0 <= event.pos().x() - 10 <= self.room_bg.width()
+                and 0 <= event.pos().y() - 10 <= self.room_bg.height()):
                     self.area_x_stop = event.pos().x() - 10
                     self.area_y_stop = event.pos().y() - 10
                     self.update()
         else:
-            print event.pos()
             h = float(g_project.data['world'].height)
             w = float(g_project.data['world'].width)
             mouse_pos_x = float(event.pos().x() - 10)
@@ -161,8 +120,8 @@ class RoomEditor(QWidget):
 
     def mouseReleaseEvent(self, event):
         if self.area_x_start > -1:
-            if(0 <= event.pos().x() - 10 <= self.label.width()
-            and 0 <= event.pos().y() - 10 <= self.label.height()):
+            if(0 <= event.pos().x() - 10 <= self.room_bg.width()
+            and 0 <= event.pos().y() - 10 <= self.room_bg.height()):
                 self.area_x_stop = event.pos().x() - 10
                 self.area_y_stop = event.pos().y() - 10
                 h = float(g_project.data['world'].height)
@@ -178,29 +137,27 @@ class RoomEditor(QWidget):
                                                                 area_widht,
                                                                 area_height)
                 self.released = True
-                area = AreaEditor(self.area_x_start, self.area_y_start,
-                                      (self.area_x_stop - self.area_x_start),
-                                      (self.area_y_stop - self.area_y_start),
-                                      self)
-                area.show()
+#                area = AreaEditor(self.area_x_start, self.area_y_start,
+#                                      (self.area_x_stop - self.area_x_start),
+#                                      (self.area_y_stop - self.area_y_start),
+#                                      self)
+#                area.show()
                 self.update()
                 g_project.notify()
 
     def paintEvent(self, event=None):
+        painter = QPainter(self)
         if (self.area_x_start > -1 and self.area_x_stop > -1):
-            self.pixmap = QPixmap.fromImage(QImage(g_project.data['rooms'][self.room_name].bg))
             if not self.released:
-                painter = QPainter(self.pixmap)
                 painter.setPen(Qt.blue)
                 rect = QRect(QPoint(self.area_x_start,
                                     self.area_y_start),
                              QPoint(self.area_x_stop ,
                                     self.area_y_stop))
                 painter.drawRect(rect)
-            self.label.setPixmap(self.pixmap)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    rm = RoomEditor()
+    rm = RoomEditor(None)
     rm.show()
     app.exec_()
