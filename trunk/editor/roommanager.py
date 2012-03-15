@@ -1,11 +1,20 @@
 #!/usr/bin/env python
 
+from contextlib import contextmanager
+
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-
 from structdata.room import Room
 from structdata.project import g_project
+
+@contextmanager
+def blockedSignals(widget):
+    widget.blockSignals(True)
+    try:
+        yield
+    finally:
+        widget.blockSignals(False)
 
 class RoomManager(QWidget):
 
@@ -41,33 +50,30 @@ class RoomManager(QWidget):
                          SIGNAL("currentTextChanged(const QString &)"),
                          self.updateRoomSelected)
 
-
     def updateRoomSelected(self, room_name):
         if room_name:
             self.selected_room = g_project.data['rooms'][str(room_name)]
 
     def contextMenuEvent(self, event):
-        self.rooms_list.findItems(self.selected_room.id,
+        self.rooms_list.findItems(g_project.data['world'].start,
                                   Qt.MatchFixedString)[0].setBackground(Qt.white)
         selected_item = self.rooms_list.selectedItems()[0]
         selected_item.setBackground(Qt.yellow)
         self.selected_room = g_project.data['rooms'][str(selected_item.text())]
-        g_project.data['world'].start = str(self.selected_room.id)
+        g_project.data['world'].start = self.selected_room.id
         g_project.notify()
 
     def closeEvent(self, event):
         g_project.unsubscribe(self)
 
     def update_data(self):
-        list_lenght = self.rooms_list.count()
-        while list_lenght:
-            self.rooms_list.takeItem(0)
-            list_lenght -= 1
+        with blockedSignals(self.rooms_list):
+            self.rooms_list.clear()
         for key, value in g_project.data['rooms'].items():
             room_item = QListWidgetItem(QIcon(QPixmap.fromImage(QImage(value.bg))),
                                         key)
             self.rooms_list.addItem(room_item)
-            if room_item.text() == self.selected_room.id:
+            if room_item.text() == g_project.data['world'].start:
                 room_item.setBackgroundColor(Qt.yellow)
-        self.rooms_list.findItems(self.selected_room.id,
-                                  Qt.MatchFixedString)[0].setSelected(True)
+        current_room = self.rooms_list.findItems(self.selected_room.id, Qt.MatchFixedString)[0]
+        current_room.setSelected(True)
