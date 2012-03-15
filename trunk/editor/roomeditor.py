@@ -48,11 +48,23 @@ class RoomEditor(QWidget):
         self.connect(self.change_room_name,
                      SIGNAL("textChanged(const QString &)"),
                      self.setRoomName)
-        self.connect(self.room_bg, SIGNAL("areaEdited", self.createArea))
+        self.connect(self.room_bg, SIGNAL("areaEdited"), self.createArea)
 
 
     def createArea(self, x_start, y_start, x_stop, y_stop):
-        pass
+        area = g_project.data['rooms'][self.room_name].\
+        addArea(*self.createAreaParameter(x_start, y_start, x_stop, y_stop))
+        g_project.notify()
+
+    def createAreaParameter(self, x_start, y_start, x_stop, y_stop):
+        w = float(g_project.data['world'].width)
+        h = float(g_project.data['world'].height)
+        rel_x = round(min(x_start, x_stop) / w, 3)
+        rel_y = round(min(y_start, y_stop) / h, 3)
+        rel_width = round(abs(x_stop - x_start) / w, 3)
+        rel_height = round(abs(y_stop - y_start) / h, 3)
+        return (rel_x, rel_y, rel_width, rel_height)
+
 
     def closeEvent(self, event):
         g_project.unsubscribe(self)
