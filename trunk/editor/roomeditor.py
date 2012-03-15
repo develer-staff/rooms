@@ -12,6 +12,8 @@ from structdata.area import Area
 from changebgbutton import ChangeBGButton
 from changebgmbutton import ChangeBGMButton
 
+from roombgimage import RoomBGImage
+
 from areaeditor import AreaEditor
 
 class RoomEditor(QWidget):
@@ -19,12 +21,8 @@ class RoomEditor(QWidget):
     def __init__(self, room=None, parent=None):
         super(RoomEditor, self).__init__(parent)
         self.room_name = room.id if room else ""
-        self.area_x_start = -1
-        self.area_y_start = -1
-        self.area_x_stop = -1
-        self.area_y_stop = -1
-        self.released = False
-        self.room_bg = QLabel(self)
+
+        self.room_bg = RoomBGImage()
         self.change_room_name = QLineEdit(self)
         self.change_room_name.setAlignment(Qt.AlignCenter)
         self.change_room_bgm = ChangeBGMButton()
@@ -50,7 +48,11 @@ class RoomEditor(QWidget):
         self.connect(self.change_room_name,
                      SIGNAL("textChanged(const QString &)"),
                      self.setRoomName)
+        self.connect(self.room_bg, SIGNAL("areaEdited", self.createArea))
 
+
+    def createArea(self, x_start, y_start, x_stop, y_stop):
+        pass
 
     def closeEvent(self, event):
         g_project.unsubscribe(self)
@@ -71,7 +73,6 @@ class RoomEditor(QWidget):
             image = QPixmap(room.bg)
             self.room_bg.setMinimumSize(image.width(), image.height())
             self.room_bg.setPixmap(image)
-            self.room_bg.setMask(image.mask())
             self.change_room_name.setText(room.id)
 
     def changeCurrentRoom(self, room_id):
@@ -81,79 +82,6 @@ class RoomEditor(QWidget):
                                          [self.room_name].bg))
             self.change_room_name.setText(room_id)
 
-    def mousePressEvent(self, event):
-        if (0 <= event.pos().x() - 10 <= self.room_bg.width()
-            and 0 <= event.pos().y() - 10 <= self.room_bg.height()):
-            self.area_x_start = event.pos().x() - 10
-            self.area_y_start = event.pos().y() - 10
-            self.released = False
-
-    def mouseMoveEvent(self, event=None):
-        if (event.buttons() and Qt.LeftButton) == Qt.LeftButton:
-            if self.area_x_start > -1:
-                if(0 <= event.pos().x() - 10 <= self.room_bg.width()
-                and 0 <= event.pos().y() - 10 <= self.room_bg.height()):
-                    self.area_x_stop = event.pos().x() - 10
-                    self.area_y_stop = event.pos().y() - 10
-                    self.update()
-        else:
-            h = float(g_project.data['world'].height)
-            w = float(g_project.data['world'].width)
-            mouse_pos_x = float(event.pos().x() - 10)
-            mouse_pos_y = float(event.pos().y() - 10)
-            for area in g_project.data['rooms'][self.room_name].areas:
-                if (float(area.x) <= mouse_pos_x / w <= (float(area.x) +
-                                                              float(area.width))) and\
-                   (float(area.y) <= mouse_pos_y / h <= (float(area.y) +
-                                                         float(area.height))):
-                    self.area_x_start = float(area.x) * w
-                    self.area_x_stop = (float(area.x) + float(area.width)) * w
-                    self.area_y_start = float(area.y) * h
-                    self.area_y_stop = (float(area.y) + float(area.height)) * h
-                    self.released = False
-                    self.update()
-                    break
-                else:
-                    self.released = True
-                    self.update()
-
-    def mouseReleaseEvent(self, event):
-        if self.area_x_start > -1:
-            if(0 <= event.pos().x() - 10 <= self.room_bg.width()
-            and 0 <= event.pos().y() - 10 <= self.room_bg.height()):
-                self.area_x_stop = event.pos().x() - 10
-                self.area_y_stop = event.pos().y() - 10
-                h = float(g_project.data['world'].height)
-                w = float(g_project.data['world'].width)
-                area_x = round(self.area_x_start / w, 3)
-                area_y = round(self.area_y_start / h, 3)
-                area_widht = round((self.area_x_stop - self.area_x_start) / w,
-                                   3)
-                area_height = round((self.area_y_stop - self.area_y_start) / h,
-                                    3)
-                g_project.data['rooms'][self.room_name].addArea(area_x,
-                                                                area_y,
-                                                                area_widht,
-                                                                area_height)
-                self.released = True
-#                area = AreaEditor(self.area_x_start, self.area_y_start,
-#                                      (self.area_x_stop - self.area_x_start),
-#                                      (self.area_y_stop - self.area_y_start),
-#                                      self)
-#                area.show()
-                self.update()
-                g_project.notify()
-
-    def paintEvent(self, event=None):
-        painter = QPainter(self)
-        if (self.area_x_start > -1 and self.area_x_stop > -1):
-            if not self.released:
-                painter.setPen(Qt.blue)
-                rect = QRect(QPoint(self.area_x_start,
-                                    self.area_y_start),
-                             QPoint(self.area_x_stop ,
-                                    self.area_y_stop))
-                painter.drawRect(rect)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
