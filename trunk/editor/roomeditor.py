@@ -55,6 +55,8 @@ class RoomEditor(QWidget):
         area = g_project.data['rooms'][self.room_name].\
         addArea(*self.createAreaParameter(x_start, y_start, x_stop, y_stop))
         g_project.notify()
+        new_area = AreaEditor(area, self)
+        new_area.show()
 
     def createAreaParameter(self, x_start, y_start, x_stop, y_stop):
         w = float(g_project.data['world'].width)
