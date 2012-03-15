@@ -1,11 +1,7 @@
 #!/usr/bin/env python
 from xml.etree import ElementTree
 
-#to use OrderedDict in python < 2.7
-try:
-    from collections import OrderedDict
-except ImportError:
-    from misc.dict import OrderedDict
+from misc.odict import OrderedDict
 
 from structdata.area import Area
 from structdata.action import Action
