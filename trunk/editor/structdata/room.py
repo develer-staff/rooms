@@ -21,3 +21,4 @@ class Room(OriginData):
         area = Area("new_area_%d" % (number_of_new_area + 1), str(x), str(y),
                     str(width), str(height), event)
         self.areas.append(area)
+        return area
