@@ -34,4 +34,6 @@ class Test(unittest.TestCase):
             return line, line_a
         return None
 
+if __name__ == "__main__":
+    unittest.main()
 
