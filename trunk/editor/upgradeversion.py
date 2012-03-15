@@ -8,13 +8,13 @@ def from1To2(xml_file):
     for node in xml_file.iter('world'):
         width = int(node.get('width'))
         height = int(node.get('height'))
-    for node in xml_file.find('items').iter():
+    for node in xml_file.find('items').getiterator():
         if node.tag == "item":
             node.set('x', str(round(float(node.get('x')) / width, 3)))
             node.set('y', str(round(float(node.get('y')) / height, 3)))
             node.set('width', str(round(float(node.get('width')) / width, 3)))
             node.set('height', str(round(float(node.get('height')) / height, 3)))
-    for node in xml_file.find('rooms').iter():
+    for node in xml_file.find('rooms').getiterator():
         if node.tag == 'area':
             node.set('x', str(round(float(node.get('x')) / width, 3)))
             node.set('y', str(round(float(node.get('y')) / height, 3)))
@@ -24,7 +24,7 @@ def from1To2(xml_file):
 
 def from2To3(xml_file):
     xml_file.set('version', '3')
-    for node in xml_file.find('rooms').iter():
+    for node in xml_file.find('rooms').getiterator():
         if node.tag == 'room':
             node.set('bgm', '')
     return xml_file
