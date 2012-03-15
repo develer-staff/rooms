@@ -4,7 +4,7 @@ from origin import OriginData
 
 class Area(OriginData):
     tag_name = 'area'
-    def __init__(self, id, x, y, height, width, event):
+    def __init__(self, id, x, y, width, height, event):
         super(Area, self).__init__()
         self.id = id
         self.x = x

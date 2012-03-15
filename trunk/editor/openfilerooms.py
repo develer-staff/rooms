@@ -30,8 +30,8 @@ def loadRooms(xml_file):
                     area = Area(child.attrib["id"],
                             child.attrib["x"],
                             child.attrib["y"],
-                            child.attrib["height"],
                             child.attrib["width"],
+                            child.attrib["height"],
                             child.attrib["event"])
                 else:
                     raise ValueError("invalid tag %s in room" % child.tag)
