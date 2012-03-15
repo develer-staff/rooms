@@ -46,18 +46,17 @@ class RoomEditor(QWidget):
         horizontal.addStretch()
         vertical_layout.addLayout(horizontal)
         vertical_layout.addStretch()
-        #self.setLayout(vertical_layout)
+        self.setLayout(vertical_layout)
         self.connect(self.change_room_name,
-                     SIGNAL("editingFinished()"),
+                     SIGNAL("textChanged(const QString &)"),
                      self.setRoomName)
 
 
     def closeEvent(self, event):
         g_project.unsubscribe(self)
 
-    def setRoomName(self):
+    def setRoomName(self, new_room_name):
         old_room = self.room_name
-        new_room_name = self.change_room_name.text()
         if g_project.data['world'].start == old_room:
             g_project.data['world'].start = str(new_room_name)
         room = g_project.data['rooms'][old_room]
