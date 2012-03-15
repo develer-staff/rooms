@@ -21,7 +21,7 @@ class RoomEditor(QWidget):
     def __init__(self, room=None, parent=None):
         super(RoomEditor, self).__init__(parent)
         self.room_name = room.id if room else ""
-
+        g_project.subscribe(self)
         self.room_bg = RoomBGImage()
         self.change_room_name = QLineEdit(self)
         self.change_room_name.setAlignment(Qt.AlignCenter)
@@ -46,17 +46,27 @@ class RoomEditor(QWidget):
         vertical_layout.addStretch()
         self.setLayout(vertical_layout)
         self.connect(self.change_room_name,
-                     SIGNAL("textChanged(const QString &)"),
+                     SIGNAL("textEdited(const QString &)"),
                      self.setRoomName)
         self.connect(self.room_bg, SIGNAL("areaEdited"), self.createArea)
+        self.connect(self.change_room_bg, SIGNAL("clicked()"), self.setRoomBg)
+
+
+    def setRoomBg(self):
+        file_open = QFileDialog()
+        path_file = file_open.getOpenFileName()
+        if path_file:
+            g_project.data['rooms'][self.room_name].bg = str(path_file)
+            g_project.notify()
+
 
 
     def createArea(self, x_start, y_start, x_stop, y_stop):
         area = g_project.data['rooms'][self.room_name].\
         addArea(*self.createAreaParameter(x_start, y_start, x_stop, y_stop))
         g_project.notify()
-        new_area = AreaEditor(area, self)
-        new_area.show()
+        self.new_area = AreaEditor(area, self)
+        self.new_area.show()
 
     def createAreaParameter(self, x_start, y_start, x_stop, y_stop):
         w = float(g_project.data['world'].width)
@@ -96,6 +106,8 @@ class RoomEditor(QWidget):
                                          [self.room_name].bg))
             self.change_room_name.setText(room_id)
 
+    def update_data(self):
+        self.setRoom(g_project.data['rooms'][self.room_name])
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

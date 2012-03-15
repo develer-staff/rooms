@@ -13,12 +13,6 @@ class ChangeBGButton(QPushButton):
                                            "rgba( 255, 255, 255, 0% );")
         self.setIcon(QIcon("PageTurn.jpg"))
         self.setIconSize(QSize(30, 30))
-        self.connect(self, SIGNAL("clicked()"),
-                     self.setRoomBg)
 
-    def setRoomBg(self):
-        file_open = QFileDialog()
-        path_file = file_open.getOpenFileName()
-        if path_file:
-            g_project.data['rooms'][self.room_name].bg = str(path_file)
-            g_project.notify()
+
+
