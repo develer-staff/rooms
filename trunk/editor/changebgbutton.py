@@ -3,7 +3,6 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-from structdata.project import g_project
 
 class ChangeBGButton(QPushButton):
 
