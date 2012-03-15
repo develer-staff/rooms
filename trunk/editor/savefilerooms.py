@@ -3,11 +3,8 @@
 from xml.dom import minidom
 from xml.etree import ElementTree
 
-#to use OrderedDict in python < 2.7
-try:
-    from collections import OrderedDict
-except ImportError:
-    from misc.dict import OrderedDict
+
+from misc.odict import OrderedDict
 
 from structdata.project import g_project
 
