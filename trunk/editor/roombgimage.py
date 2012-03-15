@@ -38,6 +38,7 @@ class RoomBGImage(QLabel):
             and 0 <= event.pos().y() <= self.height()):
                 self.area_x_stop = event.pos().x()
                 self.area_y_stop = event.pos().y()
+                self.released = True
                 self.update()
                 self.emit(SIGNAL("areaEdited"),
                           self.area_x_start, self.area_y_start,
