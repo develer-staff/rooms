@@ -50,7 +50,7 @@ class RoomEditor(QWidget):
                      self.setRoomName)
         self.connect(self.room_bg, SIGNAL("areaEdited"), self.createArea)
         self.connect(self.change_room_bg, SIGNAL("clicked()"), self.setRoomBg)
-
+        self.connect(self.change_room_bgm, SIGNAL("clicked()"), self.setRoomBgm)
 
     def setRoomBg(self):
         file_open = QFileDialog()
@@ -59,7 +59,12 @@ class RoomEditor(QWidget):
             g_project.data['rooms'][self.room_name].bg = str(path_file)
             g_project.notify()
 
-
+    def setRoomBgm(self):
+        file_open = QFileDialog()
+        path_file = file_open.getOpenFileName()
+        if path_file:
+            g_project.data['rooms'][self.room_name].bgm = str(path_file)
+            g_project.notify()
 
     def createArea(self, x_start, y_start, x_stop, y_stop):
         area = g_project.data['rooms'][self.room_name].\
