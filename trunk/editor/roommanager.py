@@ -23,8 +23,6 @@ class RoomManager(QWidget):
         self.selected_room = selected_room
         g_project.subscribe(self)
         self.setMinimumSize(300, 900)
-        self.setSizePolicy(QSizePolicy(QSizePolicy.Fixed,
-                                       QSizePolicy.Fixed))
         self.vertical_scroll = QScrollArea(self)
         self.vertical_scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.vertical_scroll.setWidgetResizable(False)
@@ -55,8 +53,9 @@ class RoomManager(QWidget):
             self.selected_room = g_project.data['rooms'][str(room_name)]
 
     def contextMenuEvent(self, event):
-        self.rooms_list.findItems(g_project.data['world'].start,
-                                  Qt.MatchFixedString)[0].setBackground(Qt.white)
+        start_item = self.rooms_list.findItems(g_project.data['world'].start,
+                                  Qt.MatchFixedString)[0]
+        start_item.setBackground(Qt.white)
         selected_item = self.rooms_list.selectedItems()[0]
         selected_item.setBackground(Qt.yellow)
         self.selected_room = g_project.data['rooms'][str(selected_item.text())]
