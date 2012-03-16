@@ -51,7 +51,7 @@ class AreaEditor(QWidget):
                      self.start_track)
 
     def change_position(self, index):
-        pos = [QPoint(self.x(), 0), QPoint(self.width() - 10, 0),
+        pos = [QPoint(0, 0), QPoint(self.width() - 10, 0),
              QPoint(0, self.height() - 10),
              QPoint(self.width() - 10, self.height() - 10)]
         return pos[index]
@@ -67,17 +67,20 @@ class AreaEditor(QWidget):
             y = event.pos().y()
             x_widget = self.x()
             y_widget = self.y()
-
+            print y, y_widget
+            print x, x_widget
             if self.index == 0:
                 self.move(x_widget + x, y_widget + y)
                 self.resize(QSize(self.width() - x, self.height() - y))
             elif self.index == 1:
-                self.move(self.x(), y_widget - y)
-                self.resize(QSize(self.width() - x, self.height() - y))
+                self.move(0, y_widget - y)
+                self.resize(QSize(2 * self.width() - x, y_widget - y))
                 print self.x()
-
-            for i in range(4):
-                self.corner_buttons[i].move(self.change_position(i))
+            i = 0
+            for button in self.corner_buttons:
+                button.move(self.change_position(i))
+                i += 1
+            self.update()
 
 
     def mouseReleaseEvent(self, event=None):
