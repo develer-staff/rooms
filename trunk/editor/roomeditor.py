@@ -92,8 +92,10 @@ class RoomEditor(QWidget):
             g_project.notify()
 
     def createArea(self, x_start, y_start, x_stop, y_stop):
-        area = self.room.\
-        addArea(*self.createAreaParameter(x_start, y_start, x_stop, y_stop))
+        area = Area.create(self.room, *self.createAreaParameter(x_start,
+                                                                 y_start,
+                                                                 x_stop,
+                                                                 y_stop))
         g_project.notify()
         new_area = AreaEditor(area, self)
         new_area.move(QPoint(x_start, y_start))
