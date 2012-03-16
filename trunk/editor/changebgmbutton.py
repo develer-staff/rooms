@@ -3,7 +3,6 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-
 class ChangeBGMButton(QPushButton):
 
     def __init__(self, parent=None):
@@ -12,6 +11,10 @@ class ChangeBGMButton(QPushButton):
                                            "rgba( 255, 255, 255, 0% );")
         self.setIcon(QIcon("musical_note.png"))
         self.setIconSize(QSize(30, 30))
+
+
+
+
 
 
 
