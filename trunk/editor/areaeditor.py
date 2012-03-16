@@ -12,7 +12,14 @@ class AreaEditor(QWidget):
         self.area = area
         self.setMinimumSize(self.toAbsolute(self.area.width, 'x'),
                             self.toAbsolute(self.area.height, 'y'))
-        self.update()
+
+        #horizontal = QHBoxLayout()
+        ##horizontal.addStretch()
+        #horizontal.addWidget(QPushButton(self))
+        #self.setLayout(horizontal)
+
+    def eventEnter(self, event=None):
+        print "a"
 
     def toAbsolute(self, value, direction):
         if direction == 'x':
@@ -21,3 +28,7 @@ class AreaEditor(QWidget):
         elif direction == 'y':
             h = float(g_project.data['world'].height)
             return float(value) * h
+
+    def paintEvent(self, event):
+        p = QPainter(self)
+        p.fillRect(self.rect(), QBrush(Qt.blue))
