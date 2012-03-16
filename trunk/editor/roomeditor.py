@@ -20,14 +20,14 @@ class RoomEditor(QWidget):
 
     def __init__(self, room=None, parent=None):
         super(RoomEditor, self).__init__(parent)
-        self.room_name = room.id if room else ""
+        self.room = room
         g_project.subscribe(self)
         self.room_bg = RoomBGImage()
         self.change_room_name = QLineEdit(self)
         self.change_room_name.setAlignment(Qt.AlignCenter)
-        self.change_room_bgm = ChangeBGMButton()
-        self.change_room_bg = ChangeBGButton()
-        self.setRoom(room)
+        self.change_room_bgm = ChangeBGMButton(self)
+        self.change_room_bg = ChangeBGButton(self)
+        self.setRoom(self.room)
         self.setMouseTracking(True)
         self.room_bg.setMouseTracking(True)
         horizontal_button_layout = QHBoxLayout()
@@ -46,7 +46,7 @@ class RoomEditor(QWidget):
         vertical_layout.addStretch()
         self.setLayout(vertical_layout)
         self.connect(self.change_room_name,
-                     SIGNAL("textEdited(const QString &)"),
+                     SIGNAL("returnPressed()"),
                      self.setRoomName)
         self.connect(self.room_bg, SIGNAL("areaEdited"), self.createArea)
         self.connect(self.change_room_bg, SIGNAL("clicked()"), self.setRoomBg)
@@ -56,22 +56,22 @@ class RoomEditor(QWidget):
         file_open = QFileDialog()
         path_file = file_open.getOpenFileName()
         if path_file:
-            g_project.data['rooms'][self.room_name].bg = str(path_file)
+            self.room.bg = str(path_file)
             g_project.notify()
 
     def setRoomBgm(self):
         file_open = QFileDialog()
         path_file = file_open.getOpenFileName()
         if path_file:
-            g_project.data['rooms'][self.room_name].bgm = str(path_file)
+            self.room.bgm = str(path_file)
             g_project.notify()
 
     def createArea(self, x_start, y_start, x_stop, y_stop):
-        area = g_project.data['rooms'][self.room_name].\
+        area = self.room.\
         addArea(*self.createAreaParameter(x_start, y_start, x_stop, y_stop))
         g_project.notify()
-        self.new_area = AreaEditor(area, self)
-        self.new_area.show()
+        new_area = AreaEditor(area, self)
+        new_area.show()
 
     def createAreaParameter(self, x_start, y_start, x_stop, y_stop):
         w = float(g_project.data['world'].width)
@@ -86,33 +86,31 @@ class RoomEditor(QWidget):
     def closeEvent(self, event):
         g_project.unsubscribe(self)
 
-    def setRoomName(self, new_room_name):
-        old_room = self.room_name
-        if g_project.data['world'].start == old_room:
-            g_project.data['world'].start = str(new_room_name)
-        room = g_project.data['rooms'][old_room]
-        room.id = str(new_room_name)
-        del g_project.data['rooms'][old_room]
-        g_project.data['rooms'][room.id] = room
+    def setRoomName(self):
+        new_room_name = str(self.change_room_name.text())
+        if g_project.data['world'].start == self.room.id:
+            g_project.data['world'].start = new_room_name
+        del g_project.data['rooms'][self.room.id]
+        self.room.id = str(new_room_name)
+        g_project.data['rooms'][self.room.id] = self.room
         g_project.notify()
 
     def setRoom(self, room):
         if room:
-            self.room_name = room.id
-            image = QPixmap(room.bg)
+            self.room = room
+            image = QPixmap(self.room.bg)
             self.room_bg.setMinimumSize(image.width(), image.height())
             self.room_bg.setPixmap(image)
-            self.change_room_name.setText(room.id)
+            self.change_room_name.setText(self.room.id)
 
     def changeCurrentRoom(self, room_id):
-        self.room_name = str(room_id)
-        if self.room_name:
-            self.room_bg.setPixmap(QPixmap(g_project.data['rooms']\
-                                         [self.room_name].bg))
-            self.change_room_name.setText(room_id)
+        self.room = g_project.data['rooms'][str(room_id)]
+        if self.room:
+            self.room_bg.setPixmap(QPixmap(self.room.bg))
+            self.change_room_name.setText(self.room.id)
 
     def update_data(self):
-        self.setRoom(g_project.data['rooms'][self.room_name])
+        self.setRoom(self.room)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
