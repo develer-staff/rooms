@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 
-try:
-    from collections import OrderedDict
-except ImportError:
-    from misc.dict import OrderedDict
+
+from misc.odict import OrderedDict
 
 from subject import Subject
 from room import Room
