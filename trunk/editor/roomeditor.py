@@ -119,21 +119,16 @@ class RoomEditor(QWidget):
     def mouseMoveEvent(self, e):
         if self.area_drag_start is None:
             return
-        ax = self.area_drag_start.x()
-        ay = self.area_drag_start.y()
-        rx = max(e.x(), ax)
-        ry = max(e.y(), ay)
-
-        self.area_drag_curr = QPoint(rx, ry)
+        self.area_drag_curr = QPoint(e.x(), e.y())
         self.update()
 
     def mouseReleaseEvent(self, e):
         if self.area_drag_start is None:
             return
-        self.createArea(self.area_drag_start.x(),
-                        self.area_drag_start.y(),
-                        self.area_drag_curr.x(),
-                        self.area_drag_curr.y())
+        self.createArea(min(self.area_drag_start.x(), self.area_drag_curr.x()),
+                        min(self.area_drag_start.y(), self.area_drag_curr.y()),
+                        max(self.area_drag_curr.x(), self.area_drag_start.x()),
+                        max(self.area_drag_curr.y(), self.area_drag_start.y()))
 
         self.area_drag_start = None
         self.area_drag_curr = None
