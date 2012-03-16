@@ -47,7 +47,7 @@ class Editor(QWidget):
         self.connect(room_manager,
                      SIGNAL("currentRoomChanged(const QString &)"),
                      room_editor.changeCurrentRoom)
-        self.connect(new_room_button, SIGNAL("clicked()"), g_project.addNewRoom)
+        self.connect(new_room_button, SIGNAL("clicked()"), Room.create)
 
     def update_data(self):
         self.dirty = True
