@@ -2,6 +2,7 @@
 from origin import OriginData
 
 from area import Area
+from structdata.project import g_project
 
 class Room(OriginData):
 
@@ -13,12 +14,12 @@ class Room(OriginData):
         self.areas = []
         self.bgm = bgm
 
-    def addArea(self, x, y, width, height, event=""):
-        number_of_new_area = 0
-        for area in self.areas:
-            if area.id.find("new_area") != -1:
-                number_of_new_area += 1
-        area = Area("new_area_%d" % (number_of_new_area + 1), str(x), str(y),
-                    str(width), str(height), event)
-        self.areas.append(area)
-        return area
+    @staticmethod
+    def create():
+        number_of_new_room = 0
+        for key in g_project.data['rooms'].keys():
+            if key.find("new_room") != -1:
+                number_of_new_room += 1
+        room = Room("new_room_%d" % (number_of_new_room + 1), "", "")
+        g_project.data['rooms'][room.id] = room
+        g_project.notify()
