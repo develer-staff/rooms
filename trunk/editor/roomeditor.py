@@ -9,46 +9,72 @@ from PyQt4.QtCore import *
 from structdata.project import g_project
 from structdata.area import Area
 
-from changebgbutton import ChangeBGButton
-from changebgmbutton import ChangeBGMButton
-
-from roombgimage import RoomBGImage
-
 from areaeditor import AreaEditor
+
+
+class ChangeBGMButton(QPushButton):
+    def sizeHint(self):
+        return QSize(30, 30)
+
+    def __init__(self, parent=None):
+        super(ChangeBGMButton, self).__init__(parent)
+        self.setStyleSheet("background-color:"
+                                           "rgba( 255, 255, 255, 0% );")
+        self.setIcon(QIcon("musical_note.png"))
+        self.setIconSize(QSize(30, 30))
+
+class ChangeBGButton(QPushButton):
+    def sizeHint(self):
+        return QSize(30, 30)
+    def __init__(self, parent=None):
+        super(ChangeBGButton, self).__init__(parent)
+        self.setStyleSheet("background-color:"
+                                           "rgba( 255, 255, 255, 0% );")
+        self.setIcon(QIcon("PageTurn.jpg"))
+        self.setIconSize(QSize(30, 30))
+
+class ChangeRoomName(QLineEdit):
+    pass
 
 class RoomEditor(QWidget):
 
     def __init__(self, room=None, parent=None):
         super(RoomEditor, self).__init__(parent)
         self.room = room
+        self.room_bg = QPixmap(room.bg)
+        self.setMinimumSize(self.room_bg.width(), self.room_bg.height())
         g_project.subscribe(self)
-        self.room_bg = RoomBGImage()
-        self.change_room_name = QLineEdit(self)
+
+        self.area_drag_start = None
+        self.area_drag_stop = None
+
+        self.change_room_name = ChangeRoomName()
         self.change_room_name.setAlignment(Qt.AlignCenter)
-        self.change_room_bgm = ChangeBGMButton(self)
-        self.change_room_bg = ChangeBGButton(self)
+        self.change_room_bgm = ChangeBGMButton()
+        self.change_room_bg = ChangeBGButton()
         self.setRoom(self.room)
         self.setMouseTracking(True)
-        self.room_bg.setMouseTracking(True)
+
         horizontal_button_layout = QHBoxLayout()
         horizontal_button_layout.addWidget(self.change_room_bgm)
         horizontal_button_layout.addStretch()
         horizontal_button_layout.addWidget(self.change_room_bg)
-        vertical_layout = QVBoxLayout(self)
+
+        vertical_layout = QVBoxLayout()
         vertical_layout.addLayout(horizontal_button_layout)
-        vertical_layout.addWidget(self.room_bg)
+        vertical_layout.addStretch()
         horizontal = QHBoxLayout()
         horizontal.setAlignment(Qt.AlignCenter)
         horizontal.addStretch()
         horizontal.addWidget(self.change_room_name)
         horizontal.addStretch()
         vertical_layout.addLayout(horizontal)
-        vertical_layout.addStretch()
+
         self.setLayout(vertical_layout)
+
         self.connect(self.change_room_name,
                      SIGNAL("returnPressed()"),
                      self.setRoomName)
-        self.connect(self.room_bg, SIGNAL("areaEdited"), self.createArea)
         self.connect(self.change_room_bg, SIGNAL("clicked()"), self.setRoomBg)
         self.connect(self.change_room_bgm, SIGNAL("clicked()"), self.setRoomBgm)
 
@@ -71,6 +97,7 @@ class RoomEditor(QWidget):
         addArea(*self.createAreaParameter(x_start, y_start, x_stop, y_stop))
         g_project.notify()
         new_area = AreaEditor(area, self)
+        new_area.move(QPoint(x_start, y_start))
         new_area.show()
 
     def createAreaParameter(self, x_start, y_start, x_stop, y_stop):
@@ -82,6 +109,49 @@ class RoomEditor(QWidget):
         rel_height = round(abs(y_stop - y_start) / h, 3)
         return (rel_x, rel_y, rel_width, rel_height)
 
+
+    def mousePressEvent(self, e):
+        self.area_drag_start = e.pos()
+        self.area_drag_curr = e.pos()
+        self.update()
+
+    def mouseMoveEvent(self, e):
+        if self.area_drag_start is None:
+            return
+        ax = self.area_drag_start.x()
+        ay = self.area_drag_start.y()
+        rx = max(e.x(), ax)
+        ry = max(e.y(), ay)
+
+        self.area_drag_curr = QPoint(rx, ry)
+        self.update()
+
+    def mouseReleaseEvent(self, e):
+        if self.area_drag_start is None:
+            return
+        self.createArea(self.area_drag_start.x(),
+                        self.area_drag_start.y(),
+                        self.area_drag_curr.x(),
+                        self.area_drag_curr.y())
+
+        self.area_drag_start = None
+        self.area_drag_curr = None
+
+        self.update()
+
+    def paintEvent(self, e):
+        QWidget.paintEvent(self, e)
+
+        p = QPainter(self)
+
+        p.drawPixmap(QPoint(0, 0), self.room_bg)
+        p.setPen(Qt.blue)
+        # Draw currently painted area
+        if self.area_drag_start is not None and self.area_drag_curr is not None:
+            p.drawRect(QRect(self.area_drag_start.x(),
+                       self.area_drag_start.y(),
+                       self.area_drag_curr.x() - self.area_drag_start.x(),
+                       self.area_drag_curr.y() - self.area_drag_start.y()))
 
     def closeEvent(self, event):
         g_project.unsubscribe(self)
@@ -98,16 +168,14 @@ class RoomEditor(QWidget):
     def setRoom(self, room):
         if room:
             self.room = room
-            image = QPixmap(self.room.bg)
-            self.room_bg.setMinimumSize(image.width(), image.height())
-            self.room_bg.setPixmap(image)
             self.change_room_name.setText(self.room.id)
 
     def changeCurrentRoom(self, room_id):
         self.room = g_project.data['rooms'][str(room_id)]
         if self.room:
-            self.room_bg.setPixmap(QPixmap(self.room.bg))
+            self.room_bg = QPixmap(self.room.bg)
             self.change_room_name.setText(self.room.id)
+            self.update()
 
     def update_data(self):
         self.setRoom(self.room)
