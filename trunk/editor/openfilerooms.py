@@ -132,9 +132,15 @@ def openFileRooms(path_file):
     precedente all'ultima realizzata
     """
     xml_file = upgradeVersion(path_file)
-    g_project.data['world'] = loadInformation(xml_file)
-    g_project.data['images'] = loadImages(xml_file)
-    g_project.data['items'] = loadItems(xml_file)
-    g_project.data['vars'] = loadVars(xml_file)
-    g_project.data['events'] = loadEvents(xml_file)
-    g_project.data['rooms'] = loadRooms(xml_file)
+    world = loadInformation(xml_file)
+    images = loadImages(xml_file)
+    items = loadItems(xml_file)
+    variables = loadVars(xml_file)
+    events = loadEvents(xml_file)
+    rooms = loadRooms(xml_file)
+    g_project.data['world'] = world
+    g_project.data['images'] = images
+    g_project.data['items'] = items
+    g_project.data['vars'] = variables
+    g_project.data['events'] = events
+    g_project.data['rooms'] = rooms
