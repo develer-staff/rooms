@@ -11,7 +11,6 @@ from structdata.area import Area
 
 from areaeditor import AreaEditor
 
-
 class ChangeBGMButton(QPushButton):
     def sizeHint(self):
         return QSize(30, 30)
