@@ -15,7 +15,6 @@ class CornerButton(QPushButton):
                                            "rgba( 255, 255, 255, 100% );")
         self.setFixedHeight(10)
         self.setFixedWidth(10)
-        self.setCursor(Qt.SizeAllCursor)
 
 class AreaEditor(QWidget):
 
@@ -42,6 +41,10 @@ class AreaEditor(QWidget):
         self.corner_buttons = []
         for i in range(4):
             button = CornerButton(self)
+            if i == 0 or i == 3:
+                button.setCursor(Qt.SizeFDiagCursor)
+            else:
+                button.setCursor(Qt.SizeBDiagCursor)
             button.move(self.change_position(i))
             self.connect(button, SIGNAL("pressed()"),
                          self.signal_mapper_pressed, SLOT("map()"))
@@ -67,15 +70,17 @@ class AreaEditor(QWidget):
             y = event.pos().y()
             x_widget = self.x()
             y_widget = self.y()
-            print y, y_widget
-            print x, x_widget
             if self.index == 0:
                 self.move(x_widget + x, y_widget + y)
                 self.resize(QSize(self.width() - x, self.height() - y))
             elif self.index == 1:
-                self.move(0, y_widget - y)
-                self.resize(QSize(2 * self.width() - x, y_widget - y))
-                print self.x()
+                self.move(self.x(), y_widget + y)
+                self.resize(QSize(x, self.height() - y))
+            elif self.index == 2:
+                self.move(x_widget + x, self.y())
+                self.resize(QSize(self.width() - x, y))
+            elif self.index == 3:
+                self.resize(QSize(x, y))
             i = 0
             for button in self.corner_buttons:
                 button.move(self.change_position(i))
