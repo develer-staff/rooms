@@ -71,11 +71,28 @@ class RoomEditor(QWidget):
 
         self.setLayout(vertical_layout)
 
+        for area in self.room.areas:
+            print self.logicalToAbsolute(area.x, 'x')
+            area_resize = AreaResize(area, self.room_bg.width(),
+                                     self.room_bg.height(), self)
+            area_resize.move(QPoint(self.logicalToAbsolute(area.x, 'x'),
+                                    self.logicalToAbsolute(area.y, 'y')))
+            area_resize.show()
+
         self.connect(self.change_room_name,
                      SIGNAL("returnPressed()"),
                      self.setRoomName)
         self.connect(self.change_room_bg, SIGNAL("clicked()"), self.setRoomBg)
         self.connect(self.change_room_bgm, SIGNAL("clicked()"), self.setRoomBgm)
+
+
+    def logicalToAbsolute(self, value, direction):
+        if direction == 'x':
+            w = float(g_project.data['world'].width)
+            return float(value) * w
+        elif direction == 'y':
+            h = float(g_project.data['world'].height)
+            return float(value) * h
 
     def setRoomBg(self):
         """funzione per settare il background della room"""
@@ -103,10 +120,10 @@ class RoomEditor(QWidget):
                                                          self.room_bg.height())
                                                     ))
         g_project.notify()
-        new_area = AreaResize(area, self.room_bg.width(),
+        area_resize = AreaResize(area, self.room_bg.width(),
                               self.room_bg.height(), self)
-        new_area.move(QPoint(x_start, y_start))
-        new_area.show()
+        area_resize.move(QPoint(x_start, y_start))
+        area_resize.show()
 
     def createAreaParameter(self, x_start, y_start, x_stop, y_stop):
         """funzione che trasforma le coordinate e le dimensioni definite
