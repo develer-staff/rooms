@@ -53,6 +53,10 @@ class RoomManager(QWidget):
             self.selected_room = g_project.data['rooms'][str(room_name)]
 
     def contextMenuEvent(self, event):
+        self.changeStartRoom()
+
+    def changeStartRoom(self):
+        """function to change the start room in g_project"""
         start_item = self.rooms_list.findItems(g_project.data['world'].start,
                                   Qt.MatchFixedString)[0]
         start_item.setBackground(Qt.white)
