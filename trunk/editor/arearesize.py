@@ -62,6 +62,7 @@ class AreaResize(QWidget):
                      self.start_track)
 
     def change_position(self, index):
+        """funzione che ritorna la posizione di ogni bottone per il resize"""
         pos = [QPoint(0, 0), QPoint(self.width() - 10, 0),
              QPoint(0, self.height() - 10),
              QPoint(self.width() - 10, self.height() - 10),
