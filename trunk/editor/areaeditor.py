@@ -124,7 +124,10 @@ class AreaEditor(QWidget):
             for button in self.resize_buttons:
                 button.move(self.change_position(i))
                 i += 1
-
+            self.area.x = str(self.toLogical(self.x(), 'x'))
+            self.area.y = str(self.toLogical(self.y(), 'y'))
+            self.area.width = str(self.toLogical(self.width(), 'x'))
+            self.area.height = str(self.toLogical(self.height(), 'y'))
             self.update()
 
     def mouseReleaseEvent(self, event=None):
