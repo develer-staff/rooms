@@ -33,31 +33,40 @@ class AreaResize(QWidget):
         self.current_height = self.height()
         self.setSizePolicy(QSizePolicy(QSizePolicy.Preferred,
                                        QSizePolicy.Preferred))
-        self.change_area_name = QLabel(self)
-        self.change_area_name.setText(self.area.id)
+#        self.change_area_name = QLabel(self)
+#        self.change_area_name.setText(self.area.id)
         self.vl = QVBoxLayout()
-        self.vl.setAlignment(Qt.AlignCenter)
-        self.vl.addStretch()
-        self.vl.addWidget(self.change_area_name)
-        self.setLayout(self.vl)
+        #self.vl.addStretch()
+        #self.vl.addWidget(self.change_area_name)
+
         self.signal_mapper_pressed = QSignalMapper(self)
         self.resize_buttons = []
+        horizontal = QHBoxLayout()
         for i in range(8):
             button = ResizeButton(self)
             button.setVisible(False)
-            if i == 0 or i == 3:
+            if i == 0 or i == 7:
                 button.setCursor(Qt.SizeFDiagCursor)
-            elif i == 1 or i == 2:
+            elif i == 5 or i == 2:
                 button.setCursor(Qt.SizeBDiagCursor)
-            elif i == 4 or i == 5:
+            elif i == 1 or i == 6:
                 button.setCursor(Qt.SizeVerCursor)
             else:
                 button.setCursor(Qt.SizeHorCursor)
-            button.move(self.change_position(i))
+            horizontal.addWidget(button)
+            if i not in [2, 4, 7]:
+                horizontal.addStretch()
+            if i == 2 or i == 4 or i == 7:
+                self.vl.addLayout(horizontal)
+                if i != 7:
+                    self.vl.addStretch()
+                    horizontal = QHBoxLayout()
+            #button.move(self.change_position(i))
             self.connect(button, SIGNAL("pressed()"),
                          self.signal_mapper_pressed, SLOT("map()"))
             self.signal_mapper_pressed.setMapping(button, i)
             self.resize_buttons.append(button)
+        self.setLayout(self.vl)
         self.connect(self.signal_mapper_pressed, SIGNAL("mapped(int)"),
                      self.start_track)
 
@@ -94,49 +103,50 @@ class AreaResize(QWidget):
                 self.current_width = self.width() - x
                 self.current_height = self.height() - y
                 self.resize(self.sizeHint())
-            #top right button
+            #top button
             elif self.index == 1:
+                self.move(x_widget, y_widget + y)
+                self.current_height = self.height() - y
+                self.resize(self.sizeHint())
+            #top right button
+            elif self.index == 2:
                 self.move(self.x(), y_widget + y)
                 self.current_width = x
                 self.current_height = self.height() - y
                 self.resize(self.sizeHint())
-            #bottom left button
-            elif self.index == 2:
-                self.move(x_widget + x, self.y())
-                self.current_width = self.width() - x
-                self.current_height = y
-                self.resize(self.sizeHint())
-            #bottom right button 
-            elif self.index == 3:
-                self.current_height = y + 5
-                self.current_width = x + 5
-                self.resize(self.sizeHint())
-            #top button
-            elif self.index == 4:
-                self.move(x_widget, y_widget + y)
-                self.current_height = self.height() - y
-                self.resize(self.sizeHint())
-            #bottom button
-            elif self.index == 5:
-                self.current_height = y
-                self.resize(self.sizeHint())
             #left button
-            elif self.index == 6:
+            elif self.index == 3:
                 self.move(x_widget + x, y_widget)
                 self.current_width = self.width() - x
                 self.resize(self.sizeHint())
             #right button
-            else:
+            elif self.index == 4:
                 self.current_width = x
                 self.resize(self.sizeHint())
+            #bottom left button
+            elif self.index == 5:
+                self.move(x_widget + x, self.y())
+                self.current_width = self.width() - x
+                self.current_height = y
+                self.resize(self.sizeHint())
+            #bottom button
+            elif self.index == 6:
+                self.current_height = y
+                self.resize(self.sizeHint())
+            #bottom right button 
+            elif self.index == 7:
+                self.current_height = y + 5
+                self.current_width = x + 5
+                self.resize(self.sizeHint())
             i = 0
-            for button in self.resize_buttons:
-                button.move(self.change_position(i))
-                i += 1
+#            for button in self.resize_buttons:
+#                button.move(self.change_position(i))
+#                i += 1
             self.area.x = str(self.toLogical(self.x(), 'x'))
             self.area.y = str(self.toLogical(self.y(), 'y'))
             self.area.width = str(self.toLogical(self.width(), 'x'))
             self.area.height = str(self.toLogical(self.height(), 'y'))
+            g_project.notify()
             self.update()
 
     def mouseReleaseEvent(self, event=None):
@@ -144,13 +154,13 @@ class AreaResize(QWidget):
         self.update()
 
     def enterEvent(self, event=None):
-        self.change_area_name.setVisible(True)
+        #self.change_area_name.setVisible(True)
         for cb in self.resize_buttons:
             cb.setVisible(True)
         self.update()
 
     def leaveEvent(self, event=None):
-        self.change_area_name.setVisible(False)
+        #self.change_area_name.setVisible(False)
         for cb in self.resize_buttons:
             cb.setVisible(False)
         self.update()
