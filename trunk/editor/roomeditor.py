@@ -78,6 +78,7 @@ class RoomEditor(QWidget):
         self.connect(self.change_room_bgm, SIGNAL("clicked()"), self.setRoomBgm)
 
     def setRoomBg(self):
+        """funzione per settare il background della room"""
         file_open = QFileDialog()
         path_file = file_open.getOpenFileName()
         if path_file:
@@ -85,6 +86,7 @@ class RoomEditor(QWidget):
             g_project.notify()
 
     def setRoomBgm(self):
+        """funzione per settare la background music della room"""
         file_open = QFileDialog()
         path_file = file_open.getOpenFileName()
         if path_file:
@@ -107,6 +109,8 @@ class RoomEditor(QWidget):
         new_area.show()
 
     def createAreaParameter(self, x_start, y_start, x_stop, y_stop):
+        """funzione che trasforma le coordinate e le dimensioni definite
+        nell'editing dell'area da assolute a logiche"""
         w = float(g_project.data['world'].width)
         h = float(g_project.data['world'].height)
         rel_x = round(min(x_start, x_stop) / w, 3)
@@ -124,9 +128,10 @@ class RoomEditor(QWidget):
         if self.area_drag_start is None:
             return
         x = e.x()
+        y = e.y()
+        #controllo di essere nell'area dell'mmagine di sfondo
         x = min(x, self.room_bg.width()) if x > 0\
                                                     else max(0, x)
-        y = e.y()
         y = min(y, self.room_bg.height()) if y > 0\
                                                      else max(0, y)
         self.area_drag_curr = QPoint(x, y)
@@ -162,6 +167,7 @@ class RoomEditor(QWidget):
         g_project.unsubscribe(self)
 
     def setRoomName(self):
+        """funzione per il cambio del nome della room"""
         new_room_name = str(self.change_room_name.text())
         if g_project.data['world'].start == self.room.id:
             g_project.data['world'].start = new_room_name
@@ -176,6 +182,10 @@ class RoomEditor(QWidget):
             self.change_room_name.setText(self.room.id)
 
     def changeCurrentRoom(self, room_id):
+        """
+        funzione per cambiare la room visualizzata, prende in ingresso
+        l'id della room che deve essere visualizzata
+        """
         self.room = g_project.data['rooms'][str(room_id)]
         if self.room:
             self.room_bg = QPixmap(self.room.bg)
