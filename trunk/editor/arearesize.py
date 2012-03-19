@@ -44,7 +44,7 @@ class AreaResize(QWidget):
         self.resize_buttons = []
         for i in range(8):
             button = ResizeButton(self)
-            button.setVisible(True)
+            button.setVisible(False)
             if i == 0 or i == 3:
                 button.setCursor(Qt.SizeFDiagCursor)
             elif i == 1 or i == 2:
