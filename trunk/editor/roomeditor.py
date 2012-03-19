@@ -92,10 +92,14 @@ class RoomEditor(QWidget):
             g_project.notify()
 
     def createArea(self, x_start, y_start, x_stop, y_stop):
-        area = Area.create(self.room, *self.createAreaParameter(x_start,
-                                                                 y_start,
-                                                                 x_stop,
-                                                                 y_stop))
+        area = Area.create(self.room,
+                           *self.createAreaParameter(max(0, x_start),
+                                                     max(0, y_start),
+                                                     min(x_stop,
+                                                         self.room_bg.width()),
+                                                     min(y_stop,
+                                                         self.room_bg.height())
+                                                    ))
         g_project.notify()
         new_area = AreaEditor(area, self.room_bg.width(),
                               self.room_bg.height(), self)
@@ -119,7 +123,13 @@ class RoomEditor(QWidget):
     def mouseMoveEvent(self, e):
         if self.area_drag_start is None:
             return
-        self.area_drag_curr = QPoint(e.x(), e.y())
+        x = e.x()
+        x = min(x, self.room_bg.width()) if x > 0\
+                                                    else max(0, x)
+        y = e.y()
+        y = min(y, self.room_bg.height()) if y > 0\
+                                                     else max(0, y)
+        self.area_drag_curr = QPoint(x, y)
         self.update()
 
     def mouseReleaseEvent(self, e):
@@ -144,7 +154,7 @@ class RoomEditor(QWidget):
         # Draw currently painted area
         if self.area_drag_start is not None and self.area_drag_curr is not None:
             p.drawRect(QRect(self.area_drag_start.x(),
-                       self.area_drag_start.y(),
+                             self.area_drag_start.y(),
                        self.area_drag_curr.x() - self.area_drag_start.x(),
                        self.area_drag_curr.y() - self.area_drag_start.y()))
 
