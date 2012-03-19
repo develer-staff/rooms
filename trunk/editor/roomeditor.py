@@ -46,6 +46,7 @@ class RoomEditor(QWidget):
 
         self.area_drag_start = None
         self.area_drag_stop = None
+        self.resize_areas = []
 
         self.change_room_name = ChangeRoomName()
         self.change_room_name.setAlignment(Qt.AlignCenter)
@@ -71,13 +72,7 @@ class RoomEditor(QWidget):
 
         self.setLayout(vertical_layout)
 
-        for area in self.room.areas:
-            print self.logicalToAbsolute(area.x, 'x')
-            area_resize = AreaResize(area, self.room_bg.width(),
-                                     self.room_bg.height(), self)
-            area_resize.move(QPoint(self.logicalToAbsolute(area.x, 'x'),
-                                    self.logicalToAbsolute(area.y, 'y')))
-            area_resize.show()
+        self.showAllArea()
 
         self.connect(self.change_room_name,
                      SIGNAL("returnPressed()"),
@@ -85,6 +80,16 @@ class RoomEditor(QWidget):
         self.connect(self.change_room_bg, SIGNAL("clicked()"), self.setRoomBg)
         self.connect(self.change_room_bgm, SIGNAL("clicked()"), self.setRoomBgm)
 
+
+    def showAllArea(self):
+        """funzione che mostra tutte le aree nella room corrente"""
+        for area in self.room.areas:
+            area_resize = AreaResize(area, self.room_bg.width(),
+                                     self.room_bg.height(), self)
+            area_resize.move(QPoint(self.logicalToAbsolute(area.x, 'x'),
+                                    self.logicalToAbsolute(area.y, 'y')))
+            self.resize_areas.append(area_resize)
+            area_resize.show()
 
     def logicalToAbsolute(self, value, direction):
         if direction == 'x':
@@ -123,6 +128,7 @@ class RoomEditor(QWidget):
         area_resize = AreaResize(area, self.room_bg.width(),
                               self.room_bg.height(), self)
         area_resize.move(QPoint(x_start, y_start))
+        self.resize_areas.append(area_resize)
         area_resize.show()
 
     def createAreaParameter(self, x_start, y_start, x_stop, y_stop):
@@ -207,6 +213,9 @@ class RoomEditor(QWidget):
         if self.room:
             self.room_bg = QPixmap(self.room.bg)
             self.change_room_name.setText(self.room.id)
+            for resize_area in self.resize_areas:
+                resize_area.hide()
+            self.showAllArea()
             self.update()
 
     def update_data(self):
