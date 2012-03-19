@@ -106,7 +106,17 @@ class AreaEditor(QWidget):
                 self.current_height = y + 5
                 self.current_width = x + 5
                 self.resize(self.sizeHint())
-
+            elif self.index == 4:
+                self.move(x_widget, y_widget + y)
+                self.current_height = self.height() - y
+                self.resize(self.sizeHint())
+            elif self.index == 5:
+                self.current_height = y
+                self.resize(self.sizeHint())
+            elif self.index == 6:
+                self.move(x_widget + x, y_widget)
+                self.current_width = self.width() - x
+                self.resize(self.sizeHint())
             else:
                 self.current_width = x
                 self.resize(self.sizeHint())
