@@ -70,6 +70,10 @@ class RoomManager(QWidget):
         g_project.unsubscribe(self)
 
     def update_data(self):
+        self.updateRoomList()
+
+    def updateRoomList(self):
+        """function to update the room list"""
         with blockedSignals(self.rooms_list):
             self.rooms_list.clear()
         for key, value in g_project.data['rooms'].items():
@@ -78,5 +82,6 @@ class RoomManager(QWidget):
             self.rooms_list.addItem(room_item)
             if room_item.text() == g_project.data['world'].start:
                 room_item.setBackgroundColor(Qt.yellow)
-        current_room = self.rooms_list.findItems(self.selected_room.id, Qt.MatchFixedString)[0]
+        current_room = self.rooms_list.findItems(self.selected_room.id,
+                                                 Qt.MatchFixedString)[0]
         current_room.setSelected(True)
