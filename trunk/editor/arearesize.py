@@ -16,13 +16,13 @@ class ResizeButton(QPushButton):
         self.setFixedHeight(10)
         self.setFixedWidth(10)
 
-class AreaEditor(QWidget):
+class AreaResize(QWidget):
 
     def sizeHint(self):
         return QSize(self.current_width, self.current_height)
 
     def __init__(self, area, bg_width, bg_height, parent=None):
-        super(AreaEditor, self).__init__(parent)
+        super(AreaResize, self).__init__(parent)
         self.in_resize = False
         self.bg_width = bg_width
         self.bg_height = bg_height

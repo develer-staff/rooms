@@ -9,7 +9,7 @@ from PyQt4.QtCore import *
 from structdata.project import g_project
 from structdata.area import Area
 
-from areaeditor import AreaEditor
+from arearesize import AreaResize
 
 class ChangeBGMButton(QPushButton):
     def sizeHint(self):
@@ -101,7 +101,7 @@ class RoomEditor(QWidget):
                                                          self.room_bg.height())
                                                     ))
         g_project.notify()
-        new_area = AreaEditor(area, self.room_bg.width(),
+        new_area = AreaResize(area, self.room_bg.width(),
                               self.room_bg.height(), self)
         new_area.move(QPoint(x_start, y_start))
         new_area.show()
