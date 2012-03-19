@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from xml.etree import ElementTree
-
+from xml.etree.ElementTree import ParseError
 from misc.odict import OrderedDict
 
 from structdata.area import Area
@@ -17,6 +17,10 @@ from structdata.itemRequirement import ItemRequirement
 from structdata.project import g_project
 
 from upgradeversion import upgradeVersion
+
+class OpenFileError(Exception):
+    pass
+
 
 def loadRooms(xml_file):
     rooms = OrderedDict()
@@ -126,21 +130,29 @@ def openFileRooms(path_file):
     """
     funzione per il caricamento dei dati salvati da un file .rooms
     prende in ingresso il path del file da controllare
-    ritorna un dizionario con tutte le informazioni su rooms, events, items,
-    images
+    Se il caricamento va a buon fine memorizza nella variabile globale g_project
+    tutte le informazioni altrimenti lancia un eccezione di tipo OpenFileRoom
     la funzione puo' prendere anche un file .rooms che ha una versione
     precedente all'ultima realizzata
     """
-    xml_file = upgradeVersion(path_file)
-    world = loadInformation(xml_file)
-    images = loadImages(xml_file)
-    items = loadItems(xml_file)
-    variables = loadVars(xml_file)
-    events = loadEvents(xml_file)
-    rooms = loadRooms(xml_file)
-    g_project.data['world'] = world
-    g_project.data['images'] = images
-    g_project.data['items'] = items
-    g_project.data['vars'] = variables
-    g_project.data['events'] = events
-    g_project.data['rooms'] = rooms
+    try:
+        xml_file = upgradeVersion(path_file)
+    except ParseError:
+        raise OpenFileError()
+    else:
+        try:
+            world = loadInformation(xml_file)
+            images = loadImages(xml_file)
+            items = loadItems(xml_file)
+            variables = loadVars(xml_file)
+            events = loadEvents(xml_file)
+            rooms = loadRooms(xml_file)
+        except ValueError:
+            raise OpenFileError()
+        else:
+            g_project.data['world'] = world
+            g_project.data['images'] = images
+            g_project.data['items'] = items
+            g_project.data['vars'] = variables
+            g_project.data['events'] = events
+            g_project.data['rooms'] = rooms
