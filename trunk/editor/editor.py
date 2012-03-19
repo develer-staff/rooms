@@ -19,7 +19,7 @@ from structdata.event import Event
 from structdata.room import Room
 from structdata.project import g_project
 
-from openfilerooms import openFileRooms
+from openfilerooms import openFileRooms, OpenFileError
 from savefilerooms import saveFileRooms
 
 class Editor(QWidget):
@@ -33,11 +33,9 @@ class Editor(QWidget):
         self.path_file = file_open.getOpenFileName(filter="*.rooms")
         try:
             openFileRooms(self.path_file)
-        except ValueError as val_err:
-            print val_err
-            self.room = None
-        else:
             self.room = g_project.data['rooms'][g_project.data['world'].start]
+        except OpenFileError:
+            self.room = Room(bg="room_basic.png", id="", bgm="")
         room_editor = RoomEditor(self.room, self)
         room_manager = RoomManager(self.room, self)
         new_room_button = QPushButton("New room")
