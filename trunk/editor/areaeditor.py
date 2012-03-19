@@ -147,6 +147,8 @@ class AreaEditor(QWidget):
         self.update()
 
     def toAbsolute(self, value, direction):
+        """converte le coordinate in assolute prendendo in ingresso
+           il valore e la direzione della dimensione"""
         if direction == 'x':
             w = float(g_project.data['world'].width)
             return float(value) * w
@@ -155,6 +157,8 @@ class AreaEditor(QWidget):
             return float(value) * h
 
     def toLogical(self, value, direction):
+        """converte le coordinate in logico prendendo in ingresso
+           il valore e la direzione della dimensione"""
         if direction == 'x':
             w = float(g_project.data['world'].width)
             return round(float(value) / w, 3)
