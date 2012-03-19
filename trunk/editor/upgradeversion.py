@@ -4,6 +4,10 @@ last_version = 3
 from xml.etree import ElementTree
 
 def from1To2(xml_file):
+    """
+    funzione per il passaggio dalla versione 1 alla versione 2 del file
+    imposta le coordinate da assolute a relative
+    """
     xml_file.set('version', '2')
     for node in xml_file.iter('world'):
         width = int(node.get('width'))
@@ -23,6 +27,10 @@ def from1To2(xml_file):
     return xml_file
 
 def from2To3(xml_file):
+    """
+    funzione per il passaggio dalla versione 2 alla versione 3 del file
+    inserisce in tutte le room il campo bgm (background music)
+    """
     xml_file.set('version', '3')
     for node in xml_file.find('rooms').getiterator():
         if node.tag == 'room':
