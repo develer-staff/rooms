@@ -97,7 +97,8 @@ class RoomEditor(QWidget):
                                                                  x_stop,
                                                                  y_stop))
         g_project.notify()
-        new_area = AreaEditor(area, self)
+        new_area = AreaEditor(area, self.room_bg.width(),
+                              self.room_bg.height(), self)
         new_area.move(QPoint(x_start, y_start))
         new_area.show()
 
@@ -109,7 +110,6 @@ class RoomEditor(QWidget):
         rel_width = round(abs(x_stop - x_start) / w, 3)
         rel_height = round(abs(y_stop - y_start) / h, 3)
         return (rel_x, rel_y, rel_width, rel_height)
-
 
     def mousePressEvent(self, e):
         self.area_drag_start = e.pos()
@@ -139,7 +139,6 @@ class RoomEditor(QWidget):
         QWidget.paintEvent(self, e)
 
         p = QPainter(self)
-
         p.drawPixmap(QPoint(0, 0), self.room_bg)
         p.setPen(Qt.blue)
         # Draw currently painted area
