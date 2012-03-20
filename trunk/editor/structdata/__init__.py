@@ -49,6 +49,7 @@ class_tag['param'] = Param
 class_tag['var'] = Var
 class_tag['var_req'] = VarRequirement
 class_tag['world'] = World
+class_tag['img'] = Image
 
 #for cls in globals():
 #    print cls
