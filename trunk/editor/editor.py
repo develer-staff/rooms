@@ -46,12 +46,14 @@ class SaveProjectButton(QPushButton):
 
 class Editor(QWidget):
 
-    def __init__(self, parent=None):
+    def __init__(self, file_name, parent=None):
         super(Editor, self).__init__(parent)
         self.dirty = False
         g_project.subscribe(self)
         grid_layout = QGridLayout(self)
-        openFileRooms("dummy.rooms")
+
+        openFileRooms(file_name)
+
         self.room = g_project.data['rooms'][g_project.data['world'].start]
         room_editor = RoomEditor(self.room, self)
         room_manager = RoomManager(self.room, self)
@@ -117,6 +119,9 @@ class Editor(QWidget):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    editor = Editor()
+    file_name = "dummy.rooms"
+    if len(sys.argv) == 2:
+        file_name = str(sys.argv[1])
+    editor = Editor(file_name)
     editor.show()
     app.exec_()
