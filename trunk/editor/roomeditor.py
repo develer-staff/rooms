@@ -158,8 +158,8 @@ class RoomEditor(QWidget):
         self.area_drag_curr = QPoint(x, y)
         self.update()
 
-    def clamp(self, position, dimension):
-        return min(position, dimension) if position > 0 else max(0, position)
+    def clamp(self, value, maximium):
+        return min(value, maximium) if value > 0 else maximium(0, value)
 
     def mouseReleaseEvent(self, e):
         if self.area_drag_start is None:
