@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<world version="3" name="" width="800" height="600" start="new_room">
+  <images>
+  </images>
+  <items>
+  </items>
+  <vars>
+  </vars>
+  <events>
+  </events>
+  <rooms>
+    <room bg="dummy.png" bgm="" id="new_room"/>
+  </rooms>
+</world>
