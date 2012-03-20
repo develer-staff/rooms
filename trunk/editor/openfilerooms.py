@@ -33,7 +33,7 @@ def loadRooms(xml_file):
     for line in list(xml_file.find("rooms")):
             room = class_tag[line.tag](**line.attrib)
             for child in line:
-                area = class_tag[child.attr](**child.attrib)
+                area = class_tag[child.tag](**child.attrib)
                 room.areas.append(area)
             rooms[room.id] = room
     return rooms
