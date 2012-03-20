@@ -17,4 +17,6 @@
    Le informazioni di tutto il progetto sono contenute nella classe Project. 
    Importando il modulo project.py si puo' utilizzare la variabile globale
    g_project che contiene tutte le informazioni
+   g_project e' un singleton che punta sempre al progetto corrente e esiste
+   sempre un solo progetto corrente
 """
