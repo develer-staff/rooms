@@ -6,6 +6,6 @@ class Image(OriginData):
 
     tag_name = 'img'
 
-    def __init__(self, file_name):
+    def __init__(self, file):
         super(Image, self).__init__()
-        self.file = file_name
+        self.file = file
