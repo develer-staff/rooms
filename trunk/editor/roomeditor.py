@@ -152,15 +152,14 @@ class RoomEditor(QWidget):
     def mouseMoveEvent(self, e):
         if self.area_drag_start is None:
             return
-        x = e.x()
-        y = e.y()
         #controllo di essere nell'area dell'mmagine di sfondo
-        x = min(x, self.room_bg.width()) if x > 0\
-                                                    else max(0, x)
-        y = min(y, self.room_bg.height()) if y > 0\
-                                                     else max(0, y)
+        x = self.clamp(e.x(), self.room_bg.width())
+        y = self.clamp(e.y(), self.room_bg.height())
         self.area_drag_curr = QPoint(x, y)
         self.update()
+
+    def clamp(self, position, dimension):
+        return min(position, dimension) if position > 0 else max(0, position)
 
     def mouseReleaseEvent(self, e):
         if self.area_drag_start is None:
