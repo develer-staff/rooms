@@ -24,8 +24,8 @@ class AreaResize(QWidget):
         self.bg_width = bg_width
         self.bg_height = bg_height
         self.area = area
-        self.resize(QSize(self.toAbsolute(self.area.width, 'x'),
-                            self.toAbsolute(self.area.height, 'y')))
+        self.resize(QSize(float(self.area.width),
+                          float(self.area.height)))
 #        self.change_area_name = QLabel(self)
 #        self.change_area_name.setText(self.area.id)
         self.timer = QTimer(self)
@@ -114,10 +114,10 @@ class AreaResize(QWidget):
     def mouseReleaseEvent(self, event=None):
         if self.in_resize:
             self.in_resize = False
-            self.area.x = str(self.toLogical(self.x(), 'x'))
-            self.area.y = str(self.toLogical(self.y(), 'y'))
-            self.area.width = str(self.toLogical(self.width(), 'x'))
-            self.area.height = str(self.toLogical(self.height(), 'y'))
+            self.area.x = str(self.x())
+            self.area.y = str(self.y())
+            self.area.width = str(self.width())
+            self.area.height = str(self.height())
             g_project.notify()
             self.update()
 
@@ -144,26 +144,6 @@ class AreaResize(QWidget):
     def startTrack(self, index):
         self.in_resize = True
         self.index = index
-
-    def toAbsolute(self, value, direction):
-        """converte le coordinate in assolute prendendo in ingresso
-           il valore e la direzione della dimensione"""
-        if direction == 'x':
-            w = float(g_project.data['world'].width)
-            return float(value) * w
-        elif direction == 'y':
-            h = float(g_project.data['world'].height)
-            return float(value) * h
-
-    def toLogical(self, value, direction):
-        """converte le coordinate in logico prendendo in ingresso
-           il valore e la direzione della dimensione"""
-        if direction == 'x':
-            w = float(g_project.data['world'].width)
-            return round(float(value) / w, 3)
-        else:
-            h = float(g_project.data['world'].height)
-            return round(float(value) / h, 3)
 
     def paintEvent(self, event=None):
         QWidget.paintEvent(self, event)

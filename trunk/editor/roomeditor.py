@@ -88,18 +88,9 @@ class RoomEditor(QWidget):
         for area in self.room.areas:
             area_resize = AreaResize(area, self.room_bg.width(),
                                      self.room_bg.height(), self)
-            area_resize.move(QPoint(self.logicalToAbsolute(area.x, 'x'),
-                                    self.logicalToAbsolute(area.y, 'y')))
+            area_resize.move(float(area.x), float(area.y))
             self.resize_areas.append(area_resize)
             area_resize.show()
-
-    def logicalToAbsolute(self, value, direction):
-        if direction == 'x':
-            w = float(g_project.data['world'].width)
-            return float(value) * w
-        elif direction == 'y':
-            h = float(g_project.data['world'].height)
-            return float(value) * h
 
     def setRoomBg(self):
         """funzione per settare il background della room"""
@@ -118,14 +109,9 @@ class RoomEditor(QWidget):
             g_project.notify()
 
     def createArea(self, x_start, y_start, x_stop, y_stop):
-        area = Area.create(self.room,
-                           *self.createAreaParameter(max(0, x_start),
-                                                     max(0, y_start),
-                                                     min(x_stop,
-                                                         self.room_bg.width()),
-                                                     min(y_stop,
-                                                         self.room_bg.height())
-                                                    ))
+        area = Area.create(self.room, max(0, x_start), max(0, y_start),
+                           min(x_stop, self.room_bg.width()),
+                           min(y_stop, self.room_bg.height()))
         g_project.notify()
         area_resize = AreaResize(area, self.room_bg.width(),
                               self.room_bg.height(), self)
@@ -133,16 +119,6 @@ class RoomEditor(QWidget):
         self.resize_areas.append(area_resize)
         area_resize.show()
 
-    def createAreaParameter(self, x_start, y_start, x_stop, y_stop):
-        """funzione che trasforma le coordinate e le dimensioni definite
-        nell'editing dell'area da assolute a logiche"""
-        w = float(g_project.data['world'].width)
-        h = float(g_project.data['world'].height)
-        rel_x = round(min(x_start, x_stop) / w, 3)
-        rel_y = round(min(y_start, y_stop) / h, 3)
-        rel_width = round(abs(x_stop - x_start) / w, 3)
-        rel_height = round(abs(y_stop - y_start) / h, 3)
-        return (rel_x, rel_y, rel_width, rel_height)
 
     def mousePressEvent(self, e):
         self.area_drag_start = e.pos()
