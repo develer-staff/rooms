@@ -5,6 +5,8 @@ from PyQt4.QtCore import *
 
 from structdata.project import g_project
 
+from areaeditor import AreaEditor
+
 class ResizeButton(QPushButton):
 
     def sizeHint(self):
@@ -13,13 +15,8 @@ class ResizeButton(QPushButton):
         super(ResizeButton, self).__init__(parent)
         self.setStyleSheet("background-color:"
                                            "rgba( 255, 255, 255, 100% );")
-        self.setFixedHeight(10)
-        self.setFixedWidth(10)
 
 class AreaResize(QWidget):
-
-    def sizeHint(self):
-        return QSize(self.current_width, self.current_height)
 
     def __init__(self, area, bg_width, bg_height, parent=None):
         super(AreaResize, self).__init__(parent)
@@ -29,19 +26,18 @@ class AreaResize(QWidget):
         self.area = area
         self.resize(QSize(self.toAbsolute(self.area.width, 'x'),
                             self.toAbsolute(self.area.height, 'y')))
-        self.current_width = self.width()
-        self.current_height = self.height()
-        self.setSizePolicy(QSizePolicy(QSizePolicy.Preferred,
-                                       QSizePolicy.Preferred))
 #        self.change_area_name = QLabel(self)
 #        self.change_area_name.setText(self.area.id)
+        self.timer = QTimer(self)
         self.vl = QVBoxLayout()
+        self.vl.setContentsMargins(0, 0, 0, 0)
+        self.area_editor = None
         #self.vl.addStretch()
         #self.vl.addWidget(self.change_area_name)
-
         self.signal_mapper_pressed = QSignalMapper(self)
         self.resize_buttons = []
         horizontal = QHBoxLayout()
+        horizontal.setContentsMargins(0, 0, 0, 0)
         for i in range(8):
             button = ResizeButton(self)
             button.setVisible(False)
@@ -56,11 +52,12 @@ class AreaResize(QWidget):
             horizontal.addWidget(button)
             if i not in [2, 4, 7]:
                 horizontal.addStretch()
-            if i == 2 or i == 4 or i == 7:
+            else:
                 self.vl.addLayout(horizontal)
                 if i != 7:
                     self.vl.addStretch()
                     horizontal = QHBoxLayout()
+                    horizontal.setContentsMargins(0, 0, 0, 0)
             #button.move(self.change_position(i))
             self.connect(button, SIGNAL("pressed()"),
                          self.signal_mapper_pressed, SLOT("map()"))
@@ -68,80 +65,55 @@ class AreaResize(QWidget):
             self.resize_buttons.append(button)
         self.setLayout(self.vl)
         self.connect(self.signal_mapper_pressed, SIGNAL("mapped(int)"),
-                     self.start_track)
-
-    def change_position(self, index):
-        """funzione che ritorna la posizione di ogni bottone per il resize"""
-        pos = [QPoint(0, 0), QPoint(self.width() - 10, 0),
-             QPoint(0, self.height() - 10),
-             QPoint(self.width() - 10, self.height() - 10),
-             QPoint(self.width() / 2, 0),
-             QPoint(self.width() / 2, self.height() - 10),
-             QPoint(0, self.height() / 2),
-             QPoint(self.width() - 10, self.height() / 2)]
-        return pos[index]
-
-    def start_track(self, index):
-        self.in_resize = True
-        self.index = index
+                     self.startTrack)
 
     def mouseMoveEvent(self, event=None):
         if (event.buttons() and Qt.LeftButton) == Qt.LeftButton and self.in_resize:
             x = event.pos().x()
             #uso per non superare i bordi laterali dello sfondo
+
             x = min(x, self.bg_width - self.x()) if x + self.x() > 0\
                                                  else max(0, x)
             y = event.pos().y()
-            #uso per non superare i bordi superiore e inferiore dello sfondo
+#            #uso per non superare i bordi superiore e inferiore dello sfondo
             y = min(y, self.bg_height - self.y()) if y + self.y() > 0\
                                                   else max(0, y)
             x_widget = self.x()
             y_widget = self.y()
-            #top left button
+            #resize with top left button
             if self.index == 0:
                 self.move(x_widget + x, y_widget + y)
-                self.current_width = self.width() - x
-                self.current_height = self.height() - y
-                self.resize(self.sizeHint())
-            #top button
+                self.resize(QSize(self.width() - x, self.height() - y))
+            #resize with top button
             elif self.index == 1:
                 self.move(x_widget, y_widget + y)
-                self.current_height = self.height() - y
-                self.resize(self.sizeHint())
-            #top right button
+                self.resize(QSize(self.width(), self.height() - y))
+            #resize with top right button
             elif self.index == 2:
                 self.move(self.x(), y_widget + y)
-                self.current_width = x
-                self.current_height = self.height() - y
-                self.resize(self.sizeHint())
-            #left button
+                self.resize(QSize(x, self.height() - y))
+            #resize with left button
             elif self.index == 3:
                 self.move(x_widget + x, y_widget)
-                self.current_width = self.width() - x
-                self.resize(self.sizeHint())
-            #right button
+                self.resize(QSize(self.width() - x, self.height()))
+            #resize with right button
             elif self.index == 4:
-                self.current_width = x
-                self.resize(self.sizeHint())
-            #bottom left button
+                self.resize(QSize(x, self.height()))
+            #resize with bottom left button
             elif self.index == 5:
                 self.move(x_widget + x, self.y())
-                self.current_width = self.width() - x
-                self.current_height = y
-                self.resize(self.sizeHint())
-            #bottom button
+                self.resize(QSize(self.width() - x, y))
+            #resize with bottom button
             elif self.index == 6:
-                self.current_height = y
-                self.resize(self.sizeHint())
-            #bottom right button 
+                self.resize(QSize(self.width(), y))
+            #resize with bottom right button 
             elif self.index == 7:
-                self.current_height = y + 5
-                self.current_width = x + 5
-                self.resize(self.sizeHint())
-            i = 0
-#            for button in self.resize_buttons:
-#                button.move(self.change_position(i))
-#                i += 1
+                self.resize(QSize(x + 5, y + 5))
+            self.update()
+
+    def mouseReleaseEvent(self, event=None):
+        if self.in_resize:
+            self.in_resize = False
             self.area.x = str(self.toLogical(self.x(), 'x'))
             self.area.y = str(self.toLogical(self.y(), 'y'))
             self.area.width = str(self.toLogical(self.width(), 'x'))
@@ -149,9 +121,13 @@ class AreaResize(QWidget):
             g_project.notify()
             self.update()
 
-    def mouseReleaseEvent(self, event=None):
-        self.in_resize = False
-        self.update()
+    def mousePressEvent(self, event=None):
+        if event.modifiers() == Qt.ControlModifier:
+            self.showAreaEditor()
+
+    def showAreaEditor(self):
+        self.area_editor = AreaEditor()
+        self.area_editor.show()
 
     def enterEvent(self, event=None):
         #self.change_area_name.setVisible(True)
@@ -164,6 +140,10 @@ class AreaResize(QWidget):
         for cb in self.resize_buttons:
             cb.setVisible(False)
         self.update()
+
+    def startTrack(self, index):
+        self.in_resize = True
+        self.index = index
 
     def toAbsolute(self, value, direction):
         """converte le coordinate in assolute prendendo in ingresso
@@ -188,6 +168,10 @@ class AreaResize(QWidget):
     def paintEvent(self, event=None):
         QWidget.paintEvent(self, event)
         p = QPainter(self)
+
+        # XXX: senza questo resta il trail dell'area mentre viene
+        # ridimensionata: investigare
         p.setRenderHint(QPainter.Antialiasing)
+
         p.setPen(Qt.blue)
         p.drawRect(0, 0, self.width(), self.height())
