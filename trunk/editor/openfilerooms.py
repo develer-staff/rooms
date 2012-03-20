@@ -15,6 +15,7 @@ from structdata.world import World
 from structdata.varRequirement import VarRequirement
 from structdata.itemRequirement import ItemRequirement
 from structdata.project import g_project
+from structdata import class_tag
 
 from upgradeversion import upgradeVersion
 
@@ -30,110 +31,62 @@ def loadRooms(xml_file):
     rooms = OrderedDict()
     room = None
     for line in list(xml_file.find("rooms")):
-        if line.tag == "room":
-            room = Room(line.attrib["id"], line.attrib["bg"],
-                            line.attrib["bgm"])
+            room = class_tag[line.tag](**line.attrib)
             for child in line:
-                if child.tag == "area":
-                    area = Area(child.attrib["id"],
-                            child.attrib["x"],
-                            child.attrib["y"],
-                            child.attrib["width"],
-                            child.attrib["height"],
-                            child.attrib["event"])
-                else:
-                    raise ValueError("invalid tag %s in room" % child.tag)
+                area = class_tag[child.attr](**child.attrib)
                 room.areas.append(area)
             rooms[room.id] = room
-        else:
-            raise ValueError("invalid tag %s in rooms" % line.tag)
     return rooms
 
 def loadEvents(xml_file):
     events = OrderedDict()
     event = None
     for line in list(xml_file.find("events")):
-        if line.tag == "event":
-            event = Event(line.attrib["id"])
-            events[event.id] = event
-            for child in line:
-                if child.tag == "item_req":
-                    requirement = ItemRequirement(child.attrib['id'],
-                                              child.attrib['value'])
-                    event.requirements.append(requirement)
-                elif child.tag == "var_req":
-                    requirement = VarRequirement(child.attrib['id'],
-                                              child.attrib['value'])
-                    event.requirements.append(requirement)
-                elif child.tag == "action":
-                    action = Action(child.attrib['id'])
-                    event.actions.append(action)
-                    for second_child in child:
-                        if second_child.tag == "param":
-                            param = Param(second_child.attrib['value'])
-                            action.params.append(param)
-                        else:
-                            raise ValueError("invalid tag %s in action"
-                                             % second_child.tag)
-                else:
-                    raise ValueError("invalid tag %s in event" % child.tag)
-        else:
-            raise ValueError("invalid tag %s in events" % line.tag)
+        event = class_tag[line.tag](**line.attrib)
+        events[event.id] = event
+        for child in line:
+            if child.tag == "item_req" or child.tag == "var_req":
+                requirement = class_tag[child.tag](**child.attrib)
+                event.requirements.append(requirement)
+            else:
+                action = Action(child.attrib['id'])
+                event.actions.append(action)
+                for second_child in child:
+                        param = class_tag[second_child.tag](**second_child.attrib)
+                        action.params.append(param)
     return events
 
 def loadItems(xml_file):
     items = OrderedDict()
     for line in list(xml_file.find("items")):
-        if line.tag == "item":
-            item = Item(line.attrib['id'],
-                            line.attrib["x"],
-                            line.attrib["y"],
-                            line.attrib["height"],
-                            line.attrib["width"],
-                            line.attrib["room"],
-                            line.attrib["image"],
-                            line.attrib['event'])
-            items[item.id] = item
-        else:
-            raise ValueError("invalid tag %s in events" % line.tag)
+        item = class_tag[line.tag](**line.attrib)
+        items[item.id] = item
     return items
 
 def loadInformation(xml_file):
     informations = None
     for node in xml_file.iter('world'):
-        informations = World(node.attrib['version'],
-                                   node.attrib['name'],
-                                   node.attrib['width'],
-                                   node.attrib['height'],
-                                   node.attrib['start'])
-    if informations:
-        return informations
-    else:
-        raise ValueError("invalid file format")
+        informations = class_tag[node.tag](**node.attrib)
+    return informations
 
 def loadImages(xml_file):
     images = {}
     for line in list(xml_file.find("images")):
-        if line.tag == "img":
-            images[line.attrib['file']] = Image(line.attrib['file'])
-        else:
-            raise ValueError("invalid tag %s in images" % line.tag)
+        images[line.attrib['file']] = class_tag[line.tag](**line.attrib)
     return images
 
 def loadVars(xml_file):
     variable = {}
     for line in list(xml_file.find("vars")):
-        if line.tag == "var":
-            variable[line.attrib['id']] = Var(line.attrib['id'],
-                                              line.attrib['value'])
-        else:
-            ValueError("invalid tag %s in vars" % line.tag)
+        variable[line.attrib['id']] = class_tag[line.tag](**line.attrib)
     return variable
 
 def openFileRooms(file_path):
     """
     funzione per il caricamento dei dati salvati da un file .rooms
     prende in ingresso il path del file da controllare
+    Si suppone che nel momento che il file viene passato alle funzioni per 
+    ottenere le informazioni del progetto il file sia in un formato corretto
     Se il caricamento va a buon fine memorizza nella variabile globale g_project
     tutte le informazioni altrimenti lancia un eccezione di tipo OpenFileRoom
     la funzione puo' prendere anche un file .rooms che ha una versione
@@ -142,8 +95,7 @@ def openFileRooms(file_path):
     try:
         xml_file = upgradeVersion(file_path)
     except ParseError:
-        openFileRooms("dummy.rooms")
-        raise OpenFileError()
+        raise OpenFileError(file_path)
     try:
         world = loadInformation(xml_file)
         images = loadImages(xml_file)
@@ -152,7 +104,6 @@ def openFileRooms(file_path):
         events = loadEvents(xml_file)
         rooms = loadRooms(xml_file)
     except ValueError:
-        openFileRooms("dummy.rooms")
         raise OpenFileError(file_path)
     else:
         g_project.data['world'] = world
