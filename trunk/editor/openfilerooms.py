@@ -19,8 +19,12 @@ from structdata.project import g_project
 from upgradeversion import upgradeVersion
 
 class OpenFileError(Exception):
-    pass
 
+    def __init__(self, file_path):
+        self.file_path = file_path
+
+    def __str__(self):
+        return "Error opening file %s", self.file_path
 
 def loadRooms(xml_file):
     rooms = OrderedDict()
@@ -126,7 +130,7 @@ def loadVars(xml_file):
             ValueError("invalid tag %s in vars" % line.tag)
     return variable
 
-def openFileRooms(path_file):
+def openFileRooms(file_path):
     """
     funzione per il caricamento dei dati salvati da un file .rooms
     prende in ingresso il path del file da controllare
@@ -136,23 +140,24 @@ def openFileRooms(path_file):
     precedente all'ultima realizzata
     """
     try:
-        xml_file = upgradeVersion(path_file)
+        xml_file = upgradeVersion(file_path)
     except ParseError:
+        openFileRooms("dummy.rooms")
         raise OpenFileError()
+    try:
+        world = loadInformation(xml_file)
+        images = loadImages(xml_file)
+        items = loadItems(xml_file)
+        variables = loadVars(xml_file)
+        events = loadEvents(xml_file)
+        rooms = loadRooms(xml_file)
+    except ValueError:
+        openFileRooms("dummy.rooms")
+        raise OpenFileError(file_path)
     else:
-        try:
-            world = loadInformation(xml_file)
-            images = loadImages(xml_file)
-            items = loadItems(xml_file)
-            variables = loadVars(xml_file)
-            events = loadEvents(xml_file)
-            rooms = loadRooms(xml_file)
-        except ValueError:
-            raise OpenFileError()
-        else:
-            g_project.data['world'] = world
-            g_project.data['images'] = images
-            g_project.data['items'] = items
-            g_project.data['vars'] = variables
-            g_project.data['events'] = events
-            g_project.data['rooms'] = rooms
+        g_project.data['world'] = world
+        g_project.data['images'] = images
+        g_project.data['items'] = items
+        g_project.data['vars'] = variables
+        g_project.data['events'] = events
+        g_project.data['rooms'] = rooms

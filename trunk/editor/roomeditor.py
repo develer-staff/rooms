@@ -42,6 +42,8 @@ class RoomEditor(QWidget):
         self.room = room
         self.room_bg = QPixmap(room.bg)
         self.setMinimumSize(self.room_bg.width(), self.room_bg.height())
+        self.setSizePolicy(QSizePolicy(QSizePolicy.Preferred,
+                                       QSizePolicy.Preferred))
         g_project.subscribe(self)
 
         self.area_drag_start = None
@@ -203,6 +205,7 @@ class RoomEditor(QWidget):
         if room:
             self.room = room
             self.change_room_name.setText(self.room.id)
+            self.room_bg = QPixmap(self.room.bg)
 
     def changeCurrentRoom(self, room_id):
         """
@@ -220,6 +223,8 @@ class RoomEditor(QWidget):
 
     def update_data(self):
         self.setRoom(self.room)
+        self.setMinimumSize(int(g_project.data['world'].width),
+                          int(g_project.data['world'].height))
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

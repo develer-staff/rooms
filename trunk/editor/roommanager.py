@@ -48,6 +48,7 @@ class RoomManager(QWidget):
                          SIGNAL("currentTextChanged(const QString &)"),
                          self.updateRoomSelected)
 
+
     def updateRoomSelected(self, room_name):
         if room_name:
             self.selected_room = g_project.data['rooms'][str(room_name)]
@@ -82,6 +83,13 @@ class RoomManager(QWidget):
             self.rooms_list.addItem(room_item)
             if room_item.text() == g_project.data['world'].start:
                 room_item.setBackgroundColor(Qt.yellow)
-        current_room = self.rooms_list.findItems(self.selected_room.id,
-                                                 Qt.MatchFixedString)[0]
+        try:
+            current_room = self.rooms_list.findItems(self.selected_room.id,
+                                                     Qt.MatchFixedString)[0]
+        except IndexError:
+            current_room = self.rooms_list.findItems(g_project.data['world'].\
+                                                     start,
+                                                     Qt.MatchFixedString)[0]
         current_room.setSelected(True)
+        self.emit(SIGNAL("currentRoomChanged(const QString &)"),
+                  current_room.text())

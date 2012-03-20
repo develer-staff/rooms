@@ -29,28 +29,42 @@ class Editor(QWidget):
         self.dirty = False
         g_project.subscribe(self)
         grid_layout = QGridLayout(self)
-        file_open = QFileDialog()
-        self.path_file = file_open.getOpenFileName(filter="*.rooms")
-        try:
-            openFileRooms(self.path_file)
-            self.room = g_project.data['rooms'][g_project.data['world'].start]
-        except OpenFileError:
-            self.room = Room(bg="room_basic.png", id="", bgm="")
+        openFileRooms("dummy.rooms")
+        self.room = g_project.data['rooms'][g_project.data['world'].start]
         room_editor = RoomEditor(self.room, self)
         room_manager = RoomManager(self.room, self)
+        open_project_button = QPushButton("Open project")
         new_room_button = QPushButton("New room")
-        grid_layout.addWidget(new_room_button, 0, 0)
-        grid_layout.addWidget(room_manager, 1, 0)
-        grid_layout.addWidget(room_editor, 0, 1, 2, 1)
+        grid_layout.addWidget(open_project_button, 0, 0)
+        grid_layout.addWidget(new_room_button, 1, 0)
+        grid_layout.addWidget(room_manager, 2, 0)
+        grid_layout.addWidget(room_editor, 1, 1, 2, 1)
         self.connect(room_manager,
                      SIGNAL("currentRoomChanged(const QString &)"),
                      room_editor.changeCurrentRoom)
         self.connect(new_room_button, SIGNAL("clicked()"), Room.create)
+        self.connect(open_project_button, SIGNAL("clicked()"),
+                     self.open_project)
 
     def update_data(self):
         self.dirty = True
 
-    def closeEvent(self, event):
+    def open_project(self):
+        if self.dirty:
+            result = self.save_project()
+            self.dirty = False
+        if not self.dirty or result:
+            file_open = QFileDialog()
+            self.path_file = file_open.getOpenFileName(filter="*.rooms")
+            try:
+                openFileRooms(self.path_file)
+                self.room = g_project.data['rooms'][g_project.data['world'].start]
+            except OpenFileError as err:
+                print err
+            g_project.notify()
+            self.dirty = False
+
+    def save_project(self):
         if self.dirty:
             ret = QMessageBox.question(self, "Save", "Do you want save the file?",
                                        QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
@@ -62,12 +76,17 @@ class Editor(QWidget):
                         saveFileRooms(self.path_file[0])
                     except ValueError:
                         print "Unable to save file"
-                        event.ignore()
+                        return False
                     else:
                         g_project.unsubscribe(self)
                         self.dirty = False
             elif ret == QMessageBox.Cancel:
-                event.ignore()
+                return False
+        return True
+
+    def closeEvent(self, event):
+        if not self.save_project():
+            event.ignore()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
