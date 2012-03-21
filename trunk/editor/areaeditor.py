@@ -2,6 +2,7 @@
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+from structdata.project import g_project
 
 class PlusButton(QPushButton):
 
@@ -29,13 +30,29 @@ class MinusButton(QPushButton):
 
 class AreaEditor(QWidget):
 
-    def __init__(self, parent=None):
+    def __init__(self, area, parent=None):
         super(AreaEditor, self).__init__(parent)
-        vertical = QVBoxLayout(self)
+        self.gl = QGridLayout(self)
+        self.signal_plus_mapper = QSignalMapper(self)
+        self.area = area
+        self.event = g_project.data['events'][self.area.event]
+        i = 0
+        for action in self.event.actions:
+            minus_button = MinusButton()
+            line = action.id
+            for param in action.params:
+                line = "%s %s" % (line, param.value)
+            line_edit = QLineEdit()
+            line_edit.setText(line)
+            self.gl.addWidget(minus_button, i , 0)
+            self.gl.addWidget(line_edit, i, 1)
+            self.connect(minus_button, SIGNAL("clicked()"),
+                         self.signal_plus_mapper, SLOT("map()"))
+            self.signal_plus_mapper.setMapping(minus_button, i)
+            i += 1
         plus_button = PlusButton()
-        minus_button = MinusButton()
-        vertical.addWidget(plus_button)
-        self.setLayout(vertical)
+        self.gl.addWidget(plus_button, i, 0)
+        self.setLayout(self.gl)
 
 
 if __name__ == "__main__":
