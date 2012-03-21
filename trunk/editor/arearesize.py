@@ -26,14 +26,10 @@ class AreaResize(QWidget):
         self.area = area
         self.resize(QSize(float(self.area.width),
                           float(self.area.height)))
-#        self.change_area_name = QLabel(self)
-#        self.change_area_name.setText(self.area.id)
         self.timer = QTimer(self)
         self.vl = QVBoxLayout()
         self.vl.setContentsMargins(0, 0, 0, 0)
         self.area_editor = None
-        #self.vl.addStretch()
-        #self.vl.addWidget(self.change_area_name)
         self.signal_mapper_pressed = QSignalMapper(self)
         self.resize_buttons = []
         horizontal = QHBoxLayout()
@@ -58,7 +54,6 @@ class AreaResize(QWidget):
                     self.vl.addStretch()
                     horizontal = QHBoxLayout()
                     horizontal.setContentsMargins(0, 0, 0, 0)
-            #button.move(self.change_position(i))
             self.connect(button, SIGNAL("pressed()"),
                          self.signal_mapper_pressed, SLOT("map()"))
             self.signal_mapper_pressed.setMapping(button, i)
@@ -126,17 +121,15 @@ class AreaResize(QWidget):
             self.showAreaEditor()
 
     def showAreaEditor(self):
-        self.area_editor = AreaEditor()
+        self.area_editor = AreaEditor(self)
         self.area_editor.show()
 
     def enterEvent(self, event=None):
-        #self.change_area_name.setVisible(True)
         for cb in self.resize_buttons:
             cb.setVisible(True)
         self.update()
 
     def leaveEvent(self, event=None):
-        #self.change_area_name.setVisible(False)
         for cb in self.resize_buttons:
             cb.setVisible(False)
         self.update()
