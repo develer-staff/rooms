@@ -70,7 +70,7 @@ class RoomManager(QWidget):
     def closeEvent(self, event):
         g_project.unsubscribe(self)
 
-    def update_data(self):
+    def updateData(self):
         self.updateRoomList()
 
     def updateRoomList(self):

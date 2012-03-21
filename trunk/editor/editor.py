@@ -74,7 +74,7 @@ class Editor(QWidget):
         self.connect(self.save_project_button, SIGNAL("clicked()"),
                      self.saveProject)
 
-    def update_data(self):
+    def updateData(self):
         self.save_project_button.setEnabled(True)
         self.dirty = True
 

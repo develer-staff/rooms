@@ -209,7 +209,7 @@ class RoomEditor(QWidget):
             self.showAllArea()
             self.update()
 
-    def update_data(self):
+    def updateData(self):
         self.setRoom(self.room)
         self.setMinimumSize(int(g_project.data['world'].width),
                           int(g_project.data['world'].height))

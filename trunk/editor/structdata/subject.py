@@ -15,4 +15,4 @@ class Subject(object):
 
     def notify(self):
         for observer in self._observers:
-            observer.update_data()
+            observer.updateData()
