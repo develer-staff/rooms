@@ -26,7 +26,6 @@ class AreaResize(QWidget):
         self.area = area
         self.resize(QSize(float(self.area.width),
                           float(self.area.height)))
-        self.timer = QTimer(self)
         self.vl = QVBoxLayout()
         self.vl.setContentsMargins(0, 0, 0, 0)
         self.area_editor = None
@@ -121,7 +120,8 @@ class AreaResize(QWidget):
             self.showAreaEditor()
 
     def showAreaEditor(self):
-        self.area_editor = AreaEditor(self)
+        self.area_editor = AreaEditor(self.area)
+        self.area_editor.move(self.x(), self.y())
         self.area_editor.show()
 
     def enterEvent(self, event=None):
