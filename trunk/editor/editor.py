@@ -94,27 +94,30 @@ class Editor(QWidget):
 
     def save_project(self):
         if self.dirty:
+            self.path_file = QFileDialog().getSaveFileNameAndFilter(parent=self,
+                                                            filter="*.rooms")
+            if self.path_file and self.path_file[0]:
+                try:
+                    saveFileRooms(self.path_file[0])
+                except ValueError:
+                    print "Unable to save file"
+                    return False
+                else:
+                    g_project.unsubscribe(self)
+                    self.dirty = False
+                return True
+            else:
+                return False
+
+    def closeEvent(self, event):
+        if self.dirty:
             ret = QMessageBox.question(self, "Save", "Do you want save the file?",
                                        QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
             if ret == QMessageBox.Yes:
-                self.path_file = QFileDialog().getSaveFileNameAndFilter(parent=self,
-                                                                filter="*.rooms")
-                if self.path_file:
-                    try:
-                        saveFileRooms(self.path_file[0])
-                    except ValueError:
-                        print "Unable to save file"
-                        return False
-                    else:
-                        g_project.unsubscribe(self)
-                        self.dirty = False
+                if not self.save_project():
+                    event.ignore()
             elif ret == QMessageBox.Cancel:
-                return False
-        return True
-
-    def closeEvent(self, event):
-        if not self.save_project():
-            event.ignore()
+                event.ignore()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
