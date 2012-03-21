@@ -70,15 +70,15 @@ class Editor(QWidget):
                      room_editor.changeCurrentRoom)
         self.connect(new_room_button, SIGNAL("clicked()"), Room.create)
         self.connect(open_project_button, SIGNAL("clicked()"),
-                     self.open_project)
+                     self.openProject)
         self.connect(self.save_project_button, SIGNAL("clicked()"),
-                     self.save_project)
+                     self.saveProject)
 
     def update_data(self):
         self.save_project_button.setEnabled(True)
         self.dirty = True
 
-    def open_project(self):
+    def openProject(self):
         if self.dirty:
             ret = QMessageBox.question(self, "Save", "Do you want save the file?",
                                        QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
@@ -100,7 +100,7 @@ class Editor(QWidget):
                 self.dirty = False
             return
 
-    def save_project(self):
+    def saveProject(self):
         if self.dirty:
             self.path_file = QFileDialog().getSaveFileNameAndFilter(parent=self,
                                                             filter="*.rooms")
