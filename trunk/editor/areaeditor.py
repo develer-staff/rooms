@@ -35,9 +35,10 @@ class AreaEditor(QWidget):
         self.gl = QGridLayout(self)
         self.signal_plus_mapper = QSignalMapper(self)
         self.area = area
-        self.event = g_project.data['events'][self.area.event]
+        self.requirements = g_project.data['events'][self.area.event].requirements
+        self.actions = g_project.data['events'][self.area.event].actions
         i = 0
-        for action in self.event.actions:
+        for action in self.actions:
             minus_button = MinusButton()
             line = action.id
             for param in action.params:
@@ -50,7 +51,7 @@ class AreaEditor(QWidget):
                          self.signal_plus_mapper, SLOT("map()"))
             self.signal_plus_mapper.setMapping(minus_button, i)
             i += 1
-        for requirement in self.event.requirements:
+        for requirement in self.requirements:
             minus_button = MinusButton()
             line = requirement.tag_name
             line = "%s %s %s" % (line, requirement.id, requirement.value)
@@ -62,6 +63,7 @@ class AreaEditor(QWidget):
                          self.signal_plus_mapper, SLOT("map()"))
             self.signal_plus_mapper.setMapping(minus_button, i)
             i += 1
+
         plus_button = PlusButton()
         self.gl.addWidget(plus_button, i, 0)
         self.change_name = QLineEdit()
@@ -70,6 +72,18 @@ class AreaEditor(QWidget):
         self.setLayout(self.gl)
         self.connect(self.change_name, SIGNAL("editingFinished()"),
                      self.changeName)
+        self.connect(self.signal_plus_mapper, SIGNAL("mapped(int)"),
+                     self.removeElements)
+
+
+    def removeElements(self, index):
+        if index < len(self.actions):
+            self.actions.pop(index)
+        else:
+            self.requirements.pop(index - len(self.actions) - 1)
+        g_project.notify()
+
+
 
     def changeName(self):
         self.area.id = str(self.change_name.text())
