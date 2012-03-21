@@ -26,6 +26,8 @@ class Area(OriginData):
                 elif key == "y" or key == "height":
                     attribute_dictionary[key] = str(float(value) / \
                                                 float(g_project.data['world'].height))
+                else:
+                    attribute_dictionary[key] = value
         return attribute_dictionary
 
     @staticmethod
