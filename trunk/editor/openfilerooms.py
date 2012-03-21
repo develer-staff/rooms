@@ -3,18 +3,18 @@ from xml.etree import ElementTree
 from xml.etree.ElementTree import ParseError
 from misc.odict import OrderedDict
 
-from structdata.area import Area
-from structdata.action import Action
-from structdata.param import Param
-from structdata.item import Item
-from structdata.event import Event
-from structdata.room import Room
-from structdata.var import Var
-from structdata.image import Image
-from structdata.world import World
-from structdata.varRequirement import VarRequirement
-from structdata.itemRequirement import ItemRequirement
-from structdata.project import g_project
+from structdata import Area
+from structdata import Action
+from structdata import Param
+from structdata import Item
+from structdata import Event
+from structdata import Room
+from structdata import Var
+from structdata import Image
+from structdata import World
+from structdata import VarRequirement
+from structdata import ItemRequirement
+from structdata import g_project
 from structdata import class_tag
 
 from upgradeversion import upgradeVersion

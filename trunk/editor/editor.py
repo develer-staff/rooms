@@ -10,14 +10,13 @@ from PyQt4.QtGui import *
 from roomeditor import RoomEditor
 from roommanager import RoomManager
 
-from structdata.area import Area
-from structdata.requirement import Requirement
-from structdata.action import Action
-from structdata.param import Param
-from structdata.item import Item
-from structdata.event import Event
-from structdata.room import Room
-from structdata.project import g_project
+from structdata import Area
+from structdata import Action
+from structdata import Param
+from structdata import Item
+from structdata import Event
+from structdata import Room
+from structdata import g_project
 
 from openfilerooms import openFileRooms, OpenFileError
 from savefilerooms import saveFileRooms

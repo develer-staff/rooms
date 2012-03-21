@@ -5,8 +5,8 @@ from contextlib import contextmanager
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-from structdata.room import Room
-from structdata.project import g_project
+from structdata import Room
+from structdata import g_project
 
 @contextmanager
 def blockedSignals(widget):

@@ -3,7 +3,7 @@
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
-from structdata.project import g_project
+from structdata import g_project
 
 from areaeditor import AreaEditor
 

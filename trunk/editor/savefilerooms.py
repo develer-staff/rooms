@@ -6,7 +6,7 @@ from xml.etree import ElementTree
 
 from misc.odict import OrderedDict
 
-from structdata.project import g_project
+from structdata import g_project
 
 def prettify(content):
     """

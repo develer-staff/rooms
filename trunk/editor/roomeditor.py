@@ -6,8 +6,8 @@ from xml.etree.ElementTree import ElementTree
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
-from structdata.project import g_project
-from structdata.area import Area
+from structdata import g_project
+from structdata import Area
 
 from arearesize import AreaResize
 

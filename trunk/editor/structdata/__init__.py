@@ -19,11 +19,18 @@
    g_project che contiene tutte le informazioni
    g_project e' un singleton che punta sempre al progetto corrente e esiste
    sempre un solo progetto corrente
+   E' possibile utilizzare un dizionario chiamato class_tag in cui tutti gli
+   elementi sono le classi del progetto. In particolare la coppia chiave valore
+   del dizionario e' data da (tag_name_classe, classe)
+   E' possibile importare le singole classi del progetto direttamente da
+   struct data
 """
 
 class_tag = {}
 
-__all__ = [class_tag]
+__all__ = [class_tag, "Room", "Area", "Action", "Image", "Item",
+           "ItemRequirement", "Param", "Var", "VarRequirement", "World",
+           "g_project"]
 
 from origin import OriginData
 from action import Action
@@ -37,21 +44,9 @@ from room import Room
 from var import Var
 from varRequirement import VarRequirement
 from world import World
+from project import g_project
+from inspect import isclass
 
-class_tag['room'] = Room
-class_tag['action'] = Action
-class_tag['area'] = Area
-class_tag['event'] = Event
-class_tag['image'] = Image
-class_tag['item'] = Item
-class_tag['item_req'] = ItemRequirement
-class_tag['param'] = Param
-class_tag['var'] = Var
-class_tag['var_req'] = VarRequirement
-class_tag['world'] = World
-class_tag['img'] = Image
-
-#for cls in globals():
-#    print cls
-#    if inspect.isclass(cls) and issubclass(cls, OriginData) and cls != OriginData:
-#        class_tag[cls.tag_name] = cls
+for key, cls in globals().items():
+    if isclass(cls) and issubclass(cls, OriginData) and cls != OriginData:
+        class_tag[cls.tag_name] = cls
