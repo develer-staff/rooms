@@ -50,10 +50,30 @@ class AreaEditor(QWidget):
                          self.signal_plus_mapper, SLOT("map()"))
             self.signal_plus_mapper.setMapping(minus_button, i)
             i += 1
+        for requirement in self.event.requirements:
+            minus_button = MinusButton()
+            line = requirement.tag_name
+            line = "%s %s %s" % (line, requirement.id, requirement.value)
+            line_edit = QLineEdit()
+            line_edit.setText(line)
+            self.gl.addWidget(minus_button, i, 0)
+            self.gl.addWidget(line_edit, i, 1)
+            self.connect(minus_button, SIGNAL("clicked()"),
+                         self.signal_plus_mapper, SLOT("map()"))
+            self.signal_plus_mapper.setMapping(minus_button, i)
+            i += 1
         plus_button = PlusButton()
         self.gl.addWidget(plus_button, i, 0)
+        self.change_name = QLineEdit()
+        self.change_name.setText(area.id)
+        self.gl.addWidget(self.change_name, i + 1, 0, 1, 2)
         self.setLayout(self.gl)
+        self.connect(self.change_name, SIGNAL("editingFinished()"),
+                     self.changeName)
 
+    def changeName(self):
+        self.area.id = str(self.change_name.text())
+        g_project.notify()
 
 if __name__ == "__main__":
     app = QApplication([])
