@@ -47,7 +47,7 @@ class RoomEditor(QWidget):
         g_project.subscribe(self)
 
         self.area_drag_start = None
-        self.area_drag_stop = None
+        self.area_drag_curr = None
         self.resize_areas = []
 
         self.change_room_name = ChangeRoomName()
@@ -120,10 +120,19 @@ class RoomEditor(QWidget):
         area_resize.show()
 
 
-    def mousePressEvent(self, e):
-        self.area_drag_start = e.pos()
-        self.area_drag_curr = e.pos()
-        self.update()
+    def mousePressEvent(self, event=None):
+        if 0 <= event.pos().x() <= self.room_bg.width() and\
+           0 <= event.pos().y() <= self.room_bg.height():
+            self.area_drag_start = event.pos()
+            self.area_drag_curr = event.pos()
+            self.update()
+
+    def keyPressEvent(self, event=None):
+        if event.key() == Qt.Key_Escape:
+            self.area_drag_start = None
+            self.area_drag_curr = None
+            self.update()
+
 
     def mouseMoveEvent(self, e):
         if self.area_drag_start is None:
@@ -138,12 +147,15 @@ class RoomEditor(QWidget):
         return min(value, maximium) if value > 0 else maximium(0, value)
 
     def mouseReleaseEvent(self, e):
-        if self.area_drag_start is None:
+        if self.area_drag_curr is None:
             return
-        self.createArea(min(self.area_drag_start.x(), self.area_drag_curr.x()),
-                        min(self.area_drag_start.y(), self.area_drag_curr.y()),
-                        max(self.area_drag_curr.x(), self.area_drag_start.x()),
-                        max(self.area_drag_curr.y(), self.area_drag_start.y()))
+        x = min(self.area_drag_start.x(), self.area_drag_curr.x())
+        y = min(self.area_drag_start.y(), self.area_drag_curr.y())
+        width = max(self.area_drag_curr.x() - self.area_drag_start.x(),
+                    self.area_drag_start.x())
+        height = max(self.area_drag_curr.y() - self.area_drag_curr.y(),
+                      self.area_drag_start.y())
+        self.createArea(x, y, width, height)
 
         self.area_drag_start = None
         self.area_drag_curr = None
