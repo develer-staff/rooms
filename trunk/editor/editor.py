@@ -57,10 +57,11 @@ class Editor(QWidget):
         room_editor = RoomEditor(self.room, self)
         room_manager = RoomManager(self.room, self)
         open_project_button = OpenProjectButton(self)
-        save_project_button = SaveProjectButton(self)
+        self.save_project_button = SaveProjectButton(self)
+        self.save_project_button.setEnabled(False)
         new_room_button = QPushButton("New room")
         grid_layout.addWidget(open_project_button, 0, 0)
-        grid_layout.addWidget(save_project_button, 0, 1)
+        grid_layout.addWidget(self.save_project_button, 0, 1)
         grid_layout.addWidget(new_room_button, 0, 2)
         grid_layout.addWidget(room_manager, 1, 0, 1, 3)
         grid_layout.addWidget(room_editor, 1, 3, 2, 1)
@@ -70,10 +71,11 @@ class Editor(QWidget):
         self.connect(new_room_button, SIGNAL("clicked()"), Room.create)
         self.connect(open_project_button, SIGNAL("clicked()"),
                      self.open_project)
-        self.connect(save_project_button, SIGNAL("clicked()"),
+        self.connect(self.save_project_button, SIGNAL("clicked()"),
                      self.save_project)
 
     def update_data(self):
+        self.save_project_button.setEnabled(True)
         self.dirty = True
 
     def open_project(self):
@@ -90,6 +92,7 @@ class Editor(QWidget):
                 except OpenFileError as err:
                     print err
                 g_project.notify()
+                self.save_project_button.setEnabled(False)
                 self.dirty = False
 
     def save_project(self):
@@ -105,6 +108,7 @@ class Editor(QWidget):
                 else:
                     g_project.unsubscribe(self)
                     self.dirty = False
+                    self.save_project_button.setEnabled(False)
                 return True
             else:
                 return False
