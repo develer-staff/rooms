@@ -98,6 +98,7 @@ def openFileRooms(file_path):
         raise OpenFileError(file_path)
     try:
         world = loadInformation(xml_file)
+        g_project.data['world'] = world
         images = loadImages(xml_file)
         items = loadItems(xml_file)
         variables = loadVars(xml_file)
