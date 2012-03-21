@@ -181,8 +181,11 @@ class RoomEditor(QWidget):
         new_room_name = str(self.change_room_name.text())
         if g_project.data['world'].start == self.room.id:
             g_project.data['world'].start = new_room_name
+        for key, item in g_project.data['items'].items():
+            if item.room == self.room.id:
+                item.room = new_room_name
         del g_project.data['rooms'][self.room.id]
-        self.room.id = str(new_room_name)
+        self.room.id = new_room_name
         g_project.data['rooms'][self.room.id] = self.room
         g_project.notify()
 
