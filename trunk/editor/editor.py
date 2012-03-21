@@ -80,20 +80,25 @@ class Editor(QWidget):
 
     def open_project(self):
         if self.dirty:
-            result = self.save_project()
-            self.dirty = False
-        if not self.dirty or result:
+            ret = QMessageBox.question(self, "Save", "Do you want save the file?",
+                                       QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+            if ret == QMessageBox.Yes:
+                if not self.save_project():
+                    return
+            elif ret == QMessageBox.Cancel:
+                return
+        if not self.dirty or ret:
             file_open = QFileDialog()
             self.path_file = file_open.getOpenFileName(filter="*.rooms")
             if self.path_file:
-                try:
-                    openFileRooms(self.path_file)
-                    self.room = g_project.data['rooms'][g_project.data['world'].start]
-                except OpenFileError as err:
-                    print err
+                g_project.unsubscribe(self)
+                openFileRooms(self.path_file)
+                g_project.subscribe(self)
+                self.room = g_project.data['rooms'][g_project.data['world'].start]
                 g_project.notify()
-                self.save_project_button.setEnabled(False)
+                #self.save_project_button.setEnabled(False)
                 self.dirty = False
+            return
 
     def save_project(self):
         if self.dirty:
