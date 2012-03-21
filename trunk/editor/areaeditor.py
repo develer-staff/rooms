@@ -11,8 +11,8 @@ class PlusButton(QPushButton):
 
     def __init__(self, parent=None):
         super(PlusButton, self).__init__(parent)
-        self.setStyleSheet("background-color:"
-                                           "rgba( 255, 255, 255, 0% );")
+#        self.setStyleSheet("background-color:"
+#                                           "rgba( 255, 255, 255, 0% );")
         self.setIcon(QIcon("rounded_plus.jpg"))
         self.setIconSize(QSize(30, 30))
 
@@ -23,12 +23,12 @@ class MinusButton(QPushButton):
 
     def __init__(self, parent=None):
         super(MinusButton, self).__init__(parent)
-        self.setStyleSheet("background-color:"
-                                           "rgba( 255, 255, 255, 0% );")
+#        self.setStyleSheet("background-color:"
+#                                           "rgba( 255, 255, 255, 0% );")
         self.setIcon(QIcon("rounded_minus.jpg"))
         self.setIconSize(QSize(30, 30))
 
-class AreaEditor(QWidget):
+class AreaEditor(QDialog):
 
     def __init__(self, area, parent=None):
         super(AreaEditor, self).__init__(parent)
@@ -99,8 +99,12 @@ class AreaEditor(QWidget):
         g_project.notify()
 
 if __name__ == "__main__":
+    from openfilerooms import openFileRooms
+    openFileRooms('world.rooms')
+
     app = QApplication([])
-    area = AreaEditor()
+    area = AreaEditor(g_project.data['rooms']['Locanda'].areas[0])
+
     area.show()
     app.exec_()
 

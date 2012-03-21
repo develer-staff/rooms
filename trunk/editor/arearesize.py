@@ -121,8 +121,8 @@ class AreaResize(QWidget):
 
     def showAreaEditor(self):
         self.area_editor = AreaEditor(self.area)
-        self.area_editor.move(self.x(), self.y())
-        self.area_editor.show()
+        #self.area_editor.move(self.x(), self.y())
+        self.area_editor.exec_()
 
     def enterEvent(self, event=None):
         for cb in self.resize_buttons:
