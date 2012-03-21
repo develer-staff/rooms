@@ -11,24 +11,21 @@ from structdata import Area
 
 from arearesize import AreaResize
 
-class ChangeBGMButton(QPushButton):
+class ChangeBGMButton(QToolButton):
     def sizeHint(self):
         return QSize(30, 30)
 
     def __init__(self, parent=None):
         super(ChangeBGMButton, self).__init__(parent)
-        self.setStyleSheet("background-color:"
-                                           "rgba( 255, 255, 255, 0% );")
         self.setIcon(QIcon("musical_note.png"))
         self.setIconSize(QSize(30, 30))
 
-class ChangeBGButton(QPushButton):
+class ChangeBGButton(QToolButton):
     def sizeHint(self):
         return QSize(30, 30)
     def __init__(self, parent=None):
         super(ChangeBGButton, self).__init__(parent)
-        self.setStyleSheet("background-color:"
-                                           "rgba( 255, 255, 255, 0% );")
+
         self.setIcon(QIcon("PageTurn.jpg"))
         self.setIconSize(QSize(30, 30))
 
