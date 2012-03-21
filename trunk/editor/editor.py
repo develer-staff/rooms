@@ -21,25 +21,21 @@ from structdata import g_project
 from openfilerooms import openFileRooms, OpenFileError
 from savefilerooms import saveFileRooms
 
-class OpenProjectButton(QPushButton):
+class OpenProjectButton(QToolButton):
 
     def sizeHint(self):
         return QSize(30, 30)
     def __init__(self, parent=None):
         super(OpenProjectButton, self).__init__(parent)
-        self.setStyleSheet("background-color:"
-                                           "rgba( 255, 255, 255, 0% );")
         self.setIcon(QIcon("open_project.gif"))
         self.setIconSize(QSize(30, 30))
 
-class SaveProjectButton(QPushButton):
+class SaveProjectButton(QToolButton):
 
     def sizeHint(self):
         return QSize(30, 30)
     def __init__(self, parent=None):
         super(SaveProjectButton, self).__init__(parent)
-        self.setStyleSheet("background-color:"
-                                           "rgba( 255, 255, 255, 0% );")
         self.setIcon(QIcon("save_project.png"))
         self.setIconSize(QSize(30, 30))
 
