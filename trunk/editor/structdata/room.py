@@ -2,7 +2,7 @@
 from origin import OriginData
 
 from area import Area
-from structdata import g_project
+from project import g_project
 
 class Room(OriginData):
 
