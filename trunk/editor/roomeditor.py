@@ -151,10 +151,8 @@ class RoomEditor(QWidget):
             return
         x = min(self.area_drag_start.x(), self.area_drag_curr.x())
         y = min(self.area_drag_start.y(), self.area_drag_curr.y())
-        width = max(self.area_drag_curr.x() - self.area_drag_start.x(),
-                    self.area_drag_start.x())
-        height = max(self.area_drag_curr.y() - self.area_drag_curr.y(),
-                      self.area_drag_start.y())
+        width = abs(self.area_drag_curr.x() - self.area_drag_start.x())
+        height = abs(self.area_drag_curr.y() - self.area_drag_start.y())
         self.createArea(x, y, width, height)
 
         self.area_drag_start = None
