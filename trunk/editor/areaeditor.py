@@ -43,8 +43,11 @@ class AreaEditor(QDialog):
 
     def createList(self):
         self.signal_plus_mapper = QSignalMapper()
-        self.requirements = g_project.data['events'][self.area.event].requirements
-        self.actions = g_project.data['events'][self.area.event].actions
+        self.requirements = []
+        self.actions = []
+        if self.area.event in g_project.data['events'].keys():
+            self.requirements = g_project.data['events'][self.area.event].requirements
+            self.actions = g_project.data['events'][self.area.event].actions
         i = 0
         for action in self.actions:
             minus_button = MinusButton()
