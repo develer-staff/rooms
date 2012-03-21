@@ -83,7 +83,7 @@ class Editor(QWidget):
             ret = QMessageBox.question(self, "Save", "Do you want save the file?",
                                        QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
             if ret == QMessageBox.Yes:
-                if not self.save_project():
+                if not self.saveProject():
                     return
             elif ret == QMessageBox.Cancel:
                 return
@@ -91,12 +91,10 @@ class Editor(QWidget):
             file_open = QFileDialog()
             self.path_file = file_open.getOpenFileName(filter="*.rooms")
             if self.path_file:
-                g_project.unsubscribe(self)
                 openFileRooms(self.path_file)
-                g_project.subscribe(self)
                 self.room = g_project.data['rooms'][g_project.data['world'].start]
                 g_project.notify()
-                #self.save_project_button.setEnabled(False)
+                self.save_project_button.setEnabled(False)
                 self.dirty = False
             return
 
@@ -123,7 +121,7 @@ class Editor(QWidget):
             ret = QMessageBox.question(self, "Save", "Do you want save the file?",
                                        QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
             if ret == QMessageBox.Yes:
-                if not self.save_project():
+                if not self.saveProject():
                     event.ignore()
             elif ret == QMessageBox.Cancel:
                 event.ignore()
