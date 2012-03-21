@@ -4,6 +4,11 @@ from origin import OriginData
 from structdata.project import g_project
 
 class Area(OriginData):
+    """
+    Area gestisce coordinate e dimensione fisiche. Nell'xml le informazioni
+    sono in coordinate logiche; al momento del caricamento del progetto viene 
+    fatta la conversione
+    """
     tag_name = 'area'
     def __init__(self, id, x, y, width, height, event):
         super(Area, self).__init__()
@@ -14,21 +19,14 @@ class Area(OriginData):
         self.width = str(float(width) * float(g_project.data['world'].width))
         self.event = event
 
-    def dictionary(self):
-        attribute_dictionary = {}
-        for key, value in self.__dict__.items():
-            if key.startswith("_"):
-                continue
-            else:
-                if key == "x" or key == "width":
-                    attribute_dictionary[key] = str(float(value) / \
-                                                float(g_project.data['world'].width))
-                elif key == "y" or key == "height":
-                    attribute_dictionary[key] = str(float(value) / \
-                                                float(g_project.data['world'].height))
-                else:
-                    attribute_dictionary[key] = value
-        return attribute_dictionary
+
+    def valueForKey(self, key, value):
+        if key == "x" or key == "width":
+            return str(float(value) / float(g_project.data['world'].width))
+        elif key == "y" or key == "height":
+            return str(float(value) / float(g_project.data['world'].height))
+        else:
+            return value
 
     @staticmethod
     def create(room, x, y, width, height, event=""):

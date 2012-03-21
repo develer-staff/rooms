@@ -10,12 +10,23 @@ class OriginData(object):
     Gli attributi di tipo lista verranno poi serializzati nuovamente
     """
 
+    def valueForKey(self, key, value):
+        """
+        Template method da ridefinire in classe derivata per personalizzare
+        la serializzazione di alcuni dati.
+        """
+        return value
+
     def dictionary(self):
+        """
+        Metodo di serializzazione, non ridefinire ma eventualmente
+        personalizzare tramite valueForKey.
+        """
         attributes_dictionary = {}
         for key, value in self.__dict__.items():
             if key.startswith("_"):
                 continue
             else:
-                attributes_dictionary[key] = value
+                attributes_dictionary[key] = self.valueForKey(key, value)
 
         return attributes_dictionary
