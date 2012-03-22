@@ -4,28 +4,52 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from structdata.project import g_project
 
-class PlusButton(QPushButton):
+class ActionButton(QPushButton):
 
-    def sizeHint(self):
-        return QSize(30, 30)
+    def __init__(self, action=None, parent=None):
+        super(ActionButton, self).__init__(parent)
+        self.action = action
+        self.createButton()
 
-    def __init__(self, parent=None):
-        super(PlusButton, self).__init__(parent)
-#        self.setStyleSheet("background-color:"
-#                                           "rgba( 255, 255, 255, 0% );")
-        self.setIcon(QIcon("rounded_plus.jpg"))
-        self.setIconSize(QSize(30, 30))
+    def createButton(self):
+        if self.action is not None:
+            line = self.action.id
+            for param in self.action.params:
+                line = "%s %s" % (line, param.value)
+            self.setText(line)
+        else:
+            self.setText("+")
+            menu = QMenu()
+            menu.addAction("ROOM_GOTO")
+            menu.addAction("ITEM_MOVE")
+            menu.addAction("VAR_SET")
+            self.setMenu(menu)
 
-class MinusButton(QPushButton):
+class RequirementButton(QPushButton):
+    def __init__(self, requirement=None, parent=None):
+        super(RequirementButton, self).__init__(parent)
+        self.requirement = requirement
+        self.createButton()
 
+    def createButton(self):
+        if self.requirement is not None:
+            line = "%s %s %s" % (self.requirement.tag_name.upper(),
+                                 self.requirement.id, self.requirement.value)
+            self.setText(line)
+        else:
+            self.setText("+")
+            menu = QMenu()
+            menu.addAction("ITEM_REQ")
+            menu.addAction("VAR_REQ")
+            self.setMenu(menu)
+
+class MinusButton(QToolButton):
     def sizeHint(self):
         return QSize(30, 30)
 
     def __init__(self, parent=None):
         super(MinusButton, self).__init__(parent)
-#        self.setStyleSheet("background-color:"
-#                                           "rgba( 255, 255, 255, 0% );")
-        self.setIcon(QIcon("rounded_minus.jpg"))
+        self.setText("-")
         self.setIconSize(QSize(30, 30))
 
 class AreaEditor(QDialog):
@@ -42,47 +66,41 @@ class AreaEditor(QDialog):
         pass
 
     def createList(self):
-        self.signal_plus_mapper = QSignalMapper()
+        self.signal_minus_mapper = QSignalMapper()
         self.requirements = []
         self.actions = []
         if self.area.event in g_project.data['events'].keys():
             self.requirements = g_project.data['events'][self.area.event].requirements
             self.actions = g_project.data['events'][self.area.event].actions
-        i = 0
-        for action in self.actions:
-            minus_button = MinusButton()
-            line = action.id
-            for param in action.params:
-                line = "%s %s" % (line, param.value)
-            line_edit = QLineEdit()
-            line_edit.setText(line)
-            self.gl.addWidget(minus_button, i , 0)
-            self.gl.addWidget(line_edit, i, 1)
-            self.connect(minus_button, SIGNAL("clicked()"),
-                         self.signal_plus_mapper, SLOT("map()"))
-            self.signal_plus_mapper.setMapping(minus_button, i)
-            i += 1
-        for requirement in self.requirements:
-            minus_button = MinusButton()
-            line = requirement.tag_name
-            line = "%s %s %s" % (line, requirement.id, requirement.value)
-            line_edit = QLineEdit()
-            line_edit.setText(line)
-            self.gl.addWidget(minus_button, i, 0)
-            self.gl.addWidget(line_edit, i, 1)
-            self.connect(minus_button, SIGNAL("clicked()"),
-                         self.signal_plus_mapper, SLOT("map()"))
-            self.signal_plus_mapper.setMapping(minus_button, i)
-            i += 1
-        plus_button = PlusButton()
-        self.gl.addWidget(plus_button, i, 0)
-        self.change_name = QLineEdit()
-        self.change_name.setText(self.area.id)
-        self.gl.addWidget(self.change_name, i + 1, 0, 1, 2)
-        self.connect(self.change_name, SIGNAL("editingFinished()"),
-                     self.changeName)
-        self.connect(self.signal_plus_mapper, SIGNAL("mapped(int)"),
+        self.gl.addWidget(QLabel("Actions"), 0, 0)
+        row = self.createButtons(ActionButton, self.actions, 1)
+        self.gl.addWidget(QLabel("Requirements"), row, 0)
+        row += 1
+        row = self.createButtons(RequirementButton, self.requirements,
+                                   row)
+        self.connect(self.signal_minus_mapper, SIGNAL("mapped(int)"),
                      self.removeElements)
+
+    def createButtons(self, button_type, items, row_start):
+        row = row_start
+        for item in items:
+            minus_button = MinusButton()
+            button = button_type(item, self)
+            self.gl.addWidget(minus_button, row , 1)
+            self.gl.addWidget(button, row, 0)
+            self.connect(minus_button, SIGNAL("clicked()"),
+                         self.signal_minus_mapper, SLOT("map()"))
+            self.signal_minus_mapper.setMapping(minus_button, row)
+            row += 1
+        self.add_action = ActionButton(parent=self)
+        self.gl.addWidget(self.add_action, row, 0)
+        row += 1
+        self.connect(self.add_action.menu(), SIGNAL("triggered(QAction *)"),
+                     self.printa)
+        return row
+
+    def printa(self, a):
+        print a.text()
 
     def removeElements(self, index):
         if index < len(self.actions):
