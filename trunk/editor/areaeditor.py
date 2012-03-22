@@ -7,6 +7,7 @@ from structdata.requirement import Requirement
 from structdata import Action
 
 class EditorButton(QPushButton):
+    entries = None
 
     def __init__(self, item=None, parent=None):
         super(EditorButton, self).__init__(parent)
@@ -14,44 +15,34 @@ class EditorButton(QPushButton):
         self.createButton()
 
     def createButton(self):
-        pass
+        if self.item is not None:
+            self.setText(self.calcText(self.item))
+        else:
+            self.setText("+")
+            menu = QMenu()
+            for entry in self.entries:
+                menu.addAction(entry)
+            self.setMenu(menu)
+
+    def calcText(self, item):
+        raise NotImplementedError
 
 class ActionButton(EditorButton):
+    entries = ["ROOM_GOTO", "ITEM_MOVE", "VAR_SET"]
 
-    def __init__(self, action=None, parent=None):
-        super(ActionButton, self).__init__(action, parent)
-
-    def createButton(self):
-        action = self.item
-        if action is not None:
-            line = action.id
-            for param in action.params:
-                line = "%s %s" % (line, param.value)
-            self.setText(line)
-        else:
-            self.setText("+")
-            menu = QMenu()
-            menu.addAction("ROOM_GOTO")
-            menu.addAction("ITEM_MOVE")
-            menu.addAction("VAR_SET")
-            self.setMenu(menu)
+    def calcText(self, action):
+        line = action.id
+        for param in action.params:
+            line = "%s %s" % (line, param.value)
+        return line
 
 class RequirementButton(EditorButton):
-    def __init__(self, requirement=None, parent=None):
-        super(RequirementButton, self).__init__(requirement, parent)
+    entries = ["ITEM_REQ", "VAR_REQ"]
 
-    def createButton(self):
-        requirement = self.item
-        if requirement is not None:
-            line = "%s %s %s" % (requirement.tag_name.upper(),
-                                 requirement.id, requirement.value)
-            self.setText(line)
-        else:
-            self.setText("+")
-            menu = QMenu()
-            menu.addAction("ITEM_REQ")
-            menu.addAction("VAR_REQ")
-            self.setMenu(menu)
+    def calcText(self, requirement):
+        line = "%s %s %s" % (requirement.tag_name.upper(),
+                             requirement.id, requirement.value)
+        return line
 
 class MinusButton(QToolButton):
     def sizeHint(self):
@@ -77,7 +68,6 @@ class AreaEditor(QDialog):
         g_project.unsubscribe(self)
 
     def updateData(self):
-        i = 0
         while (self.gl.itemAt(0)):
             item = self.gl.itemAt(0)
             item.widget().deleteLater()
@@ -95,7 +85,6 @@ class AreaEditor(QDialog):
         row, i = self.createButtons(ActionButton, self.actions, 1, 0)
         self.gl.addWidget(QLabel("Requirements", parent=self), row, 0)
         row += 1
-        i = 0
         row, i = self.createButtons(RequirementButton, self.requirements,
                                  row, i)
         self.connect(self.signal_minus_mapper, SIGNAL("mapped(int)"),
