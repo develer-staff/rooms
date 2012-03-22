@@ -73,6 +73,9 @@ class AreaEditor(QDialog):
         self.createList()
         self.setLayout(self.gl)
 
+    def closeEvent(self, event=None):
+        g_project.unsubscribe(self)
+
     def updateData(self):
         i = 0
         while (self.gl.itemAt(0)):
