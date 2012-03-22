@@ -10,6 +10,7 @@ from structdata import g_project
 from structdata import Area
 
 from arearesize import AreaResize
+from Tkconstants import SEL
 
 class ChangeBGMButton(QToolButton):
     def sizeHint(self):
@@ -71,7 +72,7 @@ class RoomEditor(QWidget):
 
         self.setLayout(vertical_layout)
 
-        self.showAllArea()
+        self.createAllAreaResize()
 
         self.connect(self.change_room_name,
                      SIGNAL("returnPressed()"),
@@ -80,14 +81,21 @@ class RoomEditor(QWidget):
         self.connect(self.change_room_bgm, SIGNAL("clicked()"), self.setRoomBgm)
 
 
-    def showAllArea(self):
-        """funzione che mostra tutte le aree nella room corrente"""
+    def createAllAreaResize(self):
+        """
+        funzione che mostra tutte le aree mediante AreaResize
+        nella room corrente
+        """
+        self.resize_areas = []
         for area in self.room.areas:
-            area_resize = AreaResize(area, self.room_bg.width(),
+            self.createAreaResize(area)
+
+    def createAreaResize(self, area):
+        area_resize = AreaResize(area, self.room_bg.width(),
                                      self.room_bg.height(), self)
-            area_resize.move(float(area.x), float(area.y))
-            self.resize_areas.append(area_resize)
-            area_resize.show()
+        area_resize.move(float(area.x), float(area.y))
+        self.resize_areas.append(area_resize)
+        area_resize.show()
 
     def setRoomBg(self):
         """funzione per settare il background della room"""
@@ -110,11 +118,7 @@ class RoomEditor(QWidget):
                            min(x_stop, self.room_bg.width()),
                            min(y_stop, self.room_bg.height()))
         g_project.notify()
-        area_resize = AreaResize(area, self.room_bg.width(),
-                              self.room_bg.height(), self)
-        area_resize.move(QPoint(x_start, y_start))
-        self.resize_areas.append(area_resize)
-        area_resize.show()
+        self.createAreaResize(area)
 
 
     def mousePressEvent(self, event=None):
@@ -202,8 +206,8 @@ class RoomEditor(QWidget):
             self.room_bg = QPixmap(self.room.bg)
             self.change_room_name.setText(self.room.id)
             for resize_area in self.resize_areas:
-                resize_area.hide()
-            self.showAllArea()
+                resize_area.deleteLater()
+            self.createAllAreaResize()
             self.update()
 
     def updateData(self):
