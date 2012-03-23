@@ -32,7 +32,6 @@ class VarsListWidget(RoomsListWidget):
                      self.signal)
 
     def signal(self, item):
-        print self.table.cellWidget(item.row(), 0).text()
         self.emit(SIGNAL("editedElement(QString, QString)"),
                   self.table.cellWidget(item.row(), 0).text(),
                   item.text())
