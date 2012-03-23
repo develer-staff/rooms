@@ -102,6 +102,8 @@ class AreaEditor(QDialog):
             self.connect(minus_button, SIGNAL("clicked()"),
                          self.signal_minus_mapper, SLOT("map()"))
             self.signal_minus_mapper.setMapping(minus_button, i)
+            self.connect(button, SIGNAL("clicked()"),
+                         self.editEvent)
             row += 1
             i += 1
         self.add_button = button_type(parent=self)
@@ -110,6 +112,9 @@ class AreaEditor(QDialog):
         self.connect(self.add_button.menu(), SIGNAL("triggered(QAction *)"),
                      self.createNewEvent)
         return row, i
+
+    def editEvent(self):
+        self.createEventEditor(item=self.sender().item)
 
     def createNewEvent(self, act):
         self.createEventEditor(tag=act.text())
@@ -140,7 +145,8 @@ if __name__ == "__main__":
     openFileRooms('world.rooms')
 
     app = QApplication([])
-    area = AreaEditor(g_project.data['rooms']['Locanda'].areas[0])
+    room = g_project.data['rooms']['Stanza Stella']
+    area = AreaEditor(room.areas[1])
 
     area.show()
     app.exec_()
