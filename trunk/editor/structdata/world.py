@@ -13,7 +13,3 @@ class World(OriginData):
         self.width = width
         self.height = height
         self.start = start
-
-    @staticmethod
-    def create(version, name, width, height, start):
-        return World(version, name, width, height, start)
