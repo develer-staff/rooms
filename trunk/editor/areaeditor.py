@@ -61,9 +61,16 @@ class AreaEditor(QDialog):
         super(AreaEditor, self).__init__(parent)
         g_project.subscribe(self)
         self.area = area
-        self.gl = QGridLayout(self)
+
+        self.vl = QVBoxLayout(self)
+
+        self.gl = QGridLayout()
         self.createList()
-        self.setLayout(self.gl)
+        #self.setLayout(self.gl)
+
+        self.vl.addLayout(self.gl)
+        self.vl.addStretch()
+        self.vl.addWidget(QStatusBar(self))
 
     def closeEvent(self, event=None):
         g_project.unsubscribe(self)
@@ -73,6 +80,8 @@ class AreaEditor(QDialog):
             item = self.gl.itemAt(0)
             item.widget().deleteLater()
             self.gl.removeItem(item)
+
+
         self.signal_minus_mapper.deleteLater()
         self.createList()
 
