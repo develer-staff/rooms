@@ -17,7 +17,9 @@ class VarSetListWidget(VarsListWidget):
 
     def secondColumnItem(self, id_item):
         index = self.searchParamIndex(id_item)
-        return self.item.params[index + 1].value
+        if index:
+            return self.item.params[index + 1].value
+        return ""
 
     def searchParamIndex(self, param_value):
         i = 0
@@ -25,4 +27,5 @@ class VarSetListWidget(VarsListWidget):
             if param.value == param_value:
                 return i
             i += 1
+        return None
 
