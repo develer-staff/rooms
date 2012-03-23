@@ -80,13 +80,12 @@ class AreaEditor(QDialog):
         self.signal_minus_mapper = QSignalMapper(self)
         self.minus_buttons = []
         if self.area.event in g_project.data['events'].keys():
-            self.requirements = g_project.data['events'][self.area.event].requirements
-            self.actions = g_project.data['events'][self.area.event].actions
+            self.event = g_project.data['events'][self.area.event]
         self.gl.addWidget(QLabel("Actions", parent=self), 0, 0)
-        row, i = self.createButtons(ActionButton, self.actions, 1, 0)
+        row, i = self.createButtons(ActionButton, self.event.actions, 1, 0)
         self.gl.addWidget(QLabel("Requirements", parent=self), row, 0)
         row += 1
-        row, i = self.createButtons(RequirementButton, self.requirements,
+        row, i = self.createButtons(RequirementButton, self.event.requirements,
                                  row, i)
         self.connect(self.signal_minus_mapper, SIGNAL("mapped(int)"),
                      self.removeElement)
@@ -123,23 +122,12 @@ class AreaEditor(QDialog):
     def removeElement(self, index):
         item = self.minus_buttons[index].item
         if isinstance(item, Action):
-            index = self.findItem(item,
-                                  g_project.data['events']\
-                                  [self.area.event].actions)
+            index = self.event.actions.index(item)
             g_project.data['events'][self.area.event].actions.pop(index)
         else:
-            index = self.findItem(item,
-                                  g_project.data['events']\
-                                  [self.area.event].requirements)
+            index = self.event.requirements.index(item)
             g_project.data['events'][self.area.event].requirements.pop(index)
         g_project.notify()
-
-    def findItem(self, item, items):
-        i = 0
-        for it in items:
-            if it.id == item.id:
-                return i
-            i += 1
 
     def changeName(self):
         self.area.id = str(self.change_name.text())
@@ -148,6 +136,7 @@ class AreaEditor(QDialog):
 if __name__ == "__main__":
     from openfilerooms import openFileRooms
     from savefilerooms import saveFileRooms
+
     openFileRooms('world.rooms')
 
     app = QApplication([])
