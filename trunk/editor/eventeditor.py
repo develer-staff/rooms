@@ -50,12 +50,19 @@ class EventEditor(QDialog):
         elif isinstance(self.item, Requirement):
             return self.item.tag_name.upper()
 
-    def searchParamIndex(self, var):
-        i = 0
-        for param in self.item.params:
-            if param.value == var:
-                return i
-            i += 1
+    def searchAction(self, var):
+        for action in self.event.actions:
+            if action.id == "VAR_SET":
+                if action.params[0].value == var:
+                    return action
+        return None
+
+    def searchRequirement(self, var):
+        for requirement in self.event.requirements:
+            if requirement.tag_name.upper() == "VAR_REQ":
+                if requirement.id == var:
+                    return requirement
+        return None
 
     def changeVarData(self, var, value):
         """
@@ -69,18 +76,24 @@ class EventEditor(QDialog):
             """
             if value:
                 if isinstance(self.item, Action):
-                    index = self.searchParamIndex(var)
-                    self.item.params[index + 1].value = str(value)
+                    action = self.searchAction(var)
+                    if action is not None:
+                        action.params[1].value = str(value)
+                    else:
+                        action = Action("VAR_SET")
+                        action.params.append(Param(str(var)))
+                        action.params.append(Param(str(value)))
+                        self.event.actions.append(action)
                 else:
-                    self.item.value = str(value)
+                    requirement = self.searchRequirement(var)
+                    if requirement is not None:
+                        requirement.value = value
             else:
                 if isinstance(self.item, Action):
-                    index = self.searchParamIndex(var)
-                    self.item.params.pop(index)
-                    self.item.params.pop(index)
-                    if len(self.item.params) == 0:
-                        action_index = self.event.actions.index(self.item)
-                        self.event.actions.pop(action_index)
+                    action = self.searchAction(var)
+                    if action is not None:
+                        index = self.event.actions.index(action)
+                        self.event.actions.pop(index)
                 else:
                     index = self.event.requirements.index(self.item)
                     self.event.requirements.pop(index)
@@ -100,7 +113,9 @@ class EventEditor(QDialog):
                     self.item = action
                     self.event.actions.append(action)
                 else:
-                    index = self.event.actions.index(self.item)
-                    self.event.actions.pop(index)
+                    action = self.searchAction(var)
+                    if action is not None:
+                        index = self.event.actions.index(action)
+                        self.event.actions.pop(index)
         g_project.notify()
 
