@@ -4,14 +4,20 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 class RoomsListWidget(QWidget):
-
+    """
+    classe base utilizzata per mostare elementi del modello in una tabella
+    alcune funzioni devono essere reimplementate dalle classi che la ereditano
+    a seconda di cosa si vuole mostrare
+    I parametri in ingresso sono l'evento a cui viene associata, l'item a cui
+    si riferisce
+    """
     def sizeHint(self):
         return QSize(200, 200)
 
-    def __init__(self, event_name, item, parent=None):
+    def __init__(self, event, item, parent=None):
         super(RoomsListWidget, self).__init__(parent)
         self.setMinimumSize(300, 300)
-        self.event_name = event_name
+        self.event = event
         self.item = item
         self.search_line = QLineEdit(self)
         self.gl = QGridLayout()
