@@ -115,7 +115,7 @@ class AreaEditor(QDialog):
         self.createEventEditor(tag=act.text())
 
     def createEventEditor(self, tag=None, item=None):
-        self.event_editor = EventEditor(self.area.event, item, tag,
+        self.event_editor = EventEditor(self.event, item, tag,
                                         self)
         self.event_editor.show()
 

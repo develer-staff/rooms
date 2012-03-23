@@ -12,14 +12,14 @@ from structdata.project import g_project
 
 class EventEditor(QDialog):
 
-    def __init__(self, event_name, item=None, tag_name=None, parent=None):
+    def __init__(self, event, item=None, tag_name=None, parent=None):
         super(EventEditor, self).__init__(parent)
-        self.event_name = event_name
+        self.event = event
         self.item = item
         self.tag_name = tag_name
         self.list_widget = None
         if self.tag_name == "VAR_REQ" or self.tag_name == "VAR_SET":
-            self.list_widget = VarsListWidget(event_name, item, self)
+            self.list_widget = VarsListWidget(event, item, self)
             self.connect(self.list_widget,
                          SIGNAL("editedElement(QString, QString)"),
                          self.change_var_data)
@@ -33,10 +33,10 @@ class EventEditor(QDialog):
                 action.params.append(Param(str(var)))
                 action.params.append(Param(str(value)))
                 self.item = action
-                g_project.data['events'][self.event_name].actions.append(action)
+                self.event.actions.append(action)
                 g_project.notify()
             else:
-                index = g_project.data['events'][self.event_name].actions.index(self.item)
-                g_project.data['events'][self.event_name].actions.pop(index)
+                index = self.event.actions.index(self.item)
+                self.event.actions.pop(index)
                 g_project.notify()
 
