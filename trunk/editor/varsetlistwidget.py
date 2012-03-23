@@ -10,6 +10,11 @@ from varslistwidget import VarsListWidget
 
 class VarSetListWidget(VarsListWidget):
 
+    """
+    classe che deriva da VarsListWidget ed e' specifica per lavorare con
+    action di tipo VAR_SET
+    """
+
     def secondColumnItem(self, id_item):
         index = self.searchParamIndex(id_item)
         return self.item.params[index + 1].value
