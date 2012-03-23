@@ -18,10 +18,7 @@ class VarsListWidget(RoomsListWidget):
         return g_project.data['vars'].keys()
 
     def getSecondColumnItem(self, id_item):
-        if self.item:
-            second_column_item = QTableWidgetItem(self.secondColumnItem(id_item))
-        else:
-            second_column_item = QTableWidgetItem("")
+        second_column_item = QTableWidgetItem(self.secondColumnItem(id_item))
         return second_column_item
 
     def secondColumnItem(self, id_item):
