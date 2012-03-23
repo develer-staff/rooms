@@ -5,6 +5,7 @@ from PyQt4.QtGui import *
 from structdata import g_project
 from structdata.requirement import Requirement
 from structdata import Action
+from eventeditor import EventEditor
 
 class EditorButton(QPushButton):
     entries = None
@@ -108,11 +109,16 @@ class AreaEditor(QDialog):
         self.gl.addWidget(self.add_button, row, 0)
         row += 1
         self.connect(self.add_button.menu(), SIGNAL("triggered(QAction *)"),
-                     self.printa)
+                     self.createNewEvent)
         return row, i
 
-    def printa(self, a):
-        print a.text()
+    def createNewEvent(self, act):
+        self.createEventEditor(tag=act.text())
+
+    def createEventEditor(self, tag=None, item=None):
+        self.event_editor = EventEditor(self.area.event, item, tag,
+                                        self)
+        self.event_editor.show()
 
     def removeElement(self, index):
         item = self.minus_buttons[index].item
