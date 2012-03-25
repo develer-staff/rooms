@@ -72,11 +72,14 @@ class EventEditor(QDialog):
         if self.item is not None:
             """
             se item e' una istanza allora si deve andare a modificare l'item
-            stesso anche togliendolo dal modello dei dati se cosi' scelto
+            stesso anche togliendolo dal modello dei dati se il valore della
+            variabile e' settato a stringa vuota
             """
             if value:
                 if isinstance(self.item, Action):
                     action = self.searchAction(var)
+                    #se trovo l'action sostituisco il valore, altrimenti ne 
+                    #creo una nuova
                     if action is not None:
                         action.params[1].value = str(value)
                     else:
@@ -85,9 +88,14 @@ class EventEditor(QDialog):
                         action.params.append(Param(str(value)))
                         self.event.actions.append(action)
                 else:
+                    #se trovo il requirement sostituisco il valore
+                    #altrimenti ne creo uno nuovo
                     requirement = self.searchRequirement(var)
                     if requirement is not None:
                         requirement.value = value
+                    else:
+                        requirement = VarRequirement(var, value)
+                        self.event.requirements.append(requirement)
             else:
                 if isinstance(self.item, Action):
                     action = self.searchAction(var)
@@ -103,8 +111,10 @@ class EventEditor(QDialog):
                     requirement = VarRequirement(str(var), str(value))
                     self.event.requirements.append(requirement)
                 else:
-                    index = self.event.requirements.index(self.item)
-                    self.event.requirements.pop(index)
+                    requirement = self.searchRequirement(var)
+                    if requirement is not None:
+                        index = self.event.requirements.index(requirement)
+                        self.event.requirements.pop(index)
             else:
                 if value:
                     action = Action(str(self.tag_name))
