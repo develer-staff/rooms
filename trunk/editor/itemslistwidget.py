@@ -39,6 +39,8 @@ class ItemsListWidget(RoomsListWidget):
         second_item = QTableWidgetItem()
         second_item.setSizeHint(QSize(60, 60))
         icon = QIcon(g_project.data["items"][id_item].image)
+        self.table.setRowHeight(self.table.rowCount() - 1,
+                                second_item.sizeHint().height())
         second_item.setIcon(icon)
 
         return second_item
