@@ -5,10 +5,10 @@ from PyQt4.QtGui import *
 
 from structdata import g_project
 
-from roomslistwidget import RoomsListWidget
+from roomitemlistwidget import RoomItemListWidget
 
 
-class ItemsListWidget(RoomsListWidget):
+class ItemsListWidget(RoomItemListWidget):
 
     """
     Classe che eredita da RoomsListWidget, serve per mostrare gli ITEMS nel
@@ -17,42 +17,24 @@ class ItemsListWidget(RoomsListWidget):
     implementa la selezione degli elementi
     """
 
-
-    def __init__(self, event, item, parent=None):
-        super(ItemsListWidget, self).__init__(event, item, parent)
-        self.connect(self.table, SIGNAL("cellClicked(int, int)"),
-                     self.changeSelection)
-
-    def changeSelection(self, row, column):
-        self.table.selectRow(row)
-
-
     def firstColumn(self):
         return g_project.data['items'].keys()
 
-    def getSecondColumnItem(self, id_item):
-        second_column_item = QTableWidgetItem(self.secondColumnItem(id_item))
-        return second_column_item
+    def getIconSize(self):
+        return QSize(50, 50)
 
-    def secondColumnItem(self, id_item):
-        self.table.setIconSize(QSize(50, 50))
-        second_item = QTableWidgetItem()
-        second_item.setSizeHint(QSize(60, 60))
-        icon = QIcon(g_project.data["items"][id_item].image)
-        self.table.setRowHeight(self.table.rowCount() - 1,
-                                second_item.sizeHint().height())
-        second_item.setIcon(icon)
-        self.setRowSelected(id_item)
-        return second_item
-
-
-    def setRowSelected(self, id_item):
-        raise NotImplementedError
+    def getIconImage(self, id_item):
+        return g_project.data["items"][id_item].image
 
     def verticalHeader(self):
         return ["Item", ""]
 
-    def createSignals(self):
-        pass
+    def setRowSelected(self, id_item):
+        raise NotImplementedError
+
+    def signal(self, row, col):
+        self.emit(SIGNAL("changeSelectedItem(QString, QString)"),
+                  self.table.item(row, 0).text(),
+                  "item")
 
 
