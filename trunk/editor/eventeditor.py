@@ -9,6 +9,7 @@ from structdata import Action
 from structdata import Param
 from structdata.requirement import Requirement
 from structdata import VarRequirement
+from structdata import ItemRequirement
 from structdata.project import g_project
 
 from varreqlistwidget import VarReqListWidget
@@ -48,14 +49,15 @@ class EventEditor(QDialog):
             self.selected_room = None
             self.selected_item = None
             self.createItemList()
-            self.connect(self.list_widget, SIGNAL("changeSelectedItem(QString, QString)"),
+            self.connect(self.list_widget,
+                         SIGNAL("changeSelectedItem(QString, QString)"),
                          self.changeItemData)
-            self.connect(self.room_list, SIGNAL("changeSelectedItem(QString, QString)"),
+            self.connect(self.room_list,
+                         SIGNAL("changeSelectedItem(QString, QString)"),
                          self.changeItemData)
 
 
     def changeItemData(self, item, item_type):
-        print "entro"
         if item_type == "room":
             self.selected_room = str(item)
         else:
@@ -64,7 +66,26 @@ class EventEditor(QDialog):
             self.changeEventItem()
 
     def changeEventItem(self):
-        pass
+        if self.tag_name == "ITEM_MOVE":
+            if self.item is not None:
+                index = self.event.actions.index(self.item)
+                self.event.actions.pop(index)
+            action = Action("ITEM_MOVE")
+            param = Param(self.selected_item)
+            action.params.append(param)
+            param = Param(self.selected_room)
+            action.params.append(param)
+            self.event.actions.append(action)
+            self.item = action
+        else:
+            if self.item is not None:
+                index = self.event.requirements.index(self.item)
+                self.event.requirements.pop(index)
+            requirement = ItemRequirement(self.selected_item,
+                                          self.selected_room)
+            self.event.requirements.append(requirement)
+            self.item = requirement
+        g_project.notify()
 
     def createItemList(self):
         if self.tag_name == "ITEM_MOVE":
@@ -73,8 +94,24 @@ class EventEditor(QDialog):
         else:
             self.list_widget = ItemReqListWidget(self.event, self.item, self)
             self.room_list = RoomReqListWidget(self.event, self.item, self)
+        self.setSelectedRoom()
+        self.setSelectedItem()
         self.hl.addWidget(self.list_widget)
         self.hl.addWidget(self.room_list)
+
+    def setSelectedRoom(self):
+        if self.item is not None:
+            if self.tag_name == "ITEM_REQ":
+                self.selected_room = self.item.value
+            else:
+                self.selected_room = self.item.params[1].value
+
+    def setSelectedItem(self):
+        if self.item is not None:
+            if self.tag_name == "ITEM_REQ":
+                self.selected_item = self.item.id
+            else:
+                self.selected_item = self.item.params[0].value
 
     def createVarList(self):
         if self.tag_name == "VAR_REQ":
@@ -96,7 +133,7 @@ class EventEditor(QDialog):
                     return action
         return None
 
-    def searchRequirement(self, var):
+    def searchVarRequirement(self, var):
         for requirement in self.event.requirements:
             if requirement.tag_name.upper() == "VAR_REQ":
                 if requirement.id == var:
@@ -144,7 +181,7 @@ class EventEditor(QDialog):
                         index = self.event.actions.index(action)
                         self.event.actions.pop(index)
                 else:
-                    requirement = self.searchRequirement(var)
+                    requirement = self.searchVarRequirement(var)
                     if requirement is not None:
                         index = self.event.requirements.index(requirement)
                         self.event.requirements.pop(index)
@@ -154,7 +191,7 @@ class EventEditor(QDialog):
                     requirement = VarRequirement(var, value)
                     self.event.requirements.append(requirement)
                 else:
-                    requirement = self.searchRequirement(var)
+                    requirement = self.searchVarRequirement(var)
                     if requirement is not None:
                         index = self.event.requirements.index(requirement)
                         self.event.requirements.pop(index)
