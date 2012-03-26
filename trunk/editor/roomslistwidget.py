@@ -21,8 +21,6 @@ class RoomsListWidget(QWidget):
     I parametri in ingresso sono l'evento a cui viene associata, l'item a cui
     si riferisce
     """
-    def sizeHint(self):
-        return QSize(200, 200)
 
     def __init__(self, event, item, parent=None):
         super(RoomsListWidget, self).__init__(parent)
@@ -53,13 +51,16 @@ class RoomsListWidget(QWidget):
         self.table.setSortingEnabled(False)
         self.table.setColumnCount(2)
         self.table.setHorizontalHeaderLabels(self.verticalHeader())
+
         for item in self.firstColumn():
             if self.substring in item:
                 self.table.setRowCount(self.table.rowCount() + 1)
                 self.table.setCellWidget(i, 0, QLabel(item))
-                self.table.setItem(i, 1, self.getSecondColumnItem(item))
+                second_item = self.getSecondColumnItem(item)
+                self.table.setItem(i, 1, second_item)
                 self.table.setVerticalHeaderItem(i, QTableWidgetItem(""))
                 i += 1
+        self.table.resizeColumnsToContents()
         self.gl.addWidget(self.table, 1, 0, 1, 2)
 
     def createSignals(self):
