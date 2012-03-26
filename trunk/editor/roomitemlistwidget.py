@@ -49,7 +49,7 @@ class RoomItemListWidget(RoomsListWidget):
         raise NotImplementedError
 
     def createSignals(self):
-        self.connect(self.table, SIGNAL("cellChanged(int, int)"),
+        self.connect(self.table, SIGNAL("cellClicked(int, int)"),
                      self.signal)
 
     def signal(self, row, col):
