@@ -14,7 +14,6 @@ class VarSetListWidget(VarsListWidget):
     classe che deriva da VarsListWidget ed e' specifica per lavorare con
     action di tipo VAR_SET
     """
-
     def secondColumnItem(self, id_item):
         for action in self.event.actions:
             if action.id == "VAR_SET":
