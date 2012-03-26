@@ -20,3 +20,9 @@ class ItemReqListWidget(ItemsListWidget):
                  sel.leftColumn() == column:
                 self.table.selectRow(row)
                 break
+
+    def setRowSelected(self, id_item):
+        row = self.table.rowCount() - 1
+        for requirement in self.event.requirements:
+            if requirement.tag_name == "item_req" and requirement.id == id_item:
+                self.table.selectRow(row)
