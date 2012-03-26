@@ -16,6 +16,8 @@ from roomslistwidget import RoomsListWidget
 from varsetlistwidget import VarSetListWidget
 from itemreqlistwidget import ItemReqListWidget
 from itemmovelistwidget import ItemMoveListWidget
+from roommovelistwidget import RoomMoveListWidget
+from roomreqlistwidget import RoomReqListWidget
 
 class EventEditor(QDialog):
     """
@@ -30,29 +32,56 @@ class EventEditor(QDialog):
         super(EventEditor, self).__init__(parent)
         self.event = event
         self.item = item
+        self.hl = QHBoxLayout(self)
+        self.list_widget = None
+        self.room_list = None
         if tag_name is not None:
             self.tag_name = tag_name
         else:
             self.tag_name = self.getTag()
-        self.list_widget = None
         if self.tag_name == "VAR_REQ" or self.tag_name == "VAR_SET":
             self.createVarList()
             self.connect(self.list_widget,
                          SIGNAL("editedElement(QString, QString)"),
                          self.changeVarData)
         elif self.tag_name == "ITEM_REQ" or self.tag_name == "ITEM_MOVE":
+            self.selected_room = None
+            self.selected_item = None
             self.createItemList()
+            self.connect(self.list_widget, SIGNAL("changeSelectedItem(QString, QString)"),
+                         self.changeItemData)
+            self.connect(self.room_list, SIGNAL("changeSelectedItem(QString, QString)"),
+                         self.changeItemData)
+
+
+    def changeItemData(self, item, item_type):
+        print "entro"
+        if item_type == "room":
+            self.selected_room = str(item)
+        else:
+            self.selected_item = str(item)
+        if self.selected_room is not None and self.selected_item is not None:
+            self.changeEventItem()
+
+    def changeEventItem(self):
+        pass
 
     def createItemList(self):
         if self.tag_name == "ITEM_MOVE":
             self.list_widget = ItemMoveListWidget(self.event, self.item, self)
+            self.room_list = RoomMoveListWidget(self.event, self.item, self)
         else:
             self.list_widget = ItemReqListWidget(self.event, self.item, self)
+            self.room_list = RoomReqListWidget(self.event, self.item, self)
+        self.hl.addWidget(self.list_widget)
+        self.hl.addWidget(self.room_list)
+
     def createVarList(self):
         if self.tag_name == "VAR_REQ":
             self.list_widget = VarReqListWidget(self.event, self.item, self)
         else:
             self.list_widget = VarSetListWidget(self.event, self.item, self)
+        self.hl.addWidget(self.list_widget)
 
     def getTag(self):
         if isinstance(self.item, Action):
