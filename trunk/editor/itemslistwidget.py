@@ -24,7 +24,7 @@ class ItemsListWidget(RoomsListWidget):
                      self.changeSelection)
 
     def changeSelection(self, row, column):
-        raise NotImplementedError
+        self.table.selectRow(row)
 
 
     def firstColumn(self):
