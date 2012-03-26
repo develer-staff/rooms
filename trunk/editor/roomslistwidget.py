@@ -36,6 +36,7 @@ class RoomsListWidget(QWidget):
         with blockedSignals(self.table):
             self.createTable()
         self.setLayout(self.gl)
+        self.table.setFocus()
         self.connect(self.search_line, SIGNAL("textEdited(const QString &)"),
                      self.changeTable)
 
