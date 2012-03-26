@@ -79,6 +79,8 @@ class EventEditor(QDialog):
         funzione che modifica i dati del modello (action o requirement)
         relativi alle variabili (VAR_SET e VAR_REQ)
         """
+        var = str(var)
+        value = str(value)
         if self.item is not None:
             """
             se item e' una istanza allora si deve andare a modificare l'item
@@ -94,8 +96,8 @@ class EventEditor(QDialog):
                         action.params[1].value = str(value)
                     else:
                         action = Action("VAR_SET")
-                        action.params.append(Param(str(var)))
-                        action.params.append(Param(str(value)))
+                        action.params.append(Param(var))
+                        action.params.append(Param(value))
                         self.event.actions.append(action)
                 else:
                     #se trovo il requirement sostituisco il valore
@@ -113,12 +115,14 @@ class EventEditor(QDialog):
                         index = self.event.actions.index(action)
                         self.event.actions.pop(index)
                 else:
-                    index = self.event.requirements.index(self.item)
-                    self.event.requirements.pop(index)
+                    requirement = self.searchRequirement(var)
+                    if requirement is not None:
+                        index = self.event.requirements.index(requirement)
+                        self.event.requirements.pop(index)
         else:
             if self.tag_name == "VAR_REQ":
                 if value:
-                    requirement = VarRequirement(str(var), str(value))
+                    requirement = VarRequirement(var, value)
                     self.event.requirements.append(requirement)
                 else:
                     requirement = self.searchRequirement(var)
@@ -128,8 +132,8 @@ class EventEditor(QDialog):
             else:
                 if value:
                     action = Action(str(self.tag_name))
-                    action.params.append(Param(str(var)))
-                    action.params.append(Param(str(value)))
+                    action.params.append(Param(var))
+                    action.params.append(Param(value))
                     self.item = action
                     self.event.actions.append(action)
                 else:
