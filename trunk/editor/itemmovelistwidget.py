@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 
 from itemslistwidget import ItemsListWidget
 
@@ -9,16 +11,13 @@ class ItemMoveListWidget(ItemsListWidget):
     classe utilizzata per la visualizzazione degli item_move
     """
 
-    def changeSelection(self, row, column):
-        self.table.setSelection([])
-        self.table.selectRow(row)
-
     def setRowSelected(self, id_item):
-        row = self.table.rowCount() - 1
-        for action in self.event.actions:
-            if action.id.upper() == "ITEM_MOVE":
-                for param in action.params:
-                    if param.value == id_item:
+        if self.item is not None:
+            for param in self.item.params:
+                if param.value == id_item:
+                    item = self.table.findItems(id_item, Qt.MatchExactly)
+                    if item:
+                        row = item[0].row()
                         self.table.selectRow(row)
-                        return
-
+                        break
+        return
