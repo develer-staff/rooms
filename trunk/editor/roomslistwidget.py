@@ -56,7 +56,9 @@ class RoomsListWidget(QWidget):
         for item in self.firstColumn():
             if self.substring in item:
                 self.table.setRowCount(self.table.rowCount() + 1)
-                self.table.setCellWidget(i, 0, QLabel(item))
+                name_item = QTableWidgetItem(item)
+                name_item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+                self.table.setItem(i, 0, name_item)
                 second_item = self.getSecondColumnItem(item)
                 self.table.setItem(i, 1, second_item)
                 self.table.setVerticalHeaderItem(i, QTableWidgetItem(""))
