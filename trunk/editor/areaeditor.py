@@ -131,7 +131,9 @@ class AreaEditor(QDialog):
     def createEventEditor(self, tag=None, item=None):
         self.event_editor = EventEditor(self.event, item, tag,
                                         self)
-        self.event_editor.show()
+        self.event_editor.move(self.x() + self.width() + 50, self.y())
+        self.event_editor.exec_()
+
 
     def removeElement(self, index):
         item = self.minus_buttons[index].item
@@ -158,6 +160,7 @@ if __name__ == "__main__":
     area = AreaEditor(room.areas[1])
 
     area.show()
+    area.move(200, 200)
     app.exec_()
     saveFileRooms("a.rooms")
 
