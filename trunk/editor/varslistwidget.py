@@ -12,7 +12,8 @@ class VarsListWidget(RoomsListWidget):
     """
     classe che eredita da RoomListWidget, serve per mostrare le VARS nel modello
     dei dati. Per generalizzare rispetto a requirement e a action sulle
-    variabili questa classe deve reimplementare la funzione secondColumnItem
+    variabili le classi derivate devono reimplementare la funzione 
+    secondColumnItem
     """
     def firstColumn(self):
         return g_project.data['vars'].keys()
