@@ -3,16 +3,18 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-from roomslistwidget import RoomsListWidget
-from varslistwidget import VarsListWidget
-from varsetlistwidget import VarSetListWidget
+
 
 from structdata import Action
 from structdata import Param
 from structdata.requirement import Requirement
 from structdata import VarRequirement
 from structdata.project import g_project
+
 from varreqlistwidget import VarReqListWidget
+from roomslistwidget import RoomsListWidget
+from varsetlistwidget import VarSetListWidget
+from itemreqlistwidget import ItemReqListWidget
 
 class EventEditor(QDialog):
     """
@@ -37,7 +39,11 @@ class EventEditor(QDialog):
             self.connect(self.list_widget,
                          SIGNAL("editedElement(QString, QString)"),
                          self.changeVarData)
+        elif self.tag_name == "ITEM_REQ" or self.tag_name == "ITEM_MOVE":
+            self.createItemList()
 
+    def createItemList(self):
+        self.list_widget = ItemReqListWidget(self.event, self.item, self)
     def createVarList(self):
         if self.tag_name == "VAR_REQ":
             self.list_widget = VarReqListWidget(self.event, self.item, self)
