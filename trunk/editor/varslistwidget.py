@@ -31,7 +31,7 @@ class VarsListWidget(RoomsListWidget):
 
     def signal(self, item):
         self.emit(SIGNAL("editedElement(QString, QString)"),
-                  self.table.cellWidget(item.row(), 0).text(),
+                  self.table.item(item.row(), 0).text(),
                   item.text())
 
     def verticalHeader(self):
