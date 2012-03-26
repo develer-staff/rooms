@@ -42,8 +42,12 @@ class ItemsListWidget(RoomsListWidget):
         self.table.setRowHeight(self.table.rowCount() - 1,
                                 second_item.sizeHint().height())
         second_item.setIcon(icon)
-
+        self.setRowSelected(id_item)
         return second_item
+
+
+    def setRowSelected(self, id_item):
+        raise NotImplementedError
 
     def verticalHeader(self):
         return ["Item", ""]
