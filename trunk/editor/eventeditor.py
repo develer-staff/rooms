@@ -15,6 +15,7 @@ from varreqlistwidget import VarReqListWidget
 from roomslistwidget import RoomsListWidget
 from varsetlistwidget import VarSetListWidget
 from itemreqlistwidget import ItemReqListWidget
+from itemmovelistwidget import ItemMoveListWidget
 
 class EventEditor(QDialog):
     """
@@ -43,7 +44,10 @@ class EventEditor(QDialog):
             self.createItemList()
 
     def createItemList(self):
-        self.list_widget = ItemReqListWidget(self.event, self.item, self)
+        if self.tag_name == "ITEM_MOVE":
+            self.list_widget = ItemMoveListWidget(self.event, self.item, self)
+        else:
+            self.list_widget = ItemReqListWidget(self.event, self.item, self)
     def createVarList(self):
         if self.tag_name == "VAR_REQ":
             self.list_widget = VarReqListWidget(self.event, self.item, self)
