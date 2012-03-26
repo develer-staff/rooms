@@ -33,9 +33,7 @@ class RoomManager(QWidget):
         self.rooms_list.setIconSize(QSize(150, 150))
         if selected_room:
             for key, value in g_project.data['rooms'].items():
-                room_item = QListWidgetItem(QIcon(QPixmap.\
-                                                  fromImage(QImage(value.bg))),
-                                            value.id)
+                room_item = QListWidgetItem(QIcon(value.bg), value.id)
                 self.rooms_list.addItem(room_item)
                 room_item.setForeground(Qt.black)
                 if value.id == self.selected_room.id:
