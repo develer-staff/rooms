@@ -24,6 +24,7 @@ class RoomManager(RoomListWidget):
     classe utilizzata per visualizzare la lista di tutte le room del modello
     deriva da RoomListWidget, reimplementa la funzione signal
     """
+    icon_size = QSize(150, 150)
 
     def sizeHint(self):
         return QSize(400, 800)
@@ -39,10 +40,8 @@ class RoomManager(RoomListWidget):
         g_project.subscribe(self)
         self.highlightStartRoom()
 
-    def setRowSelected(self, id_room):
-        item = self.table.findItems(self.selected_room, Qt.MatchExactly)
-        if item:
-            self.table.selectRow(item[0].row())
+    def getInitialItemToSelect(self):
+        return self.selected_room
 
     def highlightStartRoom(self):
         item = self.table.findItems(self.start_room.id, Qt.MatchExactly)
@@ -69,7 +68,6 @@ class RoomManager(RoomListWidget):
             self.table.setRowCount(0)
             self.createTable()
         self.highlightStartRoom()
-        self.setRowSelected("")
 
     def contextMenuEvent(self, event=None):
         """
