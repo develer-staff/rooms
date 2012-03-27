@@ -20,6 +20,11 @@ def blockedSignals(widget):
 
 class RoomManager(RoomListWidget):
 
+    """
+    classe utilizzata per visualizzare la lista di tutte le room del modello
+    deriva da RoomListWidget, reimplementa la funzione signal
+    """
+
     def sizeHint(self):
         return QSize(400, 800)
 
@@ -52,6 +57,10 @@ class RoomManager(RoomListWidget):
                   self.table.item(row, 0).text())
 
     def changeCurrentRoomName(self, new_name):
+        """
+        funzione per settare il nome della room correntemente selezionata
+        qualora il nome venga modificato
+        """
         self.selected_room = new_name
 
     def updateData(self):
@@ -61,4 +70,22 @@ class RoomManager(RoomListWidget):
             self.createTable()
         self.highlightStartRoom()
         self.setRowSelected("")
+
+    def contextMenuEvent(self, event=None):
+        """
+        gestione dell'evento di pressione del tasto destro del mouse. Quando
+        viene premuto si cambia la room di partenza del progetto
+        """
+        self.changeStartRoom()
+
+    def changeStartRoom(self):
+        """
+        funzione per il cambio della room di partenza del progetto
+        """
+        selected_item = self.table.selectedIndexes()[0]
+        item = self.table.item(selected_item.row(), 0)
+        g_project.data['world'].start = str(item.text())
+        self.start_room = g_project.data['rooms'][str(item.text())]
+        g_project.notify()
+
 
