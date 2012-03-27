@@ -58,6 +58,13 @@ class EventEditor(QDialog):
 
 
     def changeItemData(self, item, item_type):
+        """
+        funzione che setta il valore della room selezionata o dell'item
+        selezionato e se entrambi sono settati chiama la funzione per creare
+        o modificare l'item corrente.
+        La funzione ha come parametri di ingresso il valore da assegnare
+        e a cosa assegnarlo
+        """
         if item_type == "room":
             self.selected_room = str(item)
         else:
@@ -66,6 +73,11 @@ class EventEditor(QDialog):
             self.changeEventItem()
 
     def changeEventItem(self):
+
+        """
+        funzione che modifica l'action o il requirement 
+        memorizzato nella classe
+        """
         if self.tag_name == "ITEM_MOVE":
             if self.item is not None:
                 index = self.event.actions.index(self.item)
@@ -88,6 +100,10 @@ class EventEditor(QDialog):
         g_project.notify()
 
     def createItemList(self):
+        """
+        funzione per la creazione dell'oggetto per la visualizzazione di item
+        e room nel caso dell'action ITEM_MOVE e del requirement item_req
+        """
         if self.tag_name == "ITEM_MOVE":
             self.list_widget = ItemMoveListWidget(self.event, self.item, self)
             self.room_list = RoomMoveListWidget(self.event, self.item, self)
@@ -100,6 +116,10 @@ class EventEditor(QDialog):
         self.hl.addWidget(self.room_list)
 
     def setSelectedRoom(self):
+        """
+        funzione per settare il valore iniziale della room selezionata nel
+        caso si tratti item_req o item_move
+        """
         if self.item is not None:
             if self.tag_name == "ITEM_REQ":
                 self.selected_room = self.item.value
@@ -107,6 +127,10 @@ class EventEditor(QDialog):
                 self.selected_room = self.item.params[1].value
 
     def setSelectedItem(self):
+        """
+        funzione per settare il valore iniziale dell'item selezionata nel
+        caso si tratti item_req o item_move
+        """
         if self.item is not None:
             if self.tag_name == "ITEM_REQ":
                 self.selected_item = self.item.id
@@ -114,6 +138,11 @@ class EventEditor(QDialog):
                 self.selected_item = self.item.params[0].value
 
     def createVarList(self):
+        """
+        funzione per la creazione dell'oggetto per la visualizzazione delle
+        variabili
+        """
+
         if self.tag_name == "VAR_REQ":
             self.list_widget = VarReqListWidget(self.event, self.item, self)
         else:
@@ -121,6 +150,9 @@ class EventEditor(QDialog):
         self.hl.addWidget(self.list_widget)
 
     def getTag(self):
+        """
+        funzione che dato l'item ritorna il tag corrispettivo
+        """
         if isinstance(self.item, Action):
             return self.item.id
         elif isinstance(self.item, Requirement):
