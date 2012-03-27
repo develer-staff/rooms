@@ -8,7 +8,8 @@ from itemslistwidget import ItemsListWidget
 class ItemReqListWidget(ItemsListWidget):
 
     """
-    classe utilizzata per la visualizzazione degli item_req
+    classe utilizzata per la visualizzazione degli item nel caso in cui
+    si stia lavorando con un requirement di tipo item_req
     """
 
     def setRowSelected(self, id_item):
