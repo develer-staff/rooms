@@ -41,6 +41,10 @@ class RoomsListWidget(QWidget):
                      self.changeTable)
 
     def changeTable(self, substring):
+        """
+        funzione setta la stringa di ricerca per gli elementi che devono
+        essere visualizzati nella tabella
+        """
         self.substring = str(substring)
         with blockedSignals(self.table):
             self.table.clear()
@@ -49,6 +53,10 @@ class RoomsListWidget(QWidget):
             self.setInitialSelectRow(self.getItemNameToSelect())
 
     def setInitialSelectRow(self, item_name):
+        """
+        funzione utilizzata per selezionare l'elemento in tabella una volta
+        che questa e' stata creata
+        """
         if item_name is not None:
             item = self.table.findItems(item_name, Qt.MatchFixedString)
             row = item[0].row()
@@ -75,6 +83,12 @@ class RoomsListWidget(QWidget):
         self.gl.addWidget(self.table, 1, 0, 1, 2)
 
     def getInitialItemToSelect(self):
+        """
+        funzione che ritorna il nome dell'item che deve essere selezionato
+        una volta che e' stata costruita la tabella.
+        Se non c'e' nessun elemento da selezionare torna None
+        """
+
         raise NotImplementedError
 
     def createSignals(self):
