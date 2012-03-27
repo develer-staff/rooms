@@ -50,7 +50,7 @@ class RoomsListWidget(QWidget):
             self.table.clear()
             self.table.setRowCount(0)
             self.createTable()
-            self.setInitialSelectRow(self.getItemNameToSelect())
+            self.setInitialSelectRow(self.getInitialItemToSelect())
 
     def setInitialSelectRow(self, item_name):
         """
@@ -69,6 +69,7 @@ class RoomsListWidget(QWidget):
         self.table.setHorizontalHeaderLabels(self.verticalHeader())
 
         for item in self.firstColumn():
+            #controllo per eseguire il filtraggio degli elementi della tabella
             if self.substring.lower() in item.lower():
                 self.table.setRowCount(self.table.rowCount() + 1)
                 name_item = QTableWidgetItem(item)
