@@ -67,15 +67,33 @@ class RoomsListWidget(QWidget):
         self.gl.addWidget(self.table, 1, 0, 1, 2)
 
     def createSignals(self):
+        """
+        funzione per la specifica dei segnali del widget. Deve essere
+        implementata dalle classi derivate
+        """
         raise NotImplementedError
 
     def firstColumn(self):
+        """
+        funzione che ritorna i valori da mettere in ogni riga della prima 
+        colonna della tabella. Deve essere implementata dalle classi derivate
+        """
         raise NotImplementedError
 
     def getSecondColumnItem(self, id_item):
+        """
+        funzione che ritorna, per ogni riga, l'item da inserire nella seconda 
+        colonna. Alla funzione deve essere passato l'id dell'item che servira'
+        come chiave per la ricerca. La funzione deve essere inplementata nelle
+        classi derivate
+        """
         raise NotImplementedError
 
     def verticalHeader(self):
+        """
+        Funzione che ritorna le intestazioni delle colonne della tabella.
+        Deve essere implementata dalle classi derivate
+        """
         raise NotImplementedError
 
 if __name__ == "__main__":
