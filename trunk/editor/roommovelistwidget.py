@@ -12,15 +12,9 @@ class RoomMoveListWidget(RoomListWidget):
     la scelta di item e room nel caso di ITEM_MOVE
     """
 
-    def getIconSize(self):
-        return QSize(100, 100)
+    icon_size = QSize(100, 100)
 
-    def setRowSelected(self, id_room):
+    def getInitialItemToSelect(self):
         if self.item is not None:
-            for param in self.item.params:
-                if param.value == id_room:
-                    item = self.table.findItems(id_room, Qt.MatchExactly)
-                    if item:
-                        row = item[0].row()
-                        self.table.selectRow(row)
-                        break
+            return self.item.params[1].value
+

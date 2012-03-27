@@ -9,6 +9,8 @@ from roomslistwidget import RoomsListWidget
 
 class RoomItemListWidget(RoomsListWidget):
 
+    icon_size = None
+
     def __init__(self, event, item, parent=None):
         super(RoomItemListWidget, self).__init__(event, item, parent)
         self.connect(self.table, SIGNAL("cellClicked(int, int)"),
@@ -21,29 +23,22 @@ class RoomItemListWidget(RoomsListWidget):
         raise NotImplementedError
 
     def getSecondColumnItem(self, id_item):
-        second_column_item = QTableWidgetItem(self.secondColumnItem(id_item))
+        second_column_item = self.secondColumnItem(id_item)
         return second_column_item
-
-    def getIconSize(self):
-        raise NotImplementedError
 
     def getIconImage(self, id_item):
         raise NotImplementedError
 
     def secondColumnItem(self, id_item):
-        self.table.setIconSize(self.getIconSize())
+        self.table.setIconSize(self.icon_size)
         second_item = QTableWidgetItem()
-        second_item.setSizeHint(QSize(self.table.iconSize().width() + 10,
-                                self.table.iconSize().height() + 10))
+        second_item.setSizeHint(QSize(self.icon_size.width() + 10,
+                                      self.icon_size.height() + 10))
         icon = QIcon(self.getIconImage(id_item))
         self.table.setRowHeight(self.table.rowCount() - 1,
                                 second_item.sizeHint().height())
         second_item.setIcon(icon)
-        self.setRowSelected(id_item)
         return second_item
-
-    def setRowSelected(self, id_item):
-        raise NotImplementedError
 
     def verticalHeader(self):
         raise NotImplementedError

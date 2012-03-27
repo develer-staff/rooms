@@ -26,10 +26,7 @@ class RoomListWidget(RoomItemListWidget):
     def verticalHeader(self):
         return ["Room", ""]
 
-    def setRowSelected(self, id_item):
-        raise NotImplementedError
-
     def signal(self, row, col):
-        self.emit(SIGNAL("changeSelectedItem(QString, QString)"),
-                  self.table.item(row, 0).text(),
-                  "room")
+        self.emit(SIGNAL("changeSelectedItem(QString)"),
+                  self.table.item(row, 0).text())
+

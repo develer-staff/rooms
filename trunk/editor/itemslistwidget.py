@@ -16,12 +16,10 @@ class ItemsListWidget(RoomItemListWidget):
     le classi derivate devono definire la funzione changeSelection che
     implementa la selezione degli elementi
     """
+    icon_size = QSize(50, 50)
 
     def firstColumn(self):
         return g_project.data['items'].keys()
-
-    def getIconSize(self):
-        return QSize(50, 50)
 
     def getIconImage(self, id_item):
         return g_project.data["items"][id_item].image
@@ -33,8 +31,7 @@ class ItemsListWidget(RoomItemListWidget):
         raise NotImplementedError
 
     def signal(self, row, col):
-        self.emit(SIGNAL("changeSelectedItem(QString, QString)"),
-                  self.table.item(row, 0).text(),
-                  "item")
+        self.emit(SIGNAL("changeSelectedItem(QString)"),
+                  self.table.item(row, 0).text())
 
 

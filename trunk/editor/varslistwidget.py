@@ -22,6 +22,9 @@ class VarsListWidget(RoomsListWidget):
         second_column_item = QTableWidgetItem(self.secondColumnItem(id_item))
         return second_column_item
 
+    def getInitialItemToSelect(self):
+        return None
+
     def secondColumnItem(self, id_item):
         raise NotImplementedError
 

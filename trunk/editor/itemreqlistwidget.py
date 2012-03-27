@@ -12,9 +12,7 @@ class ItemReqListWidget(ItemsListWidget):
     si stia lavorando con un requirement di tipo item_req
     """
 
-    def setRowSelected(self, id_item):
+    def getInitialItemToSelect(self):
         if self.item is not None:
-            item = self.table.findItems(id_item, Qt.MatchExactly)
-            if item:
-                row = item[0].row()
-                self.table.selectRow(row)
+            return self.item.id
+        return None

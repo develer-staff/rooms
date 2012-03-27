@@ -12,16 +12,12 @@ class RoomGotoListWidget(RoomListWidget):
     la scelta della stanza in cui spostarsi con l'action ROOM_GOTO
     """
 
+    icon_size = QSize(150, 150)
+
     def sizeHint(self):
-        return QSize(350, 300)
+        return QSize(350, 500)
 
-    def getIconSize(self):
-        return QSize(150, 150)
-
-    def setRowSelected(self, id_room):
+    def getInitialItemToSelect(self):
         if self.item is not None:
-            if id_room == self.item.params[0].value:
-                item = self.table.findItems(id_room, Qt.MatchExactly)
-                if item:
-                    row = item[0].row()
-                    self.table.selectRow(row)
+            return self.item.params[0].value
+        return None

@@ -46,6 +46,13 @@ class RoomsListWidget(QWidget):
             self.table.clear()
             self.table.setRowCount(0)
             self.createTable()
+            self.setInitialSelectRow(self.getItemNameToSelect())
+
+    def setInitialSelectRow(self, item_name):
+        if item_name is not None:
+            item = self.table.findItems(item_name, Qt.MatchFixedString)
+            row = item[0].row()
+            self.table.selectRow(row)
 
     def createTable(self):
         i = 0
@@ -63,8 +70,12 @@ class RoomsListWidget(QWidget):
                 self.table.setItem(i, 1, second_item)
                 self.table.setVerticalHeaderItem(i, QTableWidgetItem(""))
                 i += 1
+        self.setInitialSelectRow(self.getInitialItemToSelect())
         self.table.resizeColumnsToContents()
         self.gl.addWidget(self.table, 1, 0, 1, 2)
+
+    def getInitialItemToSelect(self):
+        raise NotImplementedError
 
     def createSignals(self):
         """

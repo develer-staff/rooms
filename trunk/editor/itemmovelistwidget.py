@@ -11,13 +11,7 @@ class ItemMoveListWidget(ItemsListWidget):
     classe utilizzata per la visualizzazione degli item_move
     """
 
-    def setRowSelected(self, id_item):
+    def getInitialItemToSelect(self):
         if self.item is not None:
-            for param in self.item.params:
-                if param.value == id_item:
-                    item = self.table.findItems(id_item, Qt.MatchExactly)
-                    if item:
-                        row = item[0].row()
-                        self.table.selectRow(row)
-                        break
-        return
+            return self.item.params[0].value
+        return None
