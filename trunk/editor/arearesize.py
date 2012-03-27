@@ -115,9 +115,8 @@ class AreaResize(QWidget):
             g_project.notify()
             self.update()
 
-    def mousePressEvent(self, event=None):
-        if event.modifiers() == Qt.ControlModifier:
-            self.showAreaEditor()
+    def mouseDoubleClickEvent(self, event=None):
+        self.showAreaEditor()
 
     def showAreaEditor(self):
         self.area_editor = AreaEditor(self.area, self.parent())
