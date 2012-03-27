@@ -37,6 +37,8 @@ class EventEditor(QDialog):
         self.hl = QHBoxLayout(self)
         self.list_widget = None
         self.room_list = None
+        self.selected_room = None
+        self.selected_item = None
         if tag_name is not None:
             self.tag_name = tag_name
         else:
@@ -47,21 +49,19 @@ class EventEditor(QDialog):
                          SIGNAL("editedElement(QString, QString)"),
                          self.changeVarData)
         elif self.tag_name == "ITEM_REQ" or self.tag_name == "ITEM_MOVE":
-            self.selected_room = None
-            self.selected_item = None
+
             self.createItemList()
             self.connect(self.list_widget,
-                         SIGNAL("changeSelectedItem(QString, QString)"),
+                         SIGNAL("changeSelectedItem(QString)"),
                          self.changeItemData)
             self.connect(self.room_list,
-                         SIGNAL("changeSelectedItem(QString, QString)"),
-                         self.changeItemData)
+                         SIGNAL("changeSelectedItem(QString)"),
+                         self.changeRoomData)
         elif self.tag_name == "ROOM_GOTO":
-            self.selected_room = None
             self.createRoomList()
             self.connect(self.list_widget,
-                         SIGNAL("changeSelectedItem(QString, QString)"),
-                         self.changeItemData)
+                         SIGNAL("changeSelectedItem(QString)"),
+                         self.changeRoomData)
 
 
     def createRoomList(self):
@@ -69,23 +69,30 @@ class EventEditor(QDialog):
         self.hl.addWidget(self.list_widget)
         self.setSelectedRoom()
 
-    def changeItemData(self, item, item_type):
+    def changeRoomData(self, room):
         """
-        funzione che setta il valore della room selezionata o dell'item
-        selezionato e se entrambi sono settati chiama la funzione per creare
-        o modificare l'item corrente.
-        La funzione ha come parametri di ingresso il valore da assegnare
-        e a cosa assegnarlo
+        funzione che setta il valore della room selezionata e se il tag e'
+        ROOM_GOTO chiama la funzione di creazione o modifica dell'action.
+        Se il tag invece e' ITEM_MOVE o ITEM_REQ controlla se e' stato scelto
+        l'item associato alla room nell'evento e se si chiama la funzione di 
+        modifica/creazione dell'action o requirement per l'evento considerato
         """
-        if item_type == "room":
-            self.selected_room = str(item)
-        else:
-            self.selected_item = str(item)
-        if (self.tag_name == "ITEM_MOVE" or self.tag_name == "ITEM_REQ") and\
-           self.selected_room is not None and self.selected_item is not None:
+        self.selected_room = str(room)
+        if self.selected_room is not None and self.selected_item is not None:
             self.changeEventItem()
         elif self.tag_name == "ROOM_GOTO" and self.selected_room is not None:
             self.changeEventRoom()
+
+    def changeItemData(self, item):
+        """
+        funzione che setta il valore dell'item
+        selezionato e se sono stati scelit l'item e la room chiama la funzione 
+        per creare o modificare l'item corrente.
+        La funzione prende come parametro in ingresso il nome dell'item
+        """
+        self.selected_item = str(item)
+        if self.selected_room is not None and self.selected_item is not None:
+            self.changeEventItem()
 
     def changeEventRoom(self):
         if self.item is not None:
