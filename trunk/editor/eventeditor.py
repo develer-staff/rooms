@@ -19,6 +19,7 @@ from itemreqlistwidget import ItemReqListWidget
 from itemmovelistwidget import ItemMoveListWidget
 from roommovelistwidget import RoomMoveListWidget
 from roomreqlistwidget import RoomReqListWidget
+from roomgotolistwidget import RoomGotoListWidget
 
 class EventEditor(QDialog):
     """
@@ -55,7 +56,18 @@ class EventEditor(QDialog):
             self.connect(self.room_list,
                          SIGNAL("changeSelectedItem(QString, QString)"),
                          self.changeItemData)
+        elif self.tag_name == "ROOM_GOTO":
+            self.selected_room = None
+            self.createRoomList()
+            self.connect(self.list_widget,
+                         SIGNAL("changeSelectedItem(QString, QString)"),
+                         self.changeItemData)
 
+
+    def createRoomList(self):
+        self.list_widget = RoomGotoListWidget(self.event, self.item, self)
+        self.hl.addWidget(self.list_widget)
+        self.setSelectedRoom()
 
     def changeItemData(self, item, item_type):
         """
@@ -69,8 +81,22 @@ class EventEditor(QDialog):
             self.selected_room = str(item)
         else:
             self.selected_item = str(item)
-        if self.selected_room is not None and self.selected_item is not None:
+        if (self.tag_name == "ITEM_MOVE" or self.tag_name == "ITEM_REQ") and\
+           self.selected_room is not None and self.selected_item is not None:
             self.changeEventItem()
+        elif self.tag_name == "ROOM_GOTO" and self.selected_room is not None:
+            self.changeEventRoom()
+
+    def changeEventRoom(self):
+        if self.item is not None:
+            index = self.event.actions.index(self.item)
+            self.event.actions.pop(index)
+        action = Action("ROOM_GOTO")
+        param = Param(self.selected_room)
+        action.params.append(param)
+        self.event.actions.append(action)
+        self.item = action
+        g_project.notify()
 
     def changeEventItem(self):
 
@@ -123,8 +149,10 @@ class EventEditor(QDialog):
         if self.item is not None:
             if self.tag_name == "ITEM_REQ":
                 self.selected_room = self.item.value
-            else:
+            elif self.tag_name == "ITEM_MOVE":
                 self.selected_room = self.item.params[1].value
+            elif self.tag_name == "ROOM_GOTO":
+                self.selected_room = self.item.params[0].value
 
     def setSelectedItem(self):
         """
