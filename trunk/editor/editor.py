@@ -8,8 +8,8 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 from roomeditor import RoomEditor
-from roommanager import RoomManager
-
+#from roommanager import RoomManager
+from roommanagerlistwidget import RoomManager
 from structdata import Area
 from structdata import Action
 from structdata import Param
@@ -50,7 +50,7 @@ class Editor(QWidget):
 
         self.room = g_project.data['rooms'][g_project.data['world'].start]
         room_editor = RoomEditor(self.room, self)
-        room_manager = RoomManager(self.room, self)
+        room_manager = RoomManager(parent=self)
         open_project_button = OpenProjectButton(self)
         self.save_project_button = SaveProjectButton(self)
         self.setDirty(False)
@@ -63,6 +63,9 @@ class Editor(QWidget):
         self.connect(room_manager,
                      SIGNAL("currentRoomChanged(const QString &)"),
                      room_editor.changeCurrentRoom)
+        self.connect(room_editor,
+                     SIGNAL("currentRoomNameChanged(QString)"),
+                     room_manager.changeCurrentRoomName)
         self.connect(new_room_button, SIGNAL("clicked()"), Room.create)
         self.connect(open_project_button, SIGNAL("clicked()"),
                      self.openProject)
@@ -131,4 +134,5 @@ if __name__ == "__main__":
         file_name = str(sys.argv[1])
     editor = Editor(file_name)
     editor.show()
+    editor.move(QPoint(150, 150))
     app.exec_()

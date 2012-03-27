@@ -186,6 +186,8 @@ class RoomEditor(QWidget):
             if item.room == self.room.id:
                 item.room = new_room_name
         del g_project.data['rooms'][self.room.id]
+        self.emit(SIGNAL("currentRoomNameChanged(QString)"),
+                  new_room_name)
         self.room.id = new_room_name
         g_project.data['rooms'][self.room.id] = self.room
         g_project.notify()
