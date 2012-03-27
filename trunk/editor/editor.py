@@ -61,7 +61,7 @@ class Editor(QWidget):
         grid_layout.addWidget(room_manager, 1, 0, 1, 3)
         grid_layout.addWidget(room_editor, 1, 3, 2, 1)
         self.connect(room_manager,
-                     SIGNAL("currentRoomChanged(const QString &)"),
+                     SIGNAL("changeSelectedItem(QString)"),
                      room_editor.changeCurrentRoom)
         self.connect(room_editor,
                      SIGNAL("currentRoomNameChanged(QString)"),
