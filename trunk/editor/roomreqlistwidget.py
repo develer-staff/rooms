@@ -7,6 +7,11 @@ from roomlistwidget import RoomListWidget
 
 class RoomReqListWidget(RoomListWidget):
 
+    """
+    Classe per visualizzare le room nel caso che si stia visualizzando 
+    la scelta di item e room nel caso di item_req
+    """
+
     def getIconSize(self):
         return QSize(100, 100)
 
