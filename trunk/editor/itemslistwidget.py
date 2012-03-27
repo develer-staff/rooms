@@ -29,9 +29,3 @@ class ItemsListWidget(RoomItemListWidget):
 
     def setRowSelected(self, id_item):
         raise NotImplementedError
-
-    def signal(self, row, col):
-        self.emit(SIGNAL("changeSelectedItem(QString)"),
-                  self.table.item(row, 0).text())
-
-

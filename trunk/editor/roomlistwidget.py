@@ -25,8 +25,3 @@ class RoomListWidget(RoomItemListWidget):
 
     def verticalHeader(self):
         return ["Room", ""]
-
-    def signal(self, row, col):
-        self.emit(SIGNAL("changeSelectedItem(QString)"),
-                  self.table.item(row, 0).text())
-

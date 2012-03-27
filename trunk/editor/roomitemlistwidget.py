@@ -48,4 +48,5 @@ class RoomItemListWidget(RoomsListWidget):
                      self.signal)
 
     def signal(self, row, col):
-        raise NotImplementedError
+        self.emit(SIGNAL("changeSelectedItem(QString)"),
+                  self.table.item(row, 0).text())
