@@ -22,6 +22,9 @@ class RoomsListWidget(QWidget):
     si riferisce
     """
 
+
+    horizontal_header = None
+
     def __init__(self, event, item, parent=None):
         super(RoomsListWidget, self).__init__(parent)
         self.setMinimumSize(300, 300)
@@ -66,7 +69,7 @@ class RoomsListWidget(QWidget):
         i = 0
         self.table.setSortingEnabled(False)
         self.table.setColumnCount(2)
-        self.table.setHorizontalHeaderLabels(self.verticalHeader())
+        self.table.setHorizontalHeaderLabels(self.horizontal_header)
 
         for item in self.firstColumn():
             #controllo per eseguire il filtraggio degli elementi della tabella

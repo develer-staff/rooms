@@ -15,6 +15,9 @@ class VarsListWidget(RoomsListWidget):
     variabili le classi derivate devono reimplementare la funzione 
     secondColumnItem
     """
+
+    horizontal_header = ["Name", "Value"]
+
     def firstColumn(self):
         return g_project.data['vars'].keys()
 
@@ -37,5 +40,4 @@ class VarsListWidget(RoomsListWidget):
                   self.table.item(item.row(), 0).text(),
                   item.text())
 
-    def verticalHeader(self):
-        return ["Name", "Value"]
+

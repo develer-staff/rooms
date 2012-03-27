@@ -17,11 +17,10 @@ class RoomListWidget(RoomItemListWidget):
     selezionata appena la tabella viene mostrata
     """
 
+
+    horizontal_header = ["Room", ""]
     def firstColumn(self):
         return g_project.data['rooms'].keys()
 
     def getIconImage(self, id_item):
         return g_project.data["rooms"][id_item].bg
-
-    def verticalHeader(self):
-        return ["Room", ""]

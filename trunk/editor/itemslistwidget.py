@@ -16,6 +16,9 @@ class ItemsListWidget(RoomItemListWidget):
     le classi derivate devono definire la funzione changeSelection che
     implementa la selezione degli elementi
     """
+
+    horizontal_header = ["Item", ""]
+
     icon_size = QSize(50, 50)
 
     def firstColumn(self):
@@ -23,9 +26,6 @@ class ItemsListWidget(RoomItemListWidget):
 
     def getIconImage(self, id_item):
         return g_project.data["items"][id_item].image
-
-    def verticalHeader(self):
-        return ["Item", ""]
 
     def setRowSelected(self, id_item):
         raise NotImplementedError
