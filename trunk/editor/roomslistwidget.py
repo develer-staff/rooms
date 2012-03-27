@@ -69,7 +69,7 @@ class RoomsListWidget(QWidget):
         self.table.setHorizontalHeaderLabels(self.verticalHeader())
 
         for item in self.firstColumn():
-            if self.substring in item:
+            if self.substring.lower() in item.lower():
                 self.table.setRowCount(self.table.rowCount() + 1)
                 name_item = QTableWidgetItem(item)
                 name_item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
