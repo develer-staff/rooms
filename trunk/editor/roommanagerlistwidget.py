@@ -51,10 +51,6 @@ class RoomManager(RoomListWidget):
             item = self.table.item(row, 1)
             item.setBackground(Qt.yellow)
 
-    def signal(self, row, col):
-        self.emit(SIGNAL("currentRoomChanged(const QString &)"),
-                  self.table.item(row, 0).text())
-
     def changeCurrentRoomName(self, new_name):
         """
         funzione per settare il nome della room correntemente selezionata
