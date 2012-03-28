@@ -62,48 +62,52 @@ class AreaResize(QWidget):
                      self.startTrack)
 
     def mouseMoveEvent(self, event=None):
-        if (event.buttons() and Qt.LeftButton) == Qt.LeftButton and self.in_resize:
-            x = event.pos().x()
-            #uso per non superare i bordi laterali dello sfondo
+        if (event.buttons(event) and Qt.LeftButton) == Qt.LeftButton and self.in_resize:
+            self.resizeAreaResize(event.x(), event.y())
 
-            x = min(x, self.bg_width - self.x()) if x + self.x() > 0\
-                                                 else max(0, x)
-            y = event.pos().y()
+    def resizeAreaResize(self, x, y):
+        """
+        funzione per il ridimensionamento dell'AreaResize. I paramtri passati
+        sono le coordinate su cui viene fatto il ridimensionamento
+        """
+        #uso per non superare i bordi laterali dello sfondo
+        x = min(x, self.bg_width - self.x()) if x + self.x() > 0\
+                                             else max(0, x)
 #            #uso per non superare i bordi superiore e inferiore dello sfondo
-            y = min(y, self.bg_height - self.y()) if y + self.y() > 0\
-                                                  else max(0, y)
-            x_widget = self.x()
-            y_widget = self.y()
-            #resize with top left button
-            if self.index == 0:
-                self.move(x_widget + x, y_widget + y)
-                self.resize(QSize(self.width() - x, self.height() - y))
-            #resize with top button
-            elif self.index == 1:
-                self.move(x_widget, y_widget + y)
-                self.resize(QSize(self.width(), self.height() - y))
-            #resize with top right button
-            elif self.index == 2:
-                self.move(self.x(), y_widget + y)
-                self.resize(QSize(x, self.height() - y))
-            #resize with left button
-            elif self.index == 3:
-                self.move(x_widget + x, y_widget)
-                self.resize(QSize(self.width() - x, self.height()))
-            #resize with right button
-            elif self.index == 4:
-                self.resize(QSize(x, self.height()))
-            #resize with bottom left button
-            elif self.index == 5:
-                self.move(x_widget + x, self.y())
-                self.resize(QSize(self.width() - x, y))
-            #resize with bottom button
-            elif self.index == 6:
-                self.resize(QSize(self.width(), y))
-            #resize with bottom right button 
-            elif self.index == 7:
-                self.resize(QSize(x + 5, y + 5))
-            self.update()
+        y = min(y, self.bg_height - self.y()) if y + self.y() > 0\
+                                              else max(0, y)
+        x_widget = self.x()
+        y_widget = self.y()
+        #resize with top left button
+        if self.index == 0:
+            self.move(x_widget + x, y_widget + y)
+            self.resize(QSize(self.width() - x, self.height() - y))
+        #resize with top button
+        elif self.index == 1:
+            self.move(x_widget, y_widget + y)
+            self.resize(QSize(self.width(), self.height() - y))
+        #resize with top right button
+        elif self.index == 2:
+            self.move(self.x(), y_widget + y)
+            self.resize(QSize(x, self.height() - y))
+        #resize with left button
+        elif self.index == 3:
+            self.move(x_widget + x, y_widget)
+            self.resize(QSize(self.width() - x, self.height()))
+        #resize with right button
+        elif self.index == 4:
+            self.resize(QSize(x, self.height()))
+        #resize with bottom left button
+        elif self.index == 5:
+            self.move(x_widget + x, self.y())
+            self.resize(QSize(self.width() - x, y))
+        #resize with bottom button
+        elif self.index == 6:
+            self.resize(QSize(self.width(), y))
+        #resize with bottom right button 
+        elif self.index == 7:
+            self.resize(QSize(x + 5, y + 5))
+        self.update()
 
     def mouseReleaseEvent(self, event=None):
         self.resizeArea()
