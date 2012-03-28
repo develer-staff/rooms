@@ -8,6 +8,7 @@ from PyQt4.QtCore import *
 
 from structdata import g_project
 from structdata import Area
+from structdata import Event
 
 from arearesize import AreaResize
 from Tkconstants import SEL
@@ -113,13 +114,12 @@ class RoomEditor(QWidget):
             self.room.bgm = str(path_file)
             g_project.notify()
 
-    def createArea(self, x_start, y_start, x_stop, y_stop):
+    def createArea(self, x_start, y_start, x_stop, y_stop, event_name):
         area = Area.create(self.room, max(0, x_start), max(0, y_start),
                            min(x_stop, self.room_bg.width()),
-                           min(y_stop, self.room_bg.height()))
-        g_project.notify()
+                           min(y_stop, self.room_bg.height()),
+                           event_name)
         self.createAreaResize(area)
-
 
     def mousePressEvent(self, event=None):
         if 0 <= event.pos().x() <= self.room_bg.width() and\
@@ -154,11 +154,12 @@ class RoomEditor(QWidget):
         y = min(self.area_drag_start.y(), self.area_drag_curr.y())
         width = abs(self.area_drag_curr.x() - self.area_drag_start.x())
         height = abs(self.area_drag_curr.y() - self.area_drag_start.y())
-        self.createArea(x, y, width, height)
-
+        event = Event.create()
+        g_project.data['events'][event.id] = event
+        self.createArea(x, y, width, height, event.id)
+        g_project.notify()
         self.area_drag_start = None
         self.area_drag_curr = None
-
         self.update()
 
     def paintEvent(self, e):
