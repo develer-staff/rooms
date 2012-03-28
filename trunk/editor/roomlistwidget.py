@@ -19,7 +19,16 @@ class RoomListWidget(RoomItemListWidget):
 
 
     horizontal_header = ["Room", ""]
+
     def firstColumn(self):
+        return self.firstColumnKeys()
+
+    def firstColumnKeys(self):
+        """
+        funzione che ritorna le chiavi per la costruzione della tabella
+        se un oggetto derivato deve filtrare in qualche modo le chiavi
+        ritornate deve reimplementare questa funzione
+        """
         return g_project.data['rooms'].keys()
 
     def getIconImage(self, id_item):

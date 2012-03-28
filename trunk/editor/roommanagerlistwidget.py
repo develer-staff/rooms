@@ -90,4 +90,16 @@ class RoomManager(RoomListWidget):
         self.start_room = g_project.data['rooms'][str(item.text())]
         g_project.notify()
 
+    def firstColumnKeys(self):
+        """
+        funzione che ritorna le chiavi delle room che servono per costruire
+        la tabella per la visualizzazione delle room. La funzione elimina 
+        le room logiche (le room che cominciano con !)
+        """
+        key_list = []
+        for key in g_project.data['rooms'].keys():
+            if not key.startswith("!"):
+                key_list.append(key)
+        return key_list
+
 
