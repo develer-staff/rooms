@@ -13,7 +13,6 @@ from structdata import ItemRequirement
 from structdata.project import g_project
 
 from varreqlistwidget import VarReqListWidget
-from roomslistwidget import RoomsListWidget
 from varsetlistwidget import VarSetListWidget
 from itemreqlistwidget import ItemReqListWidget
 from itemmovelistwidget import ItemMoveListWidget
