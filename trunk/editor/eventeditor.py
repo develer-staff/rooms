@@ -94,14 +94,12 @@ class EventEditor(QDialog):
             self.changeEventItem()
 
     def changeEventRoom(self):
-        if self.item is not None:
-            index = self.event.actions.index(self.item)
-            self.event.actions.pop(index)
-        action = Action("ROOM_GOTO")
+        if self.item is None:
+            action = Action("ROOM_GOTO")
+            self.item = action
+        self.item.params = []
         param = Param(self.selected_room)
-        action.params.append(param)
-        self.event.actions.append(action)
-        self.item = action
+        self.item.params.append(param)
         g_project.notify()
 
     def changeEventItem(self):
@@ -111,24 +109,25 @@ class EventEditor(QDialog):
         memorizzato nella classe
         """
         if self.tag_name == "ITEM_MOVE":
-            if self.item is not None:
-                index = self.event.actions.index(self.item)
-                self.event.actions.pop(index)
-            action = Action("ITEM_MOVE")
+            if self.item is None:
+                action = Action("ITEM_MOVE")
+                self.event.actions.append(action)
+                self.item = action
+            self.item.params = []
             param = Param(self.selected_item)
-            action.params.append(param)
+            self.item.params.append(param)
             param = Param(self.selected_room)
-            action.params.append(param)
-            self.event.actions.append(action)
-            self.item = action
+            self.item.params.append(param)
+
         else:
-            if self.item is not None:
-                index = self.event.requirements.index(self.item)
-                self.event.requirements.pop(index)
-            requirement = ItemRequirement(self.selected_item,
+            if self.item is None:
+                requirement = ItemRequirement(self.selected_item,
                                           self.selected_room)
-            self.event.requirements.append(requirement)
-            self.item = requirement
+                self.item = requirement
+                self.event.requirements.append(requirement)
+            else:
+                self.item.id = self.selected_item
+                self.item.value = self.selected_room
         g_project.notify()
 
     def createItemList(self):
