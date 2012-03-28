@@ -84,7 +84,7 @@ class RoomManager(RoomListWidget):
         """
         funzione per il cambio della room di partenza del progetto
         """
-        selected_item = self.table.selectedIndexes()[0]
+        selected_item = self.table.selectedItems()[0]
         item = self.table.item(selected_item.row(), 0)
         g_project.data['world'].start = str(item.text())
         self.start_room = g_project.data['rooms'][str(item.text())]
@@ -101,5 +101,15 @@ class RoomManager(RoomListWidget):
             if not key.startswith("!"):
                 key_list.append(key)
         return key_list
+
+    def changeSelection(self, row, column):
+        """
+        reimplementazione della funzione in nella classe base
+        RoomItemListWidget. In questa versione viene anche salvata la 
+        room che e' stata selezionata
+        """
+        super(RoomManager, self).changeSelection(row, column)
+        item = self.table.selectedItems()[0]
+        self.selected_room = str(self.table.item(item.row(), 0).text())
 
 
