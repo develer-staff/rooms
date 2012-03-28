@@ -62,7 +62,7 @@ class AreaResize(QWidget):
                      self.startTrack)
 
     def mouseMoveEvent(self, event=None):
-        if (event.buttons(event) and Qt.LeftButton) == Qt.LeftButton and self.in_resize:
+        if (event.buttons() and Qt.LeftButton) == Qt.LeftButton and self.in_resize:
             self.resizeAreaResize(event.x(), event.y())
 
     def resizeAreaResize(self, x, y):
