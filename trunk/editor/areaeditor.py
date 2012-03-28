@@ -66,7 +66,6 @@ class AreaEditor(QDialog):
 
         self.gl = QGridLayout()
         self.createList()
-        #self.setLayout(self.gl)
 
         self.vl.addLayout(self.gl)
         self.vl.addStretch()
@@ -80,8 +79,6 @@ class AreaEditor(QDialog):
             item = self.gl.itemAt(0)
             item.widget().deleteLater()
             self.gl.removeItem(item)
-
-
         self.signal_minus_mapper.deleteLater()
         self.createList()
 
