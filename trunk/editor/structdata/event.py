@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from origin import OriginData
+from project import g_project
 
 class Event(OriginData):
     tag_name = 'event'
@@ -9,3 +10,12 @@ class Event(OriginData):
         self.id = id
         self.requirements = []
         self.actions = []
+
+    @staticmethod
+    def create():
+        number_of_event = 0
+        for key in g_project.data['events'].keys():
+            if key.startswith('new_event_'):
+                number_of_event += 1
+        event = Event("new_event_%d" % (number_of_event + 1))
+        return event
