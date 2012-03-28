@@ -143,10 +143,6 @@ class AreaEditor(QDialog):
             g_project.data['events'][self.area.event].requirements.pop(index)
         g_project.notify()
 
-    def changeName(self):
-        self.area.id = str(self.change_name.text())
-        g_project.notify()
-
 if __name__ == "__main__":
     from openfilerooms import openFileRooms
     from savefilerooms import saveFileRooms
