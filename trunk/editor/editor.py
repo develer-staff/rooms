@@ -49,8 +49,8 @@ class Editor(QWidget):
         openFileRooms(file_name)
 
         self.room = g_project.data['rooms'][g_project.data['world'].start]
-        room_editor = RoomEditor(self.room, self)
-        room_manager = RoomManager(parent=self)
+        self.room_editor = RoomEditor(self.room, self)
+        self.room_manager = RoomManager(parent=self)
         open_project_button = OpenProjectButton(self)
         self.save_project_button = SaveProjectButton(self)
         self.setDirty(False)
@@ -58,25 +58,23 @@ class Editor(QWidget):
         grid_layout.addWidget(open_project_button, 0, 0)
         grid_layout.addWidget(self.save_project_button, 0, 1)
         grid_layout.addWidget(new_room_button, 0, 2)
-        grid_layout.addWidget(room_manager, 1, 0, 1, 3)
-        grid_layout.addWidget(room_editor, 1, 3, 2, 1)
-        self.connect(room_manager,
+        grid_layout.addWidget(self.room_manager, 1, 0, 1, 3)
+        grid_layout.addWidget(self.room_editor, 1, 3, 2, 1)
+        self.connect(self.room_manager,
                      SIGNAL("changeSelectedItem(QString)"),
-                     room_editor.changeCurrentRoom)
-        self.connect(room_editor,
+                     self.room_editor.changeCurrentRoom)
+        self.connect(self.room_editor,
                      SIGNAL("currentRoomNameChanged(QString)"),
-                     room_manager.changeCurrentRoomName)
+                     self.room_manager.changeCurrentRoomName)
         self.connect(new_room_button, SIGNAL("clicked()"), Room.create)
         self.connect(open_project_button, SIGNAL("clicked()"),
                      self.openProject)
         self.connect(self.save_project_button, SIGNAL("clicked()"),
                      self.saveProject)
 
-
     def setDirty(self, value):
         self.dirty = value
         self.save_project_button.setEnabled(value)
-
 
     def updateData(self):
         self.setDirty(True)
@@ -96,9 +94,10 @@ class Editor(QWidget):
             if self.path_file:
                 openFileRooms(self.path_file)
                 self.room = g_project.data['rooms'][g_project.data['world'].start]
+                self.room_manager.setSelectRoom(self.room)
+                self.room_editor.setRoom(self.room)
                 g_project.notify()
                 self.setDirty(False)
-            return
 
     def saveProject(self):
         if self.dirty:
