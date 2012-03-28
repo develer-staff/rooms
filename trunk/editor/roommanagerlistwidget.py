@@ -40,8 +40,14 @@ class RoomManager(RoomListWidget):
         g_project.subscribe(self)
         self.highlightStartRoom()
 
+    def setSelectRoom(self, room):
+        self.selected_room = room.id
+
     def getInitialItemToSelect(self):
         return self.selected_room
+
+    def closeEvent(self, event=None):
+        g_project.unsubscribe(self)
 
     def highlightStartRoom(self):
         item = self.table.findItems(self.start_room.id, Qt.MatchExactly)
@@ -59,6 +65,8 @@ class RoomManager(RoomListWidget):
         self.selected_room = new_name
 
     def updateData(self):
+        self.start_room = g_project.data['rooms']\
+                          [g_project.data['world'].start]
         with blockedSignals(self.table):
             self.table.clear()
             self.table.setRowCount(0)
