@@ -216,6 +216,9 @@ class RoomEditor(QWidget):
         self.setRoom(self.room)
         self.setMinimumSize(int(g_project.data['world'].width),
                           int(g_project.data['world'].height))
+        for resize_area in self.resize_areas:
+                resize_area.deleteLater()
+        self.createAllAreaResize()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
