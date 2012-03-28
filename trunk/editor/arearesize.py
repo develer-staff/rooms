@@ -24,6 +24,7 @@ class AreaResize(QWidget):
         self.moving_area = False
         self.area_start = None
         self.area_cur = None
+        self.mouse_on_area_resize = False
         self.bg_width = bg_width
         self.bg_height = bg_height
         self.area = area
@@ -173,14 +174,50 @@ class AreaResize(QWidget):
         self.area_editor = AreaEditor(self.area, self.parent())
         self.area_editor.exec_()
 
+    def keyPressEvent(self, event=None):
+        """
+        gestione dell'evento di pressione di un tasto. Se il mouse e' sopra 
+        l'oggetto e viene premuto il tasto Del l'area associata all'oggetto
+        viene cancellata
+        """
+        if event.key() == Qt.Key_Delete and self.mouse_on_area_resize:
+            self.cancelArea()
+
+    def cancelArea(self):
+        """
+        funzione per la cancellazione dell'area associata all'oggetto
+        la funzione si occupa anche di notificare l'avvenuto cambiamento
+        del modello dei dati
+        """
+        room = self.searchRoomForArea()
+        if room:
+            room.remove(self.area)
+            self.area = None
+            g_project.notify()
+
+    def searchRoomForArea(self):
+        """
+        funzione che cerca la room a cui appartiene l'area associata
+        all'oggetto. Se non la trova torna None
+        """
+        for key, room in g_project.data['rooms'].items():
+            if self.area in room.areas:
+                return room
+        return None
+
+
     def enterEvent(self, event=None):
         for cb in self.resize_buttons:
             cb.setVisible(True)
+        self.mouse_on_area_resize = True
+        self.setFocus()
         self.update()
 
     def leaveEvent(self, event=None):
         for cb in self.resize_buttons:
             cb.setVisible(False)
+        self.mouse_on_area_resize = False
+        self.clearFocus()
         self.update()
 
     def startTrack(self, index):
