@@ -42,6 +42,7 @@ class EventEditor(QDialog):
             self.tag_name = tag_name
         else:
             self.tag_name = self.getTag()
+        self.setWindowTitle(self.tag_name)
         if self.tag_name == "VAR_REQ" or self.tag_name == "VAR_SET":
             self.createVarList()
             self.connect(self.list_widget,
