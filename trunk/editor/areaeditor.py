@@ -128,7 +128,9 @@ class AreaEditor(QDialog):
     def createEventEditor(self, tag=None, item=None):
         self.event_editor = EventEditor(self.event, item, tag, self)
         self.event_editor.move(self.x() + self.width() + 50, self.y())
-        self.event_editor.exec_()
+        self.event_editor.setModal(True)
+        self.event_editor.show()
+
 
 
     def removeElement(self, index):
