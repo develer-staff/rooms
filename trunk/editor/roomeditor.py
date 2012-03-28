@@ -11,7 +11,6 @@ from structdata import Area
 from structdata import Event
 
 from arearesize import AreaResize
-from Tkconstants import SEL
 
 class ChangeBGMButton(QToolButton):
     def sizeHint(self):
