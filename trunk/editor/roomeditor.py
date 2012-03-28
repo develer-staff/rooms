@@ -12,23 +12,54 @@ from structdata import Event
 
 from arearesize import AreaResize
 
-class ChangeBGMButton(QToolButton):
+
+class EditorButton(QToolButton):
+    """
+    classe base per i bottoni di editing delle room
+    al costruttore deve essere passato il path dell'icona che deve essere
+    mostrata e la room che sta venendo editata
+    """
+    attr = None
+
     def sizeHint(self):
         return QSize(30, 30)
 
-    def __init__(self, parent=None):
-        super(ChangeBGMButton, self).__init__(parent)
-        self.setIcon(QIcon("musical_note.png"))
-        self.setIconSize(QSize(30, 30))
+    def __init__(self, icon_path, room, parent=None):
+        super(EditorButton, self).__init__(parent)
+        self.icon_path = icon_path
+        self.room = room
+        self.icon = QPixmap(self.icon_path).scaled(30, 30,
+                                                       Qt.KeepAspectRatio,
+                                                       Qt.SmoothTransformation)
+    def paintEvent(self, event=None):
+        super(EditorButton, self).paintEvent(event)
+        p = QPainter(self)
+        p.setOpacity(self.getOpacity())
+        p.drawPixmap(QPoint(0, 0), self.icon)
 
-class ChangeBGButton(QToolButton):
-    def sizeHint(self):
-        return QSize(30, 30)
-    def __init__(self, parent=None):
-        super(ChangeBGButton, self).__init__(parent)
+    def getOpacity(self):
+        """
+        funzione che ritorna il valore di opacita' per l'immagine che deve
+        essere disegnata sul bottone. Se la room associata al bottone ha
+        settato il parametro corrispondente al bottone la funzione torna 1.
+        altrimenti 0.5
+        """
+        if self.room.__dict__[self.attr]:
+            return 1.
+        return 0.5
 
-        self.setIcon(QIcon("PageTurn.jpg"))
-        self.setIconSize(QSize(30, 30))
+    def setRoom(self, room):
+        """
+        funzione per settare la room associata al bottone, da utilizzare
+        quando cambia la room in fase di editing
+        """
+        self.room = room
+
+class ChangeBGMButton(EditorButton):
+    attr = "bgm"
+
+class ChangeBGButton(EditorButton):
+    attr = "bg"
 
 class ChangeRoomName(QLineEdit):
     pass
@@ -50,8 +81,8 @@ class RoomEditor(QWidget):
 
         self.change_room_name = ChangeRoomName()
         self.change_room_name.setAlignment(Qt.AlignCenter)
-        self.change_room_bgm = ChangeBGMButton()
-        self.change_room_bg = ChangeBGButton()
+        self.change_room_bgm = ChangeBGMButton("musical_note.png", self.room)
+        self.change_room_bg = ChangeBGButton("PageTurn.jpg", self.room)
         self.setRoom(self.room)
         self.setMouseTracking(True)
 
@@ -210,6 +241,8 @@ class RoomEditor(QWidget):
             for resize_area in self.resize_areas:
                 resize_area.deleteLater()
             self.createAllAreaResize()
+            self.change_room_bg.setRoom(self.room)
+            self.change_room_bgm.setRoom(self.room)
             self.update()
 
     def updateData(self):
