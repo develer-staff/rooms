@@ -106,6 +106,12 @@ class AreaResize(QWidget):
             self.update()
 
     def mouseReleaseEvent(self, event=None):
+        self.resizeArea()
+
+    def resizeArea(self):
+        """
+        funzione per il ridimensionamento di un'area
+        """
         if self.in_resize:
             self.in_resize = False
             self.area.x = str(self.x())
