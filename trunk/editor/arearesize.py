@@ -117,8 +117,10 @@ class AreaResize(QWidget):
         self.update()
 
     def mouseReleaseEvent(self, event=None):
-        if self.in_resize or self.moving_area:
+        if self.in_resize or (self.moving_area and self.area_cur is not None):
             self.updateArea()
+        else:
+            self.area_start = None
 
     def mousePressEvent(self, event=None):
         self.moving_area = True
@@ -156,6 +158,7 @@ class AreaResize(QWidget):
         funzione per il ridimensionamento e lo spostamento di un'area
         """
         if self.in_resize or self.moving_area:
+            print "updateArea", self.moving_area
             self.in_resize = False
             self.moving_area = False
             self.area_cur = None
