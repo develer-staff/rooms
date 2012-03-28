@@ -22,9 +22,9 @@ class Area(OriginData):
 
     def valueForKey(self, key, value):
         if key == "x" or key == "width":
-            return str(float(value) / float(g_project.data['world'].width))
+            return str(round(float(value) / float(g_project.data['world'].width), 2))
         elif key == "y" or key == "height":
-            return str(float(value) / float(g_project.data['world'].height))
+            return str(round(float(value) / float(g_project.data['world'].height), 2))
         else:
             return value
 
