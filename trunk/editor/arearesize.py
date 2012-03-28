@@ -21,6 +21,9 @@ class AreaResize(QWidget):
     def __init__(self, area, bg_width, bg_height, parent=None):
         super(AreaResize, self).__init__(parent)
         self.in_resize = False
+        self.moving_area = False
+        self.area_start = None
+        self.area_cur = None
         self.bg_width = bg_width
         self.bg_height = bg_height
         self.area = area
@@ -64,6 +67,9 @@ class AreaResize(QWidget):
     def mouseMoveEvent(self, event=None):
         if (event.buttons() and Qt.LeftButton) == Qt.LeftButton and self.in_resize:
             self.resizeAreaResize(event.x(), event.y())
+        if (event.buttons() and Qt.LeftButton) == Qt.LeftButton and self.moving_area:
+            self.area_cur = event.pos()
+            self.changeAreaPosition()
 
     def resizeAreaResize(self, x, y):
         """
@@ -110,14 +116,49 @@ class AreaResize(QWidget):
         self.update()
 
     def mouseReleaseEvent(self, event=None):
-        self.resizeArea()
+        if self.in_resize or self.moving_area:
+            self.resizeArea()
+
+    def mousePressEvent(self, event=None):
+        self.moving_area = True
+        self.area_start = event.pos()
+
+    def changeAreaPosition(self):
+        """
+        funzione per il calcolo della nuova posizione dell'area nel momento 
+        in cui viene cambiata la posizione dell'area
+        """
+        x_cur = self.area_cur.x()
+        y_cur = self.area_cur.y()
+        x_start = self.area_start.x()
+        y_start = self.area_start.y()
+        diff_x = x_cur - x_start
+        diff_y = y_cur - y_start
+        x_widget = self.x() + diff_x
+        y_widget = self.y() + diff_y
+
+        #controllo per non superare orizzontalmente i limiti dell'immagine
+        if x_widget < 0:
+            x_widget = 0
+        elif x_widget + self.width() > self.bg_width:
+            x_widget = x_widget - (x_widget + self.width() - self.bg_width)
+        #controllo per non superare verticalmente i limiti dell'immagine
+        if y_widget < 0:
+            y_widget = 0
+        elif y_widget + self.height() > self.bg_height:
+            y_widget = y_widget - (y_widget + self.height() - self.bg_height)
+        self.move(x_widget, y_widget)
+        self.update()
 
     def resizeArea(self):
         """
         funzione per il ridimensionamento di un'area
         """
-        if self.in_resize:
+        if self.in_resize or self.moving_area:
             self.in_resize = False
+            self.moving_area = False
+            self.area_cur = None
+            self.area_start = None
             self.area.x = str(self.x())
             self.area.y = str(self.y())
             self.area.width = str(self.width())
