@@ -33,3 +33,9 @@ class RoomListWidget(RoomItemListWidget):
 
     def getIconImage(self, id_item):
         return g_project.data["rooms"][id_item].bg
+
+    def getItemSize(self, id_item):
+        if g_project.data['rooms'][id_item].bg:
+            return QSize(self.icon_size.width() + 10,
+                         self.icon_size.height() + 10)
+        return QSize(0, 25)

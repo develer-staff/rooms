@@ -29,3 +29,9 @@ class ItemsListWidget(RoomItemListWidget):
 
     def setRowSelected(self, id_item):
         raise NotImplementedError
+
+    def getItemSize(self, id_item):
+        if g_project.data['items'][id_item].image:
+            return QSize(self.icon_size.width() + 10,
+                         self.icon_size.height() + 10)
+        return QSize(0, 25)
