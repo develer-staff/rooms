@@ -242,7 +242,7 @@ class AreaResize(QWidget):
             action_to_draw.add(action.id)
         i = 0
         for action_id in action_to_draw:
-            icon_path = "%s.png" % action_id
+            icon_path = "image/%s.png" % action_id
             icon = QPixmap(icon_path).scaled(20, 20, Qt.KeepAspectRatio,
                                              Qt.SmoothTransformation)
             p.drawPixmap(QPoint(self.width() - 25, i * 30 + 2), icon)
@@ -256,7 +256,7 @@ class AreaResize(QWidget):
         la funzione ha come parametro di ingresso un QPainter
         """
         if len(g_project.data['events'][self.area.event].requirements):
-            icon_path = "requirement.png"
+            icon_path = "image/requirement.png"
             icon = QPixmap(icon_path).scaled(20, 20, Qt.KeepAspectRatio,
                                              Qt.SmoothTransformation)
             p.drawPixmap(QPoint(5, 0), icon)

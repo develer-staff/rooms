@@ -81,8 +81,8 @@ class RoomEditor(QWidget):
 
         self.change_room_name = ChangeRoomName()
         self.change_room_name.setAlignment(Qt.AlignCenter)
-        self.change_room_bgm = ChangeBGMButton("musical_note.png", self.room)
-        self.change_room_bg = ChangeBGButton("PageTurn.jpg", self.room)
+        self.change_room_bgm = ChangeBGMButton("image/musical_note.png", self.room)
+        self.change_room_bg = ChangeBGButton("image/PageTurn.jpg", self.room)
         self.setRoom(self.room)
         self.setMouseTracking(True)
 

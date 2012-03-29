@@ -20,7 +20,7 @@ class OpenProjectButton(QToolButton):
         return QSize(30, 30)
     def __init__(self, parent=None):
         super(OpenProjectButton, self).__init__(parent)
-        self.setIcon(QIcon("open_project.gif"))
+        self.setIcon(QIcon("image/open_project.gif"))
         self.setIconSize(QSize(30, 30))
 
 class SaveProjectButton(QToolButton):
@@ -29,7 +29,7 @@ class SaveProjectButton(QToolButton):
         return QSize(30, 30)
     def __init__(self, parent=None):
         super(SaveProjectButton, self).__init__(parent)
-        self.setIcon(QIcon("save_project.png"))
+        self.setIcon(QIcon("image/save_project.png"))
         self.setIconSize(QSize(30, 30))
 
 class Editor(QWidget):
