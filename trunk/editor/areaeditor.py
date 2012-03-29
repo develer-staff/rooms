@@ -83,6 +83,10 @@ class AreaEditor(QDialog):
         self.createList()
 
     def createList(self):
+        """
+        funzione che crea la lista dei bottoni per l'agigunta e la modifica
+        di action e requirement
+        """
         self.signal_minus_mapper = QSignalMapper(self)
         self.minus_buttons = []
         if self.area.event in g_project.data['events'].keys():
@@ -97,6 +101,15 @@ class AreaEditor(QDialog):
                      self.removeElement)
 
     def createButtons(self, button_type, items, row_start, mapper_start_index):
+        """
+        funzione che crea tutti i bottoni per particolare insieme di dati.
+        I parametri necessari sono il tipo di bottone che deve essere creato
+        (button_type), l'elenco degli elementi da associare ai bottoni (items),
+        la riga di partenza in cui inserire il bottone e l'indice da
+        associare al QSignalMapper.
+        La funzione ritorna la riga a cui e' arrivato nella costruzione e
+        l'indice a cui e' arrivato il QSignalMapper
+        """
         row = row_start
         i = mapper_start_index
         for item in items:
@@ -126,14 +139,21 @@ class AreaEditor(QDialog):
         self.createEventEditor(tag=act.text())
 
     def createEventEditor(self, tag=None, item=None):
+        """
+        funzione che crea un EventEditor relativo all'evento associato
+        all'area
+        """
         self.event_editor = EventEditor(self.event, item, tag, self)
         self.event_editor.move(self.x() + self.width() + 50, self.y())
         self.event_editor.setModal(True)
         self.event_editor.show()
 
-
-
     def removeElement(self, index):
+        """
+        funzione che elimina un action o un requirement dall'event associato
+        all'area. La funzione prende in ingresso l'indice relativo
+        al bottone selezionato
+        """
         item = self.minus_buttons[index].item
         if isinstance(item, Action):
             index = self.event.actions.index(item)
