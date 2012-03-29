@@ -95,6 +95,10 @@ class EventEditor(QDialog):
             self.changeEventItem()
 
     def changeEventRoom(self):
+        """
+        funzione per modificare/aggiungere un azione ROOM_GOTO all'evento
+        associato
+        """
         if self.item is None:
             action = Action("ROOM_GOTO")
             self.item = action
@@ -193,6 +197,12 @@ class EventEditor(QDialog):
             return self.item.tag_name.upper()
 
     def searchAction(self, var):
+        """
+        funzione per cercare un'action nell'evento. La funzione chiede
+        in ingresso il nome della variabile.
+        La funzione ritorna l'azione se questa viene trovata altrimenti
+        torna None
+        """
         for action in self.event.actions:
             if action.id == "VAR_SET":
                 if action.params[0].value == var:
@@ -200,6 +210,12 @@ class EventEditor(QDialog):
         return None
 
     def searchVarRequirement(self, var):
+        """
+        funzione per cercare un requirement di tipo var_req nell'evento. 
+        La funzione chiede in ingresso il nome della variabile.
+        La funzione ritorna il requirement se questo viene trovato altrimenti
+        torna None
+        """
         for requirement in self.event.requirements:
             if requirement.tag_name.upper() == "VAR_REQ":
                 if requirement.id == var:
