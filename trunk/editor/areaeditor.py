@@ -45,7 +45,7 @@ class RequirementButton(EditorButton):
                              requirement.id, requirement.value)
         return line
 
-class MinusButton(QToolButton):
+class MinusButton(QPushButton):
     def sizeHint(self):
         return QSize(30, 30)
 
@@ -53,7 +53,6 @@ class MinusButton(QToolButton):
         super(MinusButton, self).__init__(parent)
         self.item = item
         self.setText("-")
-        self.setIconSize(QSize(30, 30))
 
 class AreaEditor(QDialog):
 
