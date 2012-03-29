@@ -25,6 +25,7 @@ class AreaResize(QWidget):
         self.moving_area = False
         self.area_start = None
         self.area_cur = None
+        self.show_resize_buttons = False
         self.mouse_on_area_resize = False
         self.bg_width = bg_width
         self.bg_height = bg_height
@@ -194,7 +195,8 @@ class AreaResize(QWidget):
         """
         room = self.searchRoomForArea()
         if room:
-            room.remove(self.area)
+            index = room.areas.index(self.area)
+            room.areas.pop(index)
             self.area = None
             g_project.notify()
 
@@ -269,3 +271,4 @@ class AreaResize(QWidget):
         p.drawRect(0, 0, self.width(), self.height())
         self.drawActionIcon(p)
         self.drawRequirementIcon(p)
+
