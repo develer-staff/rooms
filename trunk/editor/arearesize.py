@@ -227,6 +227,37 @@ class AreaResize(QWidget):
         self.in_resize = True
         self.index = index
 
+
+    def drawActionIcon(self, p):
+        """
+        funzione che disegna le icone delle azioni definite nell'evento
+        associato all'area che si sta rappresentando
+        la funzione ha come parametro di ingresso un QPainter
+        """
+        action_to_draw = set()
+        for action in g_project.data['events'][self.area.event].actions:
+            action_to_draw.add(action.id)
+        i = 0
+        for action_id in action_to_draw:
+            icon_path = "%s.png" % action_id
+            icon = QPixmap(icon_path).scaled(20, 20, Qt.KeepAspectRatio,
+                                             Qt.SmoothTransformation)
+            p.drawPixmap(QPoint(self.width() - 25, i * 30 + 2), icon)
+            i += 1
+
+    def drawRequirementIcon(self, p):
+        """
+        funzione che disegna un icona se per attivare l'evento associato
+        all'azione che si sta rappresentando sono necessari uno o piu'
+        requirement
+        la funzione ha come parametro di ingresso un QPainter
+        """
+        if len(g_project.data['events'][self.area.event].requirements):
+            icon_path = "requirement.png"
+            icon = QPixmap(icon_path).scaled(20, 20, Qt.KeepAspectRatio,
+                                             Qt.SmoothTransformation)
+            p.drawPixmap(QPoint(5, 0), icon)
+
     def paintEvent(self, event=None):
         QWidget.paintEvent(self, event)
         p = QPainter(self)
@@ -237,3 +268,5 @@ class AreaResize(QWidget):
 
         p.setPen(Qt.blue)
         p.drawRect(0, 0, self.width(), self.height())
+        self.drawActionIcon(p)
+        self.drawRequirementIcon(p)
