@@ -159,7 +159,6 @@ class AreaResize(QWidget):
         funzione per il ridimensionamento e lo spostamento di un'area
         """
         if self.in_resize or self.moving_area:
-            print "updateArea", self.moving_area
             self.in_resize = False
             self.moving_area = False
             self.area_cur = None
