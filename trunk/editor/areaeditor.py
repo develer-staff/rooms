@@ -68,8 +68,43 @@ class AreaEditor(QDialog):
         self.createList()
 
         self.vl.addLayout(self.gl)
+        gl = QGridLayout()
+        gl.addWidget(QLabel("Area name"), 0, 0)
+        self.change_area_name = QLineEdit()
+        self.change_area_name.setText(self.area.id)
+        gl.addWidget(self.change_area_name, 0, 1)
+        gl.addWidget(QLabel("Event name"), 1, 0)
+        self.change_event_name = QLineEdit()
+        self.change_event_name.setText(self.area.event)
+        gl.addWidget(self.change_event_name, 1, 1)
+        self.vl.addLayout(gl)
         self.vl.addStretch()
         self.vl.addWidget(QStatusBar(self))
+        self.connect(self.change_area_name, SIGNAL("returnPressed()"),
+                     self.changeAreaName)
+        self.connect(self.change_event_name, SIGNAL("returnPressed()"),
+                     self.changeEventName)
+
+    def changeAreaName(self):
+        """
+        funzione che modifica il nome dell'area che si sta editando
+        """
+        if self.area.id != str(self.change_area_name.text()):
+            self.area.id = str(self.change_area_name.text())
+            g_project.notify()
+
+    def changeEventName(self):
+        """
+        funzione che cambia il nome dell'evento associato all'area che si sta
+        editando
+        """
+        if self.area.event != str(self.change_event_name.text()):
+            event = g_project.data['events'][self.area.event]
+            del g_project.data['events'][event.id]
+            event.id = str(self.change_event_name.text())
+            g_project.data['events'][event.id] = event
+            self.area.event = event.id
+            g_project.notify()
 
     def closeEvent(self, event=None):
         g_project.unsubscribe(self)
