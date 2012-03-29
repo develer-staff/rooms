@@ -12,10 +12,12 @@ class ResizeButton(QPushButton):
 
     def sizeHint(self):
         return QSize(10, 10)
-    def __init__(self, parent=None):
-        super(ResizeButton, self).__init__(parent)
-        self.setStyleSheet("background-color:"
-                                           "rgba( 255, 255, 255, 100% );")
+
+    def paintEvent(self, event=None):
+        if self.isVisible():
+            p = QPainter(self)
+            p.setBrush(Qt.blue)
+            p.drawRect(self.rect())
 
 class AreaResize(QWidget):
 
