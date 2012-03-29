@@ -10,15 +10,10 @@ from PyQt4.QtGui import *
 from roomeditor import RoomEditor
 #from roommanager import RoomManager
 from roommanagerlistwidget import RoomManager
-from structdata import Area
-from structdata import Action
-from structdata import Param
-from structdata import Item
-from structdata import Event
 from structdata import Room
 from structdata import g_project
 
-from openfilerooms import openFileRooms, OpenFileError
+from openfilerooms import openFileRooms
 from savefilerooms import saveFileRooms
 
 class OpenProjectButton(QToolButton):
