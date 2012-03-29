@@ -148,7 +148,9 @@ class AreaEditor(QDialog):
         i = mapper_start_index
         for item in items:
             button = button_type(item, self)
+            button.setAutoDefault(False)
             minus_button = MinusButton(item)
+            minus_button.setAutoDefault(False)
             self.minus_buttons.append(minus_button)
             self.gl.addWidget(minus_button, row , 1)
             self.gl.addWidget(button, row, 0)
@@ -160,6 +162,7 @@ class AreaEditor(QDialog):
             row += 1
             i += 1
         self.add_button = button_type(parent=self)
+        self.add_button.setAutoDefault(False)
         self.gl.addWidget(self.add_button, row, 0)
         row += 1
         self.connect(self.add_button.menu(), SIGNAL("triggered(QAction *)"),
