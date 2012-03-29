@@ -19,16 +19,30 @@ class RoomItemListWidget(RoomsListWidget):
                      self.changeSelection)
 
     def changeSelection(self, row, column):
+        """
+        funzione seleziona tutta la riga nella tabella dell'elemento che e' 
+        stato selezionato
+        """
         self.table.selectRow(row)
 
     def firstColumn(self):
+        """
+        funzione che ritorna i valori della prima colonna della tabella
+        """
         raise NotImplementedError
 
     def getSecondColumnItem(self, id_item):
+        """
+        funzione che ritorna l'elemento della seconda colonna per l'elemento
+        che ha l'id passato come parametro
+        """
         second_column_item = self.secondColumnItem(id_item)
         return second_column_item
 
     def getIconImage(self, id_item):
+        """
+        funzione che ritorna l'icona da associare all'item
+        """
         raise NotImplementedError
 
     def getItemSize(self, id_item):
@@ -41,6 +55,9 @@ class RoomItemListWidget(RoomsListWidget):
         raise NotImplementedError
 
     def secondColumnItem(self, id_item):
+        """
+        funzione che ritorna un QtableWidgetItem della seconda colonna
+        """
         self.table.setIconSize(self.icon_size)
         second_item = QTableWidgetItem()
         second_item.setSizeHint(self.getItemSize(id_item))
