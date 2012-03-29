@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
 import sys
-from xml.etree import ElementTree
-from xml.dom import minidom
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
