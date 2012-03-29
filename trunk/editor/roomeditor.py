@@ -122,6 +122,10 @@ class RoomEditor(QWidget):
             self.createAreaResize(area)
 
     def createAreaResize(self, area):
+        """
+        funzione che crea un oggetto di tipo AreaResize associato ad un'area
+        che deve essere passata come parametro
+        """
         area_resize = AreaResize(area, self.room_bg.width(),
                                      self.room_bg.height(), self)
         area_resize.move(float(area.x), float(area.y))
@@ -145,6 +149,12 @@ class RoomEditor(QWidget):
             g_project.notify()
 
     def createArea(self, x_start, y_start, x_stop, y_stop, event_name):
+        """
+        funzione che crea una nuova area e mostra l'AreaResize associata.
+        Alla funzione vengono passate le coordinate dell'angolo in alto a
+        sinistra, il punto in basso a destra e il nome dell'evento a essa
+        associata
+        """
         area = Area.create(self.room, max(0, x_start), max(0, y_start),
                            min(x_stop, self.room_bg.width()),
                            min(y_stop, self.room_bg.height()),
