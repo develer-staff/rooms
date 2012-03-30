@@ -18,7 +18,7 @@ class Room(OriginData):
     def create():
         number_of_new_room = 0
         for key in g_project.data['rooms'].keys():
-            if key.find("new_room") != -1:
+            if key.startswith("new_room_"):
                 number_of_new_room += 1
         room = Room("new_room_%d" % (number_of_new_room + 1), "", "")
         g_project.data['rooms'][room.id] = room
