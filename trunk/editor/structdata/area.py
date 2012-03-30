@@ -35,7 +35,7 @@ class Area(OriginData):
     def create(room, x, y, width, height, event=""):
         number_of_new_area = 0
         for area in room.areas:
-            if area.id.startswith("new_area_") != -1:
+            if area.id.startswith("new_area_"):
                 number_of_new_area += 1
         area = Area("new_area_%d" % (number_of_new_area + 1),
                     str(x / float(g_project.data['world'].width)),
