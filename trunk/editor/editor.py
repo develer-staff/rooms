@@ -132,7 +132,7 @@ class Editor(QWidget):
     def changeRoom(self, room_name):
         room_name = unicode(room_name)
         self.room = g_project.data['rooms'][room_name]
-        self.play_bgm_button.setRoom(self.romm)
+        self.play_bgm_button.setRoom(self.room)
 
     def enableRemoveRoomButton(self):
         self.remove_room_button.setEnabled(True)
