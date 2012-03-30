@@ -79,20 +79,20 @@ class AreaEditor(QDialog):
         self.vl.addLayout(gl)
         self.vl.addStretch()
         self.vl.addWidget(QStatusBar(self))
-        self.connect(self.change_area_name, SIGNAL("returnPressed()"),
-                     self.changeAreaName)
+        self.connect(self.change_area_name,
+                     SIGNAL("textEdited(const QString &)"),
+                     self.updateAreaName)
         self.connect(self.change_event_name,
                      SIGNAL("textEdited(const QString &)"),
                      self.updateEventName)
 
-    def changeAreaName(self):
+    def updateAreaName(self):
         """
         funzione che modifica il nome dell'area che si sta editando
         """
         area_name = unicode(self.change_area_name.text())
         if self.area.id != area_name:
-            self.area.id = area_name
-            g_project.notify()
+            self.area.setName(area_name)
 
     def updateEventName(self, name):
         """

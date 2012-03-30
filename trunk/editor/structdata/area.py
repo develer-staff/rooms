@@ -19,6 +19,9 @@ class Area(OriginData):
         self.width = str(float(width) * float(g_project.data['world'].width))
         self.event = event
 
+    def setName(self, name):
+        self.id = name
+        g_project.notify()
 
     def valueForKey(self, key, value):
         if key == "x" or key == "width":
