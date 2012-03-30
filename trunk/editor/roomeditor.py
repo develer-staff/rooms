@@ -44,7 +44,7 @@ class EditorButton(QToolButton):
         settato il parametro corrispondente al bottone la funzione torna 1.
         altrimenti 0.5
         """
-        if self.room.__dict__[self.attr]:
+        if getattr(self.room, self.attr):
             return 1.
         return 0.5
 
