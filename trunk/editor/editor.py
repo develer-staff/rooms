@@ -48,22 +48,44 @@ class Editor(QWidget):
         self.save_project_button = SaveProjectButton(self)
         self.setDirty(False)
         new_room_button = QPushButton("New room")
+        self.remove_room_button = QPushButton("Remove room")
         grid_layout.addWidget(open_project_button, 0, 0)
         grid_layout.addWidget(self.save_project_button, 0, 1)
         grid_layout.addWidget(new_room_button, 0, 2)
-        grid_layout.addWidget(self.room_manager, 1, 0, 1, 3)
-        grid_layout.addWidget(self.room_editor, 1, 3, 2, 1)
+        grid_layout.addWidget(self.remove_room_button, 0, 3)
+        grid_layout.addWidget(self.room_manager, 1, 0, 1, 4)
+        grid_layout.addWidget(self.room_editor, 1, 4, 2, 1)
         self.connect(self.room_manager,
                      SIGNAL("changeSelectedItem(QString)"),
                      self.room_editor.changeCurrentRoom)
         self.connect(self.room_editor,
                      SIGNAL("currentRoomNameChanged(QString)"),
                      self.room_manager.changeCurrentRoomName)
+        self.connect(self.room_manager,
+                     SIGNAL("changeSelectedItem(QString)"),
+                     self.changeCurrentRoom)
+        self.connect(self.room_manager,
+                     SIGNAL("changeSelectedItem(QString)"),
+                     self.enableRemoveRoomButton)
         self.connect(new_room_button, SIGNAL("clicked()"), Room.create)
         self.connect(open_project_button, SIGNAL("clicked()"),
                      self.openProject)
         self.connect(self.save_project_button, SIGNAL("clicked()"),
                      self.saveProject)
+        self.connect(self.remove_room_button, SIGNAL("clicked()"),
+                     self.removeRoom)
+
+    def enableRemoveRoomButton(self):
+        self.remove_room_button.setEnabled(True)
+
+    def changeCurrentRoom(self, room_name):
+        name = unicode(room_name)
+        self.room = g_project.data['rooms'][name]
+
+    def removeRoom(self):
+        g_project.removeRoom(self.room.id)
+        self.room = None
+        self.remove_room_button.setEnabled(False)
 
     def setDirty(self, value):
         self.dirty = value
@@ -86,7 +108,10 @@ class Editor(QWidget):
             self.path_file = file_open.getOpenFileName(filter="*.rooms")
             if self.path_file:
                 openFileRooms(self.path_file)
-                self.room = g_project.data['rooms'][g_project.data['world'].start]
+                if g_project.data['world'].start:
+                    self.room = g_project.data['rooms'][g_project.data['world'].start]
+                else:
+                    self.room = None
                 self.room_manager.setSelectRoom(self.room)
                 self.room_editor.setRoom(self.room)
                 g_project.notify()

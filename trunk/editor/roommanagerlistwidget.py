@@ -32,7 +32,8 @@ class RoomManager(RoomListWidget):
         self.highlightStartRoom()
 
     def setSelectRoom(self, room):
-        self.selected_room = room.id
+        if room is not None:
+            self.selected_room = room.id
 
     def getInitialItemToSelect(self):
         return self.selected_room
@@ -41,12 +42,13 @@ class RoomManager(RoomListWidget):
         g_project.unsubscribe(self)
 
     def highlightStartRoom(self):
-        item = self.table.findItems(self.start_room.id, Qt.MatchExactly)
-        if item:
-            row = item[0].row()
-            item[0].setBackground(Qt.yellow)
-            item = self.table.item(row, 1)
-            item.setBackground(Qt.yellow)
+        if self.start_room:
+            item = self.table.findItems(self.start_room.id, Qt.MatchExactly)
+            if item:
+                row = item[0].row()
+                item[0].setBackground(Qt.yellow)
+                item = self.table.item(row, 1)
+                item.setBackground(Qt.yellow)
 
     def changeCurrentRoomName(self, new_name):
         """
@@ -56,8 +58,13 @@ class RoomManager(RoomListWidget):
         self.selected_room = new_name
 
     def updateData(self):
-        self.start_room = g_project.data['rooms']\
-                          [g_project.data['world'].start]
+        if self.selected_room not in g_project.data['rooms'].keys():
+            self.selected_room = ""
+        if g_project.data['world'].start:
+            self.start_room = g_project.data['rooms']\
+                              [g_project.data['world'].start]
+        else:
+            self.start_room = ""
         with blockedSignals(self.table):
             self.table.clear()
             self.table.setRowCount(0)

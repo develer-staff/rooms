@@ -34,5 +34,11 @@ class Project(Subject):
         room.setName(new_room_name)
         self.notify()
 
+    def removeRoom(self, room_name):
+        room = self.data['rooms'].pop(room_name)
+        if self.data['world'].start == room_name:
+            self.changeStartRoom("")
+        self.notify()
+
 g_project = Project()
 

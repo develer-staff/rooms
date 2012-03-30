@@ -5,6 +5,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 from utils import blockedSignals
+from structdata.project import g_project
 
 
 class RoomsListWidget(QWidget):
@@ -54,7 +55,7 @@ class RoomsListWidget(QWidget):
         funzione utilizzata per selezionare l'elemento in tabella una volta
         che questa e' stata creata
         """
-        if item_name is not None:
+        if item_name:
             item = self.table.findItems(item_name, Qt.MatchFixedString)
             row = item[0].row()
             self.table.selectRow(row)

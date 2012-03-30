@@ -244,15 +244,27 @@ class RoomEditor(QWidget):
             self.createAllAreaResize()
             self.change_room_bg.setRoom(self.room)
             self.change_room_bgm.setRoom(self.room)
+            self.setEnableEditor(True)
             self.update()
 
     def updateData(self):
-        self.setRoom(self.room)
-        self.setMinimumSize(int(g_project.data['world'].width),
-                          int(g_project.data['world'].height))
-        for resize_area in self.resize_areas:
-                resize_area.deleteLater()
-        self.createAllAreaResize()
+        if self.room.id in g_project.data['rooms'].keys():
+            self.setRoom(self.room)
+            self.setMinimumSize(int(g_project.data['world'].width),
+                              int(g_project.data['world'].height))
+            for resize_area in self.resize_areas:
+                    resize_area.deleteLater()
+            self.createAllAreaResize()
+            self.setEnableEditor(True)
+        else:
+            self.change_room_name.setText("")
+            self.setEnableEditor(False)
+
+
+    def setEnableEditor(self, value):
+        self.change_room_bg.setEnabled(value)
+        self.change_room_bgm.setEnabled(value)
+        self.change_room_name.setEnabled(value)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
