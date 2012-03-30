@@ -16,7 +16,7 @@ class Test(unittest.TestCase):
         xml_file_world = ElementTree.fromstring(open(source, 'rb').read())
         xml_file_a = ElementTree.fromstring(open(dest, 'rb').read())
         diff = []
-        for line in xml_file_world.iter():
+        for line in xml_file_world.getiterator():
             difference = self.findDiff(line, xml_file_a)
             if difference:
                 diff.append(difference)
@@ -25,7 +25,7 @@ class Test(unittest.TestCase):
 
     def findDiff(self, line, xml_file_a):
         find = False
-        for line_a in xml_file_a.iter(line.tag):
+        for line_a in xml_file_a.getiterator(line.tag):
             if line.tag == line_a.tag:
                 if line.attrib == line_a.attrib:
                     find = True
