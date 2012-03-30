@@ -102,6 +102,7 @@ class EventEditor(QDialog):
         if self.item is None:
             action = Action("ROOM_GOTO")
             self.item = action
+            self.event.actions.append(action)
         self.item.params = []
         param = Param(self.selected_room)
         self.item.params.append(param)
