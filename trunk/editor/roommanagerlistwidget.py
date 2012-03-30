@@ -86,8 +86,9 @@ class RoomManager(RoomListWidget):
         """
         selected_item = self.table.selectedItems()[0]
         item = self.table.item(selected_item.row(), 0)
-        g_project.data['world'].start = str(item.text())
-        self.start_room = g_project.data['rooms'][str(item.text())]
+        room_name = unicode(item.text())
+        g_project.data['world'].start = room_name
+        self.start_room = g_project.data['rooms'][room_name]
         g_project.notify()
 
     def firstColumnKeys(self):
@@ -110,6 +111,6 @@ class RoomManager(RoomListWidget):
         """
         super(RoomManager, self).changeSelection(row, column)
         item = self.table.selectedItems()[0]
-        self.selected_room = str(self.table.item(item.row(), 0).text())
+        self.selected_room = unicode(self.table.item(item.row(), 0).text())
 
 

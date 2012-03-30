@@ -88,8 +88,9 @@ class AreaEditor(QDialog):
         """
         funzione che modifica il nome dell'area che si sta editando
         """
-        if self.area.id != str(self.change_area_name.text()):
-            self.area.id = str(self.change_area_name.text())
+        area_name = unicode(self.change_area_name.text())
+        if self.area.id != area_name:
+            self.area.id = area_name
             g_project.notify()
 
     def changeEventName(self):
@@ -97,10 +98,11 @@ class AreaEditor(QDialog):
         funzione che cambia il nome dell'evento associato all'area che si sta
         editando
         """
-        if self.area.event != str(self.change_event_name.text()):
+        event_name = unicode(self.change_event_name.text())
+        if self.area.event != event_name:
             event = g_project.data['events'][self.area.event]
             del g_project.data['events'][event.id]
-            event.id = str(self.change_event_name.text())
+            event.id = event_name
             g_project.data['events'][event.id] = event
             self.area.event = event.id
             g_project.notify()

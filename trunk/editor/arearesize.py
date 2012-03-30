@@ -6,7 +6,6 @@ from PyQt4.QtCore import *
 from structdata import g_project
 
 from areaeditor import AreaEditor
-from roommanager import RoomManager
 
 class ResizeButton(QPushButton):
 

@@ -137,7 +137,7 @@ class RoomEditor(QWidget):
         file_open = QFileDialog()
         path_file = file_open.getOpenFileName()
         if path_file:
-            self.room.bg = str(path_file)
+            self.room.bg = unicode(path_file)
             g_project.notify()
 
     def setRoomBgm(self):
@@ -145,7 +145,7 @@ class RoomEditor(QWidget):
         file_open = QFileDialog()
         path_file = file_open.getOpenFileName()
         if path_file:
-            self.room.bgm = str(path_file)
+            self.room.bgm = unicode(path_file)
             g_project.notify()
 
     def createArea(self, x_start, y_start, x_stop, y_stop, event_name):
@@ -220,7 +220,7 @@ class RoomEditor(QWidget):
 
     def setRoomName(self):
         """funzione per il cambio del nome della room"""
-        new_room_name = str(self.change_room_name.text())
+        new_room_name = unicode(self.change_room_name.text())
         if g_project.data['world'].start == self.room.id:
             g_project.data['world'].start = new_room_name
         for key, item in g_project.data['items'].items():
@@ -244,7 +244,7 @@ class RoomEditor(QWidget):
         funzione per cambiare la room visualizzata, prende in ingresso
         l'id della room che deve essere visualizzata
         """
-        self.room = g_project.data['rooms'][str(room_id)]
+        self.room = g_project.data['rooms'][unicode(room_id)]
         if self.room:
             self.room_bg = QPixmap(self.room.bg)
             self.change_room_name.setText(self.room.id)

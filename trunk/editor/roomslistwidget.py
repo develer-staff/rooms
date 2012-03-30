@@ -48,7 +48,7 @@ class RoomsListWidget(QWidget):
         funzione setta la stringa di ricerca per gli elementi che devono
         essere visualizzati nella tabella
         """
-        self.substring = str(substring)
+        self.substring = unicode(substring)
         with blockedSignals(self.table):
             self.table.clear()
             self.table.setRowCount(0)

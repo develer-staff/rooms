@@ -77,7 +77,7 @@ class EventEditor(QDialog):
         l'item associato alla room nell'evento e se si chiama la funzione di 
         modifica/creazione dell'action o requirement per l'evento considerato
         """
-        self.selected_room = str(room)
+        self.selected_room = unicode(room)
         if self.selected_room is not None and self.selected_item is not None:
             self.changeEventItem()
         elif self.tag_name == "ROOM_GOTO" and self.selected_room is not None:
@@ -90,7 +90,7 @@ class EventEditor(QDialog):
         per creare o modificare l'item corrente.
         La funzione prende come parametro in ingresso il nome dell'item
         """
-        self.selected_item = str(item)
+        self.selected_item = unicode(item)
         if self.selected_room is not None and self.selected_item is not None:
             self.changeEventItem()
 
@@ -227,8 +227,8 @@ class EventEditor(QDialog):
         funzione che modifica i dati del modello (action o requirement)
         relativi alle variabili (VAR_SET e VAR_REQ)
         """
-        var = str(var)
-        value = str(value)
+        var = unicode(var)
+        value = unicode(value)
         if self.item is not None:
             """
             se item e' una istanza allora si deve andare a modificare l'item
@@ -241,7 +241,7 @@ class EventEditor(QDialog):
                     #se trovo l'action sostituisco il valore, altrimenti ne 
                     #creo una nuova
                     if action is not None:
-                        action.params[1].value = str(value)
+                        action.params[1].value = value
                     else:
                         action = Action("VAR_SET")
                         action.params.append(Param(var))
@@ -279,7 +279,7 @@ class EventEditor(QDialog):
                         self.event.requirements.pop(index)
             else:
                 if value:
-                    action = Action(str(self.tag_name))
+                    action = Action(unicode(self.tag_name))
                     action.params.append(Param(var))
                     action.params.append(Param(value))
                     self.item = action
