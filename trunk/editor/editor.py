@@ -93,6 +93,7 @@ class Editor(QWidget):
         grid_layout.addWidget(self.play_bgm_button, 0, 4)
         grid_layout.addWidget(self.room_manager, 1, 0, 1, 5)
         grid_layout.addWidget(self.room_editor, 1, 5, 2, 1)
+        self.music_player = None
         self.connect(self.room_manager,
                      SIGNAL("changeSelectedItem(QString)"),
                      self.room_editor.changeCurrentRoom)
@@ -119,11 +120,14 @@ class Editor(QWidget):
                      self.playMusic)
 
     def playMusic(self):
-        print "entro", self.room.bgm
-        music_player = QSound(self.room.bgm, self)
-        print music_player.fileName()
-        music_player.play()
-        QSound.play(self.room.bgm)
+        if self.music_player is None:
+            self.music_player = QSound(self.room.bgm, self)
+            self.music_player.play()
+        else:
+            if self.music_player.isFinished():
+                self.music_player.play
+            else:
+                self.music_player.stop()
 
     def changeRoom(self, room_name):
         room_name = unicode(room_name)
