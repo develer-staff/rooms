@@ -253,7 +253,7 @@ class AreaResize(QWidget):
         requirement
         la funzione ha come parametro di ingresso un QPainter
         """
-        if len(g_project.data['events'][self.area.event].requirements):
+        if g_project.data['events'][self.area.event].requirements:
             icon_path = "image/requirement.png"
             icon = QPixmap(icon_path).scaled(20, 20, Qt.KeepAspectRatio,
                                              Qt.SmoothTransformation)
