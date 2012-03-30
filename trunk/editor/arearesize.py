@@ -13,10 +13,9 @@ class ResizeButton(QPushButton):
         return QSize(10, 10)
 
     def paintEvent(self, event=None):
-        if self.isVisible():
-            p = QPainter(self)
-            p.setBrush(Qt.blue)
-            p.drawRect(self.rect())
+        p = QPainter(self)
+        p.setBrush(Qt.blue)
+        p.drawRect(self.rect())
 
 class AreaResize(QWidget):
 
