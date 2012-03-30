@@ -32,6 +32,42 @@ class SaveProjectButton(QToolButton):
         self.setIcon(QIcon("image/save_project.png"))
         self.setIconSize(QSize(30, 30))
 
+class PlayBGMButton(QToolButton):
+
+    def sizeHint(self):
+        return QSize(30, 30)
+
+    def __init__(self, icon_path, room, parent=None):
+        super(PlayBGMButton, self).__init__(parent)
+        self.room = room
+        self.icon_path = icon_path
+        self.icon = QPixmap(self.icon_path).scaled(30, 30,
+                                                       Qt.KeepAspectRatio,
+                                                       Qt.SmoothTransformation)
+    def paintEvent(self, event=None):
+        super(PlayBGMButton, self).paintEvent(event)
+        p = QPainter(self)
+        p.setOpacity(self.getOpacity())
+        p.drawPixmap(QPoint(0, 0), self.icon)
+
+    def getOpacity(self):
+        """
+        funzione che ritorna il valore di opacita' per l'immagine che deve
+        essere disegnata sul bottone. Se la room associata al bottone ha
+        settato il parametro corrispondente al bottone la funzione torna 1.
+        altrimenti 0.5
+        """
+        if self.room.bgm:
+            return 1.
+        return 0.5
+
+    def setRoom(self, room):
+        """
+        funzione per settare la room associata al bottone, da utilizzare
+        quando cambia la room in fase di editing
+        """
+        self.room = room
+
 class Editor(QWidget):
 
     def __init__(self, file_name, parent=None):
@@ -49,12 +85,14 @@ class Editor(QWidget):
         self.setDirty(False)
         new_room_button = QPushButton("New room")
         self.remove_room_button = QPushButton("Remove room")
+        self.play_bgm_button = PlayBGMButton("image/play.png", self.room, self)
         grid_layout.addWidget(open_project_button, 0, 0)
         grid_layout.addWidget(self.save_project_button, 0, 1)
         grid_layout.addWidget(new_room_button, 0, 2)
         grid_layout.addWidget(self.remove_room_button, 0, 3)
-        grid_layout.addWidget(self.room_manager, 1, 0, 1, 4)
-        grid_layout.addWidget(self.room_editor, 1, 4, 2, 1)
+        grid_layout.addWidget(self.play_bgm_button, 0, 4)
+        grid_layout.addWidget(self.room_manager, 1, 0, 1, 5)
+        grid_layout.addWidget(self.room_editor, 1, 5, 2, 1)
         self.connect(self.room_manager,
                      SIGNAL("changeSelectedItem(QString)"),
                      self.room_editor.changeCurrentRoom)
@@ -67,6 +105,9 @@ class Editor(QWidget):
         self.connect(self.room_manager,
                      SIGNAL("changeSelectedItem(QString)"),
                      self.enableRemoveRoomButton)
+        self.connect(self.room_manager,
+                     SIGNAL("changeSelectedItem(QString)"),
+                     self.changeRoom)
         self.connect(new_room_button, SIGNAL("clicked()"), Room.create)
         self.connect(open_project_button, SIGNAL("clicked()"),
                      self.openProject)
@@ -74,6 +115,20 @@ class Editor(QWidget):
                      self.saveProject)
         self.connect(self.remove_room_button, SIGNAL("clicked()"),
                      self.removeRoom)
+        self.connect(self.play_bgm_button, SIGNAL("clicked()"),
+                     self.playMusic)
+
+    def playMusic(self):
+        print "entro", self.room.bgm
+        music_player = QSound(self.room.bgm, self)
+        print music_player.fileName()
+        music_player.play()
+        QSound.play(self.room.bgm)
+
+    def changeRoom(self, room_name):
+        room_name = unicode(room_name)
+        self.room = g_project.data['rooms'][room_name]
+        self.play_bgm_button.setRoom(self.romm)
 
     def enableRemoveRoomButton(self):
         self.remove_room_button.setEnabled(True)
