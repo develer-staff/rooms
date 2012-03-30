@@ -3,9 +3,6 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-from structdata import g_project
-from structdata import Param
-
 from varslistwidget import VarsListWidget
 
 class VarSetListWidget(VarsListWidget):
