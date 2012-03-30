@@ -16,5 +16,11 @@ class Project(Subject):
         self.data['events'] = OrderedDict()
         self.data['rooms'] = OrderedDict()
 
+    def changeEventName(self, old_name, new_name):
+        event = self.data['events'].pop(old_name)
+        event.setName(new_name)
+        self.data['events'][event.id] = event
+        self.notify()
+
 g_project = Project()
 

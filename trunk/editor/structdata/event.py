@@ -11,6 +11,10 @@ class Event(OriginData):
         self.requirements = []
         self.actions = []
 
+    def setName(self, name):
+        self.id = name
+        g_project.notify()
+
     @staticmethod
     def create():
         number_of_event = 0
