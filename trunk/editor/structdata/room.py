@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 from origin import OriginData
 
-from area import Area
 from project import g_project
 
 class Room(OriginData):
