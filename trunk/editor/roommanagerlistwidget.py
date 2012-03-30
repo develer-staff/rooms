@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-
-from contextlib import contextmanager
-
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
@@ -10,13 +7,7 @@ from structdata import g_project
 
 from roomlistwidget import RoomListWidget
 
-@contextmanager
-def blockedSignals(widget):
-    widget.blockSignals(True)
-    try:
-        yield
-    finally:
-        widget.blockSignals(False)
+from utils import blockedSignals
 
 class RoomManager(RoomListWidget):
 
@@ -78,18 +69,17 @@ class RoomManager(RoomListWidget):
         gestione dell'evento di pressione del tasto destro del mouse. Quando
         viene premuto si cambia la room di partenza del progetto
         """
-        self.changeStartRoom()
+        self.updateStartRoom()
 
-    def changeStartRoom(self):
+    def updateStartRoom(self):
         """
         funzione per il cambio della room di partenza del progetto
         """
         selected_item = self.table.selectedItems()[0]
         item = self.table.item(selected_item.row(), 0)
         room_name = unicode(item.text())
-        g_project.data['world'].start = room_name
-        self.start_room = g_project.data['rooms'][room_name]
-        g_project.notify()
+        self.start_room = room_name
+        g_project.changeStartRoom(self.start_room)
 
     def firstColumnKeys(self):
         """

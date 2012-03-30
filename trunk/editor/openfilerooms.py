@@ -2,17 +2,8 @@
 from xml.etree import ElementTree
 from misc.odict import OrderedDict
 
-from structdata import Area
 from structdata import Action
-from structdata import Param
-from structdata import Item
-from structdata import Event
-from structdata import Room
-from structdata import Var
-from structdata import Image
-from structdata import World
-from structdata import VarRequirement
-from structdata import ItemRequirement
+
 from structdata import g_project
 from structdata import class_tag
 

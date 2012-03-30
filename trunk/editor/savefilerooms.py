@@ -3,9 +3,6 @@
 from xml.dom import minidom
 from xml.etree import ElementTree
 
-
-from misc.odict import OrderedDict
-
 from structdata import g_project
 
 def prettify(content):

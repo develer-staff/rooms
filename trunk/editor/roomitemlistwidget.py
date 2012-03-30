@@ -3,8 +3,6 @@
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
-from structdata import g_project
-
 from roomslistwidget import RoomsListWidget
 
 class RoomItemListWidget(RoomsListWidget):

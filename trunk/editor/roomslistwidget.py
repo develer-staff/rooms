@@ -1,17 +1,11 @@
 #!/usr/bin/env python
 
-from contextlib import contextmanager
 
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
-@contextmanager
-def blockedSignals(widget):
-    widget.blockSignals(True)
-    try:
-        yield
-    finally:
-        widget.blockSignals(False)
+from utils import blockedSignals
+
 
 class RoomsListWidget(QWidget):
     """
