@@ -138,8 +138,10 @@ class Editor(QWidget):
 
     def closeEvent(self, event):
         if self.dirty:
-            ret = QMessageBox.question(self, "Save", "Do you want save the file?",
-                                       QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+            ret = QMessageBox.question(self,
+                                       "Save", "Do you want save the file?",
+                                       QMessageBox.Yes | \
+                                       QMessageBox.No | QMessageBox.Cancel)
             if ret == QMessageBox.Yes:
                 if not self.saveProject():
                     event.ignore()
