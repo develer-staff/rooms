@@ -20,7 +20,7 @@ class EditorButton(QPushButton):
             self.setText(self.calcText(self.item))
         else:
             self.setText("+")
-            menu = QMenu()
+            menu = QMenu(self)
             for entry in self.entries:
                 menu.addAction(entry)
             self.setMenu(menu)
