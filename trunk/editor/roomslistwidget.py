@@ -65,7 +65,6 @@ class RoomsListWidget(QWidget):
         self.table.setSortingEnabled(False)
         self.table.setColumnCount(2)
         self.table.setHorizontalHeaderLabels(self.horizontal_header)
-
         for item in self.firstColumn():
             #controllo per eseguire il filtraggio degli elementi della tabella
             if self.substring.lower() in item.lower():
