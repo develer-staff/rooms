@@ -9,7 +9,7 @@ def from1To2(xml_file):
     imposta le coordinate da assolute a relative
     """
     xml_file.set('version', '2')
-    for node in xml_file.iter('world'):
+    for node in xml_file.getiterator('world'):
         width = int(node.get('width'))
         height = int(node.get('height'))
     for node in xml_file.find('items').getiterator():

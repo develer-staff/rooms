@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from xml.etree import ElementTree
-from xml.etree.ElementTree import ParseError
 from misc.odict import OrderedDict
 
 from structdata import Action
@@ -56,7 +55,7 @@ def loadItems(xml_file):
 
 def loadInformation(xml_file):
     informations = None
-    for node in xml_file.iter('world'):
+    for node in xml_file.getiterator('world'):
         informations = class_tag[node.tag](**node.attrib)
     return informations
 
@@ -76,7 +75,7 @@ def openFileRooms(file_path):
     """
     funzione per il caricamento dei dati salvati da un file .rooms
     prende in ingresso il path del file da controllare
-    Si suppone che nel momento che il file viene passato alle funzioni per 
+    Si suppone che nel momento che il file viene passato alle funzioni per
     ottenere le informazioni del progetto il file sia in un formato corretto
     Se il caricamento va a buon fine memorizza nella variabile globale g_project
     tutte le informazioni altrimenti lancia un eccezione di tipo OpenFileRoom
@@ -84,8 +83,14 @@ def openFileRooms(file_path):
     precedente all'ultima realizzata
     """
     try:
+        from xml.etree.ElementTree import ParseError as XMLError
+    except ImportError:
+        # Python < 2.7
+        from xml.parsers.expat import ExpatError as XMLError
+
+    try:
         xml_file = upgradeVersion(file_path)
-    except ParseError:
+    except XMLError:
         raise OpenFileError(file_path)
     try:
         world = loadInformation(xml_file)
