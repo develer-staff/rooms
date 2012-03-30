@@ -17,9 +17,9 @@ void WorldTests::testReqsOk()
 {
     std::string xml = "<?xml version='1.0' ?>"
                       "<world version='2' name='testLoadWorld' width='800' height='600' start='room'>"
-                      "<images><img file='../example/example2/data/chiave.png' /></images>"
+                      "<images><img file='../../examples/example2/data/chiave.png' /></images>"
                       "<rooms><room id='room' bg='bg'></room></rooms>"
-                      "<items><item id='key' room='room' x='10' y='10' width='50' height='50' image='../example/example2/data/chiave.png' event='event' /></items>"
+                      "<items><item id='key' room='room' x='10' y='10' width='50' height='50' image='../../examples/example2/data/chiave.png' event='event' /></items>"
                       "<vars><var id='var' value='12' /></vars>"
                       "</world>\n";
     CPPUNIT_ASSERT(mock->loadWorldFromStr(xml));
@@ -35,9 +35,9 @@ void WorldTests::testReqsNo()
 {
     std::string xml = "<?xml version='1.0' ?>"
                       "<world version='2' name='testLoadWorld' width='800' height='600' start='room'>"
-                      "<images><img file='../example/example2/data/chiave.png' /></images>"
+                      "<images><img file='../../examples/example2/data/chiave.png' /></images>"
                       "<rooms><room id='room' bg='bg'></room></rooms>"
-                      "<items><item id='key' room='room' x='10' y='10' width='50' height='50' image='../example/example2/data/chiave.png' event='event' /></items>"
+                      "<items><item id='key' room='room' x='10' y='10' width='50' height='50' image='../../examples/example2/data/chiave.png' event='event' /></items>"
                       "<vars><var id='var' value='20' /></vars>"
                       "</world>\n";
     CPPUNIT_ASSERT(mock->loadWorldFromStr(xml));
@@ -53,8 +53,8 @@ void WorldTests::testLoadWorld()
 {
     std::string xml = "<?xml version='1.0' ?>"
                       "<world version='2' name='testLoadWorld' width='800' height='600' start='room'>"
-                      "<images><img file='../example/example2/data/chiave.png'/></images>"
-                      "<items><item id='key' room='room' x='10' y='10' width='50' height='50' image='../example/example2/data/chiave.png' event='event' /></items>"
+                      "<images><img file='../../examples/example2/data/chiave.png'/></images>"
+                      "<items><item id='key' room='room' x='10' y='10' width='50' height='50' image='../../examples/example2/data/chiave.png' event='event' /></items>"
                       "<vars /><dialogs />"
                       "<events><event id='event'><action id='ROOM_GOTO'><param value='room' /></action></event></events>"
                       "<rooms><room id='room' bg='bg'><area id='id' x= '10' y='10' width='10' height='10' event='event'/></room></rooms>"
@@ -107,7 +107,7 @@ void ApiTests::testDialogStart()
     std::string xml = "<?xml version='1.0' ?>"
                       "<world version='2' name='testLoadWorld' width='800' height='600' start='room'>"
                       "<rooms><room id='room' bg='bg' /></rooms>"
-                      "<images><img file='../example/example2/data/chiave.png'/></images>"
+                      "<images><img file='../../examples/example2/data/chiave.png'/></images>"
                       "<dialogs><dialog id='dialog'start='firststep'><step id='firststep' text='text'></step></dialog></dialogs>"
                       "</world>\n";
     mock->loadWorldFromStr(xml);
