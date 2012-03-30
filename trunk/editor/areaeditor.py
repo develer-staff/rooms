@@ -2,8 +2,8 @@
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+
 from structdata import g_project
-from structdata.requirement import Requirement
 from structdata import Action
 from eventeditor import EventEditor
 
