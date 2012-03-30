@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import sys
-from xml.etree.ElementTree import ElementTree
 
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
