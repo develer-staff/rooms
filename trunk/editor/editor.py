@@ -110,8 +110,10 @@ class Editor(QWidget):
                 openFileRooms(self.path_file)
                 if g_project.data['world'].start:
                     self.room = g_project.data['rooms'][g_project.data['world'].start]
+                    self.remove_room_button.setEnabled(True)
                 else:
                     self.room = None
+                    self.remove_room_button.setEnabled(False)
                 self.room_manager.setSelectRoom(self.room)
                 self.room_editor.setRoom(self.room)
                 g_project.notify()
