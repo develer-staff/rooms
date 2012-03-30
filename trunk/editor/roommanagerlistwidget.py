@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-
-from contextlib import contextmanager
-
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
@@ -10,13 +7,7 @@ from structdata import g_project
 
 from roomlistwidget import RoomListWidget
 
-@contextmanager
-def blockedSignals(widget):
-    widget.blockSignals(True)
-    try:
-        yield
-    finally:
-        widget.blockSignals(False)
+from utils import blockedSignals
 
 class RoomManager(RoomListWidget):
 
