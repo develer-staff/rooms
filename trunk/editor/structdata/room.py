@@ -20,10 +20,9 @@ class Room(OriginData):
     @staticmethod
     def create():
         number_of_new_room = 0
-        for key in g_project.data['rooms'].keys():
-            if key.startswith("new_room_"):
-                number_of_new_room += 1
-        room = Room("new_room_%d" % (number_of_new_room + 1), "", "")
+        while ("new_room_%d" % number_of_new_room in g_project.data['rooms'].keys()):
+            number_of_new_room += 1
+        room = Room("new_room_%d" % (number_of_new_room), "", "")
         g_project.data['rooms'][room.id] = room
         g_project.notify()
         return room
