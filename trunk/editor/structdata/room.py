@@ -16,6 +16,7 @@ class Room(OriginData):
 
     def setName(self, name):
         self.id = name
+        g_project.notify()
 
     @staticmethod
     def create():
