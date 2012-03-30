@@ -22,5 +22,9 @@ class Project(Subject):
         self.data['events'][event.id] = event
         self.notify()
 
+    def changeStartRoom(self, new_start_room_name):
+        self.data['world'].start = new_start_room_name
+        self.notify()
+
 g_project = Project()
 
