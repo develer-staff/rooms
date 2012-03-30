@@ -26,5 +26,13 @@ class Project(Subject):
         self.data['world'].start = new_start_room_name
         self.notify()
 
+    def changeRoomName(self, old_room_name, new_room_name):
+        room = self.data['rooms'].pop(old_room_name)
+        room.setName(new_room_name)
+        self.data['rooms'][room.id] = room
+        if self.data['world'].start == old_room_name:
+            self.changeStartRoom(new_room_name)
+        self.notify()
+
 g_project = Project()
 

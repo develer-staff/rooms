@@ -14,6 +14,9 @@ class Room(OriginData):
         self.areas = []
         self.bgm = bgm
 
+    def setName(self, name):
+        self.id = name
+
     @staticmethod
     def create():
         number_of_new_room = 0

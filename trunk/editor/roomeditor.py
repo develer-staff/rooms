@@ -106,8 +106,8 @@ class RoomEditor(QWidget):
         self.createAllAreaResize()
 
         self.connect(self.change_room_name,
-                     SIGNAL("returnPressed()"),
-                     self.setRoomName)
+                     SIGNAL("textEdited(const QString &)"),
+                     self.updateRoomName)
         self.connect(self.change_room_bg, SIGNAL("clicked()"), self.setRoomBg)
         self.connect(self.change_room_bgm, SIGNAL("clicked()"), self.setRoomBgm)
 
@@ -218,20 +218,13 @@ class RoomEditor(QWidget):
     def closeEvent(self, event):
         g_project.unsubscribe(self)
 
-    def setRoomName(self):
+    def updateRoomName(self, name):
         """funzione per il cambio del nome della room"""
-        new_room_name = unicode(self.change_room_name.text())
-        if g_project.data['world'].start == self.room.id:
-            g_project.data['world'].start = new_room_name
-        for key, item in g_project.data['items'].items():
-            if item.room == self.room.id:
-                item.room = new_room_name
-        del g_project.data['rooms'][self.room.id]
+        new_room_name = unicode(name)
+
         self.emit(SIGNAL("currentRoomNameChanged(QString)"),
                   new_room_name)
-        self.room.id = new_room_name
-        g_project.data['rooms'][self.room.id] = self.room
-        g_project.notify()
+        g_project.changeRoomName(self.room.id, new_room_name)
 
     def setRoom(self, room):
         if room:
