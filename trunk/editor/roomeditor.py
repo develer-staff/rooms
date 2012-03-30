@@ -221,7 +221,6 @@ class RoomEditor(QWidget):
     def updateRoomName(self, name):
         """funzione per il cambio del nome della room"""
         new_room_name = unicode(name)
-
         self.emit(SIGNAL("currentRoomNameChanged(QString)"),
                   new_room_name)
         g_project.changeRoomName(self.room.id, new_room_name)
