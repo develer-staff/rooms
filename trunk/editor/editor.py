@@ -30,6 +30,14 @@ def handleException(exc_type, exc_value, exc_traceback):
     print m.getvalue()
     QApplication.exit()
 
+class StartEngineButton(QToolButton):
+
+    def sizeHint(self):
+        return QSize(30, 30)
+    def __init__(self, icon_path, parent=None):
+        super(StartEngineButton, self).__init__(parent)
+        self.setIcon(QIcon(icon_path))
+        self.setIconSize(QSize(30, 30))
 
 class OpenProjectButton(QToolButton):
 
@@ -94,7 +102,7 @@ class Editor(QWidget):
         openFileRooms(file_name)
         self.room = g_project.data['rooms'][g_project.data['world'].start]
         self.createRoomEditor()
-        self.createRoomManager()()
+        self.createRoomManager()
         self.createEditorButtons()
         self.setDirty(False)
 
@@ -104,6 +112,8 @@ class Editor(QWidget):
         new_room_button = QPushButton("New room")
         self.remove_room_button = QPushButton("Remove room")
         self.play_bgm_button = PlayBGMButton("image/play.png", self.room, self)
+        self.start_engine_button = StartEngineButton("image/start_engine.gif",
+                                                     self)
         horizontal_button = QHBoxLayout()
         horizontal_button.addWidget(open_project_button)
         horizontal_button.addWidget(self.save_project_button)
@@ -122,6 +132,8 @@ class Editor(QWidget):
                      self.removeRoom)
         self.connect(self.play_bgm_button, SIGNAL("clicked()"),
                      self.playMusic)
+        self.connect(self.start_engine_button, SIGNAL("clicked()"),
+                     self.startEngine)
 
     def createRoomEditor(self):
         self.room_editor = RoomEditor(self.room, self)
@@ -149,6 +161,9 @@ class Editor(QWidget):
     def clearEditor(self):
         self.room_editor = None
         self.room_manager = None
+
+    def startEngine(self):
+        pass
 
     def playMusic(self):
         if self.music_player is None:
