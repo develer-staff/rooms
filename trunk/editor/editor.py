@@ -30,6 +30,7 @@ def handleException(exc_type, exc_value, exc_traceback):
     print m.getvalue()
     QApplication.exit()
 
+
 class OpenProjectButton(QToolButton):
 
     def sizeHint(self):
@@ -89,42 +90,29 @@ class Editor(QWidget):
     def __init__(self, file_name, parent=None):
         super(Editor, self).__init__(parent)
         g_project.subscribe(self)
-        grid_layout = QGridLayout(self)
-
+        self.grid_layout = QGridLayout(self)
         openFileRooms(file_name)
-
         self.room = g_project.data['rooms'][g_project.data['world'].start]
-        self.room_editor = RoomEditor(self.room, self)
-        self.room_manager = RoomManager(parent=self)
+        self.createRoomEditor()
+        self.createRoomManager()()
+        self.createEditorButtons()
+        self.setDirty(False)
+
+    def createEditorButtons(self):
         open_project_button = OpenProjectButton(self)
         self.save_project_button = SaveProjectButton(self)
-        self.setDirty(False)
         new_room_button = QPushButton("New room")
         self.remove_room_button = QPushButton("Remove room")
         self.play_bgm_button = PlayBGMButton("image/play.png", self.room, self)
-        grid_layout.addWidget(open_project_button, 0, 0)
-        grid_layout.addWidget(self.save_project_button, 0, 1)
-        grid_layout.addWidget(new_room_button, 0, 2)
-        grid_layout.addWidget(self.remove_room_button, 0, 3)
-        grid_layout.addWidget(self.play_bgm_button, 0, 4)
-        grid_layout.addWidget(self.room_manager, 1, 0, 1, 5)
-        grid_layout.addWidget(self.room_editor, 1, 5, 2, 1)
-        self.music_player = None
-        self.connect(self.room_manager,
-                     SIGNAL("changeSelectedItem(QString)"),
-                     self.room_editor.changeCurrentRoom)
-        self.connect(self.room_editor,
-                     SIGNAL("currentRoomNameChanged(QString)"),
-                     self.room_manager.changeCurrentRoomName)
-        self.connect(self.room_manager,
-                     SIGNAL("changeSelectedItem(QString)"),
-                     self.changeCurrentRoom)
-        self.connect(self.room_manager,
-                     SIGNAL("changeSelectedItem(QString)"),
-                     self.enableRemoveRoomButton)
-        self.connect(self.room_manager,
-                     SIGNAL("changeSelectedItem(QString)"),
-                     self.changeRoom)
+        horizontal_button = QHBoxLayout()
+        horizontal_button.addWidget(open_project_button)
+        horizontal_button.addWidget(self.save_project_button)
+        horizontal_button.addWidget(new_room_button)
+        horizontal_button.addWidget(self.remove_room_button)
+        horizontal_button.addWidget(self.play_bgm_button)
+        horizontal_button.addWidget(self.start_engine_button)
+        self.grid_layout.addLayout(horizontal_button, 0, 0)
+
         self.connect(new_room_button, SIGNAL("clicked()"), Room.create)
         self.connect(open_project_button, SIGNAL("clicked()"),
                      self.openProject)
@@ -134,6 +122,33 @@ class Editor(QWidget):
                      self.removeRoom)
         self.connect(self.play_bgm_button, SIGNAL("clicked()"),
                      self.playMusic)
+
+    def createRoomEditor(self):
+        self.room_editor = RoomEditor(self.room, self)
+        self.grid_layout.addWidget(self.room_editor, 1, 2)
+        self.connect(self.room_editor,
+                     SIGNAL("currentRoomNameChanged(QString)"),
+                     self.room_manager.changeCurrentRoomName)
+
+    def createRoomManager(self):
+        self.room_manager = RoomManager(parent=self)
+        self.grid_layout.addWidget(self.room_manager, 1, 0)
+        self.connect(self.room_manager,
+             SIGNAL("changeSelectedItem(QString)"),
+             self.room_editor.changeCurrentRoom)
+        self.connect(self.room_manager,
+                     SIGNAL("changeSelectedItem(QString)"),
+                     self.changeCurrentRoom)
+        self.connect(self.room_manager,
+                     SIGNAL("changeSelectedItem(QString)"),
+                     self.enableRemoveRoomButton)
+        self.connect(self.room_manager,
+                     SIGNAL("changeSelectedItem(QString)"),
+                     self.changeRoom)
+
+    def clearEditor(self):
+        self.room_editor = None
+        self.room_manager = None
 
     def playMusic(self):
         if self.music_player is None:
@@ -189,8 +204,8 @@ class Editor(QWidget):
                 else:
                     self.room = None
                     self.remove_room_button.setEnabled(False)
-                self.room_manager.setSelectRoom(self.room)
-                self.room_editor.setRoom(self.room)
+                self.clearEditor()
+                self.populateEditor()
                 g_project.notify()
                 self.setDirty(False)
 
