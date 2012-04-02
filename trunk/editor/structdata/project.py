@@ -16,6 +16,13 @@ class Project(Subject):
         self.data['events'] = OrderedDict()
         self.data['rooms'] = OrderedDict()
 
+
+    def changeImage(self, old_image, new_image):
+        image = self.data['images'].pop(old_image)
+        image.file = new_image
+        self.data['images'][new_image] = image
+        self.notify()
+
     def changeEventName(self, old_name, new_name):
         event = self.data['events'].pop(old_name)
         event.setName(new_name)
