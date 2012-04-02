@@ -1,18 +1,34 @@
 #!/usr/bin/env python
 
 import sys
+import os
+import traceback
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 from roomeditor import RoomEditor
-#from roommanager import RoomManager
 from roommanagerlistwidget import RoomManager
 from structdata import Room
 from structdata import g_project
 
+
 from openfilerooms import openFileRooms
 from savefilerooms import saveFileRooms
+
+
+def handleException(exc_type, exc_value, exc_traceback):
+
+    """
+    funzione per la gestione delle eccezioni. Quando viene lanciata
+    un'eccezione stampa a video l'eccezione stessa e poi termina il programma
+    """
+
+    from StringIO import StringIO
+    m = StringIO()
+    traceback.print_exception(exc_type, exc_value, exc_traceback, file=m)
+    print m.getvalue()
+    QApplication.exit()
 
 class OpenProjectButton(QToolButton):
 
@@ -212,6 +228,7 @@ if __name__ == "__main__":
     file_name = "dummy.rooms"
     if len(sys.argv) == 2:
         file_name = str(sys.argv[1])
+    sys.excepthook = handleException
     editor = Editor(file_name)
     editor.show()
     editor.move(QPoint(150, 150))
