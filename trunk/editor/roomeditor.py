@@ -140,7 +140,9 @@ class RoomEditor(QWidget):
         file_open = QFileDialog()
         path_file = file_open.getOpenFileName()
         if path_file:
-            self.room.bg = os.path.relpath(unicode(path_file))
+            room_bg = os.path.relpath(unicode(path_file))
+            g_project.data['images'].changeImage(self.room.bg, room_bg)
+            self.room.bg = room_bg
             g_project.notify()
 
     def setRoomBgm(self):
