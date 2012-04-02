@@ -9,6 +9,9 @@ from structdata import g_project
 from structdata import Area
 from structdata import Event
 
+from utils import PathTransform
+import os
+
 from arearesize import AreaResize
 
 
@@ -67,8 +70,9 @@ class RoomEditor(QWidget):
 
     def __init__(self, room=None, parent=None):
         super(RoomEditor, self).__init__(parent)
+        self.path_transform = PathTransform()
         self.room = room
-        self.room_bg = QPixmap(room.bg)
+        self.room_bg = QPixmap(self.path_transform.relativeToAbsolute(room.bg))
         self.setMinimumSize(self.room_bg.width(), self.room_bg.height())
         self.setSizePolicy(QSizePolicy(QSizePolicy.Preferred,
                                        QSizePolicy.Preferred))
@@ -136,7 +140,7 @@ class RoomEditor(QWidget):
         file_open = QFileDialog()
         path_file = file_open.getOpenFileName()
         if path_file:
-            self.room.bg = unicode(path_file)
+            self.room.bg = os.path.relpath(unicode(path_file))
             g_project.notify()
 
     def setRoomBgm(self):
@@ -144,7 +148,7 @@ class RoomEditor(QWidget):
         file_open = QFileDialog()
         path_file = file_open.getOpenFileName()
         if path_file:
-            self.room.bgm = unicode(path_file)
+            self.room.bgm = os.path.relpath(unicode(path_file))
             g_project.notify()
 
     def createArea(self, x_start, y_start, x_stop, y_stop, event_name):
@@ -228,7 +232,7 @@ class RoomEditor(QWidget):
         if room:
             self.room = room
             self.change_room_name.setText(self.room.id)
-            self.room_bg = QPixmap(self.room.bg)
+            self.room_bg = QPixmap(self.path_transform.relativeToAbsolute(self.room.bg))
 
     def changeCurrentRoom(self, room_id):
         """
@@ -237,7 +241,7 @@ class RoomEditor(QWidget):
         """
         self.room = g_project.data['rooms'][unicode(room_id)]
         if self.room:
-            self.room_bg = QPixmap(self.room.bg)
+            self.room_bg = QPixmap(self.path_transform.relativeToAbsolute(self.room.bg))
             self.change_room_name.setText(self.room.id)
             for resize_area in self.resize_areas:
                 resize_area.deleteLater()

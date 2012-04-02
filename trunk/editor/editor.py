@@ -11,6 +11,8 @@ from roomeditor import RoomEditor
 from roommanagerlistwidget import RoomManager
 from structdata import Room
 from structdata import g_project
+from utils import PathTransform
+from os.path import split
 
 
 from openfilerooms import openFileRooms
@@ -97,6 +99,7 @@ class Editor(QWidget):
 
     def __init__(self, file_name, parent=None):
         super(Editor, self).__init__(parent)
+        self.path_transform = PathTransform()
         g_project.subscribe(self)
         self.grid_layout = QGridLayout(self)
         openFileRooms(file_name)
@@ -207,7 +210,7 @@ class Editor(QWidget):
                 return
         if not self.dirty or ret:
             file_open = QFileDialog()
-            self.path_file = file_open.getOpenFileName(filter="*.rooms")
+            self.path_file = unicode(file_open.getOpenFileName(filter="*.rooms"))
             if self.path_file:
                 openFileRooms(self.path_file)
                 if g_project.data['world'].start:
@@ -217,7 +220,8 @@ class Editor(QWidget):
                     self.room = None
                     self.remove_room_button.setEnabled(False)
                 self.clearEditor()
-                self.populateEditor()
+                self.createEditorInterface()
+                self.path_transform.path_file = split(self.path_file)[0]
                 g_project.notify()
                 self.setDirty(False)
 
