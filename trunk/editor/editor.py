@@ -101,8 +101,7 @@ class Editor(QWidget):
         self.grid_layout = QGridLayout(self)
         openFileRooms(file_name)
         self.room = g_project.data['rooms'][g_project.data['world'].start]
-        self.createRoomEditor()
-        self.createRoomManager()
+        self.createEditorInterface()
         self.createEditorButtons()
         self.setDirty(False)
 
@@ -135,16 +134,14 @@ class Editor(QWidget):
         self.connect(self.start_engine_button, SIGNAL("clicked()"),
                      self.startEngine)
 
-    def createRoomEditor(self):
+    def createEditorInterface(self):
         self.room_editor = RoomEditor(self.room, self)
         self.grid_layout.addWidget(self.room_editor, 1, 2)
+        self.room_manager = RoomManager(parent=self)
+        self.grid_layout.addWidget(self.room_manager, 1, 0)
         self.connect(self.room_editor,
                      SIGNAL("currentRoomNameChanged(QString)"),
                      self.room_manager.changeCurrentRoomName)
-
-    def createRoomManager(self):
-        self.room_manager = RoomManager(parent=self)
-        self.grid_layout.addWidget(self.room_manager, 1, 0)
         self.connect(self.room_manager,
              SIGNAL("changeSelectedItem(QString)"),
              self.room_editor.changeCurrentRoom)
