@@ -3,6 +3,12 @@
 import sys
 import os
 import traceback
+from subprocess import Popen
+from os import mkdir
+from os.path import split
+from os import path
+from shutil import copy, rmtree
+from os.path import normpath
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -12,7 +18,6 @@ from roommanagerlistwidget import RoomManager
 from structdata import Room
 from structdata import g_project
 from utils import PathTransform
-from os.path import split
 
 
 from openfilerooms import openFileRooms
@@ -163,7 +168,32 @@ class Editor(QWidget):
         self.room_manager = None
 
     def startEngine(self):
-        pass
+        """
+        funzione per far partire l'engine sul progetto che si sta editando
+        """
+        if path.exists("temp/"):
+            rmtree("temp/", True)
+        mkdir("temp/")
+        saveFileRooms("temp/world.rooms")
+        with open("temp/run.sh", "w") as f:
+            f.write("../../engine/qt-frontend/engine.exe")
+        self.getRoomsImage()
+        Popen(["chmod", "+x", "temp/run.sh"])
+        engine = Popen("cd temp/; ./run.sh", shell=True)
+
+
+    def getRoomsImage(self):
+        """
+        funzione per recuperare tutte le immagini. Le immagini vengono
+        messe nella cartella temp/path_dell'immagine
+        """
+        for image in g_project.data['images'].keys():
+            image_path = self.path_transform.relativeToAbsolute(image)
+            directory = os.path.join("temp/", split(image)[0])
+            directory += "/"
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+            copy(image_path, directory)
 
     def playMusic(self):
         if self.music_player is None:
