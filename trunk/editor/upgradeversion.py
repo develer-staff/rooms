@@ -37,7 +37,7 @@ def from2To3(xml_file):
             node.set('bgm', '')
     return xml_file
 
-def upgradeVersion(path_file):
+def upgradeVersion(xml):
     """
     funzione per portare un qualsiasi file .rooms all'ultima versione
     corrente
@@ -46,12 +46,11 @@ def upgradeVersion(path_file):
     versione disponibile
     """
     upgrade_function = [from1To2, from2To3]
-    xml_file = ElementTree.fromstring(open(path_file, 'rb').read())
-    version = int(xml_file.get('version'))
+    version = int(xml.get('version'))
     while version < last_version:
-        xml_file = upgrade_function[version - 1](xml_file)
+        xml = upgrade_function[version - 1](xml)
         version += 1
-    return xml_file
+    return xml
 
 
 if __name__ == "__main__":

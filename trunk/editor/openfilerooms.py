@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from xml.etree import ElementTree
 from misc.odict import OrderedDict
-
+from os.path import split
 from structdata import Action
 
 from structdata import g_project
@@ -71,6 +71,27 @@ def loadVars(xml_file):
         variable[line.attrib['id']] = class_tag[line.tag](**line.attrib)
     return variable
 
+def openRooms(xml):
+
+    """
+    funzione che prende in ingresso la stinga relativa al file xml che si
+    sta aprendo e salva i dati nel modello dei dati
+    """
+
+    world = loadInformation(xml)
+    g_project.data['world'] = world
+    images = loadImages(xml)
+    items = loadItems(xml)
+    variables = loadVars(xml)
+    events = loadEvents(xml)
+    rooms = loadRooms(xml)
+    g_project.data['world'] = world
+    g_project.data['images'] = images
+    g_project.data['items'] = items
+    g_project.data['vars'] = variables
+    g_project.data['events'] = events
+    g_project.data['rooms'] = rooms
+
 def openFileRooms(file_path):
     """
     funzione per il caricamento dei dati salvati da un file .rooms
@@ -78,10 +99,16 @@ def openFileRooms(file_path):
     Si suppone che nel momento che il file viene passato alle funzioni per
     ottenere le informazioni del progetto il file sia in un formato corretto
     Se il caricamento va a buon fine memorizza nella variabile globale g_project
-    tutte le informazioni altrimenti lancia un eccezione di tipo OpenFileRoom
+    tutte le informazioni altrimenti lancia un eccezione di tipo OpenFileError
     la funzione puo' prendere anche un file .rooms che ha una versione
     precedente all'ultima realizzata
     """
+
+    #project = f(file_path)
+    #xml = f2(project)
+
+    xml = ElementTree.fromstring(open(file_path, 'rb').read())
+
     try:
         from xml.etree.ElementTree import ParseError as XMLError
     except ImportError:
@@ -89,23 +116,14 @@ def openFileRooms(file_path):
         from xml.parsers.expat import ExpatError as XMLError
 
     try:
-        xml_file = upgradeVersion(file_path)
+        xml = upgradeVersion(xml)
     except XMLError:
         raise OpenFileError(file_path)
+
     try:
-        world = loadInformation(xml_file)
-        g_project.data['world'] = world
-        images = loadImages(xml_file)
-        items = loadItems(xml_file)
-        variables = loadVars(xml_file)
-        events = loadEvents(xml_file)
-        rooms = loadRooms(xml_file)
+        openRooms(xml)
     except ValueError:
         raise OpenFileError(file_path)
-    else:
-        g_project.data['world'] = world
-        g_project.data['images'] = images
-        g_project.data['items'] = items
-        g_project.data['vars'] = variables
-        g_project.data['events'] = events
-        g_project.data['rooms'] = rooms
+
+    from utils import g_ptransform
+    g_ptransform.path_file = split(file_path)[0]
