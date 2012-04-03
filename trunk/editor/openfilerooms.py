@@ -104,9 +104,6 @@ def openFileRooms(file_path):
     precedente all'ultima realizzata
     """
 
-    #project = f(file_path)
-    #xml = f2(project)
-
     xml = ElementTree.fromstring(open(file_path, 'rb').read())
 
     try:
