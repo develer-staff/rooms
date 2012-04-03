@@ -7,7 +7,8 @@ from subprocess import Popen
 from os import mkdir
 from os.path import split
 from os import path
-from shutil import copy, rmtree
+from shutil import copy
+from shutil import rmtree
 from os.path import normpath
 
 from PyQt4.QtCore import *
@@ -17,7 +18,9 @@ from roomeditor import RoomEditor
 from roommanagerlistwidget import RoomManager
 from structdata import Room
 from structdata import g_project
-from utils import PathTransform
+from utils import g_ptransform
+from utils import UndoRedo
+from engine import startEngine
 
 
 from openfilerooms import openFileRooms
@@ -100,18 +103,20 @@ class PlayBGMButton(QToolButton):
         """
         self.room = room
 
+
 class Editor(QWidget):
 
     def __init__(self, file_name, parent=None):
         super(Editor, self).__init__(parent)
-        self.path_transform = PathTransform()
         g_project.subscribe(self)
+        self.engine = None
         self.grid_layout = QGridLayout(self)
         openFileRooms(file_name)
         self.room = g_project.data['rooms'][g_project.data['world'].start]
         self.createEditorInterface()
         self.createEditorButtons()
         self.setDirty(False)
+        self.undo_redo = UndoRedo()
 
     def createEditorButtons(self):
         open_project_button = OpenProjectButton(self)
@@ -121,6 +126,8 @@ class Editor(QWidget):
         self.play_bgm_button = PlayBGMButton("image/play.png", self.room, self)
         self.start_engine_button = StartEngineButton("image/start_engine.gif",
                                                      self)
+        self.undo_button = UndoButton(self)
+        self.undo_button.setEnabled(False)
         horizontal_button = QHBoxLayout()
         horizontal_button.addWidget(open_project_button)
         horizontal_button.addWidget(self.save_project_button)
@@ -128,6 +135,7 @@ class Editor(QWidget):
         horizontal_button.addWidget(self.remove_room_button)
         horizontal_button.addWidget(self.play_bgm_button)
         horizontal_button.addWidget(self.start_engine_button)
+        horizontal_button.addWidget(self.undo_button)
         self.grid_layout.addLayout(horizontal_button, 0, 0)
 
         self.connect(new_room_button, SIGNAL("clicked()"), Room.create)
@@ -141,6 +149,8 @@ class Editor(QWidget):
                      self.playMusic)
         self.connect(self.start_engine_button, SIGNAL("clicked()"),
                      self.startEngine)
+        self.connect(self.undo_button, SIGNAL("clicked()"),
+                     self.undo)
 
     def createEditorInterface(self):
         self.room_editor = RoomEditor(self.room, self)
@@ -167,33 +177,15 @@ class Editor(QWidget):
         self.room_editor = None
         self.room_manager = None
 
+    def undo(self):
+        self.undo_redo.undo()
+        if self.undo_redo.moreUndo():
+            self.undo_button.setEnabled(True)
+        self.clearEditor()
+        self.createEditorInterface()
+
     def startEngine(self):
-        """
-        funzione per far partire l'engine sul progetto che si sta editando
-        """
-        if path.exists("temp/"):
-            rmtree("temp/", True)
-        mkdir("temp/")
-        saveFileRooms("temp/world.rooms")
-        with open("temp/run.sh", "w") as f:
-            f.write("../../engine/qt-frontend/engine.exe")
-        self.getRoomsImage()
-        Popen(["chmod", "+x", "temp/run.sh"])
-        engine = Popen("cd temp/; ./run.sh", shell=True)
-
-
-    def getRoomsImage(self):
-        """
-        funzione per recuperare tutte le immagini. Le immagini vengono
-        messe nella cartella temp/path_dell'immagine
-        """
-        for image in g_project.data['images'].keys():
-            image_path = self.path_transform.relativeToAbsolute(image)
-            directory = os.path.join("temp/", split(image)[0])
-            directory += "/"
-            if not os.path.exists(directory):
-                os.makedirs(directory)
-            copy(image_path, directory)
+        self.engine = startEngine(self.engine)
 
     def playMusic(self):
         if self.music_player is None:
@@ -225,9 +217,11 @@ class Editor(QWidget):
     def setDirty(self, value):
         self.dirty = value
         self.save_project_button.setEnabled(value)
+        self.undo_button.setEnabled(value)
 
     def updateData(self):
         self.setDirty(True)
+
 
     def openProject(self):
         if self.dirty:
@@ -251,7 +245,7 @@ class Editor(QWidget):
                     self.remove_room_button.setEnabled(False)
                 self.clearEditor()
                 self.createEditorInterface()
-                self.path_transform.path_file = split(self.path_file)[0]
+                g_ptransform.path_file = split(self.path_file)[0]
                 g_project.notify()
                 self.setDirty(False)
 
@@ -286,7 +280,7 @@ class Editor(QWidget):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    file_name = "dummy.rooms"
+    file_name = "../examples/example3/world.rooms"
     if len(sys.argv) == 2:
         file_name = str(sys.argv[1])
     sys.excepthook = handleException
