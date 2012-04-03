@@ -4,6 +4,7 @@ from contextlib import contextmanager
 from os.path import join
 from os.path import normpath
 
+
 @contextmanager
 def blockedSignals(widget):
     widget.blockSignals(True)
@@ -11,7 +12,6 @@ def blockedSignals(widget):
         yield
     finally:
         widget.blockSignals(False)
-
 
 class PathTransform(object):
 
@@ -24,5 +24,11 @@ class PathTransform(object):
         return normpath(path)
 
 g_ptransform = PathTransform()
+
+
+
+
+
+
 
 
