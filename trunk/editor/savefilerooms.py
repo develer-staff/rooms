@@ -29,11 +29,7 @@ def saveData(top, tag, dictionary):
         for single_el in el:
             saveData(father_tag, single_el.tag_name, single_el.dictionary())
 
-def saveFileRooms(path_file):
-    """
-    funzione che salva la struttura dati su un file .rooms
-    prende in ingresso il path del file
-    """
+def saveRooms():
     top = ElementTree.Element("world",
                               g_project.data['world'].dictionary())
     for data_key, data_value in g_project.data.items():
@@ -42,5 +38,13 @@ def saveFileRooms(path_file):
             for key, value in data_value.items():
                 saveData(father, value.tag_name,
                          value.dictionary())
+    return top
+
+def saveFileRooms(path_file):
+    """
+    funzione che salva la struttura dati su un file .rooms
+    prende in ingresso il path del file
+    """
+
     write_file = open(path_file, 'w')
-    write_file.write(prettify(top))
+    write_file.write(prettify(saveRooms()))
