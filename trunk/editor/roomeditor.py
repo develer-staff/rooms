@@ -221,6 +221,7 @@ class RoomEditor(QWidget):
 
     def closeEvent(self, event):
         g_project.unsubscribe(self)
+        self.resize_areas = []
 
     def updateRoomName(self, name):
         """funzione per il cambio del nome della room"""
@@ -246,6 +247,7 @@ class RoomEditor(QWidget):
             self.change_room_name.setText(self.room.id)
             for resize_area in self.resize_areas:
                 resize_area.deleteLater()
+            self.resize_areas = []
             self.createAllAreaResize()
             self.change_room_bg.setRoom(self.room)
             self.change_room_bgm.setRoom(self.room)
@@ -259,6 +261,7 @@ class RoomEditor(QWidget):
                               int(g_project.data['world'].height))
             for resize_area in self.resize_areas:
                     resize_area.deleteLater()
+            self.resize_areas = []
             self.createAllAreaResize()
             self.setEnableEditor(True)
         else:
@@ -270,6 +273,7 @@ class RoomEditor(QWidget):
         self.change_room_bg.setEnabled(value)
         self.change_room_bgm.setEnabled(value)
         self.change_room_name.setEnabled(value)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
