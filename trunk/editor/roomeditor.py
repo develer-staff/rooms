@@ -9,7 +9,7 @@ from structdata import g_project
 from structdata import Area
 from structdata import Event
 
-from utils import PathTransform
+from utils import g_ptransform
 import os
 
 from arearesize import AreaResize
@@ -70,9 +70,8 @@ class RoomEditor(QWidget):
 
     def __init__(self, room=None, parent=None):
         super(RoomEditor, self).__init__(parent)
-        self.path_transform = PathTransform()
         self.room = room
-        self.room_bg = QPixmap(self.path_transform.relativeToAbsolute(room.bg))
+        self.room_bg = QPixmap(g_ptransform.relativeToAbsolute(room.bg))
         self.setMinimumSize(self.room_bg.width(), self.room_bg.height())
         self.setSizePolicy(QSizePolicy(QSizePolicy.Preferred,
                                        QSizePolicy.Preferred))
@@ -234,7 +233,7 @@ class RoomEditor(QWidget):
         if room:
             self.room = room
             self.change_room_name.setText(self.room.id)
-            self.room_bg = QPixmap(self.path_transform.relativeToAbsolute(self.room.bg))
+            self.room_bg = QPixmap(g_ptransform.relativeToAbsolute(self.room.bg))
 
     def changeCurrentRoom(self, room_id):
         """
@@ -243,7 +242,7 @@ class RoomEditor(QWidget):
         """
         self.room = g_project.data['rooms'][unicode(room_id)]
         if self.room:
-            self.room_bg = QPixmap(self.path_transform.relativeToAbsolute(self.room.bg))
+            self.room_bg = QPixmap(g_ptransform.relativeToAbsolute(self.room.bg))
             self.change_room_name.setText(self.room.id)
             for resize_area in self.resize_areas:
                 resize_area.deleteLater()

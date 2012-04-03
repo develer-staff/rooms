@@ -6,7 +6,7 @@ from PyQt4.QtCore import *
 from roomitemlistwidget import RoomItemListWidget
 
 from structdata import g_project
-from utils import PathTransform
+from utils import g_ptransform
 
 class RoomListWidget(RoomItemListWidget):
 
@@ -33,8 +33,7 @@ class RoomListWidget(RoomItemListWidget):
         return g_project.data['rooms'].keys()
 
     def getIconImage(self, id_item):
-        self.path_transformer = PathTransform()
-        path = self.path_transformer.relativeToAbsolute(g_project.data["rooms"][id_item].bg)
+        path = g_ptransform.relativeToAbsolute(g_project.data["rooms"][id_item].bg)
         return path
 
     def getItemSize(self, id_item):

@@ -57,8 +57,9 @@ class RoomsListWidget(QWidget):
         """
         if item_name:
             item = self.table.findItems(item_name, Qt.MatchFixedString)
-            row = item[0].row()
-            self.table.selectRow(row)
+            if item:
+                row = item[0].row()
+                self.table.selectRow(row)
 
     def createTable(self):
         i = 0

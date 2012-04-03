@@ -13,18 +13,16 @@ def blockedSignals(widget):
         widget.blockSignals(False)
 
 
-
-
 class PathTransform(object):
 
-    instance = None
-    path_file = ""
-
-    def __new__(self):
-        if self.instance is None:
-            self.instance = super(PathTransform, self).__new__(self)
-        return self.instance
+    def __init__(self):
+        self.path_file = None
 
     def relativeToAbsolute(self, path_file):
+        assert self.path_file is not None
         path = join(self.path_file, path_file)
         return normpath(path)
+
+g_ptransform = PathTransform()
+
+
