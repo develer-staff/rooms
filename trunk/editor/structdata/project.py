@@ -45,7 +45,12 @@ class Project(Subject):
         self.data['rooms'].pop(room_name)
         if self.data['world'].start == room_name:
             if g_project.data['rooms']:
-                new_start_room_name = g_project.data['rooms'].keys()[0]
+                new_start_room_name = ""
+                i = 0
+                while not new_start_room_name or new_start_room_name.startswith("!"):
+                    new_start_room_name = g_project.data['rooms'].keys()[i]
+                    i += 1
+                print new_start_room_name
             else:
                 new_start_room_name = ""
             self.changeStartRoom(new_start_room_name)
