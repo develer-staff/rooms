@@ -123,6 +123,26 @@ class UndoButton(QToolButton):
         return 0.5
 
 
+class RedoButton(QToolButton):
+    def sizeHint(self):
+        return QSize(30, 30)
+    def __init__(self, parent=None):
+        super(RedoButton, self).__init__(parent)
+        self.icon = QPixmap("image/Redo-icon.png").scaled(30, 30,
+                                                       Qt.KeepAspectRatio,
+                                                       Qt.SmoothTransformation)
+
+    def paintEvent(self, event=None):
+        super(RedoButton, self).paintEvent(event)
+        p = QPainter(self)
+        p.setOpacity(self.getOpacity())
+        p.drawPixmap(QPoint(0, 0), self.icon)
+
+    def getOpacity(self):
+        if self.isEnabled():
+            return 1.
+        return 0.5
+
 
 class Editor(QWidget):
 
@@ -130,14 +150,14 @@ class Editor(QWidget):
         super(Editor, self).__init__(parent)
         g_project.subscribe(self)
         self.engine = None
-        self.undo_button_press = False
+        self.redo_undo_button_press = False
+        self.redo_undo_button_press = False
         self.grid_layout = QGridLayout(self)
         openFileRooms(file_name)
         self.room = g_project.data['rooms'][g_project.data['world'].start]
         self.createEditorInterface()
         self.createEditorButtons()
         g_project.notify()
-        self.undo_button.setEnabled(False)
         self.setDirty(False)
 
     def createEditorButtons(self):
@@ -149,7 +169,9 @@ class Editor(QWidget):
         self.start_engine_button = StartEngineButton("image/start_engine.gif",
                                                      self)
         self.undo_button = UndoButton(self)
-        self.undo_button.setEnabled(False)
+        self.undo_button.setEnabled(g_undoredo.moreUndo())
+        self.redo_button = RedoButton(self)
+        self.redo_button.setEnabled(g_undoredo.moreRedo())
         horizontal_button = QHBoxLayout()
         horizontal_button.addWidget(self.open_project_button)
         horizontal_button.addWidget(self.save_project_button)
@@ -158,6 +180,7 @@ class Editor(QWidget):
         horizontal_button.addWidget(self.play_bgm_button)
         horizontal_button.addWidget(self.start_engine_button)
         horizontal_button.addWidget(self.undo_button)
+        horizontal_button.addWidget(self.redo_button)
         self.grid_layout.addLayout(horizontal_button, 0, 0)
 
         self.connect(self.new_room_button, SIGNAL("clicked()"), Room.create)
@@ -173,6 +196,8 @@ class Editor(QWidget):
                      self.startEngine)
         self.connect(self.undo_button, SIGNAL("clicked()"),
                      self.undo)
+        self.connect(self.redo_button, SIGNAL("clicked()"),
+                     self.redo)
 
     def createEditorInterface(self):
         self.room_manager = RoomManager(parent=self)
@@ -196,7 +221,8 @@ class Editor(QWidget):
                      self.changeRoom)
 
     def clearEditor(self):
-        if self.undo_button_press:
+        if self.redo_undo_button_press:
+            print self.room_editor
             self.room_editor.deleteLater()
         while (self.grid_layout.itemAt(0)):
             item = self.grid_layout.itemAt(0)
@@ -224,16 +250,23 @@ class Editor(QWidget):
         self.createEditorButtons()
         self.createEditorInterface()
 
-
+    def redo(self):
+        self.redo_undo_button_press = True
+        g_undoredo.redo()
+        self.room = g_project.data['rooms'][g_project.data['world'].start]
+        self.resetEditor()
+        g_project.notify()
+        self.redo_button.setEnabled(g_undoredo.moreRedo())
+        self.redo_undo_button_press = False
 
     def undo(self):
-        self.undo_button_press = True
+        self.redo_undo_button_press = True
         g_undoredo.undo()
         self.room = g_project.data['rooms'][g_project.data['world'].start]
         self.resetEditor()
         g_project.notify()
         self.undo_button.setEnabled(g_undoredo.moreUndo())
-        self.undo_button_press = False
+        self.redo_undo_button_press = False
 
 
     def startEngine(self):
@@ -262,7 +295,7 @@ class Editor(QWidget):
         self.room = g_project.data['rooms'][name]
 
     def removeRoom(self):
-        self.undo_button_press = True
+        self.redo_undo_button_press = True
         g_project.removeRoom(self.room.id)
         self.room = g_project.data['rooms'][g_project.data['world'].start]
         self.resetEditor()
@@ -274,11 +307,10 @@ class Editor(QWidget):
         self.save_project_button.setEnabled(value)
 
     def updateData(self):
-        if not self.undo_button_press:
+        if not self.redo_undo_button_press:
             self.setDirty(True)
             g_undoredo.addSelectedRoom(self.room)
-        self.undo_button.setEnabled(g_undoredo.moreUndo())
-        self.undo_button_press = False
+        self.redo_undo_button_press = False
 
 
     def openProject(self):
