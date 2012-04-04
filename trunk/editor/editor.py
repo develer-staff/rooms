@@ -107,6 +107,7 @@ class UndoButton(QToolButton):
         return QSize(30, 30)
     def __init__(self, parent=None):
         super(UndoButton, self).__init__(parent)
+        g_undoredo.subscribe(self)
         self.icon = QPixmap("image/Undo-icon.png").scaled(30, 30,
                                                        Qt.KeepAspectRatio,
                                                        Qt.SmoothTransformation)
@@ -122,12 +123,15 @@ class UndoButton(QToolButton):
             return 1.
         return 0.5
 
+    def updateData(self):
+        self.setEnabled(g_undoredo.moreUndo())
 
 class RedoButton(QToolButton):
     def sizeHint(self):
         return QSize(30, 30)
     def __init__(self, parent=None):
         super(RedoButton, self).__init__(parent)
+        g_undoredo.subscribe(self)
         self.icon = QPixmap("image/Redo-icon.png").scaled(30, 30,
                                                        Qt.KeepAspectRatio,
                                                        Qt.SmoothTransformation)
@@ -143,6 +147,8 @@ class RedoButton(QToolButton):
             return 1.
         return 0.5
 
+    def updateData(self):
+        self.setEnabled(g_undoredo.moreRedo())
 
 class Editor(QWidget):
 

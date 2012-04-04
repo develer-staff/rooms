@@ -60,6 +60,12 @@ class UndoRedo(object):
         self._add_element = True
         self.notify()
 
+    def subscribe(self, subscriber):
+        self._subscibers.add(subscriber)
+
+    def notify(self):
+        for subscriber in self._subscibers:
+            subscriber.updateData()
 
 
 g_undoredo = UndoRedo()
