@@ -123,6 +123,7 @@ class UndoButton(QToolButton):
         return 0.5
 
 
+
 class Editor(QWidget):
 
     def __init__(self, file_name, parent=None):
@@ -195,7 +196,8 @@ class Editor(QWidget):
                      self.changeRoom)
 
     def clearEditor(self):
-        self.room_editor.deleteLater()
+        if self.undo_button_press:
+            self.room_editor.deleteLater()
         while (self.grid_layout.itemAt(0)):
             item = self.grid_layout.itemAt(0)
             if isinstance(item, QWidgetItem):
@@ -221,14 +223,18 @@ class Editor(QWidget):
         self.clearEditor()
         self.createEditorButtons()
         self.createEditorInterface()
-        print self.room_editor
+
+
 
     def undo(self):
         self.undo_button_press = True
         g_undoredo.undo()
-        self.room = g_undoredo.getCurrentRoom()
+        self.room = g_project.data['rooms'][g_project.data['world'].start]
         self.resetEditor()
+        g_project.notify()
         self.undo_button.setEnabled(g_undoredo.moreUndo())
+        self.undo_button_press = False
+
 
     def startEngine(self):
         self.engine = startEngine(self.engine)
@@ -256,9 +262,12 @@ class Editor(QWidget):
         self.room = g_project.data['rooms'][name]
 
     def removeRoom(self):
+        self.undo_button_press = True
         g_project.removeRoom(self.room.id)
-        self.room = None
-        self.remove_room_button.setEnabled(False)
+        self.room = g_project.data['rooms'][g_project.data['world'].start]
+        self.resetEditor()
+        g_undoredo.addSelectedRoom(self.room)
+        self.undo_button.setEnabled(g_undoredo.moreUndo())
 
     def setDirty(self, value):
         self.dirty = value
@@ -267,9 +276,10 @@ class Editor(QWidget):
     def updateData(self):
         if not self.undo_button_press:
             self.setDirty(True)
-            self.undo_button.setEnabled(g_undoredo.moreUndo())
             g_undoredo.addSelectedRoom(self.room)
+        self.undo_button.setEnabled(g_undoredo.moreUndo())
         self.undo_button_press = False
+
 
     def openProject(self):
         if self.dirty:
