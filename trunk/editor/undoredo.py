@@ -22,7 +22,6 @@ class UndoRedo(object):
         self._list_index -= 1
         self._add_element = False
         openRooms(self._list_of_project[self._list_index - 1])
-        g_project.notify()
 
     def getCurrentRoom(self):
         room_id = self._list_of_room[self._list_index - 1]
@@ -30,12 +29,16 @@ class UndoRedo(object):
         return room
 
     def addSelectedRoom(self, room=None):
-        if room is None:
-            room = self._list_of_room[self._list_index - 1]
-        self._list_of_room.append(room.id)
+        if room is not None:
+            self._list_of_room.append(room.id)
+        else:
+            self._list_of_room.append("")
 
     def moreUndo(self):
+        if len(self._list_of_project) == 0:
+            return False
         return (self._list_index > 1)
+
 
     def updateData(self):
         if self._add_element:
@@ -43,6 +46,6 @@ class UndoRedo(object):
             self._list_of_project = self._list_of_project[:self._list_index]
             self._list_of_room = self._list_of_room[:self._list_index]
             self._list_of_project.append(saveRooms())
-            self._add_element = True
+        self._add_element = True
 
 g_undoredo = UndoRedo()
