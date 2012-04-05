@@ -46,6 +46,28 @@ def loadEvents(xml):
                         action.params.append(param)
     return events
 
+def loadDialogs(xml):
+    dialogs = OrderedDict()
+    for line in list(xml.find("dialogs")):
+        dialog = class_tag[line.tag](**line.attrib)
+        dialogs[dialog.id] = dialog
+        for child in line:
+            step = class_tag[child.tag](**child.attrib)
+            dialog.steps.append(step)
+            for second_child in child:
+                if second_child.tag == "item_req" or second_child.tag == "var_req":
+                    requirement = class_tag[second_child.tag](**second_child.attrib)
+                    step.requirements.append(requirement)
+                elif second_child.tag == "action":
+                    action = Action(second_child.attrib['id'])
+                    step.actions.append(action)
+                    for grand_child in second_child:
+                            param = class_tag[grand_child.tag](**grand_child.attrib)
+                            action.params.append(param)
+                else:
+                    link = class_tag[second_child.tag](**second_child.attrib)
+                    step.links.append(link)
+    return dialogs
 
 def loadItems(xml):
     items = OrderedDict()
@@ -86,12 +108,14 @@ def openRooms(xml):
     variables = loadVars(xml)
     events = loadEvents(xml)
     rooms = loadRooms(xml)
+    dialogs = loadDialogs(xml)
     g_project.data['world'] = world
     g_project.data['images'] = images
     g_project.data['items'] = items
     g_project.data['vars'] = variables
     g_project.data['events'] = events
     g_project.data['rooms'] = rooms
+    g_project.data['dialogs'] = dialogs
 
 def openFileRooms(file_path):
     """
