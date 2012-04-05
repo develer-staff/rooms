@@ -6,7 +6,7 @@ from PyQt4.QtGui import *
 from structdata import g_project
 
 from roomitemlistwidget import RoomItemListWidget
-from utils import PathTransform
+from utils import g_ptransform
 
 class ItemsListWidget(RoomItemListWidget):
 
@@ -25,8 +25,7 @@ class ItemsListWidget(RoomItemListWidget):
         return g_project.data['items'].keys()
 
     def getIconImage(self, id_item):
-        path_transform = PathTransform()
-        path = path_transform.relativeToAbsolute(g_project.data["items"][id_item].image)
+        path = g_ptransform.relativeToAbsolute(g_project.data["items"][id_item].image)
         return path
 
     def setRowSelected(self, id_item):
