@@ -2,33 +2,34 @@
 
 from structdata import g_project
 from openfilerooms import openRooms
-from savefilerooms import saveRooms, saveFileRooms
-from os import mkdir
-from os.path import exists
-from os import remove
-
+from savefilerooms import saveRooms
 
 class UndoRedo(object):
 
-
     def __init__(self):
         g_project.subscribe(self)
+        self.reset()
+        self._subscibers = []
+
+    def reset(self):
         self._list_of_project = []
         self._add_element = True
         self._list_index = -1
         self._list_of_room = []
-        self._subscibers = set()
 
+    def clearUndoRedoList(self):
+        self.reset()
 
     def undo(self):
         self._list_index -= 1
         self._add_element = False
-        openRooms(self._list_of_project[self._list_index ])
+        openRooms(self._list_of_project[self._list_index])
 
     def redo(self):
         self._add_element = False
-        openRooms(self._list_of_project[self._list_index])
         self._list_index += 1
+        openRooms(self._list_of_project[self._list_index])
+
 
     def getCurrentRoom(self):
         room_id = self._list_of_room[self._list_index]
@@ -47,21 +48,26 @@ class UndoRedo(object):
         return (self._list_index > 0)
 
     def moreRedo(self):
-        return (self._list_index < len(self._list_of_project))
+        if len(self._list_of_project) == 0:
+            return False
+        return (self._list_index < len(self._list_of_project) - 1)
 
     def updateData(self):
-
         if self._add_element:
             self._list_index += 1
-            if len(self._list_of_project):
-                self._list_of_project = self._list_of_project[:self._list_index + 1]
-                self._list_of_room = self._list_of_room[:self._list_index + 1]
+            if len(self._list_of_project) > 0:
+                self._list_of_project = self._list_of_project[:self._list_index]
+                self._list_of_room = self._list_of_room[:self._list_index]
             self._list_of_project.append(saveRooms())
         self._add_element = True
         self.notify()
 
+    def unsubscribe(self, unsubscriber):
+        self._subscibers.remove(unsubscriber)
+
     def subscribe(self, subscriber):
-        self._subscibers.add(subscriber)
+        assert subscriber not in self._subscibers
+        self._subscibers.append(subscriber)
 
     def notify(self):
         for subscriber in self._subscibers:

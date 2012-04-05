@@ -107,7 +107,6 @@ class UndoButton(QToolButton):
         return QSize(30, 30)
     def __init__(self, parent=None):
         super(UndoButton, self).__init__(parent)
-        g_undoredo.subscribe(self)
         self.icon = QPixmap("image/Undo-icon.png").scaled(30, 30,
                                                        Qt.KeepAspectRatio,
                                                        Qt.SmoothTransformation)
@@ -131,7 +130,6 @@ class RedoButton(QToolButton):
         return QSize(30, 30)
     def __init__(self, parent=None):
         super(RedoButton, self).__init__(parent)
-        g_undoredo.subscribe(self)
         self.icon = QPixmap("image/Redo-icon.png").scaled(30, 30,
                                                        Qt.KeepAspectRatio,
                                                        Qt.SmoothTransformation)
@@ -178,6 +176,8 @@ class Editor(QWidget):
         self.undo_button.setEnabled(g_undoredo.moreUndo())
         self.redo_button = RedoButton(self)
         self.redo_button.setEnabled(g_undoredo.moreRedo())
+        g_undoredo.subscribe(self.undo_button)
+        g_undoredo.subscribe(self.redo_button)
         horizontal_button = QHBoxLayout()
         horizontal_button.addWidget(self.open_project_button)
         horizontal_button.addWidget(self.save_project_button)
@@ -227,29 +227,12 @@ class Editor(QWidget):
                      self.changeRoom)
 
     def clearEditor(self):
-        if self.redo_undo_button_press:
-            print self.room_editor
-            self.room_editor.deleteLater()
-        while (self.grid_layout.itemAt(0)):
-            item = self.grid_layout.itemAt(0)
-            if isinstance(item, QWidgetItem):
-                self.grid_layout.removeWidget(item.widget())
-            else:
-                self.grid_layout.removeItem(item)
-                layout = item.layout()
-                while layout.itemAt(0):
-                    itm = layout.itemAt(0)
-                    layout.removeWidget(itm.widget())
-                self.grid_layout.removeItem(item)
-        self.room_editor = None
-        self.room_manager = None
-        self.open_project_button = None
-        self.save_project_button = None
-        self.new_room_button = None
-        self.remove_room_button = None
-        self.play_bgm_button = None
-        self.start_engine_button = None
-        self.undo_button = None
+        children = self.findChildren(QWidget)
+        for child in children:
+            if child.parent() == self:
+                if isinstance(child, (UndoButton, RedoButton)):
+                    g_undoredo.unsubscribe(child)
+                child.setParent(None)
 
     def resetEditor(self):
         self.clearEditor()
@@ -332,6 +315,7 @@ class Editor(QWidget):
             file_open = QFileDialog()
             self.path_file = unicode(file_open.getOpenFileName(filter="*.rooms"))
             if self.path_file:
+                g_undoredo.reset()
                 openFileRooms(self.path_file)
                 if g_project.data['world'].start:
                     self.room = g_project.data['rooms'][g_project.data['world'].start]
