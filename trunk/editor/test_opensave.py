@@ -36,13 +36,12 @@ class Test(unittest.TestCase):
                 if line.attrib == line_a.attrib:
                     find = True
                     break
-                elif 'text' not in line.attrib.keys() and\
-                     'id' in line.attrib.keys() and\
+                elif 'id' in line.attrib.keys() and\
                      'id' in line_a.attrib.keys()\
                      and line.attrib['id'] == line_a.attrib['id']:
-                    break
+                    line_to_return = line_a
         if not find:
-            return line, line_a
+            return line, line_to_return
         return None
 
     def tearDown(self):
