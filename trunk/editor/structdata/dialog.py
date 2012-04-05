@@ -7,7 +7,7 @@ class Dialog(OriginData):
 
     tag_name = 'dialog'
 
-    def __init__(self, dialog, start):
-        self.dialog = dialog
+    def __init__(self, id, start):
+        self.id = id
         self.start = start
         self.steps = []
