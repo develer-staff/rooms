@@ -158,6 +158,7 @@ class Editor(QWidget):
         self.redo_undo_button_press = False
         self.grid_layout = QGridLayout(self)
         openFileRooms(file_name)
+        g_ptransform.path_file = split(file_name)[0]
         self.room = g_project.data['rooms'][g_project.data['world'].start]
         self.createEditorInterface()
         self.createEditorButtons()
