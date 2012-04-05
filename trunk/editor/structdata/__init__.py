@@ -30,7 +30,7 @@ class_tag = {}
 
 __all__ = [class_tag, "Room", "Area", "Action", "Image", "Item",
            "ItemRequirement", "Param", "Var", "VarRequirement", "World",
-           "Step", "Dialog", "Link", "g_project"]
+           "DialogStep", "Dialog", "DialogLink", "g_project"]
 
 from origin import OriginData
 from action import Action
@@ -45,8 +45,8 @@ from var import Var
 from varRequirement import VarRequirement
 from world import World
 from dialog import Dialog
-from link import Link
-from step import Step
+from dialoglink import DialogLink
+from dialogstep import DialogStep
 from project import g_project
 from inspect import isclass
 

@@ -3,7 +3,7 @@
 from origin import OriginData
 from project import g_project
 
-class Step(OriginData):
+class DialogStep(OriginData):
 
     tag_name = "step"
 

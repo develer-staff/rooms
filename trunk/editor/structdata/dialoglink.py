@@ -3,7 +3,7 @@
 from origin import OriginData
 from project import g_project
 
-class Link(OriginData):
+class DialogLink(OriginData):
 
     tag_name = "link"
 
