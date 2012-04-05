@@ -55,7 +55,6 @@ class Project(Subject):
                         break
                 if new_start_room_name.startswith("!"):
                     new_start_room_name = ""
-                print new_start_room_name
             else:
                 new_start_room_name = ""
             self.changeStartRoom(new_start_room_name)
