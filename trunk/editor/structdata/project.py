@@ -15,6 +15,7 @@ class Project(Subject):
         self.data['vars'] = {}
         self.data['events'] = OrderedDict()
         self.data['rooms'] = OrderedDict()
+        self.data['dialogs'] = OrderedDict()
 
 
     def changeImage(self, old_image, new_image):
