@@ -143,7 +143,7 @@ class RoomEditor(QWidget):
     def setRoomBg(self):
         """funzione per settare il background della room"""
         file_open = QFileDialog()
-        path_file = file_open.getOpenFileName()
+        path_file = file_open.getOpenFileName(filter="*.png *.jpg")
         if path_file:
             room_bg = os.path.relpath(unicode(path_file))
             g_project.data['images'].changeImage(self.room.bg, room_bg)
@@ -153,7 +153,7 @@ class RoomEditor(QWidget):
     def setRoomBgm(self):
         """funzione per settare la background music della room"""
         file_open = QFileDialog()
-        path_file = file_open.getOpenFileName()
+        path_file = file_open.getOpenFileName(filter="*.mp3")
         if path_file:
             self.room.bgm = os.path.relpath(unicode(path_file))
             g_project.notify()
