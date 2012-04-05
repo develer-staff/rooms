@@ -13,7 +13,7 @@ class Test(unittest.TestCase):
     def test1(self):
         fpath = os.path.abspath(__file__)
         path, _ = os.path.split(fpath)
-        source = os.path.join(path, "..", "examples", "example1", "world.rooms")
+        source = os.path.join(path, "..", "examples", "example5", "world.rooms")
         source = os.path.normpath(source)
         dest = self.test_output
         openFileRooms(source)
@@ -25,8 +25,9 @@ class Test(unittest.TestCase):
             difference = self.findDiff(line, xml_file_a)
             if difference:
                 diff.append(difference)
-        self.assertEqual(diff, [], diff)
-
+        for el in diff:
+            print (el[0].attrib, el[1].attrib)
+        self.assertEqual(diff, [])
 
     def findDiff(self, line, xml_file_a):
         find = False
@@ -34,6 +35,11 @@ class Test(unittest.TestCase):
             if line.tag == line_a.tag:
                 if line.attrib == line_a.attrib:
                     find = True
+                    break
+                elif 'text' not in line.attrib.keys() and\
+                     'id' in line.attrib.keys() and\
+                     'id' in line_a.attrib.keys()\
+                     and line.attrib['id'] == line_a.attrib['id']:
                     break
         if not find:
             return line, line_a
