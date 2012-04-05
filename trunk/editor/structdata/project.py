@@ -51,6 +51,10 @@ class Project(Subject):
                 while not new_start_room_name or new_start_room_name.startswith("!"):
                     new_start_room_name = g_project.data['rooms'].keys()[i]
                     i += 1
+                    if len(g_project.data['rooms']) == i:
+                        break
+                if new_start_room_name.startswith("!"):
+                    new_start_room_name = ""
                 print new_start_room_name
             else:
                 new_start_room_name = ""
