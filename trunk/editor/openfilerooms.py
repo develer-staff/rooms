@@ -17,10 +17,10 @@ class OpenFileError(Exception):
     def __str__(self):
         return "Error opening file %s", self.file_path
 
-def loadRooms(xml_file):
+def loadRooms(xml):
     rooms = OrderedDict()
     room = None
-    for line in list(xml_file.find("rooms")):
+    for line in list(xml.find("rooms")):
             room = class_tag[line.tag](**line.attrib)
             for child in line:
                 area = class_tag[child.tag](**child.attrib)
@@ -28,10 +28,10 @@ def loadRooms(xml_file):
             rooms[room.id] = room
     return rooms
 
-def loadEvents(xml_file):
+def loadEvents(xml):
     events = OrderedDict()
     event = None
-    for line in list(xml_file.find("events")):
+    for line in list(xml.find("events")):
         event = class_tag[line.tag](**line.attrib)
         events[event.id] = event
         for child in line:
@@ -46,28 +46,29 @@ def loadEvents(xml_file):
                         action.params.append(param)
     return events
 
-def loadItems(xml_file):
+
+def loadItems(xml):
     items = OrderedDict()
-    for line in list(xml_file.find("items")):
+    for line in list(xml.find("items")):
         item = class_tag[line.tag](**line.attrib)
         items[item.id] = item
     return items
 
-def loadInformation(xml_file):
+def loadInformation(xml):
     informations = None
-    for node in xml_file.getiterator('world'):
+    for node in xml.getiterator('world'):
         informations = class_tag[node.tag](**node.attrib)
     return informations
 
-def loadImages(xml_file):
+def loadImages(xml):
     images = {}
-    for line in list(xml_file.find("images")):
+    for line in list(xml.find("images")):
         images[line.attrib['file']] = class_tag[line.tag](**line.attrib)
     return images
 
-def loadVars(xml_file):
+def loadVars(xml):
     variable = {}
-    for line in list(xml_file.find("vars")):
+    for line in list(xml.find("vars")):
         variable[line.attrib['id']] = class_tag[line.tag](**line.attrib)
     return variable
 
