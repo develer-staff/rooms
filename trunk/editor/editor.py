@@ -365,7 +365,7 @@ if __name__ == "__main__":
     file_name = "../examples/example5/world.rooms"
     if len(sys.argv) == 2:
         file_name = str(sys.argv[1])
-    #sys.excepthook = handleException
+    sys.excepthook = handleException
     editor = Editor(file_name)
     editor.show()
     editor.move(QPoint(150, 150))
