@@ -91,7 +91,7 @@ class PlayBGMButton(QToolButton):
         settato il parametro corrispondente al bottone la funzione torna 1.
         altrimenti 0.5
         """
-        if self.room.bgm:
+        if self.room is not None and self.room.bgm:
             return 1.
         return 0.5
 
@@ -290,7 +290,10 @@ class Editor(QWidget):
     def removeRoom(self):
         self.redo_undo_button_press = True
         g_project.removeRoom(self.room.id)
-        self.room = g_project.data['rooms'][g_project.data['world'].start]
+        if g_project.data['world'].start:
+            self.room = g_project.data['rooms'][g_project.data['world'].start]
+        else:
+            self.room = None
         self.resetEditor()
         g_undoredo.addSelectedRoom(self.room)
         self.undo_button.setEnabled(g_undoredo.moreUndo())
@@ -365,7 +368,7 @@ if __name__ == "__main__":
     file_name = "../examples/example5/world.rooms"
     if len(sys.argv) == 2:
         file_name = str(sys.argv[1])
-    sys.excepthook = handleException
+    #sys.excepthook = handleException
     editor = Editor(file_name)
     editor.show()
     editor.move(QPoint(150, 150))

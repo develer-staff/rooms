@@ -46,7 +46,8 @@ class EditorButton(QToolButton):
         settato il parametro corrispondente al bottone la funzione torna 1.
         altrimenti 0.5
         """
-        if getattr(self.room, self.attr):
+
+        if self.room is not None and getattr(self.room, self.attr):
             return 1.
         return 0.5
 
@@ -71,8 +72,13 @@ class RoomEditor(QWidget):
     def __init__(self, room=None, parent=None):
         super(RoomEditor, self).__init__(parent)
         self.room = room
-        self.room_bg = QPixmap(g_ptransform.relativeToAbsolute(room.bg))
-        self.setMinimumSize(self.room_bg.width(), self.room_bg.height())
+        if self.room is not None:
+            self.room_bg = QPixmap(g_ptransform.relativeToAbsolute(room.bg))
+            self.setMinimumSize(self.room_bg.width(), self.room_bg.height())
+        else:
+            self.room_bg = None
+            self.setMinimumSize(int(g_project.data['world'].width),
+                                int(g_project.data['world'].height))
         self.setSizePolicy(QSizePolicy(QSizePolicy.Preferred,
                                        QSizePolicy.Preferred))
 
@@ -119,8 +125,9 @@ class RoomEditor(QWidget):
         nella room corrente
         """
         self.resize_areas = []
-        for area in self.room.areas:
-            self.createAreaResize(area)
+        if self.room is not None:
+            for area in self.room.areas:
+                self.createAreaResize(area)
 
     def createAreaResize(self, area):
         """
@@ -209,7 +216,8 @@ class RoomEditor(QWidget):
         QWidget.paintEvent(self, e)
 
         p = QPainter(self)
-        p.drawPixmap(QPoint(0, 0), self.room_bg)
+        if self.room is not None:
+            p.drawPixmap(QPoint(0, 0), self.room_bg)
         p.setPen(Qt.blue)
         # Draw currently painted area
         if self.area_drag_start is not None and self.area_drag_curr is not None:
@@ -241,7 +249,7 @@ class RoomEditor(QWidget):
             self.room_bg = QPixmap(g_ptransform.relativeToAbsolute(self.room.bg))
             self.change_room_name.setText(self.room.id)
             for resize_area in self.resize_areas:
-                resize_area.deleteLater()
+                resize_area.setParent(None)
             self.resize_areas = []
             self.createAllAreaResize()
             self.change_room_bg.setRoom(self.room)
@@ -255,7 +263,7 @@ class RoomEditor(QWidget):
             self.setMinimumSize(int(g_project.data['world'].width),
                               int(g_project.data['world'].height))
             for resize_area in self.resize_areas:
-                    resize_area.deleteLater()
+                    resize_area.setParent(None)
             self.resize_areas = []
             self.createAllAreaResize()
             self.setEnableEditor(True)

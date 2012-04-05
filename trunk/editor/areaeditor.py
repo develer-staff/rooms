@@ -110,9 +110,9 @@ class AreaEditor(QDialog):
     def updateData(self):
         while (self.gl.itemAt(0)):
             item = self.gl.itemAt(0)
-            item.widget().deleteLater()
+            #item.widget().deleteLater()
             self.gl.removeItem(item)
-        self.signal_minus_mapper.deleteLater()
+        #self.signal_minus_mapper.deleteLater()
         self.createList()
 
     def createList(self):

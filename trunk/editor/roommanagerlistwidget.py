@@ -24,9 +24,13 @@ class RoomManager(RoomListWidget):
         return QSize(150, 150)
 
     def __init__(self, event=None, item=None, parent=None):
-        self.start_room = g_project.data['rooms']\
-                          [g_project.data['world'].start]
-        self.selected_room = self.start_room.id
+        if g_project.data['world'].start:
+            self.start_room = g_project.data['rooms']\
+                              [g_project.data['world'].start]
+            self.selected_room = self.start_room.id
+        else:
+            self.start_room = None
+            self.selected_room = ""
         super(RoomManager, self).__init__(event, item, parent)
         self.highlightStartRoom()
 
