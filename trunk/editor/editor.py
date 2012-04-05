@@ -362,7 +362,7 @@ class Editor(QWidget):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    file_name = "../examples/example3/world.rooms"
+    file_name = "../examples/example5/world.rooms"
     if len(sys.argv) == 2:
         file_name = str(sys.argv[1])
     #sys.excepthook = handleException
