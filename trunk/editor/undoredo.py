@@ -6,6 +6,16 @@ from savefilerooms import saveRooms
 
 class UndoRedo(object):
 
+    """
+    classe utilizzata per le operazioni di undo/redo dell'editor.
+    La classe salva i vari passi, è possibile tornare un passo indietro con
+    la funzione di undo e tornare un passo avanti con quella di redo. 
+    Tutte le volte che si salva un passo di modifica deve essere salvata la
+    room correntemente selezionata tramite la funzione addSelectedRoom.
+    La classe implementa un template observer per far agli oggetti interessati
+    quando e' stato aggiunto uno step di salvataggio
+    """
+
     def __init__(self):
         g_project.subscribe(self)
         self.reset()
