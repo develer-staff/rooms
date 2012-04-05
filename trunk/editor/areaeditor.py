@@ -62,29 +62,8 @@ class AreaEditor(QDialog):
         self.area = area
 
         self.vl = QVBoxLayout(self)
+        self.createInterface()
 
-        self.gl = QGridLayout()
-        self.createList()
-
-        self.vl.addLayout(self.gl)
-        gl = QGridLayout()
-        gl.addWidget(QLabel("Area name"), 0, 0)
-        self.change_area_name = QLineEdit()
-        self.change_area_name.setText(self.area.id)
-        gl.addWidget(self.change_area_name, 0, 1)
-        gl.addWidget(QLabel("Event name"), 1, 0)
-        self.change_event_name = QLineEdit()
-        self.change_event_name.setText(self.area.event)
-        gl.addWidget(self.change_event_name, 1, 1)
-        self.vl.addLayout(gl)
-        self.vl.addStretch()
-        self.vl.addWidget(QStatusBar(self))
-        self.connect(self.change_area_name,
-                     SIGNAL("textEdited(const QString &)"),
-                     self.updateAreaName)
-        self.connect(self.change_event_name,
-                     SIGNAL("textEdited(const QString &)"),
-                     self.updateEventName)
 
     def updateAreaName(self):
         """
@@ -107,13 +86,38 @@ class AreaEditor(QDialog):
     def closeEvent(self, event=None):
         g_project.unsubscribe(self)
 
+    def resetAreaEditor(self):
+        children = self.findChildren(QWidget)
+        for child in children:
+            if child.parent() == self and not isinstance(child, EventEditor):
+                child.setParent(None)
+
     def updateData(self):
-        while (self.gl.itemAt(0)):
-            item = self.gl.itemAt(0)
-            #item.widget().deleteLater()
-            self.gl.removeItem(item)
-        #self.signal_minus_mapper.deleteLater()
+        self.resetAreaEditor()
+        self.createInterface()
+
+    def createInterface(self):
+        self.gl = QGridLayout()
         self.createList()
+        self.vl.addLayout(self.gl)
+        gl = QGridLayout()
+        gl.addWidget(QLabel("Area name"), 0, 0)
+        self.change_area_name = QLineEdit()
+        self.change_area_name.setText(self.area.id)
+        gl.addWidget(self.change_area_name, 0, 1)
+        gl.addWidget(QLabel("Event name"), 1, 0)
+        self.change_event_name = QLineEdit()
+        self.change_event_name.setText(self.area.event)
+        gl.addWidget(self.change_event_name, 1, 1)
+        self.vl.addLayout(gl)
+        self.vl.addStretch()
+        self.vl.addWidget(QStatusBar(self))
+        self.connect(self.change_area_name,
+                     SIGNAL("textEdited(const QString &)"),
+                     self.updateAreaName)
+        self.connect(self.change_event_name,
+                     SIGNAL("textEdited(const QString &)"),
+                     self.updateEventName)
 
     def createList(self):
         """
@@ -200,11 +204,14 @@ class AreaEditor(QDialog):
         g_project.notify()
 
 if __name__ == "__main__":
+    from os.path import split
+
     from openfilerooms import openFileRooms
     from savefilerooms import saveFileRooms
+    from utils import g_ptransform
 
-    openFileRooms('world.rooms')
-
+    openFileRooms('../examples/example5/world.rooms')
+    g_ptransform.path_file = split('../examples/example5/world.rooms')[0]
     app = QApplication([])
     room = g_project.data['rooms']['Stanza Stella']
     area = AreaEditor(room.areas[1])
