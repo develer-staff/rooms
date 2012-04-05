@@ -2,16 +2,15 @@
 
 class Subject(object):
 
-
     def __init__(self):
-        self._observers = set()
+        self._observers = []
 
     def subscribe(self, observer):
-        self._observers.add(observer)
+        assert observer not in self._observers
+        self._observers.append(observer)
 
     def unsubscribe(self, observer):
-        if observer in self._observers:
-            self._observers.remove(observer)
+        self._observers.remove(observer)
 
     def notify(self):
         for observer in self._observers:

@@ -210,6 +210,8 @@ class Editor(QWidget):
         self.grid_layout.addWidget(self.room_manager, 1, 0)
         self.room_editor = RoomEditor(self.room, self)
         self.grid_layout.addWidget(self.room_editor, 1, 1)
+        g_project.subscribe(self.room_editor)
+        g_project.subscribe(self.room_manager)
         self.connect(self.room_editor,
                      SIGNAL("currentRoomNameChanged(QString)"),
                      self.room_manager.changeCurrentRoomName)
@@ -230,6 +232,8 @@ class Editor(QWidget):
         children = self.findChildren(QWidget)
         for child in children:
             if child.parent() == self:
+                if isinstance(child, (RoomManager, RoomEditor)):
+                    g_project.unsubscribe(child)
                 if isinstance(child, (UndoButton, RedoButton)):
                     g_undoredo.unsubscribe(child)
                 child.setParent(None)

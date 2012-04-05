@@ -28,7 +28,6 @@ class RoomManager(RoomListWidget):
                           [g_project.data['world'].start]
         self.selected_room = self.start_room.id
         super(RoomManager, self).__init__(event, item, parent)
-        g_project.subscribe(self)
         self.highlightStartRoom()
 
     def setSelectRoom(self, room):
@@ -37,9 +36,6 @@ class RoomManager(RoomListWidget):
 
     def getInitialItemToSelect(self):
         return self.selected_room
-
-    def closeEvent(self, event=None):
-        g_project.unsubscribe(self)
 
     def highlightStartRoom(self):
         if self.start_room:

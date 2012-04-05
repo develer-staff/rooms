@@ -75,7 +75,6 @@ class RoomEditor(QWidget):
         self.setMinimumSize(self.room_bg.width(), self.room_bg.height())
         self.setSizePolicy(QSizePolicy(QSizePolicy.Preferred,
                                        QSizePolicy.Preferred))
-        g_project.subscribe(self)
 
         self.area_drag_start = None
         self.area_drag_curr = None
@@ -218,10 +217,6 @@ class RoomEditor(QWidget):
                              self.area_drag_start.y(),
                        self.area_drag_curr.x() - self.area_drag_start.x(),
                        self.area_drag_curr.y() - self.area_drag_start.y()))
-
-    def closeEvent(self, event):
-        g_project.unsubscribe(self)
-        self.resize_areas = []
 
     def updateRoomName(self, name):
         """funzione per il cambio del nome della room"""
