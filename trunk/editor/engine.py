@@ -25,9 +25,6 @@ def startEngine(engine):
 
     path = tempfile.NamedTemporaryFile(suffix=".rooms",
                                        prefix="world", dir="temp/")
-
-
-
     saveFileRooms("temp/world.rooms")
     getRoomsImage()
     engine = Popen(["../../engine/qt-frontend/engine.exe"], cwd="temp/")
