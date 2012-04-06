@@ -258,7 +258,7 @@ class RoomEditor(QWidget):
             self.update()
 
     def updateData(self):
-        if self.room.id in g_project.data['rooms'].keys():
+        if self.room is not None and self.room.id in g_project.data['rooms'].keys():
             self.setRoom(self.room)
             self.setMinimumSize(int(g_project.data['world'].width),
                               int(g_project.data['world'].height))
