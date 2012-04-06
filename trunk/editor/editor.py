@@ -160,6 +160,10 @@ class Editor(QWidget):
         self.setDirty(False)
 
     def createEditorButtons(self):
+        """
+        funzione che crea i bottoni dell'editor e le connessioni dei segnali
+        dei bottoni stessi
+        """
         self.open_project_button = OpenProjectButton(self)
         self.save_project_button = SaveProjectButton(self)
         self.new_room_button = QPushButton("New room", self)
@@ -201,6 +205,10 @@ class Editor(QWidget):
                      self.redo)
 
     def createEditorInterface(self):
+        """
+        funzione che crea l'interfaccia di modifica e selezione delle room
+        dell'editor e collega i segnali degli oggetti creati
+        """
         self.room_manager = RoomManager(parent=self)
         self.grid_layout.addWidget(self.room_manager, 1, 0)
         self.room_editor = RoomEditor(self.room, self)
@@ -219,11 +227,13 @@ class Editor(QWidget):
         self.connect(self.room_manager,
                      SIGNAL("changeSelectedItem(QString)"),
                      self.enableRemoveRoomButton)
-        self.connect(self.room_manager,
-                     SIGNAL("changeSelectedItem(QString)"),
-                     self.changeRoom)
 
     def clearEditor(self):
+        """
+        funzione per cancellare l'interfaccia dell'editor. Desottorscrive gli
+        oggetti che sono observer o del modello dei dati o del sistema di 
+        undo/redo
+        """
         children = self.findChildren(QWidget)
         for child in children:
             if child.parent() == self:
@@ -239,6 +249,10 @@ class Editor(QWidget):
         self.createEditorInterface()
 
     def redo(self):
+        """
+        funzione per l'implementazione della funzione di redo. Ricrea
+        l'interfaccia dell'editor
+        """
         self.redo_undo_button_press = True
         g_undoredo.redo()
         self.room = g_project.data['rooms'][g_project.data['world'].start]
@@ -248,6 +262,10 @@ class Editor(QWidget):
         self.redo_undo_button_press = False
 
     def undo(self):
+        """
+        funzione per l'implementazione della funzione di undo. Ricrea
+        l'interfaccia dell'editor
+        """
         self.redo_undo_button_press = True
         g_undoredo.undo()
         self.room = g_project.data['rooms'][g_project.data['world'].start]
@@ -270,19 +288,21 @@ class Editor(QWidget):
             else:
                 self.music_player.stop()
 
-    def changeRoom(self, room_name):
-        room_name = unicode(room_name)
-        self.room = g_project.data['rooms'][room_name]
-        self.play_bgm_button.setRoom(self.room)
-
     def enableRemoveRoomButton(self):
         self.remove_room_button.setEnabled(True)
 
     def changeCurrentRoom(self, room_name):
+        """
+        funzione per la gestione del cambio della room selezionata
+        """
         name = unicode(room_name)
         self.room = g_project.data['rooms'][name]
+        self.play_bgm_button.setRoom(self.room)
 
     def removeRoom(self):
+        """
+        funzione per la gestione della rimozione di una room
+        """
         self.redo_undo_button_press = True
         g_project.removeRoom(self.room.id)
         if g_project.data['world'].start:
