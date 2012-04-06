@@ -19,6 +19,10 @@ class ResizeButton(QPushButton):
 
 class AreaResize(QWidget):
 
+    """
+    classe che permette il ridimensionamento e lo spostamento di un'area
+    """
+
     def __init__(self, area, bg_width, bg_height, parent=None):
         super(AreaResize, self).__init__(parent)
         self.in_resize = False
