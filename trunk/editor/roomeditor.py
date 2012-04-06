@@ -69,6 +69,12 @@ class ChangeRoomName(QLineEdit):
 
 class RoomEditor(QWidget):
 
+    """
+    classe per l'editing della room. E' possibile andare a modificare il
+    background e la background music della room, il suo nome e aggiungere
+    nuove area. Inoltre visualizza tutte le aree precedentemente create
+    """
+
     def __init__(self, room=None, parent=None):
         super(RoomEditor, self).__init__(parent)
         self.room = room
