@@ -24,5 +24,7 @@ class Room(OriginData):
             number_of_new_room += 1
         room = Room("new_room_%d" % (number_of_new_room), "", "")
         g_project.data['rooms'][room.id] = room
+        if not g_project.data['world'].start:
+            g_project.data['world'].start = room.id
         g_project.notify()
         return room
