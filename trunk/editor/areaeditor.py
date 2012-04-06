@@ -56,6 +56,10 @@ class MinusButton(QPushButton):
 
 class AreaEditor(QDialog):
 
+    """
+    classe che permette di modificare l'evento associato ad un area
+    """
+
     def __init__(self, area, parent=None):
         super(AreaEditor, self).__init__(parent)
         g_project.subscribe(self)
