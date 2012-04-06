@@ -28,6 +28,10 @@ class UndoRedo(object):
         self._list_of_room = []
 
     def clearUndoRedoList(self):
+        """
+        funzione per cancellare, dal programma che utilizza la classe,
+        tutte l'elenco di tutte le modifiche fatte
+        """
         self.reset()
 
     def undo(self):
@@ -42,22 +46,36 @@ class UndoRedo(object):
 
 
     def getCurrentRoom(self):
+        """
+        funzione che ritorna la room che era selezionata per un certo modello
+        dei dati
+        """
         room_id = self._list_of_room[self._list_index]
         room = g_project.data['rooms'][room_id]
         return room
 
     def addSelectedRoom(self, room=None):
+        """
+        funzione per il salvataggio della room selezionata nel momento in
+        cui viene aggiunto un passo di modifica del modello dei dati
+        """
         if room is not None:
             self._list_of_room.append(room.id)
         else:
             self._list_of_room.append("")
 
     def moreUndo(self):
+        """
+        funzione che ritorna se e' possibile fare un passo di undo
+        """
         if len(self._list_of_project) == 0:
             return False
         return (self._list_index > 0)
 
     def moreRedo(self):
+        """
+        funzione che ritorna se e' possibile fare un passo di redo
+        """
         if len(self._list_of_project) == 0:
             return False
         return (self._list_index < len(self._list_of_project) - 1)
@@ -73,9 +91,21 @@ class UndoRedo(object):
         self.notify()
 
     def unsubscribe(self, unsubscriber):
+        """
+        funzione di desottoscrizione alla classe per le istanze che sono
+        observers della classe. Prende come parametro di ingresso l'istanza
+        che si vuole sottoscrivere. Se l'istanza non e' trovata viene
+        lanciata un'eccezione di tipo ValueError
+        """
         self._subscibers.remove(unsubscriber)
 
     def subscribe(self, subscriber):
+        """
+        funzione per la sottoscrizione di un'istanza alla lista di
+        observer della classe. Prende in ingresso l'istanza che si vuole 
+        sottoscrivere, se l'istanza e' gia' presente nell'elenco di
+        subscribers viene lanciata un'eccezione di tipo AssertError
+        """
         assert subscriber not in self._subscibers
         self._subscibers.append(subscriber)
 
