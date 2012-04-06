@@ -1,15 +1,8 @@
 #!/usr/bin/env python
 
 import sys
-import os
 import traceback
-from subprocess import Popen
-from os import mkdir
 from os.path import split
-from os import path
-from shutil import copy
-from shutil import rmtree
-from os.path import normpath
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -157,7 +150,6 @@ class Editor(QWidget):
         self.engine = None
         self.redo_undo_button_press = False
         self.redo_undo_button_press = False
-        self.music_player = None
         self.grid_layout = QGridLayout(self)
         openFileRooms(file_name)
         g_ptransform.path_file = split(file_name)[0]
