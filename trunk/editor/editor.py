@@ -37,6 +37,7 @@ def handleException(exc_type, exc_value, exc_traceback):
     from StringIO import StringIO
     m = StringIO()
     traceback.print_exception(exc_type, exc_value, exc_traceback, file=m)
+    sys.stdout.flush()
     QApplication.exit()
 
 class StartEngineButton(QToolButton):
