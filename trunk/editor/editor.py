@@ -157,6 +157,7 @@ class Editor(QWidget):
         self.engine = None
         self.redo_undo_button_press = False
         self.redo_undo_button_press = False
+        self.music_player = None
         self.grid_layout = QGridLayout(self)
         openFileRooms(file_name)
         g_ptransform.path_file = split(file_name)[0]
