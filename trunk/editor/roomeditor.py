@@ -243,7 +243,10 @@ class RoomEditor(QWidget):
         if room:
             self.room = room
             self.change_room_name.setText(self.room.id)
-            self.room_bg = QPixmap(self.room.bg)
+            if os.path.exists(self.room.bg):
+                self.room_bg = QPixmap(self.room.bg)
+            else:
+                self.room_bg = QPixmap(g_ptransform.relativeToAbsolute(self.room.bg))
 
     def changeCurrentRoom(self, room_id):
         """

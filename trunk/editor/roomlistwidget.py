@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import os
+
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
@@ -33,8 +35,11 @@ class RoomListWidget(RoomItemListWidget):
         return g_project.data['rooms'].keys()
 
     def getIconImage(self, id_item):
-        path = g_project.data["rooms"][id_item].bg
-        return path
+        room_bg_path = g_project.data["rooms"][id_item].bg
+        if os.path.exists(room_bg_path):
+            return room_bg_path
+        else:
+            return g_ptransform.relativeToAbsolute(g_project.data["rooms"][id_item].bg)
 
     def getItemSize(self, id_item):
         if g_project.data['rooms'][id_item].bg:
