@@ -33,7 +33,7 @@ class RoomListWidget(RoomItemListWidget):
         return g_project.data['rooms'].keys()
 
     def getIconImage(self, id_item):
-        path = g_ptransform.relativeToAbsolute(g_project.data["rooms"][id_item].bg)
+        path = g_project.data["rooms"][id_item].bg
         return path
 
     def getItemSize(self, id_item):

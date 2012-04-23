@@ -152,7 +152,7 @@ class RoomEditor(QWidget):
         path_file = file_open.getOpenFileName(filter="*.png *.jpg")
         if path_file:
             room_bg = os.path.relpath(unicode(path_file))
-            g_project.data['images'].changeImage(self.room.bg, room_bg)
+            g_project.changeImage(self.room.bg, room_bg)
             self.room.bg = room_bg
             g_project.notify()
 
@@ -243,7 +243,7 @@ class RoomEditor(QWidget):
         if room:
             self.room = room
             self.change_room_name.setText(self.room.id)
-            self.room_bg = QPixmap(g_ptransform.relativeToAbsolute(self.room.bg))
+            self.room_bg = QPixmap(self.room.bg)
 
     def changeCurrentRoom(self, room_id):
         """
@@ -252,7 +252,7 @@ class RoomEditor(QWidget):
         """
         self.room = g_project.data['rooms'][unicode(room_id)]
         if self.room:
-            self.room_bg = QPixmap(g_ptransform.relativeToAbsolute(self.room.bg))
+            self.room_bg = QPixmap(self.room.bg)
             self.change_room_name.setText(self.room.id)
             for resize_area in self.resize_areas:
                 resize_area.setParent(None)
