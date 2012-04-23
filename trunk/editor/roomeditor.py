@@ -255,7 +255,10 @@ class RoomEditor(QWidget):
         """
         self.room = g_project.data['rooms'][unicode(room_id)]
         if self.room:
-            self.room_bg = QPixmap(self.room.bg)
+            if os.path.exists(self.room.bg):
+                self.room_bg = QPixmap(self.room.bg)
+            else:
+                self.room_bg = QPixmap(g_ptransform.relativeToAbsolute(self.room.bg))
             self.change_room_name.setText(self.room.id)
             for resize_area in self.resize_areas:
                 resize_area.setParent(None)
