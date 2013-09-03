@@ -1,1 +1,1 @@
-../../engine/qt-frontend/engine.exe
+../../engine/qt4-frontend/engine.exe

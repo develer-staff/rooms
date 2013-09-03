@@ -27,7 +27,7 @@ def startEngine(engine):
                                        prefix="world", dir="temp/")
     saveFileRooms("temp/world.rooms")
     getRoomsImage()
-    engine = Popen(["../../engine/qt-frontend/engine.exe"], cwd="temp/")
+    engine = Popen(["../../engine/qt4-frontend/engine.exe"], cwd="temp/")
     return engine
 
 def getRoomsImage():
