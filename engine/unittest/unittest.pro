@@ -4,7 +4,6 @@
 
 TEMPLATE = app
 TARGET = test.exe
-DEPENDPATH += . ../frontend ../src ../lib/tinyxml
 INCLUDEPATH += . ../frontend ../src ../lib/tinyxml
 LIBS += -lcppunit
 OBJECTS_DIR = ./build

@@ -3,7 +3,6 @@ QT -= core gui
 
 TEMPLATE = lib
 TARGET = rooms
-DEPENDPATH += . src lib/tinyxml
 INCLUDEPATH += . src lib/tinyxml
 OBJECTS_DIR = ./build
 MOC_DIR = ./build

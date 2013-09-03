@@ -4,7 +4,6 @@
 
 TEMPLATE = app
 TARGET = engine.exe
-DEPENDPATH += . ../src ../lib/tinyxml
 INCLUDEPATH += . ../src ../lib/tinyxml
 QMAKE_LIBDIR += ../
 OBJECTS_DIR = ./build
