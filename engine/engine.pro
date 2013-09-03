@@ -1,3 +1,6 @@
+CONFIG -= QT
+QT -= core gui
+
 TEMPLATE = lib
 TARGET = rooms
 DEPENDPATH += . src lib/tinyxml
@@ -24,22 +27,22 @@ HEADERS += action.h \
            tinystr.h \
            tinyxml.h \
            versioning.h
-SOURCES += action.cpp \
-           area.cpp \
-           engine.cpp \
-           event.cpp \
-           eventsmanager.cpp \
-           item.cpp \
-           log.cpp \
-           room.cpp \
-           roomsmanager.cpp \
-           dialog.cpp \
-           roomsreader.cpp \
-           gui.cpp \
-           pythonvm.cpp \
-           pythonapi.cpp \
-           tinystr.cpp \
-           tinyxml.cpp \
-           tinyxmlerror.cpp \
-           tinyxmlparser.cpp \
-           versioning.cpp
+SOURCES += src/action.cpp \
+           src/area.cpp \
+           src/engine.cpp \
+           src/event.cpp \
+           src/eventsmanager.cpp \
+           src/item.cpp \
+           src/log.cpp \
+           src/room.cpp \
+           src/roomsmanager.cpp \
+           src/dialog.cpp \
+           src/roomsreader.cpp \
+           src/gui.cpp \
+           src/pythonvm.cpp \
+           src/pythonapi.cpp \
+           lib/tinyxml/tinystr.cpp \
+           lib/tinyxml/tinyxml.cpp \
+           lib/tinyxml/tinyxmlerror.cpp \
+           lib/tinyxml/tinyxmlparser.cpp \
+           src/versioning.cpp

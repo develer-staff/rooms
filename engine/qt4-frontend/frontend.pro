@@ -13,18 +13,18 @@ LIBS += -L. -lrooms -lpython2.6
 
 # Input
 HEADERS += drawdevice.h \
-           action.h \
-           area.h \
-           engine.h \
-           event.h \
-           eventsmanager.h \
-           item.h \
-           log.h \
-           room.h \
-           roomsmanager.h \
-           dialog.h \
-           roomsreader.h \
-           tinystr.h \
-           tinyxml.h
+           ../src/action.h \
+           ../src/area.h \
+           ../src/engine.h \
+           ../src/event.h \
+           ../src/eventsmanager.h \
+           ../src/item.h \
+           ../src/log.h \
+           ../src/room.h \
+           ../src/roomsmanager.h \
+           ../src/dialog.h \
+           ../src/roomsreader.h \
+           ../lib/tinyxml/tinystr.h \
+           ../lib/tinyxml/tinyxml.h
 SOURCES += drawdevice.cpp \
            main.cpp \
