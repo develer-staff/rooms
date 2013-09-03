@@ -12,7 +12,7 @@
 #ifndef PYTHONVM_H
 #define	PYTHONVM_H
 
-#include <python2.6/Python.h> //all python stuff
+#include <Python.h> //all python stuff
 #include <string> //std::string
 #include <map> //std::map
 

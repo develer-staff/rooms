@@ -7,7 +7,15 @@ INCLUDEPATH += . src lib/tinyxml
 OBJECTS_DIR = ./build
 MOC_DIR = ./build
 CONFIG += staticlib
-LIBS += -lpython2.6
+
+!isEmpty(PYTHON_VERSION){
+    DEFINES += WITH_PYTHON
+    LIBS += -lpython$${PYTHON_VERSION}
+    INCLUDEPATH += /usr/include/python$${PYTHON_VERSION}
+    HEADERS += pythonvm.h
+    SOURCES += src/pythonvm.cpp \
+               src/pythonapi.cpp
+}
 
 # Input
 HEADERS += action.h \
@@ -22,7 +30,6 @@ HEADERS += action.h \
            dialog.h \
            roomsreader.h \
            gui.h \
-           pythonvm.h \
            tinystr.h \
            tinyxml.h \
            versioning.h
@@ -38,8 +45,6 @@ SOURCES += src/action.cpp \
            src/dialog.cpp \
            src/roomsreader.cpp \
            src/gui.cpp \
-           src/pythonvm.cpp \
-           src/pythonapi.cpp \
            lib/tinyxml/tinystr.cpp \
            lib/tinyxml/tinyxml.cpp \
            lib/tinyxml/tinyxmlerror.cpp \

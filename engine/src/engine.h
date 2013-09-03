@@ -40,8 +40,10 @@
 #include "roomsreader.h"
 #include "gui.h"
 #include "versioning.h"
+#ifdef WITH_PYTHON
 #include "pythonvm.h"
 #include "pythonapi.h"
+#endif
 
 #include <string> //std::string
 #include <utility> //std::pair
@@ -76,7 +78,9 @@ private:
     Dialog *dialog;
     GuiScrolledBar *inventory;
     GuiScrolledBar *dialog_list;
+#ifdef WITH_PYTHON
     PythonVM vm;
+#endif
 public:
     Engine();
     ~Engine();
@@ -183,15 +187,19 @@ private:
     GuiDataVect flash(Room *room, int alpha = 255);
     RoomsTransition transition;
     //RISC API
+#ifdef WITH_PYTHON
     void apiExecScript(const string id);
+#endif
     void apiRoomGoto(const string id);
     void apiVarSet(const string id, const int value);
     void apiItemMove(const string id, const string dest);
     void apiDialogStart(const string id);
     void apiSFXPlay(const string id);
+#ifdef WITH_PYTHON
     // Python api functions are engine's friends.
     friend PyObject *apiPyGotoRoom(PyObject *, PyObject *args);
     friend PyObject *apiPyMoveItem(PyObject *, PyObject *args);
+#endif
     // Unittests stuff
     friend class MockEngine;
 };

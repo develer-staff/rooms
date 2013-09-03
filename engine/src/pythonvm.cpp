@@ -1,6 +1,6 @@
 #include "pythonvm.h"
 
-#include <python2.6/Python.h>
+#include <Python.h>
 
 PythonVM::PythonVM()
 {

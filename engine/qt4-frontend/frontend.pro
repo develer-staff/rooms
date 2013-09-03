@@ -8,7 +8,13 @@ INCLUDEPATH += . ../src ../lib/tinyxml
 QMAKE_LIBDIR += ../
 OBJECTS_DIR = ./build
 MOC_DIR = ./build
-LIBS += -L. -lrooms -lpython2.6
+LIBS += -L. -lrooms
+
+!isEmpty(PYTHON_VERSION){
+    DEFINES += WITH_PYTHON
+    LIBS += -lpython$${PYTHON_VERSION}
+    INCLUDEPATH += /usr/include/python$${PYTHON_VERSION}
+}
 
 # Input
 HEADERS += drawdevice.h \
