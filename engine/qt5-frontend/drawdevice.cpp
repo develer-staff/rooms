@@ -1,3 +1,5 @@
+#include <QFile>
+
 #include "drawdevice.h"
 
 DrawDevice::DrawDevice(Engine *eng, QWidget *parent) : QWidget(parent)
@@ -34,7 +36,7 @@ void DrawDevice::initialize()
 
 bool DrawDevice::loadImage(string filename)
 {
-    if (fileExists(filename))
+    if (QFile::exists(QString::fromStdString(filename)))
     {
         images[filename] = new QPixmap(filename.c_str());
         return true;
@@ -143,7 +145,6 @@ void DrawDevice::drawRoom(QPainter &painter)
 void DrawDevice::updateMusic()
 {
     // Background Music
-    //if (!QSound::isAvailable()) return;
     QString bgm_to_play(engine->getRoomsManager()->currentRoom()->bgm().c_str());
     if (bgm_to_play != "" && bgm_to_play != last_bgm)
     {
