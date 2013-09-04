@@ -18,21 +18,21 @@ CONFIG += staticlib
 }
 
 # Input
-HEADERS += action.h \
-           area.h \
-           engine.h \
-           event.h \
-           eventsmanager.h \
-           item.h \
-           log.h \
-           room.h \
-           roomsmanager.h \
-           dialog.h \
-           roomsreader.h \
-           gui.h \
-           tinystr.h \
-           tinyxml.h \
-           versioning.h
+HEADERS += src/action.h \
+           src/area.h \
+           src/engine.h \
+           src/event.h \
+           src/eventsmanager.h \
+           src/item.h \
+           src/log.h \
+           src/room.h \
+           src/roomsmanager.h \
+           src/dialog.h \
+           src/roomsreader.h \
+           src/gui.h \
+           lib/tinyxml/tinystr.h \
+           lib/tinyxml/tinyxml.h \
+           src/versioning.h
 SOURCES += src/action.cpp \
            src/area.cpp \
            src/engine.cpp \
