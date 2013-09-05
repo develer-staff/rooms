@@ -10,7 +10,12 @@ LIBS += -L. -lrooms
 !isEmpty(PYTHON_VERSION){
     DEFINES += WITH_PYTHON
     LIBS += -lpython$${PYTHON_VERSION}
-    INCLUDEPATH += /usr/include/python$${PYTHON_VERSION}
+    unix {
+        INCLUDEPATH += /usr/include/python$${PYTHON_VERSION}
+    } win32 {
+        SUFFIX = $$replace(PYTHON_VERSION,\.,)
+        INCLUDEPATH += C:/Python$${SUFFIX}/include
+    }
 }
 
 # Input
