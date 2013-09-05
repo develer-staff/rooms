@@ -1,7 +1,7 @@
 #ifndef ACTIONTESTS_H_INCLUDED
 #define ACTIONTESTS_H_INCLUDED
 
-#include "../src/engine.h"
+#include "engine.h"
 
 #include <cppunit/TestAssert.h> //CPPUNIT_ASSERT
 #include <cppunit/TestFixture.h>

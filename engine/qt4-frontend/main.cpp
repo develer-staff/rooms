@@ -1,4 +1,4 @@
-#include "../src/engine.h"
+#include "engine.h"
 #include "drawdevice.h"
 
 #include <QtGui>

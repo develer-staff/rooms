@@ -1,7 +1,7 @@
 #ifndef DRAWDEVICE_H
 #define DRAWDEVICE_H
 
-#include "../src/engine.h"
+#include "engine.h"
 
 #include <QtGui> //QWidget, QImage
 #include <map> //std::map

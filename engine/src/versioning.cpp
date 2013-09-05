@@ -1,6 +1,6 @@
 #include "versioning.h"
 #include "roomsreader.h" // RRNode
-#include "../lib/tinyxml/tinyxml.h" // TiXmlDocument
+#include "tinyxml.h" // TiXmlDocument
 
 string Versioning::upgradeFrom1To2(string content)
 {

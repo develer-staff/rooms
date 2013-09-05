@@ -12,7 +12,7 @@
 #ifndef ROOMSREADER_H
 #define ROOMSREADER_H
 
-#include "../lib/tinyxml/tinyxml.h"
+#include "tinyxml.h"
 #include "event.h"
 #include "room.h"
 #include "area.h"

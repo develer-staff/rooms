@@ -1,7 +1,7 @@
 #ifndef ENGINETESTS_H_INCLUDED
 #define ENGINETESTS_H_INCLUDED
 
-#include "../src/engine.h"
+#include "engine.h"
 
 #include <string>
 #include <utility> // std::pair

@@ -1,13 +1,12 @@
 #ifndef DRAWDEVICE_H
 #define DRAWDEVICE_H
 
-#include "../src/engine.h"
+#include "engine.h"
 
 #include <QtWidgets> //QWidget, QImage
 #include <QSound>
 #include <map> //std::map
 #include <string> //std::string
-#include <fstream> //ifstream in fileExists()
 #include <utility> //std::pair
 
 using std::string;
