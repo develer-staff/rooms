@@ -1,5 +1,7 @@
 #include "drawdevice.h"
 
+#include <QFile>
+
 DrawDevice::DrawDevice(Engine *eng, QWidget *parent) : QWidget(parent)
 {
     engine = eng;
@@ -34,7 +36,7 @@ void DrawDevice::initialize()
 
 bool DrawDevice::loadImage(string filename)
 {
-    if (fileExists(filename))
+    if (QFile::exists(QString::fromStdString(filename)))
     {
         images[filename] = new QPixmap(filename.c_str());
         return true;
