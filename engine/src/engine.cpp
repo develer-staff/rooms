@@ -371,6 +371,7 @@ GuiDataVect Engine::flash(Room *room, int alpha)
     // Background visible data
     GuiDataVect visible_data;
     GuiData bg;
+    bg.id = room->id;
     bg.alpha = alpha;
     bg.image = room->bg();
     bg.text = "";
@@ -382,6 +383,7 @@ GuiDataVect Engine::flash(Room *room, int alpha)
             i != items.end(); ++i)
     {
         GuiData item;
+        item.id = (*i)->id;
         item.alpha = alpha;
         item.text = "";
         item.image = (*i)->image();
