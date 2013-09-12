@@ -93,8 +93,7 @@ void DrawDevice::resizeEvent(QResizeEvent *event)
 
 void DrawDevice::updateEngine()
 {
-    if (engine->update())
-        repaint();
+    repaint();
 }
 
 QPixmap optimizedSetOpacity(QPixmap img, int opacity)

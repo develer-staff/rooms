@@ -355,17 +355,6 @@ void Engine::updateDialog()
     }
 }
 
-bool Engine::update()
-{
-    if (state() == TRANSITION)
-    {
-        if (!transition.update())
-            setState(GAME);
-        return true;
-    }
-    return false;
-}
-
 GuiDataVect Engine::flash(Room *room, int alpha)
 {
     // Background visible data
@@ -397,34 +386,18 @@ GuiDataVect Engine::getVisibleData()
 {
     GuiDataVect visible_data;
     GuiDataVect gui_data = gui_mgr->getVisibleData();
-    // Background visible data with transition stuff
-    if (state() != TRANSITION)
-    {
-        GuiDataVect room_data = flash(rooms_mgr->currentRoom());
-        visible_data.insert(visible_data.end(), room_data.begin(), room_data.end());
-    }
-    else
-    {
-        GuiDataVect room_data1 = flash(transition.start, transition.alpha_room_start);
-        GuiDataVect room_data2 = flash(transition.end, transition.alpha_room_end);
-        visible_data.insert(visible_data.end(), room_data1.begin(), room_data1.end());
-        visible_data.insert(visible_data.end(), room_data2.begin(), room_data2.end());
-    }
-    // Gui visible data
+    GuiDataVect room_data = flash(rooms_mgr->currentRoom());
+
+    visible_data.insert(visible_data.end(), room_data.begin(), room_data.end());
     visible_data.insert(visible_data.end(), gui_data.begin(), gui_data.end());
+
     return visible_data;
 }
 
 void Engine::apiRoomGoto(const string id)
 {
     logger.write("ROOM_GOTO: " + id, Log::NOTE);
-    transition.index = 0;
-    transition.steps = 5;
-    transition.start = rooms_mgr->currentRoom();
-    transition.end = rooms_mgr->room(id);
-    transition.update();
     rooms_mgr->setCurrentRoom(id);
-    setState(TRANSITION);
 }
 
 void Engine::apiVarSet(const string id, const int value)
