@@ -37,11 +37,7 @@ HEADERS += src/action.h \
            src/gui.h \
            lib/tinyxml/tinystr.h \
            lib/tinyxml/tinyxml.h \
-           src/versioning.h \
-           src/animation.h \
-           src/animation.h \
-           src/animationsengine.h \
-           src/timer.h
+           src/versioning.h
 SOURCES += src/action.cpp \
            src/area.cpp \
            src/engine.cpp \
@@ -58,7 +54,4 @@ SOURCES += src/action.cpp \
            lib/tinyxml/tinyxml.cpp \
            lib/tinyxml/tinyxmlerror.cpp \
            lib/tinyxml/tinyxmlparser.cpp \
-           src/versioning.cpp \
-           src/animation.cpp \
-           src/animationsengine.cpp \
-           src/timer.cpp
+           src/versioning.cpp
