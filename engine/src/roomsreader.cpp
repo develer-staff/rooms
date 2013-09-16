@@ -114,6 +114,14 @@ Event *RRNode::fetchEvent()
         for (gotoChild("param"); !isNull(); gotoNext())
             act->pushParam(attrStr("value"));
         gotoParent();
+        gotoChild("animations");
+        if (!isNull()){
+            for (gotoChild("animation"); !isNull(); gotoNext()){
+                fetchAnimation();//TODO: do something with animation
+            }
+            gotoParent();
+        }
+        gotoParent();
     }
     gotoParent();
     return event;
@@ -157,9 +165,20 @@ Dialog *RRNode::fetchDialog()
         for (gotoChild("link"); !isNull(); gotoNext())
             d->addLink(step->id, attrStr("id"), attrStr("text"));
          gotoParent();
+
     }
     gotoParent();
     return d;
+}
+
+Animation *RRNode::fetchAnimation()
+{
+    Animation *a = new Animation(attrStr("object"), attrInt("duration"));
+    a->setEasing(Animation::strToEasing(attrStr("easing")));
+    for (gotoChild("property"); !isNull(); gotoNext())
+        a->addProperty(attrStr("name"), attrFloat("from"), attrFloat("to"));
+    gotoParent();
+    return a;
 }
 
 TiXmlElement *RRNode::findElement(TiXmlElement *elem, string name)
@@ -195,6 +214,8 @@ RoomsReader::RoomsReader()
     parse_map["area"] = &RoomsReader::parseArea;
     parse_map["action"] = &RoomsReader::parseAction;
     parse_map["event"] = &RoomsReader::parseEvent;
+    parse_map["animation"] = &RoomsReader::parseAnimation;
+    parse_map["property"] = &RoomsReader::parseProperty;
     parse_map["dialog"] = &RoomsReader::parseDialog;
     parse_map["step"] = &RoomsReader::parseDialogStep;
     parse_map["var"] = &RoomsReader::parseVar;
@@ -390,6 +411,28 @@ bool RoomsReader::parseEvent(TiXmlElement *elem)
         return false;
     if (!(checkUniqueId(unique_ids_events, elem->Attribute("id")) &&
         checkParent(elem, "events")))
+        return false;
+    return true;
+}
+
+bool RoomsReader::parseAnimation(TiXmlElement *elem)
+{
+    if (!(parseAttr(elem, "object", ATTR_STR) &&
+          parseAttr(elem, "duration", ATTR_INT) &&
+          parseAttr(elem, "easing", ATTR_STR)))
+        return false;
+    if (!checkParent(elem, "animations"))
+        return false;
+    return true;
+}
+
+bool RoomsReader::parseProperty(TiXmlElement *elem)
+{
+    if (!(parseAttr(elem, "name", ATTR_STR) &&
+          parseAttr(elem, "from", ATTR_FLOAT) &&
+          parseAttr(elem, "to", ATTR_FLOAT)))
+        return false;
+    if (!checkParent(elem, "animation"))
         return false;
     return true;
 }

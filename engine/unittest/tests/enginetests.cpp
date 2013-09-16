@@ -56,7 +56,11 @@ void WorldTests::testLoadWorld()
                       "<images><img file='../../../examples/example2/data/chiave.png'/></images>"
                       "<items><item id='key' room='room' x='10' y='10' width='50' height='50' image='../../../examples/example2/data/chiave.png' event='event' /></items>"
                       "<vars /><dialogs />"
-                      "<events><event id='event'><action id='ROOM_GOTO'><param value='room' /></action></event></events>"
+                      "<events><event id='event'>"
+                      "<action id='ROOM_GOTO'><param value='room' />"
+                      "<animations><animation object='room' duration='500' easing='LINEAR'><property name='x' from='0.0' to='0.5' /></animation></animations>"
+                      "</action>"
+                      "</event></events>"
                       "<rooms><room id='room' bg='bg'><area id='id' x= '10' y='10' width='10' height='10' event='event'/></room></rooms>"
                       "</world>\n";
     CPPUNIT_ASSERT(mock->loadWorldFromStr(xml));
