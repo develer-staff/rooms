@@ -22,6 +22,12 @@ CONFIG += staticlib
                src/pythonapi.cpp
 }
 
+# Workaround for a compilation error in OS X 10.8
+# See also: http://qt-project.org/forums/viewthread/19106
+macx-g++ {
+    QMAKE_CXXFLAGS += -fpermissive
+}
+
 # Input
 HEADERS += src/action.h \
            src/area.h \
