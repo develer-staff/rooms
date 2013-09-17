@@ -32,28 +32,6 @@ namespace utils
 	template <class T> T *getElement(string name, std::map<string, T *> container);
 }
 
-struct RoomsTransition
-{
-	Room *start;
-	Room *end;
-	int steps;
-	int index;
-	int alpha_room_start;
-	int alpha_room_end;
-
-	bool update()
-	{
-		// check transition's end
-		if (index == steps)
-			return false; // transition ended
-		// calculate transition
-		++index;
-		alpha_room_end = index * 255 / steps;
-		alpha_room_start = 255 - alpha_room_end;
-		return true; // transition continues
-	}
-};
-
 /** \brief The RoomsManager class handles rooms.
  *
  * Creates and destroys rooms.

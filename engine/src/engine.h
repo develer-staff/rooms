@@ -197,7 +197,6 @@ private:
     void execActions(const std::vector <Action *> actions);
     void updateDialog();
     GuiDataVect flash(Room *room, int alpha = 255);
-    RoomsTransition transition;
     //RISC API
 #ifdef WITH_PYTHON
     void apiExecScript(const string id);
