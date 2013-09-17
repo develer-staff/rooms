@@ -7,6 +7,7 @@ Engine::Engine()
     rooms_mgr = new RoomsManager();
     events_mgr = new EventsManager();
     gui_mgr = new GuiManager();
+    anim_mgr = new AnimationsManager();
     setState(INITIALIZING);
     inventory = new GuiScrolledBar("inventory", "", "", GuiRect(0.08, 0, 0.84, 0.107),
                                 GuiRect(0.08, 0, 0.08, 0.107), GuiRect(0, 0, 0.08, 0.107),
@@ -17,6 +18,7 @@ Engine::Engine()
     gui_mgr->addGuiObj(inventory);
     gui_mgr->addGuiObj(dialog_list);
     dialog_list->visible = false;
+    stored_state = state();
 #ifdef WITH_PYTHON
     // Python stuff
     apiInit(this);
@@ -83,6 +85,11 @@ void Engine::click(const float x, const float y)
                 clickDialog(choice);
                 updateDialog();
             }
+            break;
+        }
+        case TRANSITION:
+        {
+            // do nothing when an animation is running
             break;
         }
         default:
@@ -300,6 +307,7 @@ void Engine::execActions(std::vector <Action *> actions)
     {
         //TODO: think about improving this loop
         Action act = *(*i);
+        anim_mgr->addAnimations(act.animations());
         logger.write("Exec action: " + act.id, Log::NOTE);
         if (act.id == "ROOM_GOTO")
         {
@@ -355,16 +363,30 @@ void Engine::updateDialog()
     }
 }
 
-GuiDataVect Engine::flash(Room *room, int alpha)
+GuiDataVect Engine::flash(Room *room)
 {
     // Background visible data
     GuiDataVect visible_data;
     GuiData bg;
     bg.id = room->id;
-    bg.alpha = alpha;
+    bg.alpha = 255;
     bg.image = room->bg();
     bg.text = "";
     bg.rect = GuiRect(0, 0, 1.0, 1.0);
+    if (state() == TRANSITION){
+        Room * prev_bg = rooms_mgr->previousRoom();
+        if (prev_bg != 0) {
+            GuiData pbg;
+            pbg.id = prev_bg->id;
+            pbg.alpha = 0;
+            pbg.image = prev_bg->bg();
+            pbg.text = "";
+            pbg.rect = GuiRect(0, 0, 1.0, 1.0);
+            anim_mgr->updateObjectState(prev_bg->id, &pbg);
+            visible_data.push_back(pbg);
+        }
+        anim_mgr->updateObjectState(room->id, &bg);
+    }
     visible_data.push_back(bg);
     // Items visible data
     std::vector <Item *> items = room->items();
@@ -373,10 +395,14 @@ GuiDataVect Engine::flash(Room *room, int alpha)
     {
         GuiData item;
         item.id = (*i)->id;
-        item.alpha = alpha;
+        item.alpha = 255;
         item.text = "";
         item.image = (*i)->image();
         item.rect = GuiRect((*i)->x(), (*i)->y(), (*i)->w(), (*i)->h());
+        if (state() == TRANSITION){
+            anim_mgr->updateObjectState((*i)->id, &item);
+            (*i)->setSize(item.rect.x, item.rect.y, item.rect.w, item.rect.h);
+        }
         visible_data.push_back(item);
     }
     return visible_data;
@@ -384,6 +410,16 @@ GuiDataVect Engine::flash(Room *room, int alpha)
 
 GuiDataVect Engine::getVisibleData()
 {
+    if (anim_mgr->hasAnimations() && state() != TRANSITION) {
+        anim_mgr->startAnimations();
+        storeState();
+        setState(TRANSITION);
+        logger.write("Entering transition", Log::NOTE);
+    }
+    if (state() == TRANSITION && anim_mgr->stopIfOvertime()){
+        logger.write("Exiting transition", Log::NOTE);
+        restoreState();
+    }
     GuiDataVect visible_data;
     GuiDataVect gui_data = gui_mgr->getVisibleData();
     GuiDataVect room_data = flash(rooms_mgr->currentRoom());
@@ -392,6 +428,16 @@ GuiDataVect Engine::getVisibleData()
     visible_data.insert(visible_data.end(), gui_data.begin(), gui_data.end());
 
     return visible_data;
+}
+
+void Engine::storeState()
+{
+    stored_state = state();
+}
+
+void Engine::restoreState()
+{
+    setState(stored_state);
 }
 
 void Engine::apiRoomGoto(const string id)

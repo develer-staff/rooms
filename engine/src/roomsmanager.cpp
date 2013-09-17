@@ -27,6 +27,7 @@ template <class T> T *utils::getElement(string name, std::map<string, T *> conta
 RoomsManager::RoomsManager()
 {
     current_room = 0;
+    previous_room = 0;
 }
 
 RoomsManager::~RoomsManager()
@@ -142,12 +143,18 @@ std::map <string, Item *> RoomsManager::getItems()
 
 void RoomsManager::setCurrentRoom(const string name)
 {
+    previous_room = current_room;
     current_room = room(name);
 }
 
 Room *RoomsManager::currentRoom()
 {
     return current_room;
+}
+
+Room *RoomsManager::previousRoom()
+{
+    return previous_room;
 }
 
 string RoomsManager::eventAt(const float x, const float y)

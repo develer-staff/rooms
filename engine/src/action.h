@@ -17,6 +17,8 @@
 #include <vector> //std::vector
 #include <sstream> // std::istringstream
 
+#include "animation.h"
+
 /** \brief The Action class is used to handle event actions.
  *
  * An action has a type and a stack of parameters.
@@ -29,6 +31,7 @@ class Action
         const std::string id;
     private:
         std::vector <std::string> params;
+        std::vector <Animation *> _animations;
     public:
         /// Creates an action of the given type.
         Action(const std::string name);
@@ -40,6 +43,10 @@ class Action
         std::string popStrParam();
         /// Pops an int parameter from stack.
         int popIntParam();
+        /// Adds an animation to the vector
+        void addAnimation(Animation *animation);
+        /// returns the animations vector for this action
+        std::vector<Animation *> animations();
 };
 
 #endif // ACTION_H

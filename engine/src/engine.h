@@ -59,6 +59,7 @@
 #include "roomsreader.h"
 #include "gui.h"
 #include "versioning.h"
+#include "animationsmanager.h"
 #ifdef WITH_PYTHON
 #include "pythonvm.h"
 #include "pythonapi.h"
@@ -91,12 +92,14 @@ private:
     RoomsManager *rooms_mgr;
     EventsManager *events_mgr;
     GuiManager *gui_mgr;
+    AnimationsManager *anim_mgr;
     std::vector<string> images;
     std::vector<string> sfx;
     std::map<string, Dialog *> dialogs;
     Dialog *dialog;
     GuiScrolledBar *inventory;
     GuiScrolledBar *dialog_list;
+    State stored_state;
 #ifdef WITH_PYTHON
     PythonVM vm;
 #endif
@@ -194,9 +197,11 @@ public:
     /// Returns the drawable representation of current room.
     GuiDataVect getVisibleData();
 private:
+    void storeState();
+    void restoreState();
     void execActions(const std::vector <Action *> actions);
     void updateDialog();
-    GuiDataVect flash(Room *room, int alpha = 255);
+    GuiDataVect flash(Room *room);
     //RISC API
 #ifdef WITH_PYTHON
     void apiExecScript(const string id);

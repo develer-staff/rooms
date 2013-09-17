@@ -24,6 +24,7 @@ HEADERS += ../../src/action.h \
            ../../src/gui.h \
            ../../src/versioning.h \
            ../../src/animation.h \
+           ../../src/animationsmanager.h \
            ../../lib/tinyxml/tinystr.h \
            ../../lib/tinyxml/tinyxml.h
 
@@ -43,6 +44,7 @@ SOURCES += main.cpp \
            ../../src/gui.cpp \
            ../../src/versioning.cpp \
            ../../src/animation.cpp \
+           ../../src/animationsmanager.cpp \
            ../../lib/tinyxml/tinystr.cpp \
            ../../lib/tinyxml/tinyxml.cpp \
            ../../lib/tinyxml/tinyxmlerror.cpp \

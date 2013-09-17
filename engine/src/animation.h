@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 using std::string;
 
@@ -24,9 +25,17 @@ public:
 
     static Animation::Easing strToEasing(string s);
 
-    void setEasing(Easing easing);
-    void addProperty(string name, float from, float to);
+    string object() const;
+
+    int duration() const;
+
+    void setEasing(const Easing easing);
+    void addProperty(const string name, const float from, const float to);
     void addProperty(AnimProperty p);
+    std::map<std::string, float> getStatus(int millisecond_elapsed);
+
+private:
+    float relativeProgress(int millisecond_elapsed);
 
 private:
     string _object;

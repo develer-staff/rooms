@@ -117,7 +117,7 @@ Event *RRNode::fetchEvent()
         gotoChild("animations");
         if (!isNull()){
             for (gotoChild("animation"); !isNull(); gotoNext()){
-                fetchAnimation();//TODO: do something with animation
+                act->addAnimation(fetchAnimation());
             }
             gotoParent();
         }

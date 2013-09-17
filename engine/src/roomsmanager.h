@@ -39,15 +39,16 @@ namespace utils
 class RoomsManager
 {
 private:
-	std::map <string, Room *> rooms;
-	std::map <string, Item *> items;
-	string _name;
-	int _height;
-	int _width;
-	Room *current_room;
+    std::map <string, Room *> rooms;
+    std::map <string, Item *> items;
+    string _name;
+    int _height;
+    int _width;
+    Room *current_room;
+    Room *previous_room;
 public:
-	RoomsManager();
-	~RoomsManager();
+    RoomsManager();
+    ~RoomsManager();
 public:
 	/// Creates a Room with a given id and a given background.
 	Room *addRoom(const string name, const string bg);
@@ -83,6 +84,8 @@ public:
 	void setCurrentRoom(const string name);
 	/// Gets the current room.
 	Room *currentRoom();
+    /// Gets the previous room
+    Room *previousRoom();
 	/// Gets the event id under a point, if it exists. It returns "" otherwise.
 	string eventAt(const float x, const float y);
 	/// Moves the given item to the given room. It updates both source room and destination room.

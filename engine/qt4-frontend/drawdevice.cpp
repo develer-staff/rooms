@@ -9,7 +9,7 @@ DrawDevice::DrawDevice(Engine *eng, QWidget *parent) : QWidget(parent)
     bgm = 0;
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateEngine()));
-    timer->start(1000/25);
+    timer->start(1000/60);
 }
 
 DrawDevice::~DrawDevice()
