@@ -214,6 +214,7 @@ RoomsReader::RoomsReader()
     parse_map["area"] = &RoomsReader::parseArea;
     parse_map["action"] = &RoomsReader::parseAction;
     parse_map["event"] = &RoomsReader::parseEvent;
+    parse_map["animations"] = &RoomsReader::parseAnimations;
     parse_map["animation"] = &RoomsReader::parseAnimation;
     parse_map["property"] = &RoomsReader::parseProperty;
     parse_map["dialog"] = &RoomsReader::parseDialog;
@@ -411,6 +412,13 @@ bool RoomsReader::parseEvent(TiXmlElement *elem)
         return false;
     if (!(checkUniqueId(unique_ids_events, elem->Attribute("id")) &&
         checkParent(elem, "events")))
+        return false;
+    return true;
+}
+
+bool RoomsReader::parseAnimations(TiXmlElement *elem)
+{
+    if (!checkParent(elem, "action"))
         return false;
     return true;
 }

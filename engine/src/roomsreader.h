@@ -193,6 +193,7 @@ class RoomsReader
         bool parseRoom(TiXmlElement *elem);
         bool parseAction(TiXmlElement *elem);
         bool parseEvent(TiXmlElement *elem);
+        bool parseAnimations(TiXmlElement *elem);
         bool parseAnimation(TiXmlElement *elem);
         bool parseProperty(TiXmlElement *elem);
         bool parseDialog(TiXmlElement *elem);
