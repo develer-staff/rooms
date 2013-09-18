@@ -13,14 +13,24 @@
     #include <sys/time.h>
 #endif
 
+/**
+ * \brief A Timer class
+ *
+ * The timer doesn't have a timeout value,
+ * it simply count the time since the start
+ */
 class Timer
 {
 public:
     Timer();
 
+    /// Starts the timer
     void start();
+    /// Returns milliseconds elapsed since the start
     int elapsed();
+    /// Returns true if the timer is running
     bool isRunning();
+    /// Stops the timer and resets it
     void reset();
 
 private:
