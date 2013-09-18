@@ -145,7 +145,6 @@ void DrawDevice::drawRoom(QPainter &painter)
 void DrawDevice::updateMusic()
 {
     // Background Music
-    if (!QSound::isAvailable()) return;
     QString bgm_to_play(engine->getRoomsManager()->currentRoom()->bgm().c_str());
     if (bgm_to_play != "" && bgm_to_play != last_bgm)
     {
