@@ -37,7 +37,10 @@ std::vector <Action *> Dialog::actions()
 
 std::vector <Action *> Dialog::jump(const string step_name)
 {
-    current_step = &steps[step_name];
+    std::map <string, DialogStep>::iterator i = steps.find(step_name);
+    if (i == steps.end())
+        return std::vector<Action *>();
+    current_step = &((*i).second);
     return actions();
 }
 
