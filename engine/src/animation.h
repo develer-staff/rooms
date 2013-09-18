@@ -30,7 +30,16 @@ public:
 
     enum Easing {
         UNDEFINED,
-        LINEAR
+        LINEAR,
+        IN_QUAD,
+        OUT_QUAD,
+        IN_OUT_QUAD,
+        IN_BACK,
+        OUT_BACK,
+        IN_OUT_BACK,
+        IN_ELASTIC,
+        OUT_ELASTIC,
+        IN_OUT_ELASTIC
     };
 
     /**

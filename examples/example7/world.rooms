@@ -42,11 +42,11 @@
             <param value="Chiave Locanda" />
             <param value="!INVENTORY" />
             <animations>
-                <animation object="Locandiera" duration="3000" easing="LINEAR">
-                    <property name="x" from="0.5" to="1" />
-                    <property name="y" from="0.5" to="-2" />
+                <animation object="Locandiera" duration="2500" easing="OUT_QUAD">
+                    <property name="x" from="0.5" to="0.9" />
+                    <property name="y" from="0.5" to="-0.5" />
                     <property name="width" from="0.25" to="0.1" />
-                    <property name="height" from="0.45" to="0.3" />
+                    <property name="height" from="0.45" to="0.25" />
                 </animation>
             </animations>
         </action>
@@ -61,7 +61,7 @@
         <action id="ROOM_GOTO">
             <param value="Stanza Centrale" />
             <animations>
-                <animation object="Stanza Centrale" duration="500" easing="LINEAR">
+                <animation object="Stanza Centrale" duration="500" easing="OUT_BACK">
                     <property name="x" from="0.27" to="0" />
                     <property name="y" from="0.6" to="0" />
                     <property name="width" from="0.1" to="1" />
@@ -135,7 +135,7 @@
                 <animation object="Stanza Centrale" duration="500" easing="LINEAR">
                     <property name="alpha" from="1" to="0" />
                 </animation>
-                <animation object="End" duration="4000" easing="LINEAR">
+                <animation object="End" duration="10000" easing="OUT_ELASTIC">
                     <property name="x" from="0.5" to="0" />
                     <property name="y" from="0.5" to="0" />
                     <property name="width" from="0" to="1" />
