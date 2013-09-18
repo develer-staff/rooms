@@ -47,7 +47,6 @@ GuiDataVect GuiButton::getVisibleData()
 {
     GuiData data;
     GuiDataVect vect;
-    data.id = id;
     data.text = text;
     data.image = image;
     data.rect = rect;

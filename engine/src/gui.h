@@ -35,7 +35,6 @@ struct GuiRect
  */
 struct GuiData
 {
-    string id;
     string text;
     GuiRect rect;
     string image;
