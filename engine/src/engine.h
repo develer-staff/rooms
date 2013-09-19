@@ -11,26 +11,7 @@
  * \mainpage Rooms Engine
  *
  * Rooms Engine is a point-and-click andventure engine.
- *
- * <h2>Build instructions</h2>
- *
- * To build Rooms Engine you need qmake (at least version 2.01) and a C++ compiler.
- *
- * Rooms Engine has an optional builtin Python scripting engine.
- * To build Rooms Engine with Python support you have to pass to the qmake
- * command line the following option:
- * \code
- * PYTHON_VERSION=x.x
- * \endcode
- * where x.x is the Python library version.
- *
- * \b Example: if you are on a unix machine with qmake and Python
- * 2.6 installed you can compile Rooms Engine with the following command
- * \code
- * qmake PYTHON_VERSION=2.6 && make
- * \endcode
- *
- * <h2>Usage simple example</h2>
+ * Usage simple example:
  * \code
  * Engine *eng = new Engine;
  * eng->loadWorldFromFile(my_valid_world_file);
