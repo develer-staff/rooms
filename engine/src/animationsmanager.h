@@ -53,6 +53,8 @@ public:
 private:
     void emptyCurrentAnimations();
 
+    static float zeroIfNegative(float n);
+
 private:
     Timer *timer;
     int max_time;

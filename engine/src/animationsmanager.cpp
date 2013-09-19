@@ -66,20 +66,17 @@ void AnimationsManager::updateObjectState(const std::string element, GuiData *cu
             continue;
         }
         if ((*i).first == "width") {
-            current->rect.w = (*i).second;
+            current->rect.w = zeroIfNegative((*i).second);
             continue;
         }
         if ((*i).first == "height") {
-            current->rect.h = (*i).second;
+            current->rect.h = zeroIfNegative((*i).second);
             continue;
         }
         if((*i).first == "alpha") {
-            current->alpha = (*i).second*255;
+            current->alpha = zeroIfNegative((*i).second*255);
             if (current->alpha > 255){
                 current->alpha = 255;
-            }
-            if (current->alpha < 0){
-                current->alpha = 0;
             }
             continue;
         }
@@ -89,4 +86,11 @@ void AnimationsManager::updateObjectState(const std::string element, GuiData *cu
 void AnimationsManager::emptyCurrentAnimations()
 {
     current_animations.clear();
+}
+
+float AnimationsManager::zeroIfNegative(float n)
+{
+    if (n < 0)
+        return 0;
+    return n;
 }
