@@ -1,5 +1,12 @@
 #include "enginetests.h"
 
+#if defined(_WIN32) || defined(ming)
+    #define WINDOWS
+    #include <windows.h>
+#else
+    #include <unistd.h>
+#endif
+
 
 void WorldTests::setUp()
 {
@@ -119,4 +126,63 @@ void ApiTests::testDialogStart()
     CPPUNIT_ASSERT(mock->getDialogText() == "text");
     CPPUNIT_ASSERT(mock->state() == Engine::DIALOG);
 
+}
+
+
+void AnimationsTest::setUp()
+{
+
+    anim_mgr = new AnimationsManager();
+}
+
+void AnimationsTest::tearDown()
+{
+    delete anim_mgr;
+}
+
+void AnimationsTest::testAnimations()
+{
+    std::vector<Animation *> animations;
+
+    Animation *linear = new Animation("linear", 10000);
+    linear->setEasing(Animation::LINEAR);
+    linear->addProperty("x", 0, 100);
+    linear->addProperty("y", 0, 100);
+    linear->addProperty("width", 0, 100);
+    linear->addProperty("height", 0, 100);
+    linear->addProperty("alpha", 0, 1);
+    animations.push_back(linear);
+
+    anim_mgr->addAnimations(animations);
+    CPPUNIT_ASSERT(anim_mgr->hasAnimations());
+
+    anim_mgr->startAnimations();
+    CPPUNIT_ASSERT(anim_mgr->isAnimating());
+
+    GuiData data;
+    data.alpha = 0;
+    data.rect = GuiRect(0,0,0,0);
+    data.image = "";
+    data.text = "";
+
+#ifdef WINDOWS
+    Sleep(1000);
+#else
+    sleep(1);
+#endif
+
+    int time = updateAndGetTime("linear", &data);
+    int expected_data = time / 100;
+    CPPUNIT_ASSERT(data.rect.x == expected_data);
+
+    CPPUNIT_ASSERT(data.rect.y == expected_data);
+    CPPUNIT_ASSERT(data.rect.w == expected_data);
+    CPPUNIT_ASSERT(data.rect.h == expected_data);
+    CPPUNIT_ASSERT(data.alpha == (time * 255) / 10000);
+}
+
+int AnimationsTest::updateAndGetTime(std::string id, GuiData *data)
+{
+    anim_mgr->updateObjectState(id, data);
+    return anim_mgr->timer->elapsed();
 }

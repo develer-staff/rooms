@@ -75,4 +75,26 @@ public:
     }
 };
 
+class AnimationsTest : public CppUnit::TestFixture
+{
+private:
+    AnimationsManager *anim_mgr;
+public:
+    void setUp();
+    void tearDown();
+    void testAnimations();
+
+    static CppUnit::Test *suite()
+    {
+        CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "AnimationsTests" );
+        suiteOfTests->addTest(new CppUnit::TestCaller<AnimationsTest>("testAnimations",
+                                                                      &AnimationsTest::testAnimations));
+        return suiteOfTests;
+    }
+
+
+private:
+    int updateAndGetTime(std::string id, GuiData *data);
+};
+
 #endif // ENGINETESTS_H_INCLUDED

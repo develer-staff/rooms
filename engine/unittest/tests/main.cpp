@@ -10,6 +10,7 @@ int main()
     runner.addTest(ApiTests::suite());
     runner.addTest(WorldTests::suite());
     runner.addTest(XmlTests::suite());
+    runner.addTest(AnimationsTest::suite());
     runner.run();
     return 0;
 }
