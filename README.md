@@ -3,14 +3,14 @@ Rooms SDK
 Manages point-and-click adventure games.
 
 The SDK is composed of two main parts:
-- The Engine static library with a frontend specialized for de device that runs the game
+- The Engine static library with a frontend specialized for the device that runs the game
 - A graphic editor to create adventures
 
 ## Build instructions
 To build Rooms Engine you need qmake (at least version 2.01) and a C++ compiler.
 
 Rooms Engine has an optional builtin Python scripting engine.  
-To build Rooms Engine with Python support you have to pass to the qmake 
+To build Rooms Engine with Python support you have to pass to qmake 
 command line the following option: `PYTHON_VERSION=x.x` where x.x is the 
 Python library version.
 
