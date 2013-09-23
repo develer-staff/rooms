@@ -23,6 +23,9 @@ HEADERS += ../../src/action.h \
            ../../src/roomsreader.h \
            ../../src/gui.h \
            ../../src/versioning.h \
+           ../../src/animation.h \
+           ../../src/animationsmanager.h \
+           ../../src/timer.h \
            ../../lib/tinyxml/tinystr.h \
            ../../lib/tinyxml/tinyxml.h
 
@@ -41,6 +44,9 @@ SOURCES += main.cpp \
            ../../src/roomsreader.cpp \
            ../../src/gui.cpp \
            ../../src/versioning.cpp \
+           ../../src/animation.cpp \
+           ../../src/animationsmanager.cpp \
+           ../../src/timer.cpp \
            ../../lib/tinyxml/tinystr.cpp \
            ../../lib/tinyxml/tinyxml.cpp \
            ../../lib/tinyxml/tinyxmlerror.cpp \

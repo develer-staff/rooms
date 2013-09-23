@@ -7,6 +7,7 @@ Engine::Engine()
     rooms_mgr = new RoomsManager();
     events_mgr = new EventsManager();
     gui_mgr = new GuiManager();
+    anim_mgr = new AnimationsManager();
     setState(INITIALIZING);
     inventory = new GuiScrolledBar("inventory", "", "", GuiRect(0.08, 0, 0.84, 0.107),
                                 GuiRect(0.08, 0, 0.08, 0.107), GuiRect(0, 0, 0.08, 0.107),
@@ -17,6 +18,7 @@ Engine::Engine()
     gui_mgr->addGuiObj(inventory);
     gui_mgr->addGuiObj(dialog_list);
     dialog_list->visible = false;
+    stored_state = state();
 #ifdef WITH_PYTHON
     // Python stuff
     apiInit(this);
@@ -83,6 +85,11 @@ void Engine::click(const float x, const float y)
                 clickDialog(choice);
                 updateDialog();
             }
+            break;
+        }
+        case TRANSITION:
+        {
+            // do nothing when an animation is running
             break;
         }
         default:
@@ -300,6 +307,7 @@ void Engine::execActions(std::vector <Action *> actions)
     {
         //TODO: think about improving this loop
         Action act = *(*i);
+        anim_mgr->addAnimations(act.animations());
         logger.write("Exec action: " + act.id, Log::NOTE);
         if (act.id == "ROOM_GOTO")
         {
@@ -355,26 +363,28 @@ void Engine::updateDialog()
     }
 }
 
-bool Engine::update()
-{
-    if (state() == TRANSITION)
-    {
-        if (!transition.update())
-            setState(GAME);
-        return true;
-    }
-    return false;
-}
-
-GuiDataVect Engine::flash(Room *room, int alpha)
+GuiDataVect Engine::flash(Room *room)
 {
     // Background visible data
     GuiDataVect visible_data;
     GuiData bg;
-    bg.alpha = alpha;
+    bg.alpha = 255;
     bg.image = room->bg();
     bg.text = "";
     bg.rect = GuiRect(0, 0, 1.0, 1.0);
+    if (state() == TRANSITION){
+        Room * prev_bg = rooms_mgr->previousRoom();
+        if (prev_bg != 0) {
+            GuiData pbg;
+            pbg.alpha = 0;
+            pbg.image = prev_bg->bg();
+            pbg.text = "";
+            pbg.rect = GuiRect(0, 0, 1.0, 1.0);
+            anim_mgr->updateObjectState(prev_bg->id, &pbg);
+            visible_data.push_back(pbg);
+        }
+        anim_mgr->updateObjectState(room->id, &bg);
+    }
     visible_data.push_back(bg);
     // Items visible data
     std::vector <Item *> items = room->items();
@@ -382,10 +392,14 @@ GuiDataVect Engine::flash(Room *room, int alpha)
             i != items.end(); ++i)
     {
         GuiData item;
-        item.alpha = alpha;
+        item.alpha = 255;
         item.text = "";
         item.image = (*i)->image();
         item.rect = GuiRect((*i)->x(), (*i)->y(), (*i)->w(), (*i)->h());
+        if (state() == TRANSITION){
+            anim_mgr->updateObjectState((*i)->id, &item);
+            (*i)->setSize(item.rect.x, item.rect.y, item.rect.w, item.rect.h);
+        }
         visible_data.push_back(item);
     }
     return visible_data;
@@ -393,36 +407,40 @@ GuiDataVect Engine::flash(Room *room, int alpha)
 
 GuiDataVect Engine::getVisibleData()
 {
+    if (anim_mgr->hasAnimations() && state() != TRANSITION) {
+        anim_mgr->startAnimations();
+        storeState();
+        setState(TRANSITION);
+        logger.write("Entering transition", Log::NOTE);
+    }
+    if (state() == TRANSITION && anim_mgr->stopIfOvertime()){
+        logger.write("Exiting transition", Log::NOTE);
+        restoreState();
+    }
     GuiDataVect visible_data;
     GuiDataVect gui_data = gui_mgr->getVisibleData();
-    // Background visible data with transition stuff
-    if (state() != TRANSITION)
-    {
-        GuiDataVect room_data = flash(rooms_mgr->currentRoom());
-        visible_data.insert(visible_data.end(), room_data.begin(), room_data.end());
-    }
-    else
-    {
-        GuiDataVect room_data1 = flash(transition.start, transition.alpha_room_start);
-        GuiDataVect room_data2 = flash(transition.end, transition.alpha_room_end);
-        visible_data.insert(visible_data.end(), room_data1.begin(), room_data1.end());
-        visible_data.insert(visible_data.end(), room_data2.begin(), room_data2.end());
-    }
-    // Gui visible data
+    GuiDataVect room_data = flash(rooms_mgr->currentRoom());
+
+    visible_data.insert(visible_data.end(), room_data.begin(), room_data.end());
     visible_data.insert(visible_data.end(), gui_data.begin(), gui_data.end());
+
     return visible_data;
+}
+
+void Engine::storeState()
+{
+    stored_state = state();
+}
+
+void Engine::restoreState()
+{
+    setState(stored_state);
 }
 
 void Engine::apiRoomGoto(const string id)
 {
     logger.write("ROOM_GOTO: " + id, Log::NOTE);
-    transition.index = 0;
-    transition.steps = 5;
-    transition.start = rooms_mgr->currentRoom();
-    transition.end = rooms_mgr->room(id);
-    transition.update();
     rooms_mgr->setCurrentRoom(id);
-    setState(TRANSITION);
 }
 
 void Engine::apiVarSet(const string id, const int value)

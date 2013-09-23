@@ -11,6 +11,11 @@ Event::~Event()
     for (std::vector <Action *>::iterator i = _actions.begin(); i != _actions.end();
          ++i)
     {
+        std::vector<Animation *> a = (*i)->animations();
+        for (std::vector<Animation *>::iterator j = a.begin(); j != a.end(); ++j){
+            delete (*j);
+        }
+        a.clear();
         delete (*i);
     }
     _actions.clear();

@@ -19,6 +19,7 @@
 #include "item.h"
 #include "dialog.h"
 #include "versioning.h"
+#include "animation.h"
 
 #include <map> //std::map
 #include <string> //std::string
@@ -122,6 +123,7 @@ class RRNode
         /// Uses current node to create a Dialog.
         Dialog *fetchDialog();
     private:
+        Animation *fetchAnimation();
         TiXmlElement *root;
         TiXmlElement *cursor;
         TiXmlElement *parent;
@@ -191,6 +193,9 @@ class RoomsReader
         bool parseRoom(TiXmlElement *elem);
         bool parseAction(TiXmlElement *elem);
         bool parseEvent(TiXmlElement *elem);
+        bool parseAnimations(TiXmlElement *elem);
+        bool parseAnimation(TiXmlElement *elem);
+        bool parseProperty(TiXmlElement *elem);
         bool parseDialog(TiXmlElement *elem);
         bool parseDialogStep(TiXmlElement *elem);
         bool parseVar(TiXmlElement *elem);

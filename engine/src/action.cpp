@@ -7,6 +7,7 @@ Action::Action(const std::string name): id(name)
 
 Action::~Action()
 {
+    _animations.clear();
     params.clear();
 }
 
@@ -39,4 +40,14 @@ int Action::popIntParam()
         return value_int;
     }
     return 0;
+}
+
+void Action::addAnimation(Animation *animation)
+{
+    _animations.push_back(animation);
+}
+
+std::vector<Animation *> Action::animations()
+{
+    return _animations;
 }

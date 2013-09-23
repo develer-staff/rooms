@@ -32,28 +32,6 @@ namespace utils
 	template <class T> T *getElement(string name, std::map<string, T *> container);
 }
 
-struct RoomsTransition
-{
-	Room *start;
-	Room *end;
-	int steps;
-	int index;
-	int alpha_room_start;
-	int alpha_room_end;
-
-	bool update()
-	{
-		// check transition's end
-		if (index == steps)
-			return false; // transition ended
-		// calculate transition
-		++index;
-		alpha_room_end = index * 255 / steps;
-		alpha_room_start = 255 - alpha_room_end;
-		return true; // transition continues
-	}
-};
-
 /** \brief The RoomsManager class handles rooms.
  *
  * Creates and destroys rooms.
@@ -61,15 +39,16 @@ struct RoomsTransition
 class RoomsManager
 {
 private:
-	std::map <string, Room *> rooms;
-	std::map <string, Item *> items;
-	string _name;
-	int _height;
-	int _width;
-	Room *current_room;
+    std::map <string, Room *> rooms;
+    std::map <string, Item *> items;
+    string _name;
+    int _height;
+    int _width;
+    Room *current_room;
+    Room *previous_room;
 public:
-	RoomsManager();
-	~RoomsManager();
+    RoomsManager();
+    ~RoomsManager();
 public:
 	/// Creates a Room with a given id and a given background.
 	Room *addRoom(const string name, const string bg);
@@ -105,6 +84,8 @@ public:
 	void setCurrentRoom(const string name);
 	/// Gets the current room.
 	Room *currentRoom();
+    /// Gets the previous room
+    Room *previousRoom();
 	/// Gets the event id under a point, if it exists. It returns "" otherwise.
 	string eventAt(const float x, const float y);
 	/// Moves the given item to the given room. It updates both source room and destination room.
