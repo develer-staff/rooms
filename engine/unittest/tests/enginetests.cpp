@@ -1,5 +1,7 @@
 #include "enginetests.h"
 
+#include <cmath>
+
 #if defined(_WIN32) || defined(ming)
     #define WINDOWS
     #include <windows.h>
@@ -176,12 +178,16 @@ void AnimationsTest::testAnimations()
 
     int time = updateAndGetTime("linear", &data);
     int expected_data = time / 100;
-    CPPUNIT_ASSERT(data.rect.x == expected_data);
+    CPPUNIT_ASSERT(round(data.rect.x) == expected_data);
+    CPPUNIT_ASSERT(round(data.rect.y) == expected_data);
+    CPPUNIT_ASSERT(round(data.rect.w) == expected_data);
+    CPPUNIT_ASSERT(round(data.rect.h) == expected_data);
+    CPPUNIT_ASSERT(round(data.alpha) == (time * 255) / 10000);
+}
 
-    CPPUNIT_ASSERT(data.rect.y == expected_data);
-    CPPUNIT_ASSERT(data.rect.w == expected_data);
-    CPPUNIT_ASSERT(data.rect.h == expected_data);
-    CPPUNIT_ASSERT(data.alpha == (time * 255) / 10000);
+int AnimationsTest::round(float n)
+{
+    return int(floor(n + 0.5));
 }
 
 int AnimationsTest::updateAndGetTime(std::string id, GuiData *data)

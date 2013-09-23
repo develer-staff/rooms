@@ -92,6 +92,7 @@ public:
         return suiteOfTests;
     }
 
+    static int round(float n);
 
 private:
     int updateAndGetTime(std::string id, GuiData *data);
