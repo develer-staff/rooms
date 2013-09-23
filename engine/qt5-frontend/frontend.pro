@@ -3,7 +3,7 @@ QT += widgets multimedia
 TEMPLATE = app
 TARGET = engine.exe
 
-INCLUDEPATH += ../src ../lib/tinyxml
+INCLUDEPATH += $$PWD/../src $$PWD/../lib/tinyxml
 QMAKE_LIBDIR += ../
 LIBS += -L. -lrooms 
 

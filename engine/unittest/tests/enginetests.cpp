@@ -3,6 +3,9 @@
 #if defined(_WIN32) || defined(ming)
     #define WINDOWS
     #include <windows.h>
+    #ifdef ERROR
+        #undef ERROR
+    #endif
 #else
     #include <unistd.h>
 #endif

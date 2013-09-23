@@ -9,6 +9,9 @@
 
 #ifdef WINDOWS
     #include <windows.h>
+    #ifdef ERROR
+        #undef ERROR
+    #endif
 #else
     #include <sys/time.h>
 #endif

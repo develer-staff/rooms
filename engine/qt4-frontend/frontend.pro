@@ -4,7 +4,7 @@
 
 TEMPLATE = app
 TARGET = engine.exe
-INCLUDEPATH += . ../src ../lib/tinyxml
+INCLUDEPATH += $$PWD/../src $$PWD/../lib/tinyxml
 QMAKE_LIBDIR += ../
 OBJECTS_DIR = ./build
 MOC_DIR = ./build
