@@ -47,6 +47,7 @@ GuiDataVect GuiButton::getVisibleData()
 {
     GuiData data;
     GuiDataVect vect;
+    data.id = id;
     data.text = text;
     data.image = image;
     data.rect = rect;
@@ -192,9 +193,9 @@ GuiScrolledBar::GuiScrolledBar(string name, string text_, string image_, GuiRect
     GuiRect r = button_size;
     r.x = rect.x + rect.w;
     r.y = rect.y;
-    forward = new GuiScrollButton("", r, "", img_right, this, +1);
+    forward = new GuiScrollButton(name+"_forward", r, "", img_right, this, +1);
     r.x = rect.x - r.w;
-    backward = new GuiScrollButton("", r, "", img_left, this, -1);
+    backward = new GuiScrollButton(name+"_backward", r, "", img_left, this, -1);
     label = new GuiButton("", GuiRect(rect.x, rect.y - 0.01, rect.w, 0.01), "", "");
 }
 

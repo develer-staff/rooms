@@ -30,7 +30,7 @@ LIBS += -L. -lrooms
 
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \
-    graphics.cpp
+    controller.cpp
 
 HEADERS += \
     ../src/action.h \
@@ -47,7 +47,7 @@ HEADERS += \
     ../src/versioning.h \
     ../lib/tinyxml/tinystr.h \
     ../lib/tinyxml/tinyxml.h \
-    graphics.h
+    controller.h
 
 # Installation path
 # target.path =
