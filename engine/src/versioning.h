@@ -16,14 +16,16 @@ namespace Versioning
      */
     string upgrade(int version, string content);
 
-    const int VERSION = 3;
+    const int VERSION = 4;
 
     // Versioning functions
     typedef string (*UpgradeFunc) (string);
     string upgradeFrom1To2(string content);
     string upgradeFrom2To3(string content);
+    string upgradeFrom3To4(string content);
     const UpgradeFunc upgrade_funcs[] = {upgradeFrom1To2,
-                                         upgradeFrom2To3};
+                                         upgradeFrom2To3,
+                                         upgradeFrom3To4};
 }
 
 #endif // VERSIONING_H

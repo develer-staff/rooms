@@ -109,6 +109,8 @@ class RRNode
         float attrFloat(string name);
         /// Puts a value in the given attribute.
         void setAttr(string name, string value);
+        /// Removes the given attribute
+        void remAttr(string name);
         /**
          * \brief Uses current node to create an Event.
          *

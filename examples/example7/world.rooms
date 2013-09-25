@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<world version="3" name="Mirabolanti Avventure!" width="800" height="600" start="Locanda">
+<world version="4" name="Mirabolanti Avventure!" width="800" height="600" start="Locanda">
 
   <images>
     <img file="./data/locanda.png" />
@@ -27,15 +27,15 @@
   <dialogs>
     <dialog id="dialog_locandiera" start="0">
       <step id="0" text="Cosa vuoi da me?">
-        <link id="1" text="Forse hai qualcosa che mi serve..." />
-        <link id="-1" text="Addio bella pulzella!" />
-        <link id="-1" text="Arrivederci bella pulzella!" />
-        <link id="-1" text="STFU bella pulzella!" />
-        <link id="-1" text="Bai bai bella pulzella!" />
+        <link next="1" text="Forse hai qualcosa che mi serve..." />
+        <link next="-1" text="Addio bella pulzella!" />
+        <link next="-1" text="Arrivederci bella pulzella!" />
+        <link next="-1" text="STFU bella pulzella!" />
+        <link next="-1" text="Bai bai bella pulzella!" />
       </step>
       <step id="1" text="Non ti darò mai la mia chiave!">
         <item_req id="Chiave Locanda" value="!NOWHERE" />
-        <link id="2" text="Dammi la chiave, bella locandiera!" />
+        <link next="2" text="Dammi la chiave, bella locandiera!" />
       </step>
       <step id="2" text="Sei così gentile che ti darò subito la mia chiave!">
           <action id="ITEM_MOVE">  
@@ -50,7 +50,7 @@
                 </animation>
             </animations>
         </action>
-        <link id="-1" text="Grazie bella locandiera!" />
+        <link next="-1" text="Grazie bella locandiera!" />
       </step>
     </dialog>
   </dialogs>

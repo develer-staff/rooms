@@ -98,6 +98,11 @@ void RRNode::setAttr(string name, string value)
     cursor->SetAttribute(name.c_str(), value.c_str());
 }
 
+void RRNode::remAttr(std::string name)
+{
+    cursor->RemoveAttribute(name.c_str());
+}
+
 Event *RRNode::fetchEvent()
 {
     if (isNull()) return 0;
@@ -163,7 +168,7 @@ Dialog *RRNode::fetchDialog()
         DialogStep *step = d->addStep(attrStr("id"), attrStr("text"));
         step->event = fetchEvent();
         for (gotoChild("link"); !isNull(); gotoNext())
-            d->addLink(step->id, attrStr("id"), attrStr("text"));
+            d->addLink(step->id, attrStr("next"), attrStr("text"));
          gotoParent();
 
     }

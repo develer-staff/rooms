@@ -51,6 +51,30 @@ string Versioning::upgradeFrom2To3(string content)
     return printer.CStr();
 }
 
+string Versioning::upgradeFrom3To4(string content)
+{
+    TiXmlDocument doc;
+    doc.Parse(content.c_str());
+    RRNode node(doc.RootElement());
+    node.gotoElement("world");
+    node.setAttr("version", "4");
+
+    for (node.gotoElement("dialogs")->gotoChild("dialog"); !node.isNull(); node.gotoNext()){
+        for(node.gotoChild("step"); !node.isNull(); node.gotoNext()){
+            for(node.gotoChild("link"); !node.isNull(); node.gotoNext()){
+                node.setAttr("next", node.attrStr("id"));
+                node.remAttr("id");
+            }
+            node.gotoParent();
+        }
+        node.gotoParent();
+    }
+
+    TiXmlPrinter printer;
+    doc.Accept(&printer);
+    return printer.CStr();
+}
+
 string Versioning::upgrade(int version, string content)
 {
     for (int i = version; i < Versioning::VERSION; ++i)
