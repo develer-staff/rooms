@@ -192,6 +192,7 @@ private:
     void apiItemMove(const string id, const string dest);
     void apiDialogStart(const string id);
     void apiSFXPlay(const string id);
+    void apiStartCutScene(const string scenefile);
 #ifdef WITH_PYTHON
     // Python api functions are engine's friends.
     friend PyObject *apiPyGotoRoom(PyObject *, PyObject *args);

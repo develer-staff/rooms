@@ -335,6 +335,10 @@ void Engine::execActions(std::vector <Action *> actions)
             string sfx_id = act.popStrParam();
             apiSFXPlay(sfx_id);
         }
+        else if (act.id == "CUTSCENE_START")
+        {
+            apiStartCutScene(act.popStrParam());
+        }
 #ifdef WITH_PYTHON
         else if (act.id == "SCRIPT")
         {
@@ -477,6 +481,11 @@ void Engine::apiDialogStart(const string id)
 void Engine::apiSFXPlay(const string id)
 {
     sfx.push_back(id);
+}
+
+void Engine::apiStartCutScene(const std::string scenefile)
+{
+    logger.write("here we parse and play the cutscene "+scenefile, Log::NOTE);
 }
 
 #ifdef WITH_PYTHON
