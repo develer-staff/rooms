@@ -42,7 +42,7 @@ Rectangle {
             } else {
                 var component = Qt.createComponent("GameImage.qml");
                 var object = component.createObject(window, {"x":x, "y":y, "width":w, "height":h, "opacity": alpha,
-                                                        "source":"../../"+image});
+                                                        "source":"%1/%2".arg(gamePath).arg(image)});
 
                 images[id] = object;
             }

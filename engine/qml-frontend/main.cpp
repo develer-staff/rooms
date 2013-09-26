@@ -10,6 +10,8 @@ int main(int argc, char *argv[])
 
     QtQuick2ApplicationViewer viewer;
 
+    viewer.rootContext()->setContextProperty("gamePath", QDir::currentPath());
+
     qmlRegisterType<Controller>("rooms", 1, 0, "Controller");
 
     viewer.setMainQmlFile(QStringLiteral("qml/qml-frontend/main.qml"));
