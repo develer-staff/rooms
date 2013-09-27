@@ -30,7 +30,8 @@ LIBS += -L. -lrooms
 
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \
-    controller.cpp
+    controller.cpp \
+    qguidata.cpp
 
 HEADERS += \
     ../src/action.h \
@@ -47,7 +48,8 @@ HEADERS += \
     ../src/versioning.h \
     ../lib/tinyxml/tinystr.h \
     ../lib/tinyxml/tinyxml.h \
-    controller.h
+    controller.h \
+    qguidata.h
 
 # Installation path
 # target.path =

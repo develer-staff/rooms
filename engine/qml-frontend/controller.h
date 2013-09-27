@@ -1,6 +1,7 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 #include "engine.h"
+#include "qguidata.h"
 
 #include <QObject>
 #include <QList>
@@ -14,6 +15,7 @@ class Controller : public QObject
     Q_PROPERTY(int t READ t WRITE setT NOTIFY tChanged)
     Q_PROPERTY(QString room READ room NOTIFY roomChanged)
     Q_PROPERTY(State state READ state NOTIFY stateChanged)
+    Q_PROPERTY(QQmlListProperty<QGuiData> currentFrame READ currentFrame NOTIFY currentFrameChanged)
     Q_ENUMS(State)
 public:
 
@@ -40,24 +42,32 @@ public:
 
     State state() const;
 
+    QQmlListProperty<QGuiData> currentFrame();
+
+    static int listCount(QQmlListProperty<QGuiData> *list);
+    static QGuiData *listAt(QQmlListProperty<QGuiData> *list, int index);
+
 signals:
     void windowWidthChanged();
     void windowHeightChanged();
     void tChanged();
     void roomChanged();
     void stateChanged();
-    void drawImage(const QString &id, const QString &image, int x, int y, int w, int h, float alpha);
-    void drawText(const QString &id, const QString &text, int x, int y, int w, int h);
+    void currentFrameChanged();
 
 public slots:
     void update();
     void click(float x, float y);
 
 private:
+    void clearCurrentFrameData();
+
+private:
     int _t;
     QString current_room;
     Engine *engine;
     State current_state;
+    QList<QGuiData *> _currentFrameData;
 };
 
 #endif // CONTROLLER_H
