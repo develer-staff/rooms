@@ -7,6 +7,8 @@
 #include <QList>
 #include <QQmlListProperty>
 
+extern Engine engine;
+
 class Controller : public QObject
 {
     Q_OBJECT
@@ -65,7 +67,6 @@ private:
 private:
     int _t;
     QString current_room;
-    Engine *engine;
     State current_state;
     QList<QGuiData *> _currentFrameData;
 };

@@ -1,3 +1,4 @@
+#include "engine.h"
 #include "controller.h"
 #include "qguidata.h"
 
@@ -6,11 +7,18 @@
 #include <QtGui/QGuiApplication>
 #include <QtQml>
 
+Engine engine;
+
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
     QtQuick2ApplicationViewer viewer;
+
+    if (!engine.loadWorldFromFile("world.rooms")){
+        engine.getLogger()->write("Error loading world file", Log::ERROR);
+        app.exit(1);
+    }
 
     viewer.rootContext()->setContextProperty("gamePath", QDir::currentPath());
 

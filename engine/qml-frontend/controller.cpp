@@ -5,38 +5,33 @@ Controller::Controller(QObject *parent) :
     _t(0),
     current_room("")
 {
-    engine = new Engine();
-    if (!engine->loadWorldFromFile("world.rooms")) {
-        engine->getRoomsManager()->setRoomSize(0,0);
-    }
-    current_state = Controller::State(engine->state());
+    current_state = Controller::State(engine.state());
     connect(this, SIGNAL(tChanged()), this, SLOT(update()));
 }
 
 Controller::~Controller()
 {
-    delete engine;
 }
 
 int Controller::windowWidth() const
 {
-    return engine->getRoomsManager()->width();
+    return engine.getRoomsManager()->width();
 }
 
 void Controller::setWindowWidth(int width)
 {
-    engine->getRoomsManager()->setRoomSize(width, windowHeight());
+    engine.getRoomsManager()->setRoomSize(width, windowHeight());
     emit windowWidthChanged();
 }
 
 int Controller::windowHeight() const
 {
-    return engine->getRoomsManager()->height();
+    return engine.getRoomsManager()->height();
 }
 
 void Controller::setWindowHeight(int height)
 {
-    engine->getRoomsManager()->setRoomSize(windowWidth(), height);
+    engine.getRoomsManager()->setRoomSize(windowWidth(), height);
     emit windowHeightChanged();
 }
 
@@ -55,7 +50,7 @@ QString Controller::room() const
 
 Controller::State Controller::state() const
 {
-    return Controller::State(engine->state());
+    return Controller::State(engine.state());
 }
 
 QQmlListProperty<QGuiData> Controller::currentFrame()
@@ -77,16 +72,16 @@ QGuiData *Controller::listAt(QQmlListProperty<QGuiData> *list, int index)
 
 void Controller::update()
 {
-    GuiDataVect data = engine->getVisibleData();
+    GuiDataVect data = engine.getVisibleData();
     clearCurrentFrameData();
-    QString roomId = QString::fromStdString(engine->getRoomsManager()->currentRoom()->id);
+    QString roomId = QString::fromStdString(engine.getRoomsManager()->currentRoom()->id);
     if (current_room != roomId) {
         current_room = roomId;
         emit roomChanged();
     }
     for (GuiDataVect::iterator i = data.begin(); i != data.end(); ++i){
         GuiData data = (*i);
-        engine->relToAbsRect(data.rect);
+        engine.relToAbsRect(data.rect);
         QGuiData *d = new QGuiData();
         d->setX(data.rect.x);
         d->setY(data.rect.y);
@@ -109,10 +104,10 @@ void Controller::update()
 
 void Controller::click(float x, float y)
 {
-    std::pair<float, float> coord = engine->absToRelCoord(x, y);
-    engine->click(coord.first, coord.second);
-    if (int(engine->state()) != int(current_state)){
-        current_state = Controller::State(engine->state());
+    std::pair<float, float> coord = engine.absToRelCoord(x, y);
+    engine.click(coord.first, coord.second);
+    if (int(engine.state()) != int(current_state)){
+        current_state = Controller::State(engine.state());
         emit stateChanged();
     }
 }
