@@ -20,10 +20,16 @@ namespace Versioning
 
     // Versioning functions
     typedef string (*UpgradeFunc) (string);
+
+    /// Use relative coordinates for areas instead of absolute
     string upgradeFrom1To2(string content);
+
+    /// Add background music "bgm" attribute to Room nodes
     string upgradeFrom2To3(string content);
-    ///Rename attribute "id" to "next" to improve readability
+
+    /// Rename attribute "id" to "next" in dialogs to improve readability
     string upgradeFrom3To4(string content);
+
     const UpgradeFunc upgrade_funcs[] = {upgradeFrom1To2,
                                          upgradeFrom2To3,
                                          upgradeFrom3To4};
