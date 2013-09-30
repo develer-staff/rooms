@@ -22,6 +22,7 @@ namespace Versioning
     typedef string (*UpgradeFunc) (string);
     string upgradeFrom1To2(string content);
     string upgradeFrom2To3(string content);
+    ///Rename attribute "id" to "next" to improve readability
     string upgradeFrom3To4(string content);
     const UpgradeFunc upgrade_funcs[] = {upgradeFrom1To2,
                                          upgradeFrom2To3,
