@@ -41,6 +41,7 @@
 #include "gui.h"
 #include "versioning.h"
 #include "animationsmanager.h"
+#include "csmanager.h"
 #ifdef WITH_PYTHON
 #include "pythonvm.h"
 #include "pythonapi.h"
@@ -74,6 +75,7 @@ private:
     EventsManager *events_mgr;
     GuiManager *gui_mgr;
     AnimationsManager *anim_mgr;
+    CsManager *cs_mgr;
     std::vector<string> images;
     std::vector<string> sfx;
     std::map<string, Dialog *> dialogs;

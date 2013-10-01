@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "csparser.h"
 
 Log logger;
 
@@ -8,6 +9,7 @@ Engine::Engine()
     events_mgr = new EventsManager();
     gui_mgr = new GuiManager();
     anim_mgr = new AnimationsManager();
+    cs_mgr = new CsManager();
     setState(INITIALIZING);
     inventory = new GuiScrolledBar("inventory", "", "", GuiRect(0.08, 0, 0.84, 0.107),
                                 GuiRect(0.08, 0, 0.08, 0.107), GuiRect(0, 0, 0.08, 0.107),
@@ -485,7 +487,9 @@ void Engine::apiSFXPlay(const string id)
 
 void Engine::apiStartCutScene(const std::string scenefile)
 {
-    logger.write("here we parse and play the cutscene "+scenefile, Log::NOTE);
+    if (cs_mgr->startCutscene(scenefile)){
+        //TODO: set a state and get the animations to play
+    }
 }
 
 #ifdef WITH_PYTHON
