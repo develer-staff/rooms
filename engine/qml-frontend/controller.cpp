@@ -87,7 +87,7 @@ void Controller::update()
         d->setY(data.rect.y);
         d->setWidth(data.rect.w);
         d->setHeight(data.rect.h);
-        d->setAlpha(data.alpha/255.0);
+        d->setAlpha(data.alpha);
         d->setId(QString::fromStdString(data.id));
         if (data.text != ""){
             d->setTextFlag();

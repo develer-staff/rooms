@@ -135,7 +135,7 @@ void DrawDevice::drawRoom(QPainter &painter)
         GuiData data = (*i);
         engine->relToAbsRect(data.rect);
         if (data.image != "")
-            drawImage(painter, data.image, data.rect, data.alpha);
+            drawImage(painter, data.image, data.rect, data.alpha*255);
         if (data.text != "")
             drawText(painter, data.text, data.rect);
     }

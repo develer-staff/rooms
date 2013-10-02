@@ -74,9 +74,9 @@ void AnimationsManager::updateObjectState(const std::string element, GuiData *cu
             continue;
         }
         if((*i).first == "alpha") {
-            current->alpha = zeroIfNegative((*i).second*255);
-            if (current->alpha > 255){
-                current->alpha = 255;
+            current->alpha = zeroIfNegative((*i).second);
+            if (current->alpha > 1){
+                current->alpha = 1;
             }
             continue;
         }
