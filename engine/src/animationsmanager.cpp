@@ -12,14 +12,25 @@ AnimationsManager::~AnimationsManager()
     delete timer;
 }
 
-void AnimationsManager::addAnimations(std::vector<Animation *> anims)
+void AnimationsManager::addParallelAnimations(std::vector<Animation *> anims)
 {
+    SequentialAnimation *anim = new SequentialAnimation();
+    AnimationStep *s = new AnimationStep();
     std::vector<Animation *>::iterator i;
     for (i = anims.begin(); i != anims.end(); ++i){
-        if ((*i)->duration() > max_time)
-            max_time = (*i)->duration();
-        current_animations[(*i)->object()] = (*i);
+        s->addAnimation(*i);
     }
+    if (max_time < s->duration())
+        max_time = s->duration();
+    anim->addStep(s);
+    current_animations.push_back(anim);
+}
+
+void AnimationsManager::addSequentialAnimation(SequentialAnimation * anim)
+{
+    if (max_time < anim->duration())
+        max_time = anim->duration();
+    current_animations.push_back(anim);
 }
 
 bool AnimationsManager::hasAnimations()
@@ -49,42 +60,47 @@ void AnimationsManager::startAnimations()
         timer->start();
 }
 
+
 void AnimationsManager::updateObjectState(const std::string element, GuiData *current)
 {
-    std::map<std::string, Animation *>::iterator anims = current_animations.find(element);
-    if (anims == current_animations.end())
-        return;
-    std::map<std::string, float> p = (*anims).second->getStatus(timer->elapsed());
-    std::map<std::string, float>::iterator i;
-    for (i = p.begin(); i != p.end(); ++i){
-        if ((*i).first == "x") {
-            current->rect.x = (*i).second;
-            continue;
-        }
-        if ((*i).first == "y") {
-            current->rect.y = (*i).second;
-            continue;
-        }
-        if ((*i).first == "width") {
-            current->rect.w = zeroIfNegative((*i).second);
-            continue;
-        }
-        if ((*i).first == "height") {
-            current->rect.h = zeroIfNegative((*i).second);
-            continue;
-        }
-        if((*i).first == "alpha") {
-            current->alpha = zeroIfNegative((*i).second);
-            if (current->alpha > 1){
-                current->alpha = 1;
+    std::vector<SequentialAnimation*>::iterator i;
+    for (i = current_animations.begin(); i != current_animations.end(); ++i){
+        std::map<std::string, float> p = (*i)->getStatus(timer->elapsed(), element);
+        std::map<std::string, float>::iterator j;
+        for (j = p.begin(); j != p.end(); ++j){
+            if ((*j).first == "x") {
+                current->rect.x = (*j).second;
+                continue;
             }
-            continue;
+            if ((*j).first == "y") {
+                current->rect.y = (*j).second;
+                continue;
+            }
+            if ((*j).first == "width") {
+                current->rect.w = zeroIfNegative((*j).second);
+                continue;
+            }
+            if ((*j).first == "height") {
+                current->rect.h = zeroIfNegative((*j).second);
+                continue;
+            }
+            if((*j).first == "alpha") {
+                current->alpha = zeroIfNegative((*j).second);
+                if (current->alpha > 1){
+                    current->alpha = 1;
+                }
+                continue;
+            }
         }
     }
 }
 
 void AnimationsManager::emptyCurrentAnimations()
 {
+    std::vector<SequentialAnimation *>::iterator i;
+    for (i = current_animations.begin(); i != current_animations.end(); ++i){
+        delete (*i);
+    }
     current_animations.clear();
 }
 
