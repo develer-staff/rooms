@@ -37,7 +37,7 @@ public:
      * \param csPath the file path
      * \return true if the file is sintactically correct, otherwise false
      */
-    bool parse(const std::string csPath);
+    bool parse(const std::string &csPath);
 
     /**
      * \brief getErrorMessage
@@ -58,13 +58,13 @@ private:
     static std::string readline(std::istreambuf_iterator<char> &i);
 
     static void strip(std::string &string, const char expr);
-    static std::string removeFirstSlice(std::string *in, const std::string separator);
+    static std::string removeFirstSlice(std::string *in, const std::string &separator);
 
-    static bool regexMatchSingle(const std::string expression, const std::string input, std::string *output);
-    static bool parseInt(const std::string in, int *out);
-    static bool parseFloat(const std::string in, float *out);
-    static bool parseString(const std::string in, std::string *out);
-    static bool parseQuotedString(const std::string in, std::string *out);
+    static bool regexMatchSingle(const std::string &expression, const std::string &input, std::string *output);
+    static bool parseInt(const std::string &in, int *out);
+    static bool parseFloat(const std::string &in, float *out);
+    static bool parseString(const std::string &in, std::string *out);
+    static bool parseQuotedString(const std::string &in, std::string *out);
     static bool parseState(std::string *in, CsState *s);
 
     bool parseHeader(std::istreambuf_iterator<char> &i);

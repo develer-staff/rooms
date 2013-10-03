@@ -13,7 +13,7 @@ CsParser::CsParser() :
 {
 }
 
-bool CsParser::parse(const std::string csPath)
+bool CsParser::parse(const std::string &csPath)
 {
     std::ifstream file;
     file.open(csPath.c_str(), std::ios_base::in);
@@ -59,7 +59,7 @@ std::vector<std::string> CsParser::startingSteps() const
     return _starting_steps;
 }
 
-bool CsParser::parseInt(const std::string in, int *out)
+bool CsParser::parseInt(const std::string &in, int *out)
 {
     std::string found;
     if (!regexMatchSingle("[+-]?[0-9]+", in, &found))
@@ -68,7 +68,7 @@ bool CsParser::parseInt(const std::string in, int *out)
     return true;
 }
 
-bool CsParser::parseFloat(const std::string in, float *out)
+bool CsParser::parseFloat(const std::string &in, float *out)
 {
     std::string found;
     if (!regexMatchSingle("[-+]?[0-9]*\\.?[0-9]*", in, &found))
@@ -80,14 +80,14 @@ bool CsParser::parseFloat(const std::string in, float *out)
     return true;
 }
 
-bool CsParser::parseString(const std::string in, std::string *out)
+bool CsParser::parseString(const std::string &in, std::string *out)
 {
     if (!regexMatchSingle("^[\\w]*", in, out))
         return false;
     return true;
 }
 
-bool CsParser::parseQuotedString(const std::string in, std::string *out)
+bool CsParser::parseQuotedString(const std::string &in, std::string *out)
 {
     if (!regexMatchSingle("\"[^\"]*\"", in, out))
         return false;
@@ -142,7 +142,7 @@ void CsParser::strip(std::string &string, const char expr)
     string.erase(std::remove(string.begin(), string.end(), expr), string.end());
 }
 
-std::string CsParser::removeFirstSlice(std::string *in, const std::string separator)
+std::string CsParser::removeFirstSlice(std::string *in, const std::string &separator)
 {
     std::string result;
     size_t c_pos = in->find(separator);
@@ -153,7 +153,7 @@ std::string CsParser::removeFirstSlice(std::string *in, const std::string separa
     return result;
 }
 
-bool CsParser::regexMatchSingle(const std::string expression, const std::string input, std::string *output)
+bool CsParser::regexMatchSingle(const std::string &expression, const std::string &input, std::string *output)
 {
     TRexpp regex;
     const char *found = "";
