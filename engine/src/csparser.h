@@ -7,23 +7,17 @@
 #include <string>
 #include <map>
 
-struct CsState {
-    float x;
-    float y;
-    float w;
-    float h;
-    float a;
-};
+typedef std::map<std::string, float> CsState;
 
 struct CsObject {
     std::string content;
     bool isText;
-    CsState initialState;
+    CsState state;
 };
 
 struct CsStep {
     int duration;
-    std::map<std::string, CsState> objStates;
+    std::map<std::string, CsState > objStates;
     std::string next;
 };
 
@@ -78,7 +72,7 @@ private:
     bool parseDeclaration(std::string d_string, bool text);
     bool parseDeclarations(std::istreambuf_iterator<char> &i);
 
-    bool parseStepContent(std::string &line, const std::string prev, CsStep &step);
+    bool parseStepContent(std::string &line, CsStep &step);
     bool parseAnimations(std::istreambuf_iterator<char> &i);
 
     void replaceWDefaults(std::string &string);

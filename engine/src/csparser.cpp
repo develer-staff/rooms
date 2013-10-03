@@ -109,27 +109,18 @@ bool CsParser::parseState(std::string *in, CsState *s)
 
         if (var == "")
             break;
-        if (var == "x"){
-            if (parseFloat(token, &(s->x)))
-                continue;
+        if (var != "x" &&
+                var != "y" &&
+                var != "width" &&
+                var != "height" &&
+                var != "alpha"){
+            return false;
         }
-        if (var == "y"){
-            if (parseFloat(token, &(s->y)))
-                continue;
-        }
-        if (var == "w"){
-            if (parseFloat(token, &(s->w)))
-                continue;
-        }
-        if (var == "h"){
-            if (parseFloat(token, &(s->h)))
-                continue;
-        }
-        if (var == "a"){
-            if (parseFloat(token, &(s->a)))
-                continue;
-        }
-        return false;
+        std::string stateName = var;
+        float stateValue;
+        if (!parseFloat(token, &stateValue))
+            return false;
+        (*s)[stateName] = stateValue;
     }
     return true;
 }
@@ -223,7 +214,7 @@ bool CsParser::parseDeclaration(std::string d_string, bool text)
     strip(d_string, ' ');
     replaceWDefaults(d_string);
 
-    if (!parseState(&d_string, &(obj.initialState)))
+    if (!parseState(&d_string, &(obj.state)))
         return false;
     if(d_string.length() > 0)
         return false;
@@ -257,7 +248,7 @@ bool CsParser::parseDeclarations(std::istreambuf_iterator<char> &i)
     return true;
 }
 
-bool CsParser::parseStepContent(std::string &line, const std::string prev, CsStep &step)
+bool CsParser::parseStepContent(std::string &line, CsStep &step)
 {
     std::string objectName;
     if (!parseQuotedString(removeFirstSlice(&line, ":"), &objectName)){
@@ -274,12 +265,6 @@ bool CsParser::parseStepContent(std::string &line, const std::string prev, CsSte
     std::map<std::string, CsObject>::iterator i = _objects.find(objectName);
     if (i == _objects.end())
         return false;
-    s = (*i).second.initialState;
-    if (prev != ""){
-        std::map<std::string, CsState>::iterator i = _steps[prev].objStates.find(objectName);
-        if (i != _steps[prev].objStates.end())
-            s  = (*i).second;
-    }
     if (!parseState(&line, &s))
         return false;
     step.objStates[objectName] = s;
@@ -307,8 +292,8 @@ bool CsParser::parseAnimations(std::istreambuf_iterator<char> &i)
         if (!parseQuotedString(removeFirstSlice(&line, ","), &name))
             return false;
         std::string duration_str = removeFirstSlice(&line, ",");
-        std::string prev = "";
         if (duration_str != ""){
+            std::string prev;
             if (!parseQuotedString(line, &prev))
                 return false;
             std::map<std::string, CsStep>::iterator i =_steps.find(prev);
@@ -327,7 +312,7 @@ bool CsParser::parseAnimations(std::istreambuf_iterator<char> &i)
             line = readline(i);
             if (line.find("->") != std::string::npos)
                 break;
-            if (!parseStepContent(line, prev, step))
+            if (!parseStepContent(line, step))
                 return false;
         }
         _steps[name] = step;

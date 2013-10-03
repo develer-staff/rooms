@@ -90,6 +90,7 @@ void Engine::click(const float x, const float y)
             break;
         }
         case TRANSITION:
+        case CUTSCENE:
         {
             // do nothing when an animation is running
             break;
@@ -414,8 +415,29 @@ GuiDataVect Engine::flash(Room *room)
     return visible_data;
 }
 
+GuiDataVect Engine::getCutsceneVisibleData()
+{
+    if (!anim_mgr->isAnimating()){
+        anim_mgr->startAnimations();
+    }
+    if (anim_mgr->stopIfOvertime()){
+        logger.write("Exiting cutscene", Log::NOTE);
+        restoreState();
+    }
+    GuiDataVect visible_data = cs_mgr->getVisibleData();
+    GuiDataVect::iterator i;
+    for (i = visible_data.begin(); i != visible_data.end(); ++i){
+        anim_mgr->updateObjectState((*i).id, &(*i));
+    }
+    cs_mgr->setVisibleData(visible_data);
+    return visible_data;
+}
+
 GuiDataVect Engine::getVisibleData()
 {
+    if (state() == CUTSCENE){
+        return getCutsceneVisibleData();
+    }
     if (anim_mgr->hasAnimations() && state() != TRANSITION) {
         anim_mgr->startAnimations();
         storeState();
@@ -488,7 +510,15 @@ void Engine::apiSFXPlay(const string id)
 void Engine::apiStartCutScene(const std::string scenefile)
 {
     if (cs_mgr->startCutscene(scenefile)){
-        //TODO: set a state and get the animations to play
+        //TODO: transizioni e cutscene non vanno daccordo
+        storeState();
+        setState(CUTSCENE);
+        logger.write("Entering cutscene", Log::NOTE);
+        std::vector<SequentialAnimation *> anims = cs_mgr->getAnimations();
+        std::vector<SequentialAnimation *>::iterator i;
+        for (i = anims.begin(); i != anims.end(); ++i){
+            anim_mgr->addSequentialAnimation(*i);
+        }
     }
 }
 

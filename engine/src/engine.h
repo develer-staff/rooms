@@ -67,7 +67,8 @@ public:
         INITIALIZING = 0,
         GAME,
         DIALOG,
-        TRANSITION
+        TRANSITION,
+        CUTSCENE
     };
 private:
     Engine::State _state;
@@ -76,7 +77,7 @@ private:
     GuiManager *gui_mgr;
     AnimationsManager *anim_mgr;
     CsManager *cs_mgr;
-    std::vector<string> images;
+    std::vector<string> images;//TODO: caricare anche le immagini delle cutscenes
     std::vector<string> sfx;
     std::map<string, Dialog *> dialogs;
     Dialog *dialog;
@@ -185,6 +186,7 @@ private:
     void execActions(const std::vector <Action *> actions);
     void updateDialog();
     GuiDataVect flash(Room *room);
+    GuiDataVect getCutsceneVisibleData();
     //RISC API
 #ifdef WITH_PYTHON
     void apiExecScript(const string id);
