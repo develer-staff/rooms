@@ -9,11 +9,6 @@
 
 extern Log logger;
 
-/**
- * \brief The CsManager class handles cutscenes
- * The class is a layer between the parser and the engine, it transforms
- * the parser generated data structure to something that the engine can use
- */
 class CsManager
 {
 public:

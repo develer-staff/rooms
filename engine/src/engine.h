@@ -77,7 +77,7 @@ private:
     GuiManager *gui_mgr;
     AnimationsManager *anim_mgr;
     CsManager *cs_mgr;
-    std::vector<string> images;//TODO: caricare anche le immagini delle cutscenes
+    std::vector<string> images;
     std::vector<string> sfx;
     std::map<string, Dialog *> dialogs;
     Dialog *dialog;
