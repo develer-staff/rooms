@@ -1,6 +1,6 @@
 #include "animation.h"
 
-#include <math.h>
+#include <cmath>
 
 Animation::Animation(std::string object, int duration) :
     _object(object), _duration(duration), _easing(LINEAR)
