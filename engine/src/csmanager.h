@@ -40,10 +40,10 @@ public:
 private:
     void setInitialVisibleData();//TODO aggiungi all'engine
     SequentialAnimation *walkStep(std::string stepName);
-    void updateAnimatedObject(const std::string &object_name, CsState state);
+    CsObject *animatedObject(const std::string &name);
 
 private:
-    std::map<std::string, CsObject> animated_objects;
+    std::vector<CsObject> animated_objects;
     std::map<std::string, CsStep> steps;
     std::vector<std::string> initial_steps;
 

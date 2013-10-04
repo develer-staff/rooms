@@ -25,6 +25,27 @@ bool CsManager::startCutscene(const std::string &csPath)
     return true;
 }
 
+std::vector<SequentialAnimation *> CsManager::getAnimations(){
+    std::vector<SequentialAnimation *> result;
+    std::vector<std::string>::iterator i;
+    for (i = initial_steps.begin(); i != initial_steps.end(); ++i){
+        result.push_back(walkStep(*i));
+    }
+    return result;
+}
+
+void CsManager::endCutscene()
+{
+    animated_objects.clear();
+    steps.clear();
+    initial_steps.clear();
+    std::vector<Animation *>::iterator i;
+    for (i = animations_garbage.begin(); i != animations_garbage.end(); ++i){
+        delete (*i);
+    }
+    animations_garbage.clear();
+}
+
 GuiDataVect CsManager::getVisibleData()
 {
     return visible_data;
@@ -37,12 +58,12 @@ void CsManager::setVisibleData(GuiDataVect v)
 
 void CsManager::setInitialVisibleData()
 {
-    std::map<std::string, CsObject>::iterator i;
+    std::vector<CsObject>::iterator i;
     for (i = animated_objects.begin(); i != animated_objects.end(); ++i){
-        CsObject o = (*i).second;
+        CsObject o = (*i);
         GuiData gd;
         gd.alpha = 0;
-        gd.id = (*i).first;
+        gd.id = o.name;
         gd.rect = GuiRect(0, 0, 0, 0);
         gd.image = "";
         gd.text = "";
@@ -83,11 +104,11 @@ SequentialAnimation *CsManager::walkStep(std::string stepName)
             Animation *a = new Animation((*i).first, step.duration);
             CsState::iterator j;
             for (j = (*i).second.begin(); j != (*i).second.end(); ++j){
-                a->addProperty((*j).first, animated_objects[(*i).first].state[(*j).first], (*j).second);
+                a->addProperty((*j).first, animatedObject((*i).first)->state[(*j).first], (*j).second);
+                animatedObject((*i).first)->state[(*j).first] = (*j).second;
             }
             s->addAnimation(a);
             animations_garbage.push_back(a);
-            updateAnimatedObject((*i).first, (*i).second);
         }
         result->addStep(s);
         stepName = step.next;
@@ -95,31 +116,12 @@ SequentialAnimation *CsManager::walkStep(std::string stepName)
     return result;
 }
 
-std::vector<SequentialAnimation *> CsManager::getAnimations(){
-    std::vector<SequentialAnimation *> result;
-    std::vector<std::string>::iterator i;
-    for (i = initial_steps.begin(); i != initial_steps.end(); ++i){
-        result.push_back(walkStep(*i));
-    }
-    return result;
-}
-
-void CsManager::endCutscene()
+CsObject *CsManager::animatedObject(const std::string &name)
 {
-    animated_objects.clear();
-    steps.clear();
-    initial_steps.clear();
-    std::vector<Animation *>::iterator i;
-    for (i = animations_garbage.begin(); i != animations_garbage.end(); ++i){
-        delete (*i);
+    std::vector<CsObject>::iterator i;
+    for (i = animated_objects.begin(); i != animated_objects.end(); ++i){
+        if ((*i).name == name)
+            return &(*i);
     }
-    animations_garbage.clear();
-}
-
-void CsManager::updateAnimatedObject(const std::string &object_name, CsState state)
-{
-    CsState::iterator i;
-    for (i = state.begin(); i != state.end(); ++i){
-        animated_objects[object_name].state[(*i).first] = (*i).second;
-    }
+    return 0;
 }

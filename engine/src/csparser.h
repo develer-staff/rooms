@@ -10,6 +10,7 @@
 typedef std::map<std::string, float> CsState;
 
 struct CsObject {
+    std::string name;
     std::string content;
     bool isText;
     CsState state;
@@ -46,7 +47,7 @@ public:
     std::string getErrorMessage() const;
 
     /// Returns the list of the objects involved in the current cutscene
-    std::map<std::string, CsObject> objects() const;
+    std::vector<CsObject> objects() const;
 
     /// Returns the list of steps for the current cutscene
     std::map<std::string, CsStep> steps() const;
@@ -78,12 +79,14 @@ private:
     void replaceWDefaults(std::string &string);
     bool parseDefaults();
 
+    bool isObject(const std::string &name);
+
 private:
     std::string _parsed_content;
     int _version;
     std::string _defaults_file_path;
     std::map<std::string, std::string> _defaults;
-    std::map<std::string, CsObject> _objects;
+    std::vector<CsObject> _objects;
     std::map<std::string, CsStep> _steps;
     std::vector<std::string> _starting_steps;
 

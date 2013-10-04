@@ -44,7 +44,7 @@ std::string CsParser::getErrorMessage() const
     return _error_message;
 }
 
-std::map<std::string, CsObject> CsParser::objects() const
+std::vector<CsObject> CsParser::objects() const
 {
     return _objects;
 }
@@ -206,8 +206,7 @@ bool CsParser::parseDeclaration(std::string d_string, bool text)
 {
     CsObject obj;
     obj.isText = text;
-    std::string name;
-    if (!parseQuotedString(removeFirstSlice(&d_string, ","), &name))
+    if (!parseQuotedString(removeFirstSlice(&d_string, ","), &(obj.name)))
         return false;
     if (!parseQuotedString(removeFirstSlice(&d_string, ","), &(obj.content)))
         return false;
@@ -218,7 +217,7 @@ bool CsParser::parseDeclaration(std::string d_string, bool text)
         return false;
     if(d_string.length() > 0)
         return false;
-    _objects[name] = obj;
+    _objects.push_back(obj);
     return true;
 }
 
@@ -262,8 +261,7 @@ bool CsParser::parseStepContent(std::string &line, CsStep &step)
     replaceWDefaults(line);
 
     CsState s;
-    std::map<std::string, CsObject>::iterator i = _objects.find(objectName);
-    if (i == _objects.end())
+    if (!isObject(objectName))
         return false;
     if (!parseState(&line, &s))
         return false;
@@ -354,4 +352,14 @@ bool CsParser::parseDefaults()
         _defaults[var] = line.substr(arrow_pos + 2);
     }
     return true;
+}
+
+bool CsParser::isObject(const std::string &name)
+{
+    std::vector<CsObject>::iterator i;
+    for (i = _objects.begin(); i != _objects.end(); ++i){
+        if ((*i).name == name)
+            return true;
+    }
+    return false;
 }
