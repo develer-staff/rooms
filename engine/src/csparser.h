@@ -94,6 +94,7 @@ private:
 
 };
 
+/// Like string::find but it avoid results if they are in quoted strings
 size_t findUnquoted(const std::string &input, const std::string &toFind);
 
 #endif // CSPARSER_H

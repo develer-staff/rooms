@@ -20,9 +20,15 @@ public:
     AnimationsManager();
     ~AnimationsManager();
 
-    /// adds the animations to run
+    ///Adds animations that runs in parallel
     void addParallelAnimations(std::vector<Animation *> anims);
 
+    /**
+     * \brief addSequentialAnimation adds a SequentialAnimation
+     *
+     * Note that the SequentialAnimation added runs in parallel
+     * with the current animations
+     */
     void addSequentialAnimation(SequentialAnimation * anim);
 
     /**

@@ -9,6 +9,12 @@
 
 extern Log logger;
 
+/**
+ * \brief The CsManager class handles cutscenes
+ *
+ * It gets the cutscene from the parser and act as a conversion layer
+ * between parser specific objects and something that the Engine can handle
+ */
 class CsManager
 {
 public:
@@ -35,6 +41,7 @@ public:
     ///Get the cutscene visible data
     GuiDataVect getVisibleData();
 
+    /// Updates the internal visible data representation
     void setVisibleData(GuiDataVect v);
 
 private:
