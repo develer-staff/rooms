@@ -9,9 +9,9 @@ CsManager::~CsManager()
     endCutscene();
 }
 
-bool CsManager::startCutscene(const std::string &csPath)
+bool CsManager::startCutscene(const std::string &csPath, const std::vector<std::string> &images)
 {
-    CsParser p;
+    CsParser p(images);
     if (!p.parse(csPath)){
         logger.write("Parser error: "+p.getErrorMessage(), Log::ERROR);
         return false;

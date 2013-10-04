@@ -31,7 +31,7 @@ struct CsStep {
 class CsParser
 {
 public:
-    CsParser();
+    CsParser(const std::vector<std::string> &imagePaths);
 
     /**
      * \brief parse the cutscene file
@@ -70,7 +70,7 @@ private:
 
     bool parseHeader(std::istreambuf_iterator<char> &i);
 
-    bool parseDeclaration(std::string d_string, bool text);
+    bool parseDeclaration(std::string d_string);
     bool parseDeclarations(std::istreambuf_iterator<char> &i);
 
     bool parseStepContent(std::string &line, CsStep &step);
@@ -82,9 +82,11 @@ private:
     bool isObject(const std::string &name);
 
 private:
+    const std::vector<std::string> &_image_paths;
     std::string _parsed_content;
     int _version;
     std::string _defaults_file_path;
+
     std::map<std::string, std::string> _defaults;
     std::vector<CsObject> _objects;
     std::map<std::string, CsStep> _steps;

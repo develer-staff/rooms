@@ -26,7 +26,7 @@ public:
      * \param csPath the cutscene file path
      * \return true if everything is ok, otherwise false
      */
-    bool startCutscene(const std::string &csPath);
+    bool startCutscene(const std::string &csPath, const std::vector<std::string> &images);
 
     /**
      * \brief getCurrentAnimations

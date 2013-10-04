@@ -6,7 +6,8 @@
 #include <cstdlib>
 #include <algorithm> //ererase
 
-CsParser::CsParser() :
+CsParser::CsParser(const std::vector<std::string> &imagePaths) :
+    _image_paths(imagePaths),
     _version(0),
     _defaults_file_path(""),
     _error_message("")
@@ -214,17 +215,23 @@ bool CsParser::parseHeader(std::istreambuf_iterator<char> &i)
     return true;
 }
 
-bool CsParser::parseDeclaration(std::string d_string, bool text)
+bool CsParser::parseDeclaration(std::string d_string)
 {
     CsObject obj;
-    obj.isText = text;
-    if (!parseString(removeFirstSlice(&d_string, ","), &(obj.name)))
-        return false;
+    if (!parseString(removeFirstSlice(&d_string, ":"), &(obj.name))){
+        strip(d_string, ' ');
+        if (d_string.length() > 0)
+            return false;
+        return true;
+    }
     if (!parseQuotedString(removeFirstSlice(&d_string, ","), &(obj.content)))
         return false;
+    obj.isText = false;
+    std::vector<std::string>::const_iterator i = find(_image_paths.begin(), _image_paths.end(), obj.content);
+    if (i == _image_paths.end())
+        obj.isText = true;
     strip(d_string, ' ');
     replaceWDefaults(d_string);
-
     if (!parseState(&d_string, &(obj.state)))
         return false;
     if(d_string.length() > 0)
@@ -241,20 +248,8 @@ bool CsParser::parseDeclarations(std::istreambuf_iterator<char> &i)
         line = readline(i);
         if (line.find("---") != std::string::npos)
             break;
-        if (line.substr(0, 4) == "img:"){
-            if (!parseDeclaration(line.substr(4), false))
-                return false;
-            continue;
-        }
-        if (line.substr(0, 4) == "txt:"){
-            if (!parseDeclaration(line.substr(4), true))
-                return false;
-            continue;
-        }
-        strip(line, ' ');
-        if (line.length() > 0){
+        if (!parseDeclaration(line))
             return false;
-        }
     }
     return true;
 }
