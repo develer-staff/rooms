@@ -94,4 +94,6 @@ private:
 
 };
 
+size_t findUnquoted(const std::string &input, const std::string &toFind);
+
 #endif // CSPARSER_H

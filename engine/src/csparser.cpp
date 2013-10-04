@@ -157,7 +157,7 @@ void CsParser::strip(std::string &string, const char expr)
 std::string CsParser::removeFirstSlice(std::string *in, const std::string &separator)
 {
     std::string result;
-    size_t c_pos = in->find(separator);
+    size_t c_pos = findUnquoted(*in, separator);
     if (c_pos == std::string::npos)
         return "";
     result = in->substr(0, c_pos);
@@ -374,4 +374,26 @@ bool CsParser::isObject(const std::string &name)
             return true;
     }
     return false;
+}
+
+
+size_t findUnquoted(const std::string &input, const std::string &toFind)
+{
+    int n = input.length();
+    int m = toFind.length();
+    size_t i = 0;
+    while (int(i) < n-m){
+        if (input.at(i) == '"'){
+            ++i;
+            while (input.at(i) != '"' && int(i) < n-m)
+                ++i;
+        }
+        int j = 0;
+        while (j < m && input.at(i+j) == toFind.at(j))
+            ++j;
+        if (j == m)
+            return i;
+        i++;
+    }
+    return std::string::npos;
 }
