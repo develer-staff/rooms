@@ -82,7 +82,19 @@ bool CsParser::parseFloat(const std::string &in, float *out)
 
 bool CsParser::parseString(const std::string &in, std::string *out)
 {
-    if (!regexMatchSingle("^[\\w]*", in, out))
+    *out = "";
+    std::string::const_iterator i;
+    for (i = in.begin(); i != in.end(); ++i){
+        if ((*i) == ' '){
+            if ((i+1) != in.end() &&
+                    *(i+1) != ' ' &&
+                    *out != "")
+                return false;
+            continue;
+        }
+        *out += (*i);
+    }
+    if (*out == "")
         return false;
     return true;
 }
@@ -206,7 +218,7 @@ bool CsParser::parseDeclaration(std::string d_string, bool text)
 {
     CsObject obj;
     obj.isText = text;
-    if (!parseQuotedString(removeFirstSlice(&d_string, ","), &(obj.name)))
+    if (!parseString(removeFirstSlice(&d_string, ","), &(obj.name)))
         return false;
     if (!parseQuotedString(removeFirstSlice(&d_string, ","), &(obj.content)))
         return false;
@@ -250,7 +262,7 @@ bool CsParser::parseDeclarations(std::istreambuf_iterator<char> &i)
 bool CsParser::parseStepContent(std::string &line, CsStep &step)
 {
     std::string objectName;
-    if (!parseQuotedString(removeFirstSlice(&line, ":"), &objectName)){
+    if (!parseString(removeFirstSlice(&line, ":"), &objectName)){
         strip(line, ' ');
         if (line != "")
             return false;
@@ -287,12 +299,12 @@ bool CsParser::parseAnimations(std::istreambuf_iterator<char> &i)
         CsStep step;
         step.next = "";
         std::string name;
-        if (!parseQuotedString(removeFirstSlice(&line, ","), &name))
+        if (!parseString(removeFirstSlice(&line, ","), &name))
             return false;
         std::string duration_str = removeFirstSlice(&line, ",");
         if (duration_str != ""){
             std::string prev;
-            if (!parseQuotedString(line, &prev))
+            if (!parseString(line, &prev))
                 return false;
             std::map<std::string, CsStep>::iterator i =_steps.find(prev);
             if (i == _steps.end())
