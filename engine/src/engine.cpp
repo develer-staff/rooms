@@ -310,7 +310,7 @@ void Engine::execActions(std::vector <Action *> actions)
     {
         //TODO: think about improving this loop
         Action act = *(*i);
-        anim_mgr->addParallelAnimations(act.animations());
+        anim_mgr->addAnimations(act.animations());
         logger.write("Exec action: " + act.id, Log::NOTE);
         if (act.id == "ROOM_GOTO")
         {

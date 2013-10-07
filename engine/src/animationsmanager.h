@@ -1,7 +1,6 @@
 #ifndef ANIMATIONSMANAGER_H
 #define ANIMATIONSMANAGER_H
 #include "animation.h"
-#include "sequentialanimation.h"
 #include "timer.h"
 #include "gui.h"
 
@@ -20,16 +19,8 @@ public:
     AnimationsManager();
     ~AnimationsManager();
 
-    ///Adds animations that runs in parallel
-    void addParallelAnimations(std::vector<Animation *> anims);
-
-    /**
-     * \brief addSequentialAnimation adds a SequentialAnimation
-     *
-     * Note that the SequentialAnimation added runs in parallel
-     * with the current animations
-     */
-    void addSequentialAnimation(SequentialAnimation * anim);
+    /// adds the animations to run
+    void addAnimations(std::vector<Animation *> anims);
 
     /**
      * \brief hasAnimations
@@ -67,7 +58,7 @@ private:
 private:
     Timer *timer;
     int max_time;
-    std::vector<SequentialAnimation *> current_animations;
+    std::map<std::string, Animation *> current_animations;
 
     // Unittests stuff
     friend class AnimationsTest;
