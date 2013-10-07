@@ -514,11 +514,7 @@ void Engine::apiStartCutScene(const std::string scenefile)
         storeState();
         setState(CUTSCENE);
         logger.write("Entering cutscene", Log::NOTE);
-        std::vector<SequentialAnimation *> anims = cs_mgr->getAnimations();
-        std::vector<SequentialAnimation *>::iterator i;
-        for (i = anims.begin(); i != anims.end(); ++i){
-            anim_mgr->addSequentialAnimation(*i);
-        }
+        anim_mgr->addAnimations(cs_mgr->getAnimations());
     }
 }
 

@@ -2,7 +2,7 @@
 #define CSMANAGER_H
 #include "log.h"
 #include "csparser.h"
-#include "sequentialanimation.h"
+#include "animation.h"
 #include "gui.h"
 
 #include <string>
@@ -33,7 +33,7 @@ public:
      * \return a vector with the current animations
      * If the return vector is empty, the cutscene is finished
      */
-    std::vector<SequentialAnimation *> getAnimations();
+    std::vector<Animation *> getAnimations();
 
     ///Clean the cutscene enviroment
     void endCutscene();
@@ -45,8 +45,8 @@ public:
     void setVisibleData(GuiDataVect v);
 
 private:
-    void setInitialVisibleData();//TODO aggiungi all'engine
-    SequentialAnimation *walkStep(std::string stepName);
+    void addDelayedAnimations(int delay, std::string stepName, std::vector<Animation *> *animations);
+    void setInitialVisibleData();
     CsObject *animatedObject(const std::string &name);
 
 private:

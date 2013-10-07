@@ -49,7 +49,8 @@ HEADERS += src/action.h \
            src/timer.h \
            src/csparser.h \
            lib/trex/TRexpp.h \
-    src/csmanager.h
+    src/csmanager.h \
+    src/delayedanimation.h
 SOURCES += src/action.cpp \
            src/area.cpp \
            src/engine.cpp \
@@ -72,4 +73,5 @@ SOURCES += src/action.cpp \
            src/timer.cpp \
            src/csparser.cpp \
            lib/trex/trex.c \
-    src/csmanager.cpp
+    src/csmanager.cpp \
+    src/delayedanimation.cpp

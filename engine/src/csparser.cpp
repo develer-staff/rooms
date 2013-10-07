@@ -292,7 +292,6 @@ bool CsParser::parseAnimations(std::istreambuf_iterator<char> &i)
 
         //parsing step header
         CsStep step;
-        step.next = "";
         std::string name;
         if (!parseString(removeFirstSlice(&line, ","), &name))
             return false;
@@ -304,7 +303,7 @@ bool CsParser::parseAnimations(std::istreambuf_iterator<char> &i)
             std::map<std::string, CsStep>::iterator i =_steps.find(prev);
             if (i == _steps.end())
                 return false;
-            (*i).second.next = name;
+            (*i).second.next.push_back(name);
         } else {
             _starting_steps.push_back(name);
             duration_str = line;

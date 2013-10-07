@@ -19,7 +19,7 @@ struct CsObject {
 struct CsStep {
     int duration;
     std::map<std::string, CsState > objStates;
-    std::string next;
+    std::vector<std::string> next;
 };
 
 /**

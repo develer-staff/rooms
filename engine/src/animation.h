@@ -54,7 +54,7 @@ public:
     string object() const;
 
     /// Animation duration in milliseconds
-    int duration() const;
+    virtual int duration() const;
 
     /**
      * \brief setEasing
@@ -81,7 +81,7 @@ public:
      * \param millisecond_elapsed the milliseconds since the animation beginning
      * \return The property name and his value
      */
-    std::map<std::string, float> getStatus(int millisecond_elapsed);
+    virtual std::map<std::string, float> getStatus(int millisecond_elapsed);
 
 private:
     float relativeProgress(int millisecond_elapsed);

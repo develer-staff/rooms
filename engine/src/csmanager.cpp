@@ -1,4 +1,5 @@
 #include "csmanager.h"
+#include "delayedanimation.h"
 
 CsManager::CsManager()
 {
@@ -25,11 +26,11 @@ bool CsManager::startCutscene(const std::string &csPath, const std::vector<std::
     return true;
 }
 
-std::vector<SequentialAnimation *> CsManager::getAnimations(){
-    std::vector<SequentialAnimation *> result;
+std::vector<Animation *> CsManager::getAnimations(){
+    std::vector<Animation *> result;
     std::vector<std::string>::iterator i;
     for (i = initial_steps.begin(); i != initial_steps.end(); ++i){
-        result.push_back(walkStep(*i));
+        addDelayedAnimations(0, (*i), &result);
     }
     return result;
 }
@@ -54,6 +55,33 @@ GuiDataVect CsManager::getVisibleData()
 void CsManager::setVisibleData(GuiDataVect v)
 {
     visible_data = v;
+}
+
+void CsManager::addDelayedAnimations(int delay, std::string stepName, std::vector<Animation *> *animations)
+{
+    CsStep step = steps[stepName];
+    if (step.objStates.size() == 0){
+        Animation *a = new DelayedAnimation("!null", step.duration, delay);
+        animations->push_back(a);
+        animations_garbage.push_back(a);
+    }
+
+    std::map<std::string, CsState>::iterator i;
+    for (i = step.objStates.begin(); i != step.objStates.end(); ++i){
+        Animation *a = new DelayedAnimation((*i).first, step.duration, delay);
+        CsState::iterator j;
+        for (j = (*i).second.begin(); j != (*i).second.end(); ++j){
+            a->addProperty((*j).first, animatedObject((*i).first)->state[(*j).first], (*j).second);
+            animatedObject((*i).first)->state[(*j).first] = (*j).second;
+        }
+        animations->push_back(a);
+        animations_garbage.push_back(a);
+    }
+
+    std::vector<std::string>::iterator k;
+    for (k = step.next.begin(); k != step.next.end(); ++k){
+        addDelayedAnimations(delay+step.duration, (*k), animations);
+    }
 }
 
 void CsManager::setInitialVisibleData()
@@ -86,34 +114,6 @@ void CsManager::setInitialVisibleData()
         }
         visible_data.push_back(gd);
     }
-}
-
-SequentialAnimation *CsManager::walkStep(std::string stepName)
-{
-    SequentialAnimation *result = new SequentialAnimation();
-    while (stepName != ""){
-        CsStep step = steps[stepName];
-        AnimationStep *s = new AnimationStep();
-
-        if (step.objStates.size() == 0){
-            s->addAnimation(new Animation("!null", step.duration));
-        }
-
-        std::map<std::string, CsState>::iterator i;
-        for (i = step.objStates.begin(); i != step.objStates.end(); ++i){
-            Animation *a = new Animation((*i).first, step.duration);
-            CsState::iterator j;
-            for (j = (*i).second.begin(); j != (*i).second.end(); ++j){
-                a->addProperty((*j).first, animatedObject((*i).first)->state[(*j).first], (*j).second);
-                animatedObject((*i).first)->state[(*j).first] = (*j).second;
-            }
-            s->addAnimation(a);
-            animations_garbage.push_back(a);
-        }
-        result->addStep(s);
-        stepName = step.next;
-    }
-    return result;
 }
 
 CsObject *CsManager::animatedObject(const std::string &name)
