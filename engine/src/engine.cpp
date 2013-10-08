@@ -422,6 +422,7 @@ GuiDataVect Engine::getCutsceneVisibleData()
     }
     if (anim_mgr->stopIfOvertime()){
         logger.write("Exiting cutscene", Log::NOTE);
+        cs_mgr->endCutscene();
         restoreState();
     }
     GuiDataVect visible_data = cs_mgr->getVisibleData();

@@ -40,6 +40,7 @@ void CsManager::endCutscene()
     animated_objects.clear();
     steps.clear();
     initial_steps.clear();
+    visible_data.clear();
     std::vector<Animation *>::iterator i;
     for (i = animations_garbage.begin(); i != animations_garbage.end(); ++i){
         delete (*i);
