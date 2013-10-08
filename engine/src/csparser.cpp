@@ -5,6 +5,7 @@
 #include <iterator> //istreambuf_iterator
 #include <cstdlib>
 #include <algorithm> //ererase
+#include <sstream>
 
 CsParser::CsParser(const std::vector<std::string> &imagePaths) :
     _image_paths(imagePaths),
@@ -276,9 +277,49 @@ bool CsParser::parseStepContent(std::string &line, CsStep &step)
     return true;
 }
 
+bool CsParser::parseSubSteps(std::istreambuf_iterator<char> &i,
+                             std::string &line,
+                             const std::string &name,
+                             int *n)
+{
+    std::istreambuf_iterator<char> eof;
+    line = readline(i);
+    while(i != eof){
+        CsStep step;
+        step.duration = -1;
+        if (line.find("->") != std::string::npos)
+            break;
+        if (line.find(":") != std::string::npos)
+            return false;
+        strip(line, ' ');
+        if (line == ""){
+            line = readline(i);
+            continue;
+        }
+        if (!parseInt(line, &(step.duration)))
+            return false;
+        line = readline(i);
+        while(i != eof &&
+              line.find(":") != std::string::npos &&
+              line.find("->") == std::string::npos){
+            if (!parseStepContent(line, step))
+                return false;
+            line = readline(i);
+        }
+        if (*n > 0){
+            _steps[name+intToString((*n)-1)].next.push_back(name+intToString(*n));
+        }
+        _steps[name+intToString(*n)] = step;
+        (*n)++;
+    }
+    (*n)--;
+    return true;
+}
+
 bool CsParser::parseAnimations(std::istreambuf_iterator<char> &i)
 {
     std::istreambuf_iterator<char> eof;
+    std::map<std::string, int> steps_length;
     std::string line = readline(i);
     while (i != eof){
         if (line.substr(0, 2) != "->"){
@@ -291,35 +332,31 @@ bool CsParser::parseAnimations(std::istreambuf_iterator<char> &i)
         line = line.substr(2);
 
         //parsing step header
-        CsStep step;
-        std::string name;
-        if (!parseString(removeFirstSlice(&line, ","), &name))
-            return false;
-        std::string duration_str = removeFirstSlice(&line, ",");
-        if (duration_str != ""){
-            std::string prev;
-            if (!parseString(line, &prev))
+        std::string name_str = removeFirstSlice(&line, ",");
+        std::string prev = "";
+        if (name_str != ""){
+            if(!parseString(line, &prev))
                 return false;
-            std::map<std::string, CsStep>::iterator i =_steps.find(prev);
-            if (i == _steps.end())
-                return false;
-            (*i).second.next.push_back(name);
         } else {
-            _starting_steps.push_back(name);
-            duration_str = line;
+            name_str = line;
         }
-        if (!parseInt(duration_str, &(step.duration)))
+        std::string name;
+        if (!parseString(name_str, &name))
             return false;
 
-        //parse step content
-        while( i != eof){
-            line = readline(i);
-            if (line.find("->") != std::string::npos)
-                break;
-            if (!parseStepContent(line, step))
+        int stepNumber = 0;
+        if (!parseSubSteps(i, line, name, &stepNumber))
+            return false;
+        steps_length[name] = stepNumber;
+
+        if (prev != ""){
+            std::map<std::string, CsStep>::iterator i =_steps.find(prev+intToString(steps_length[prev]));
+            if (i == _steps.end())
                 return false;
+            (*i).second.next.push_back(name+"0");
+        } else {
+            _starting_steps.push_back(name+"0");
         }
-        _steps[name] = step;
     }
     return true;
 }
@@ -390,4 +427,15 @@ size_t findUnquoted(const std::string &input, const std::string &toFind)
         i++;
     }
     return std::string::npos;
+}
+
+
+std::string intToString(int i)
+{
+    std::stringstream ss;
+    std::string s;
+    ss << i;
+    s = ss.str();
+
+    return s;
 }
