@@ -300,11 +300,12 @@ bool CsParser::parseSubSteps(std::istreambuf_iterator<char> &i,
         if (!parseInt(line, &(step.duration)))
             return false;
         line = readline(i);
-        while(i != eof &&
-              line.find(":") != std::string::npos &&
+        while(line.find(":") != std::string::npos &&
               line.find("->") == std::string::npos){
             if (!parseStepContent(line, step))
                 return false;
+            if (i == eof)
+                break;
             line = readline(i);
         }
         if (*n > 0){
