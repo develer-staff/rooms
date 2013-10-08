@@ -1,4 +1,5 @@
 #include "csparser.h"
+#include "cutscenes_defaults.h"
 
 #include <fstream>
 #include <cstring> //strtok
@@ -361,14 +362,20 @@ bool CsParser::parseAnimations(std::istreambuf_iterator<char> &i)
     return true;
 }
 
-void CsParser::replaceWDefaults(std::string &string)
+void CsParser::mapReplace(std::map<std::string, std::string> m, std::string &string)
 {
     std::map<std::string, std::string>::iterator i;
-    for (i = _defaults.begin(); i != _defaults.end(); ++i){
+    for (i = m.begin(); i != m.end(); ++i){
         size_t start_pos = 0;
         while((start_pos = string.find((*i).first, start_pos)) != std::string::npos)
             string.replace(start_pos, (*i).first.length(), (*i).second);
     }
+}
+
+void CsParser::replaceWDefaults(std::string &string)
+{
+    mapReplace(_defaults, string);
+    mapReplace(Defaults::declarations, string);
 }
 
 bool CsParser::parseDefaults()

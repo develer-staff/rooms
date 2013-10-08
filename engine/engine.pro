@@ -50,7 +50,8 @@ HEADERS += src/action.h \
            src/csparser.h \
            lib/trex/TRexpp.h \
     src/csmanager.h \
-    src/delayedanimation.h
+    src/delayedanimation.h \
+    src/cutscenes_defaults.h
 SOURCES += src/action.cpp \
            src/area.cpp \
            src/engine.cpp \

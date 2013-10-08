@@ -2,7 +2,7 @@ Flashback cutscene
 ### 1, "defaults.csd"
 
 interno: "./data/stanza_centrale.png", fullscreen, hide
-locanda: "./data/locanda.png", zoom, show, x:-1, y:0
+locanda: "./data/locanda.png", doubled, show, x:-1, y:0
 locandiera: "./data/locandiera.png", p_out_left, show, width:0.25, height:0.45
 frase_giocatore: "Ho sentito un rumore in cantina", text_out
 frase_locandiera: "...ha ha ha...", text_out
