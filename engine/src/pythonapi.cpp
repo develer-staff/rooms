@@ -53,6 +53,15 @@ PyObject *apiPyMoveItem(PyObject *, PyObject *args)
     Py_RETURN_NONE;
 }
 
+PyObject *apiPyCutsceneStart(PyObject *, PyObject *args)
+{
+    char *filename;
+    if (!PyArg_ParseTuple(args, "s", &filename))
+        return 0;
+    engine->apiStartCutScene(filename);
+    Py_RETURN_NONE;
+}
+
 EngineMod::EngineMod() : PythonModule("engine")
 {
     addMember("log", apiPyLog);
@@ -60,6 +69,7 @@ EngineMod::EngineMod() : PythonModule("engine")
     addMember("loadGame", apiPyLoadGame);
     addMember("goto", apiPyGotoRoom);
     addMember("itemMove", apiPyMoveItem);
+    addMember("startCutscene", apiPyCutsceneStart);
 }
 
 EngineMod::~EngineMod()

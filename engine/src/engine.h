@@ -201,6 +201,7 @@ private:
     // Python api functions are engine's friends.
     friend PyObject *apiPyGotoRoom(PyObject *, PyObject *args);
     friend PyObject *apiPyMoveItem(PyObject *, PyObject *args);
+    friend PyObject *apiPyCutsceneStart(PyObject *, PyObject *args);
 #endif
     // Unittests stuff
     friend class MockEngine;
