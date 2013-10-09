@@ -12,6 +12,17 @@
     <img file="./data/locandiera.png" />
     <img file="./data/right_btn.png" />
     <img file="./data/left_btn.png" />
+    <img file="./cs/i1.jpeg" />
+    <img file="./cs/i2.jpeg" />
+    <img file="./cs/l1.jpeg" />
+    <img file="./cs/l2.jpeg" />
+    <img file="./cs/l3.jpeg" />
+    <img file="./cs/l4.jpeg" />
+    <img file="./cs/d1.jpeg" />
+    <img file="./cs/d2.jpeg" />
+    <img file="./cs/p1.png" />
+    <img file="./cs/p2.png" />
+    <img file="./cs/nero.jpeg" />
   </images>
 
   <items>
@@ -132,6 +143,9 @@
     </event>
     <event id="eve_goto_end">
         <var_req id="switch1" value="1"/>
+        <action id="CUTSCENE_START">
+            <param value="final.cs" />
+        </action>
         <action id="ROOM_GOTO">
             <param value="End" />
             <animations>
