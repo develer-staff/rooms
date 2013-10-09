@@ -1,6 +1,7 @@
 #include "enginetests.h"
 
 #include <cmath>
+#include <iterator>
 
 #if defined(_WIN32) || defined(ming)
     #define WINDOWS
@@ -182,7 +183,7 @@ void AnimationsTest::testAnimations()
     CPPUNIT_ASSERT(round(data.rect.y) == expected_data);
     CPPUNIT_ASSERT(round(data.rect.w) == expected_data);
     CPPUNIT_ASSERT(round(data.rect.h) == expected_data);
-    CPPUNIT_ASSERT(round(data.alpha) == (time * 255) / 10000);
+    CPPUNIT_ASSERT(round(data.alpha) == time / 10000);
 }
 
 int AnimationsTest::round(float n)
@@ -194,4 +195,37 @@ int AnimationsTest::updateAndGetTime(std::string id, GuiData *data)
 {
     anim_mgr->updateObjectState(id, data);
     return anim_mgr->timer->elapsed();
+}
+
+
+void ParserTest::setUp()
+{
+    parser = new MockCsParser;
+}
+
+void ParserTest::tearDown()
+{
+    delete parser;
+}
+
+void ParserTest::testParse()
+{
+    std::string txt = ""
+            "Test csFile\n"
+            "### 1\n"
+            "variabile_prova: \"prova\", x:0, y:0, width:0, height:0, alpha:0\n"
+            "---\n"
+            "-> track1\n"
+            "100\n"
+            "variabile_prova: alpha:1\n"
+            "-> track2, track1\n"
+            "100\n"
+            "200\n"
+            "variabile_prova: x: 1\n";
+
+    std::stringbuf stringbuf(txt);
+    std::istreambuf_iterator<char> sb(&stringbuf);
+    CPPUNIT_ASSERT(parser->parseHeader(sb));
+    CPPUNIT_ASSERT(parser->parseDeclarations(sb));
+    CPPUNIT_ASSERT(parser->parseAnimations(sb));
 }

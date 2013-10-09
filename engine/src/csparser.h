@@ -96,6 +96,9 @@ private:
 
     std::string _error_message;
 
+    //unittest stuff
+    friend class MockCsParser;
+
 };
 
 /// Like string::find but it avoid results if they are in quoted strings
