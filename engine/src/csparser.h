@@ -77,7 +77,6 @@ private:
     bool parseSubSteps(std::istreambuf_iterator<char> &i, std::string &line, const std::string &name, int *n);
     bool parseAnimations(std::istreambuf_iterator<char> &i);
 
-    void mapReplace(std::map<std::string, std::string> m, std::string &string);
     void replaceWDefaults(std::string &string);
     bool parseDefaults();
 
