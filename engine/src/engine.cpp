@@ -511,7 +511,6 @@ void Engine::apiSFXPlay(const string id)
 void Engine::apiStartCutScene(const std::string scenefile)
 {
     if (cs_mgr->startCutscene(scenefile, images)){
-        //TODO: transizioni e cutscene non vanno daccordo
         storeState();
         setState(CUTSCENE);
         logger.write("Entering cutscene", Log::NOTE);
