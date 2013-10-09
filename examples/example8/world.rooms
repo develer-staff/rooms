@@ -1,0 +1,210 @@
+<?xml version="1.0" ?>
+<world version="4" name="Mirabolanti Avventure!" width="800" height="600" start="Locanda">
+
+  <images>
+    <img file="./data/locanda.png" />
+    <img file="./data/cantina.png" />
+    <img file="./data/stanza_centrale.png" />
+    <img file="./data/stanza_star.png" />
+    <img file="./data/end.png" />
+    <img file="./data/chiave.png" />
+    <img file="./data/chiave_star.png" />
+    <img file="./data/locandiera.png" />
+    <img file="./data/right_btn.png" />
+    <img file="./data/left_btn.png" />
+    <img file="./cs/i1.jpeg" />
+    <img file="./cs/i2.jpeg" />
+    <img file="./cs/l1.jpeg" />
+    <img file="./cs/l2.jpeg" />
+    <img file="./cs/l3.jpeg" />
+    <img file="./cs/l4.jpeg" />
+    <img file="./cs/d1.jpeg" />
+    <img file="./cs/d2.jpeg" />
+    <img file="./cs/p1.png" />
+    <img file="./cs/p2.png" />
+    <img file="./cs/nero.jpeg" />
+  </images>
+
+  <items>
+    <item id="Locandiera" room="Locanda" x="0.5" y="0.5" width="0.25" height="0.45" image="./data/locandiera.png" event="start_dialog_locandiera" />
+    <item id="Chiave Locanda" room="!NOWHERE" x="0.0125" y="0.83" width="0.0625" height="0.083" image="./data/chiave.png" event="chiave_get" />
+    <item id="Chiave Stella" room="Cantina" x="0.0625" y="0.66" width="0.0625" height="0.083" image="./data/chiave_star.png" event="chiave_star_get" />
+  </items>
+
+  <vars>
+    <var id="switch1" value="0" />
+  </vars>
+
+  <dialogs>
+    <dialog id="dialog_locandiera" start="0">
+      <step id="0" text="Cosa vuoi da me?">
+        <link next="1" text="Forse hai qualcosa che mi serve..." />
+        <link next="-1" text="Addio bella pulzella!" />
+        <link next="-1" text="Arrivederci bella pulzella!" />
+        <link next="-1" text="STFU bella pulzella!" />
+        <link next="-1" text="Bai bai bella pulzella!" />
+      </step>
+      <step id="1" text="Non ti darò mai la mia chiave!">
+        <item_req id="Chiave Locanda" value="!NOWHERE" />
+        <link next="2" text="Dammi la chiave, bella locandiera!" />
+      </step>
+      <step id="2" text="Sei così gentile che ti darò subito la mia chiave!">
+          <action id="ITEM_MOVE">  
+            <param value="Chiave Locanda" />
+            <param value="!INVENTORY" />
+            <animations>
+                <animation object="Locandiera" duration="1500" easing="OUT_QUAD">
+                    <property name="x" from="0.5" to="0.9" />
+                    <property name="y" from="0.5" to="-0.5" />
+                    <property name="width" from="0.25" to="0.1" />
+                    <property name="height" from="0.45" to="0.25" />
+                </animation>
+            </animations>
+        </action>
+        <link next="-1" text="Grazie bella locandiera!" />
+      </step>
+    </dialog>
+  </dialogs>
+
+  <events>
+    <event id="eve_goto_locanda">
+        <item_req id="Chiave Locanda" value="!INVENTORY"/>
+        <action id="CUTSCENE_START">
+            <param value="flashback.cs" />
+        </action>
+        <action id="ROOM_GOTO">
+            <param value="Stanza Centrale" />
+            <animations>
+                <animation object="Stanza Centrale" duration="500" easing="OUT_BACK">
+                    <property name="x" from="0.27" to="0" />
+                    <property name="y" from="0.6" to="0" />
+                    <property name="width" from="0.1" to="1" />
+                    <property name="height" from="0.1" to="1" />
+                </animation>
+                <animation object="Locanda" duration="800" easing="LINEAR">
+                    <property name="alpha" from="1" to="0" />
+                    <property name="x" from="0" to="-0.25" />
+                    <property name="y" from="0" to="-0.25" />
+                    <property name="width" from="1" to="1.5" />
+                    <property name="height" from="1" to="1.5" />
+                </animation>
+            </animations>
+        </action>
+    </event>
+    <event id="eve_goto_centrale">
+        <action id="ROOM_GOTO">
+            <param value="Stanza Centrale" />
+            <animations>
+                <animation object="Stanza Centrale" duration="500" easing="LINEAR">
+                    <property name="x" from="-0.5" to="0" />
+                    <property name="y" from="-0.5" to="0" />
+                    <property name="width" from="2" to="1" />
+                    <property name="height" from="2" to="1" />
+                    <property name="alpha" from="0" to="1" />
+                </animation>
+                <animation object="Cantina" duration="500" easing="LINEAR">
+                    <property name="alpha" from="1" to="0" />
+                </animation>
+                <animation object="Stanza Stella" duration="500" easing="LINEAR">
+                    <property name="alpha" from="1" to="0" />
+                </animation>
+            </animations>
+        </action>
+    </event>
+    <event id="eve_goto_cantina">
+        <action id="ROOM_GOTO">
+            <param value="Cantina" />
+            <animations>
+                <animation object="Cantina" duration="500" easing="LINEAR">
+                    <property name="alpha" from="0" to="1" />
+                </animation>
+                <animation object="Stanza Centrale" duration="500" easing="LINEAR">
+                    <property name="alpha" from="1" to="0" />
+                </animation>
+            </animations>
+        </action>
+    </event>
+    <event id="eve_goto_star">
+        <item_req id="Chiave Stella" value="!INVENTORY" />
+        <action id="ROOM_GOTO">
+            <param value="Stanza Stella" />
+            <animations>
+                <animation object="Stanza Centrale" duration="500" easing="LINEAR">
+                    <property name="y" from="0" to="-0.5" />
+                    <property name="width" from="1" to="2" />
+                    <property name="height" from="1" to="2" />
+                    <property name="alpha" from="1" to="0" />
+                </animation>
+                <animation object="Stanza Stella" duration="500" easing="LINEAR">
+                    <property name="alpha" from="0" to="1" />
+                </animation>
+            </animations>
+        </action>
+    </event>
+    <event id="eve_goto_end">
+        <var_req id="switch1" value="1"/>
+        <action id="CUTSCENE_START">
+            <param value="final.cs" />
+        </action>
+        <action id="ROOM_GOTO">
+            <param value="End" />
+            <animations>
+                <animation object="Stanza Centrale" duration="500" easing="LINEAR">
+                    <property name="alpha" from="1" to="0" />
+                </animation>
+                <animation object="End" duration="10000" easing="OUT_ELASTIC">
+                    <property name="x" from="0.5" to="0" />
+                    <property name="y" from="0.5" to="0" />
+                    <property name="width" from="0" to="1" />
+                    <property name="height" from="0" to="1" />
+                </animation>
+            </animations>
+        </action>
+    </event>
+    <event id="eve_switch1_on">
+        <action id="VAR_SET">
+            <param value="switch1" />
+            <param value="1" />
+        </action>
+    </event>
+    <event id="chiave_get">
+        <action id="ITEM_MOVE">
+            <param value="Chiave Locanda" />
+            <param value="!INVENTORY" />
+        </action>
+    </event>
+    <event id="chiave_star_get">
+        <action id="ITEM_MOVE">
+            <param value="Chiave Stella" />
+            <param value="!INVENTORY" />
+        </action>
+    </event>
+    <event id="start_dialog_locandiera">
+        <action id="DIALOG_START">
+            <param value="dialog_locandiera" />
+        </action>
+    </event>
+  </events>
+
+  <rooms>
+    <room id="!INVENTORY" bg="" bgm="" />
+    <room id="!NOWHERE" bg="" bgm="" />
+    <room id="Locanda" bg="./data/locanda.png" bgm="">
+        <area id="area_porta_locanda" x="0.25" y="0.58" width="0.125" height="0.25" event="eve_goto_locanda" />
+    </room>
+    <room id="Stanza Centrale" bg="./data/stanza_centrale.png" bgm="">
+        <area id="area_vai_cantina" x="0.375" y="0.58" width="0.25" height="0.33" event="eve_goto_cantina" />
+        <area id="area_vai_star" x="0.062" y="0.25" width="0.125" height="0.5" event="eve_goto_star" />
+        <area id="area_vai_end" x="0.8" y="0.2" width="0.125" height="0.5" event="eve_goto_end" />
+    </room>
+    <room id="Cantina" bg="./data/cantina.png" bgm="">
+        <area id="area_vai_centrale1" x="0.0125" y="0.83" width="0.97" height="0.16" event="eve_goto_centrale" />
+    </room>
+    <room id="Stanza Stella" bg="./data/stanza_star.png" bgm="">
+        <area id="area_vai_centrale2" x="0.0125" y="0.83" width="0.97" height="0.16" event="eve_goto_centrale" />
+        <area id="area_switch1" x="0.43" y="0.58" width="0.93" height="0.125" event="eve_switch1_on" />
+    </room>
+    <room id="End" bg="./data/end.png" bgm="" />
+  </rooms>
+
+</world>

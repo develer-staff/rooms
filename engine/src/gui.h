@@ -39,7 +39,7 @@ struct GuiData
     string text;
     GuiRect rect;
     string image;
-    int alpha;
+    float alpha;
 };
 
 /// A vector of GuiData structs.
@@ -63,8 +63,8 @@ class GuiButton
         const string id;
         /// Sets visibility.
         bool visible;
-        /// Sets alpha channel: 255 opaque, 0 invisible.
-        void setOpacity(int alpha);
+        /// Sets alpha channel: 1 opaque, 0 invisible.
+        void setOpacity(float alpha);
         /// Checks if point is inside the button.
         virtual bool isInside(float x, float y);
         /// Sets button rectangle.
@@ -81,7 +81,7 @@ class GuiButton
         GuiRect rect;
         string text;
         string image;
-        int alpha;
+        float alpha;
     private:
         // non-copiable
         GuiButton(const GuiButton &);

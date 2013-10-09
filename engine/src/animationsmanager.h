@@ -58,7 +58,7 @@ private:
 private:
     Timer *timer;
     int max_time;
-    std::map<std::string, Animation *> current_animations;
+    std::vector<Animation *> current_animations;
 
     // Unittests stuff
     friend class AnimationsTest;

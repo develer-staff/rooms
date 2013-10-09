@@ -4,7 +4,7 @@
 
 TEMPLATE = app
 TARGET = test.exe
-INCLUDEPATH += . ../../frontend ../../src ../../lib/tinyxml ../../lib/cppunit-build/include
+INCLUDEPATH += . ../../frontend ../../src ../../lib/tinyxml ../../lib/cppunit-build/include ../../lib/trex
 LIBS += ../../lib/cppunit-build/lib/libcppunit.a
 OBJECTS_DIR = ./build
 MOC_DIR = ./build
@@ -27,7 +27,11 @@ HEADERS += ../../src/action.h \
            ../../src/animationsmanager.h \
            ../../src/timer.h \
            ../../lib/tinyxml/tinystr.h \
-           ../../lib/tinyxml/tinyxml.h
+           ../../lib/tinyxml/tinyxml.h \
+           ../../src/csparser.h \
+           ../../lib/trex/TRexpp.h \
+           ../../src/csmanager.h \
+           ../../src/delayedanimation.h
 
 SOURCES += main.cpp \
            enginetests.cpp \
@@ -50,4 +54,8 @@ SOURCES += main.cpp \
            ../../lib/tinyxml/tinystr.cpp \
            ../../lib/tinyxml/tinyxml.cpp \
            ../../lib/tinyxml/tinyxmlerror.cpp \
-           ../../lib/tinyxml/tinyxmlparser.cpp
+           ../../lib/tinyxml/tinyxmlparser.cpp \
+           ../../src/csparser.cpp \
+           ../../lib/trex/trex.c \
+           ../../src/csmanager.cpp \
+           ../../src/delayedanimation.cpp

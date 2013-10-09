@@ -41,6 +41,7 @@
 #include "gui.h"
 #include "versioning.h"
 #include "animationsmanager.h"
+#include "csmanager.h"
 #ifdef WITH_PYTHON
 #include "pythonvm.h"
 #include "pythonapi.h"
@@ -66,7 +67,8 @@ public:
         INITIALIZING = 0,
         GAME,
         DIALOG,
-        TRANSITION
+        TRANSITION,
+        CUTSCENE
     };
 private:
     Engine::State _state;
@@ -74,6 +76,7 @@ private:
     EventsManager *events_mgr;
     GuiManager *gui_mgr;
     AnimationsManager *anim_mgr;
+    CsManager *cs_mgr;
     std::vector<string> images;
     std::vector<string> sfx;
     std::map<string, Dialog *> dialogs;
@@ -183,6 +186,7 @@ private:
     void execActions(const std::vector <Action *> actions);
     void updateDialog();
     GuiDataVect flash(Room *room);
+    GuiDataVect getCutsceneVisibleData();
     //RISC API
 #ifdef WITH_PYTHON
     void apiExecScript(const string id);
@@ -192,10 +196,12 @@ private:
     void apiItemMove(const string id, const string dest);
     void apiDialogStart(const string id);
     void apiSFXPlay(const string id);
+    void apiStartCutScene(const string scenefile);
 #ifdef WITH_PYTHON
     // Python api functions are engine's friends.
     friend PyObject *apiPyGotoRoom(PyObject *, PyObject *args);
     friend PyObject *apiPyMoveItem(PyObject *, PyObject *args);
+    friend PyObject *apiPyCutsceneStart(PyObject *, PyObject *args);
 #endif
     // Unittests stuff
     friend class MockEngine;

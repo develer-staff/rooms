@@ -3,7 +3,7 @@ QT -= core gui
 
 TEMPLATE = lib
 TARGET = rooms
-INCLUDEPATH += . src lib/tinyxml
+INCLUDEPATH += . src lib/tinyxml lib/trex
 OBJECTS_DIR = ./build
 MOC_DIR = ./build
 CONFIG += staticlib
@@ -46,7 +46,12 @@ HEADERS += src/action.h \
            src/versioning.h \
            src/animation.h \
            src/animationsmanager.h \
-           src/timer.h
+           src/timer.h \
+           src/csparser.h \
+           lib/trex/TRexpp.h \
+    src/csmanager.h \
+    src/delayedanimation.h \
+    src/cutscenes_defaults.h
 SOURCES += src/action.cpp \
            src/area.cpp \
            src/engine.cpp \
@@ -66,4 +71,8 @@ SOURCES += src/action.cpp \
            src/versioning.cpp \
            src/animation.cpp \
            src/animationsmanager.cpp \
-           src/timer.cpp
+           src/timer.cpp \
+           src/csparser.cpp \
+           lib/trex/trex.c \
+    src/csmanager.cpp \
+    src/delayedanimation.cpp

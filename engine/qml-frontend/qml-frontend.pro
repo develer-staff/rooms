@@ -13,7 +13,7 @@ QML_IMPORT_PATH =
 # CONFIG += mobility
 # MOBILITY +=
 
-INCLUDEPATH += ../src ../lib/tinyxml
+INCLUDEPATH += $$PWD/../src $$PWD/../lib/tinyxml $$PWD/../lib/trex
 QMAKE_LIBDIR += ../
 LIBS += -L. -lrooms
 

@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "csparser.h"
 
 Log logger;
 
@@ -8,6 +9,7 @@ Engine::Engine()
     events_mgr = new EventsManager();
     gui_mgr = new GuiManager();
     anim_mgr = new AnimationsManager();
+    cs_mgr = new CsManager();
     setState(INITIALIZING);
     inventory = new GuiScrolledBar("inventory", "", "", GuiRect(0.08, 0, 0.84, 0.107),
                                 GuiRect(0.08, 0, 0.08, 0.107), GuiRect(0, 0, 0.08, 0.107),
@@ -88,6 +90,7 @@ void Engine::click(const float x, const float y)
             break;
         }
         case TRANSITION:
+        case CUTSCENE:
         {
             // do nothing when an animation is running
             break;
@@ -335,6 +338,10 @@ void Engine::execActions(std::vector <Action *> actions)
             string sfx_id = act.popStrParam();
             apiSFXPlay(sfx_id);
         }
+        else if (act.id == "CUTSCENE_START")
+        {
+            apiStartCutScene(act.popStrParam());
+        }
 #ifdef WITH_PYTHON
         else if (act.id == "SCRIPT")
         {
@@ -369,7 +376,7 @@ GuiDataVect Engine::flash(Room *room)
     GuiDataVect visible_data;
     GuiData bg;
     bg.id = room->id;
-    bg.alpha = 255;
+    bg.alpha = 1;
     bg.image = room->bg();
     bg.text = "";
     bg.rect = GuiRect(0, 0, 1.0, 1.0);
@@ -395,7 +402,7 @@ GuiDataVect Engine::flash(Room *room)
     {
         GuiData item;
         item.id = (*i)->id;
-        item.alpha = 255;
+        item.alpha = 1;
         item.text = "";
         item.image = (*i)->image();
         item.rect = GuiRect((*i)->x(), (*i)->y(), (*i)->w(), (*i)->h());
@@ -408,8 +415,30 @@ GuiDataVect Engine::flash(Room *room)
     return visible_data;
 }
 
+GuiDataVect Engine::getCutsceneVisibleData()
+{
+    if (!anim_mgr->isAnimating()){
+        anim_mgr->startAnimations();
+    }
+    if (anim_mgr->stopIfOvertime()){
+        logger.write("Exiting cutscene", Log::NOTE);
+        cs_mgr->endCutscene();
+        restoreState();
+    }
+    GuiDataVect visible_data = cs_mgr->getVisibleData();
+    GuiDataVect::iterator i;
+    for (i = visible_data.begin(); i != visible_data.end(); ++i){
+        anim_mgr->updateObjectState((*i).id, &(*i));
+    }
+    cs_mgr->setVisibleData(visible_data);
+    return visible_data;
+}
+
 GuiDataVect Engine::getVisibleData()
 {
+    if (state() == CUTSCENE){
+        return getCutsceneVisibleData();
+    }
     if (anim_mgr->hasAnimations() && state() != TRANSITION) {
         anim_mgr->startAnimations();
         storeState();
@@ -477,6 +506,16 @@ void Engine::apiDialogStart(const string id)
 void Engine::apiSFXPlay(const string id)
 {
     sfx.push_back(id);
+}
+
+void Engine::apiStartCutScene(const std::string scenefile)
+{
+    if (cs_mgr->startCutscene(scenefile, images)){
+        storeState();
+        setState(CUTSCENE);
+        logger.write("Entering cutscene", Log::NOTE);
+        anim_mgr->addAnimations(cs_mgr->getAnimations());
+    }
 }
 
 #ifdef WITH_PYTHON

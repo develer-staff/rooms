@@ -2,6 +2,7 @@
 #define ENGINETESTS_H_INCLUDED
 
 #include "engine.h"
+#include "csparser.h"
 
 #include <string>
 #include <utility> // std::pair
@@ -96,6 +97,35 @@ public:
 
 private:
     int updateAndGetTime(std::string id, GuiData *data);
+};
+
+class MockCsParser : public CsParser
+{
+public:
+    MockCsParser() : CsParser(std::vector<std::string>()) {}
+
+    using CsParser::parseHeader;
+    using CsParser::parseDefaults;
+    using CsParser::parseDeclarations;
+    using CsParser::parseAnimations;
+};
+
+class ParserTest : public CppUnit::TestFixture
+{
+private:
+    MockCsParser *parser;
+public:
+    void setUp();
+    void tearDown();
+    void testParse();
+
+    static CppUnit::TestSuite *suite()
+    {
+        CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "CutsceneParserTests" );
+        suiteOfTests->addTest(new CppUnit::TestCaller<ParserTest>("testParse",
+                                                                      &ParserTest::testParse));
+        return suiteOfTests;
+    }
 };
 
 #endif // ENGINETESTS_H_INCLUDED
