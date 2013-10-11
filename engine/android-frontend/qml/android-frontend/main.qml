@@ -7,6 +7,45 @@ Rectangle {
     width: 360
     height: 360
 
+    BorderImage {
+        id: button
+        source: "assets:/ui/simplebutton.png"
+        width: 70; height: 35
+        border{
+            top:2
+            right:2
+            bottom:2
+            left:2
+        }
+
+        anchors {
+            bottom: parent.bottom
+            right: parent.right
+            bottomMargin: 7
+            rightMargin: 7
+        }
+        Text {
+            font.pixelSize: 18
+            anchors.centerIn: parent
+            text: "Quit"
+        }
+        MouseArea {
+            anchors.fill: parent
+            onPressed: {
+                parent.source = "assets:/ui/simplebutton_pressed.png"
+            }
+
+            onReleased: {
+                parent.source = "assets:/ui/simplebutton.png"
+            }
+
+            onClicked: {
+                Qt.quit();
+            }
+        }
+
+        z:100
+    }
 
     onWidthChanged: {
         game.windowWidth = width;
