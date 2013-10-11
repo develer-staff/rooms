@@ -13,10 +13,10 @@ Engine::Engine()
     setState(INITIALIZING);
     inventory = new GuiScrolledBar("inventory", "", "", GuiRect(0.08, 0, 0.84, 0.107),
                                 GuiRect(0.08, 0, 0.08, 0.107), GuiRect(0, 0, 0.08, 0.107),
-                                "./data/right_btn.png", "./data/left_btn.png", GuiList::H_GUILIST);
+                                "data/right_btn.png", "data/left_btn.png", GuiList::H_GUILIST);
     dialog_list = new GuiScrolledBar("dialog", "", "", GuiRect(0.08, 0.89, 0.84, 0.107),
                                     GuiRect(0.08, 0.89, 0.65, 0.05), GuiRect(0, 0, 0.08, 0.107),
-                                    "./data/right_btn.png", "./data/left_btn.png", GuiList::V_GUILIST);
+                                    "data/right_btn.png", "data/left_btn.png", GuiList::V_GUILIST);
     gui_mgr->addGuiObj(inventory);
     gui_mgr->addGuiObj(dialog_list);
     dialog_list->visible = false;
