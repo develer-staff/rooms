@@ -3,6 +3,9 @@
 # This simple script takes care of building the engine library
 # for Android
 #
+# If you are using Qt >= 5.2.0 then you don't need this script, 
+# you can just type qmake && make in order to compile the library for Android
+#
 # Edit the variables below to suit your configuration
 
 # Qmake for Android location
