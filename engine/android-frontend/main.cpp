@@ -23,18 +23,18 @@ void preloadCutscene(const QString &worldContent){
         if (token == QXmlStreamReader::StartDocument)
             continue;
 
-        if (token == QXmlStreamReader::StartElement){
-            if (xml.name() == "action" && xml.attributes().value("id") == "CUTSCENE_START"){
-                while(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "action")){
-                    xml.readNext();
-                    if (xml.name() != "param")
-                        continue;
-                    QString csPath = xml.attributes().value("value").toString();
-                    QFile csFile(csPath);
-                    if (!csFile.exists()){
-                        if (QFile::copy(QString("assets:/%1").arg(csPath), csPath))
-                            csList.append(csPath);
-                    }
+        if (token == QXmlStreamReader::StartElement &&
+                xml.name() == "action" &&
+                xml.attributes().value("id") == "CUTSCENE_START"){
+            while(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "action")){
+                xml.readNext();
+                if (xml.name() != "param")
+                    continue;
+                QString csPath = xml.attributes().value("value").toString();
+                QFile csFile(csPath);
+                if (!csFile.exists()){
+                    if (QFile::copy(QString("assets:/%1").arg(csPath), csPath))
+                        csList.append(csPath);
                 }
             }
         }
