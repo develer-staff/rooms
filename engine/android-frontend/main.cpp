@@ -11,7 +11,6 @@
 
 Engine engine;
 
-
 // This workaround is needed because Rooms engine cannot read
 // from Android assets pseudo-folder
 void preloadCutscene(const QString &worldContent){
