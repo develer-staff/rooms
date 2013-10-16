@@ -45,6 +45,8 @@ Rectangle {
                                        f.width,
                                        f.height,
                                        f.alpha);
+                        if (texts[f.id].text !== f.contnet)
+                            texts[f.id].text = f.content;
                         continue;
                     }
                     component = Qt.createComponent("GameText.qml");
