@@ -1,9 +1,13 @@
 #include "controller.h"
 
+#include <vector>
+#include <string>
+
 Controller::Controller(QObject *parent) :
     QObject(parent),
     _t(0),
-    current_room("")
+    current_room(""),
+    bgm(0)
 {
     current_state = Controller::State(engine.state());
     connect(this, SIGNAL(tChanged()), this, SLOT(update()));
@@ -110,6 +114,28 @@ void Controller::click(float x, float y)
         current_state = Controller::State(engine.state());
         emit stateChanged();
     }
+}
+
+void Controller::updateBgm()
+{
+    QString bgm_str(QString::fromStdString(engine.getRoomsManager()->currentRoom()->bgm()));
+    if (bgm_str != ""){
+        if (bgm != 0){
+            if (bgm->fileName() == bgm_str)
+                return;
+            bgm->stop();
+            delete bgm;
+        }
+        bgm = new QSound(bgm_str, this);
+        bgm->play();
+    }
+}
+
+void Controller::updateSFX()
+{
+    std::vector<string> sfxv = engine.getSFX();
+    for (std::vector<string>::iterator i = sfxv.begin(); i != sfxv.end(); ++i)
+            QSound::play((*i).c_str());
 }
 
 void Controller::clearCurrentFrameData()

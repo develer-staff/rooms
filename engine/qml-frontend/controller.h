@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QList>
 #include <QQmlListProperty>
+#include <QSound>
 
 extern Engine engine;
 
@@ -60,6 +61,8 @@ signals:
 public slots:
     void update();
     void click(float x, float y);
+    void updateBgm();
+    void updateSFX();
 
 private:
     void clearCurrentFrameData();
@@ -69,6 +72,8 @@ private:
     QString current_room;
     State current_state;
     QList<QGuiData *> _currentFrameData;
+    QSound *bgm;
+
 };
 
 #endif // CONTROLLER_H
