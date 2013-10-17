@@ -10,7 +10,8 @@ Rectangle {
     BorderImage {
         id: button
         source: "assets:/ui/simplebutton.png"
-        width: 70; height: 35
+        width: quitText.width+8
+        height: quitText.height+6
         border{
             top:2
             right:2
@@ -25,7 +26,8 @@ Rectangle {
             rightMargin: 7
         }
         Text {
-            font.pixelSize: 18
+            id: quitText
+            font.pointSize: 14
             anchors.centerIn: parent
             text: "Quit"
         }
@@ -58,6 +60,31 @@ Rectangle {
     property var images: new Object;
     property var texts: new Object;
 
+    function disposeTexts(){
+        var orderedTexts = new Array;
+        for (var i in texts){
+            var j = 0;
+            while(j < orderedTexts.length){
+                if (orderedTexts[j].y > texts[i].y)
+                    break;
+                ++j;
+            }
+            orderedTexts.splice(j, 0, texts[i]);
+        }
+        for(var i = 0; i < orderedTexts.length-1; i++){
+            for(var j = i+1; j < orderedTexts.length; j++){
+                if (orderedTexts[i].opacity !== 0 &&
+                        orderedTexts[j].opacity !== 0 &&
+                        orderedTexts[j].y < window.height){
+                    var diff = (orderedTexts[i].y + orderedTexts[i].height) - orderedTexts[j].y;
+                    if ( diff > 0){
+                        orderedTexts[i].y-=diff;
+                    }
+                }
+            }
+        }
+    }
+
     function hideDialogs() {
         for(var k in texts){
             texts[k].opacity = 0;
@@ -81,9 +108,9 @@ Rectangle {
                     if (texts[f.id] !== undefined){
                         U.updateObject(texts[f.id],
                                        f.x,
-                                       f.y + (f.height / 2),
+                                       f.y,
                                        f.width,
-                                       f.height,
+                                       texts[f.id].height,
                                        f.alpha);
                         if (texts[f.id].text !== f.contnet)
                             texts[f.id].text = f.content;
@@ -92,9 +119,8 @@ Rectangle {
                     component = Qt.createComponent("GameText.qml");
                     object = component.createObject(window,
                                                     {"x": f.x,
-                                                     "y": f.y + (f.height / 2),
+                                                     "y": f.y,
                                                      "width": f.width,
-                                                     "height": f.height,
                                                      "alpha": f.alpha,
                                                      "text": f.content});
                     texts[f.id] = object;
@@ -114,6 +140,7 @@ Rectangle {
                                                  "source": "assets:/%1".arg(f.content)});
                 images[f.id] = object;
             }
+            disposeTexts();
         }
 
         onRoomChanged: {
